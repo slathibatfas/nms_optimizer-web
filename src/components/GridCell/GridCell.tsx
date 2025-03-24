@@ -79,7 +79,7 @@ const gridCell: React.FC<gridCellProps> = ({ rowIndex, columnIndex, cell, toggle
               ${cell.supercharged ? "gridCell--supercharged" : cell.active ? "gridCell--active" : "gridCell--inactive"}
               `}
             style={{
-              backgroundImage: cell?.image ? `url(${cell.image})` : "none"
+              backgroundImage: cell?.image ? `url(/assets/img/${cell.image})` : "none"
             }}
           ></div>
         </Tooltip>
@@ -94,7 +94,7 @@ const gridCell: React.FC<gridCellProps> = ({ rowIndex, columnIndex, cell, toggle
           ${cell.supercharged ? "gridCell--supercharged" : cell.active ? "gridCell--active" : "gridCell--inactive"}
           `}
         style={{
-          backgroundImage: cell.image ? `url(${cell.image})` : "none"
+          backgroundImage: cell.image ? `url(/assets/img/${cell.image})` : "none"
         }}
       ></div>
     );

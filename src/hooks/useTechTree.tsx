@@ -56,7 +56,7 @@ function fetchTechTree(shipType: string = "Exotic"): Resource<TechTree> {
   // Check if the resource is already in the cache
   if (!cache.has(shipType)) {
     // Create a promise to fetch the tech tree
-    const promise = fetch(`${API_URL}tech_tree/${shipType}`)
+    const promise = fetch(`${API_URL}/tech_tree/${shipType}`)
       .then((res) => {
         // Check for HTTP errors
         if (!res.ok) {
