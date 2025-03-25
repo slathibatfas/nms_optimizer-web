@@ -28,8 +28,8 @@ To run this project locally, follow these steps:
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/jbelew/NMS_LayoutOptimizer.git
-   cd NMS_LayoutOptimizer
+   git clone hhttps://github.com/jbelew/nms_optimizer-web
+   cd nms_optimizer-web
    ```
 
 2. **Install dependencies:**
