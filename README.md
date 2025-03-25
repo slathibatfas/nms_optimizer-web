@@ -1,7 +1,3 @@
-Here's an updated version of your README with **local installation instructions** added:
-
----
-
 **Web UI for No Man's Sky Starship Layout Optimization**
 
 This tool optimizes starship layouts by calculating pattern-based scores. It prioritizes supercharged slots using game-tested configurations and ensures the best fit within the grid. When additional supercharged slots are in range of a pattern, the tool runs a localized brute-force solve to explore layouts outside of the base configurations that offer additional benefits. The goal is not to calculate in-game DPS but to use a thoroughly tested weighting system for layout optimization.
