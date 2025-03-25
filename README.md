@@ -48,18 +48,6 @@ To run this project locally, follow these steps:
    npm run dev
    ```
 
-   The app will be available at `http://localhost:3000` by default.
+   The app will be available at `http://localhost:5173` by default.
 
-4. **Build for production (optional):**
-
-   To create a production build, run:
-
-   ```sh
-   npm run build
-   ```
-
-   You can then deploy the static files or serve them using a server.
-
----
-
-Let me know if you'd like any further adjustments!
+If you want to also run the service locally, edit `src/constants.ts` and set the endpoints accordingly.
