@@ -72,7 +72,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
           />
         </ScrollArea>
       ) : (
-        <Box className="z-10 items-start flex-grow-0 flex-shrink-0 w-full pt-4 sidebar">
+        <Box className="z-10 items-start flex-grow-0 flex-shrink-0 w-full pt-8 sidebar">
           <TechTreeComponent
             handleOptimize={handleOptimize}
             solving={solving}
