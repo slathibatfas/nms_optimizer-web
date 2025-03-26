@@ -1,22 +1,17 @@
-/* src/components/ChangeLog/ChangeLog.css */
-
-/* Block: changelog */
-.changelog {
-  /* No styles for the root block itself */
-}
+/* src/components/InfoDialog/InfoDialog.css */
 
 /* Element: Overlay */
-.changelog__overlay {
+.infodialog__overlay {
   background-color: black;
   position: fixed;
   inset: 0;
   /* Start at full opacity and animate to 25% */
   opacity: .5;
-  animation: changelog__overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Add forwards */
+  animation: infodialog__overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Add forwards */
 }
 
 /* Element: Content */
-.changelog__content {
+.infodialog__content {
   background-color: var(--blue-2);
   border-radius: 8px;
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
@@ -24,70 +19,63 @@
   position: fixed;
   top: 50%;
   left: 50%;
+  font-weight: 100;
   transform: translate(-50%, -50%);
   width: 90vw;
   max-width: 512px;
   max-height: 80vh;
-  padding: 24px;
-  animation: changelog__content-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 16px;
+  animation: infodialog__content-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
 /* Element: Title */
-.changelog__title {
+.infodialog__title {
   border-bottom: 1px solid var(--gray-6);
   color: var(--gray-12);
   font-weight: 600;
   font-size: 1.25rem;
   line-height: 1.75rem;
   padding-bottom: .5rem;
-  margin-bottom: .5rem;
-}
-
-/* Element: Description */
-.changelog__description {
-  margin-top: .5rem;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
 }
 
 /* Element: Close Button */
-.changelog__close {
+.infodialog__close {
   position: absolute;
   top: 8px;
   right: 8px;
+  display: none;
 }
 
 /* Element: Container */
-.changelog__container {
+.infodialog__container {
   overflow-y: auto;
   flex-grow: 1;
 }
 
 /* Element: Item */
-.changelog__item {
+.infodialog__item {
   margin-bottom: 1rem;
-}
-
-/* Element: Date */
-.changelog__date {
-  color: var(--gray-10);
-  margin-bottom: .5rem;
+  margin-right: 1rem;
 }
 
 /* Element: List */
-.changelog__list {
+.infodialog__list {
   list-style-type: disc;
   padding-left: 2rem;
 }
 
 /* Element: List Item */
-.changelog__list-item {
+.infodialog__list-item {
   margin-bottom: 0.25rem;
 }
 
 /* Animation: Overlay Show */
-@keyframes changelog__overlay-show {
+@keyframes infodialog__overlay-show {
   from {
     opacity: 0; /* Start at full opacity */
   }
@@ -97,7 +85,7 @@
 }
 
 /* Animation: Content Show */
-@keyframes changelog__content-show {
+@keyframes infodialog__content-show {
   from {
     opacity: 0;
     transform: translate(-50%, -48%) scale(0.96);

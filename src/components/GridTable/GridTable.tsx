@@ -1,4 +1,4 @@
-// src/components/GridTable.tsx
+// src/components/GridTable/GridTable.tsx
 import { ResetIcon, QuestionMarkCircledIcon, CounterClockwiseClockIcon } from "@radix-ui/react-icons";
 import { Button } from "@radix-ui/themes";
 import React, { useEffect, useState, useRef } from "react";
@@ -17,6 +17,7 @@ interface GridTableProps {
   deActivateRow: (rowIndex: number) => void;
   solving: boolean; // Receive solving as a prop
   setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowInstructions: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /**
@@ -32,7 +33,7 @@ interface GridTableProps {
  *   or null if no calculation has been done.
  * @param {function} resetGrid - A function to reset the grid
  */
-const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRow, deActivateRow, resetGrid, solving, setShowChangeLog }) => {
+const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRow, deActivateRow, resetGrid, solving, setShowChangeLog, setShowInstructions }) => {
   const [shaking, setShaking] = React.useState(false);
 
   const gridRef = useRef<HTMLDivElement>(null);
@@ -102,7 +103,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRo
       </ShakingWrapper>
       <div className="flex items-start justify-between gap-4">
         <div className="z-10 pt-4 pr-8">
-          <Button variant="soft" className="!mr-2"><QuestionMarkCircledIcon />Instructions</Button>
+          <Button variant="soft" className="!mr-2" onClick={() => setShowInstructions(true)}><QuestionMarkCircledIcon />Instructions</Button>
           <Button variant="soft" onClick={() => setShowChangeLog(true)}><CounterClockwiseClockIcon />Changelog</Button>
         </div>
         <div className="z-10 pt-4" style={{ paddingRight: columnWidth }}>

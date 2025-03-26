@@ -2,11 +2,13 @@
 import { Box, Flex, Heading } from "@radix-ui/themes";
 import GridContainer from "./components/GridContainer/GridContainer";
 import { useState } from "react";
-import ChangeLog from "./components/ChangeLog/ChangeLog"; // Import ChangeLog
+import InfoDialog from "./components/InfoDialog/InfoDialog"; // Import InfoDialog
+import ChangeLogContent from "./components/InfoDialog/ChangeLogContent"; // Import ChangeLogContent
+import InstructionsContent from "./components/InfoDialog/InstructionsContent"; // Import InstructionsContent
 
 const App: React.FC = () => {
-  const [showChangeLog, setShowChangeLog] = useState(false); // State for changelog visibility (initially false)
-
+  const [showInfoDialog, setShowInfoDialog] = useState(false); // State for changelog visibility (initially false)
+  const [showInstructionsDialog, setShowInstructionsDialog] = useState(false); // State for instructions visibility
   return (
     <>
       {/* The main container of the app */}
@@ -27,10 +29,15 @@ const App: React.FC = () => {
           </Box>
 
           {/* Main Layout */}
-          <GridContainer setShowChangeLog={setShowChangeLog} /> {/* Render GridContainer */}
+          <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} /> {/* Render GridContainer */}
         </Box>
       </Flex>
-      {showChangeLog && <ChangeLog onClose={() => setShowChangeLog(false)} />}
+      {showInfoDialog && (
+        <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} />
+      )}
+      {showInstructionsDialog && (
+        <InfoDialog onClose={() => setShowInstructionsDialog(false)} content={<InstructionsContent />} />
+      )}
     </>
   );
 };

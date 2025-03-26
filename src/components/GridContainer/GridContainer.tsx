@@ -9,9 +9,10 @@ import { useBreakpoint } from "../../hooks/useBreakpoint"; // Import useBreakpoi
 
 interface GridContainerProps {
   setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowInstructions: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog }) => {
+const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShowInstructions }) => {
   const { solving, handleOptimize } = useOptimize(); // Only get solving and handleOptimize
   const {
     grid,
@@ -51,6 +52,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog }) => {
           deActivateRow={deActivateRow}
           resetGrid={resetGrid}
           setShowChangeLog={setShowChangeLog} // Pass setShowChangeLog to GridTable
+          setShowInstructions={setShowInstructions} // Pass setShowInstructions to GridTable
         />
       </Box>
 
