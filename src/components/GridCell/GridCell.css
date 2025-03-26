@@ -4,8 +4,10 @@
   background-position: center;  
   width: var(--grid-cell-size);
   height: var(--grid-cell-size);
+  user-select: none; /* Prevents text selection */
+  -webkit-user-select: none; /* iOS Safari */
+  -webkit-touch-callout: none; /* Disables long-press context menu */
 }
-
 
 .gridCell--interactive {
   /* Styles for grid cells interaction*/

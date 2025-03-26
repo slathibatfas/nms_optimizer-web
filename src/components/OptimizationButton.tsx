@@ -54,10 +54,10 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
         </IconButton>
       )}
 
-      <Text style={{ color: "var(--gray-12)" }}>{label}</Text>
+      <Text className="font-semibolds" style={{ color: "var(--gray-12)" }}>{label}</Text>
       {techMaxBonus !== undefined && techMaxBonus !== 0 && (
         <Text
-          className="font-thin font-condensed"
+          className="font-thin"
           style={{
             color: techMaxBonus > 101 ? "#e6c133" : "var(--gray-11)", // Highlight if > 101%
           }}

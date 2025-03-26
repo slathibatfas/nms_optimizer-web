@@ -34,7 +34,7 @@ const TechTreeSection: React.FC<{
     <h2 className="text-2xl sidebar__title" style={{ color: "var(--gray-12)" }}>
       {type.toUpperCase()}
     </h2>
-    <Separator orientation="horizontal" size="4" className="mb-4 sidebar__separator" />
+    <Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />
     {technologies.map((tech) => (
       <OptimizationButton key={tech.key} label={tech.label} tech={tech.key} handleOptimize={handleOptimize} solving={solving} />
     ))}

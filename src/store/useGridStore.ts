@@ -63,14 +63,17 @@ type GridStore = {
   result: ApiResponse | null;
   setGrid: (grid: Grid) => void;
   resetGrid: () => void;
-  setResult: (result: ApiResponse | null, tech: string) => void; // Add tech to setResult
-  toggleCellState: (rowIndex: number, columnIndex: number, event: React.MouseEvent) => void;
+  setResult: (result: ApiResponse | null, tech: string) => void;
   activateRow: (rowIndex: number) => void;
   deActivateRow: (rowIndex: number) => void;
   hasTechInGrid: (tech: string) => boolean;
   resetGridTech: (tech: string) => void;
-  serializeGrid: () => string; // Add serializeGrid
-  deserializeGrid: (serializedGrid: string) => void; // Add deserializeGrid
+  serializeGrid: () => string;
+  deserializeGrid: (serializedGrid: string) => void;
+  toggleCellActive: (rowIndex: number, columnIndex: number) => void;
+  toggleCellSupercharged: (rowIndex: number, columnIndex: number) => void;
+  setCellActive: (rowIndex: number, columnIndex: number, active: boolean) => void;
+  setCellSupercharged: (rowIndex: number, columnIndex: number, supercharged: boolean) => void;
 };
 
 export const useGridStore = create<GridStore>((set, get) => ({
@@ -87,41 +90,82 @@ export const useGridStore = create<GridStore>((set, get) => ({
   },
 
   setResult: (result, tech) => {
-    // Add tech to setResult
     set({ result });
     if (result) {
-      useTechStore.getState().setMaxBonus(tech, result.max_bonus); // Update max_bonus in useTechStore with tech
+      useTechStore.getState().setMaxBonus(tech, result.max_bonus);
     }
   },
 
-  /**
-   * Toggles the active or supercharged state based on Ctrl+Click.
-   */
-  toggleCellState: (rowIndex, columnIndex, event) => {
+  toggleCellActive: (rowIndex, columnIndex) => {
     set((state) => ({
       grid: {
         ...state.grid,
         cells: state.grid.cells.map((row, rIdx) =>
-          row.map((cell, cIdx) => {
-            if (rIdx === rowIndex && cIdx === columnIndex) {
-              if (event.ctrlKey) {
-                // Toggle active, and force supercharged to false if becoming inactive
-                const newActiveState = !cell.active;
-                return {
-                  ...cell,
-                  active: newActiveState,
-                  supercharged: newActiveState ? cell.supercharged : false,
-                };
-              } else if (cell.active) {
-                // Toggle supercharged only if active
-                return { ...cell, supercharged: !cell.supercharged };
-              }
-            }
-            return cell;
-          })
+          row.map((cell, cIdx) =>
+            rIdx === rowIndex && cIdx === columnIndex
+              ? { ...cell, active: !cell.active, supercharged: !cell.active ? false : cell.supercharged }
+              : cell
+          )
         ),
       },
     }));
+  },
+
+  toggleCellSupercharged: (rowIndex, columnIndex) => {
+    set((state) => {
+      const currentCell = state.grid.cells[rowIndex][columnIndex];
+      if (!currentCell.active) {
+        return state; // Do nothing if the cell is not active
+      }
+      return {
+        grid: {
+          ...state.grid,
+          cells: state.grid.cells.map((row, rIdx) =>
+            row.map((cell, cIdx) =>
+              rIdx === rowIndex && cIdx === columnIndex
+                ? { ...cell, supercharged: !cell.supercharged }
+                : cell
+            )
+          ),
+        },
+      };
+    });
+  },
+
+  setCellActive: (rowIndex, columnIndex, active) => {
+    set((state) => ({
+      grid: {
+        ...state.grid,
+        cells: state.grid.cells.map((row, rIdx) =>
+          row.map((cell, cIdx) =>
+            rIdx === rowIndex && cIdx === columnIndex
+              ? { ...cell, active: active, supercharged: active ? cell.supercharged : false }
+              : cell
+          )
+        ),
+      },
+    }));
+  },
+
+  setCellSupercharged: (rowIndex, columnIndex, supercharged) => {
+    set((state) => {
+      const currentCell = state.grid.cells[rowIndex][columnIndex];
+      if (!currentCell.active) {
+        return state; // Do nothing if the cell is not active
+      }
+      return {
+        grid: {
+          ...state.grid,
+          cells: state.grid.cells.map((row, rIdx) =>
+            row.map((cell, cIdx) =>
+              rIdx === rowIndex && cIdx === columnIndex
+                ? { ...cell, supercharged: supercharged }
+                : cell
+            )
+          ),
+        },
+      };
+    });
   },
 
   activateRow: (rowIndex: number) => {
@@ -157,7 +201,7 @@ export const useGridStore = create<GridStore>((set, get) => ({
               ? {
                   ...createEmptyCell(cell.supercharged, cell.active),
                   tech: null,
-                } // Preserve supercharged state
+                }
               : cell
           )
         ),
@@ -169,7 +213,6 @@ export const useGridStore = create<GridStore>((set, get) => ({
     const { grid } = get();
     const serializedCells = grid.cells.map((row) =>
       row.map((cell) => {
-        // Only include relevant properties for serialization
         return `${cell.active ? "1" : "0"}${cell.supercharged ? "1" : "0"}${cell.module ? "1" : "0"}${cell.tech ? cell.tech.charAt(0) : "0"}`;
       }).join("")
     ).join("|");
@@ -204,7 +247,7 @@ export const useGridStore = create<GridStore>((set, get) => ({
 
         const newCell: Cell = {
           ...createEmptyCell(supercharged, active),
-          module: hasModule ? "module" : null, // Placeholder for module
+          module: hasModule ? "module" : null,
           tech: tech,
         };
         newRow.push(newCell);

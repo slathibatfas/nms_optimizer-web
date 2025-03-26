@@ -17,7 +17,6 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
   const {
     grid,
     result,
-    toggleCellState,
     activateRow,
     deActivateRow,
     resetGrid,
@@ -46,7 +45,6 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
         <GridTable
           grid={grid}
           solving={solving} // Only pass solving
-          toggleCellState={toggleCellState}
           result={result}
           activateRow={activateRow}
           deActivateRow={deActivateRow}
@@ -63,7 +61,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
           style={{
             height: gridHeight !== null ? `${gridHeight}px` : "auto",
             backgroundColor: "var(--gray-a3)",
-            width: "300px",
+            width: "320px",
           }}
         >
           <TechTreeComponent

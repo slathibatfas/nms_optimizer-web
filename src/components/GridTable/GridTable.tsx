@@ -11,7 +11,6 @@ import MessageSpinner from "../MessageSpinner/MessageSpinner";
 interface GridTableProps {
   grid: Grid;
   resetGrid: () => void;
-  toggleCellState: (rowIndex: number, columnIndex: number, event: React.MouseEvent) => void;
   result: ApiResponse | null;
   activateRow: (rowIndex: number) => void;
   deActivateRow: (rowIndex: number) => void;
@@ -26,14 +25,13 @@ interface GridTableProps {
  * renders a set of buttons to activate or deactivate entire rows at once.
  *
  * @param {Grid} grid - The grid to display
- * @param {function} toggleCellState - A function to toggle the state of a cell
  * @param {function} activateRow - A function to activate an entire row
  * @param {function} deActivateRow - A function to deactivate an entire row
  * @param {ApiResponse | null} result - The result of an optimization calculation,
  *   or null if no calculation has been done.
  * @param {function} resetGrid - A function to reset the grid
  */
-const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRow, deActivateRow, resetGrid, solving, setShowChangeLog, setShowInstructions }) => {
+const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow, resetGrid, solving, setShowChangeLog, setShowInstructions }) => {
   const [shaking, setShaking] = React.useState(false);
 
   const gridRef = useRef<HTMLDivElement>(null);
@@ -81,7 +79,6 @@ const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRo
                     image: cell.image || undefined,
                   }}
                   grid={grid}
-                  toggleCellState={toggleCellState}
                   setShaking={setShaking}
                 />
               ))}
@@ -103,8 +100,8 @@ const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRo
       </ShakingWrapper>
       <div className="flex items-start gap-4">
         <div className="z-10 flex-1 pt-4 flex-nowrap">
-          <Button variant="soft" className="!mr-2 p-0" onClick={() => setShowInstructions(true)}><QuestionMarkCircledIcon /><span className="hidden sm:inline">Instructions</span></Button>
-          <Button variant="soft" onClick={() => setShowChangeLog(true)}><CounterClockwiseClockIcon /><span className="hidden sm:inline">Change Log</span></Button>
+          <Button variant="soft" className="!mr-2 p-0 sm:!px-2" onClick={() => setShowInstructions(true)}><QuestionMarkCircledIcon /><span className="hidden sm:inline">Instructions</span></Button>
+          <Button variant="soft" className="sm:!px-2" onClick={() => setShowChangeLog(true)}><CounterClockwiseClockIcon /><span className="hidden sm:inline">Change Log</span></Button>
         </div>
         <div className="z-10 pt-4" style={{ paddingRight: columnWidth }}>
           <Button variant="solid" onClick={resetGrid} disabled={solving}>
