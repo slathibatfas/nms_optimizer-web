@@ -1,5 +1,5 @@
 // src/App.tsx
-import { Box, Flex, Heading, Text } from "@radix-ui/themes";
+import { Box, Flex, Heading } from "@radix-ui/themes";
 import GridContainer from "./components/GridContainer/GridContainer";
 import { useState } from "react";
 import InfoDialog from "./components/InfoDialog/InfoDialog"; // Import InfoDialog
@@ -32,7 +32,7 @@ const App: React.FC = () => {
           <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} /> {/* Render GridContainer */}
         </Box>
       </Flex>
-      <Box className="p-4 font-light text-center lg:p-0">Built by jbelew (void23 / QQ9Y-EJRS-P8KGW) • <a href="https://github.com/jbelew/nms_optimizer-web" className="underline ">GitHub</a></Box>
+      <Box className="p-4 font-light text-center lg:p-0">Built by jbelew (void23 / QQ9Y-EJRS-P8KGW) • <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank">GitHub</a></Box>
       {showInfoDialog && (
         <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} />
       )}
