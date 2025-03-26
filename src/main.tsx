@@ -4,10 +4,13 @@ import { createRoot } from 'react-dom/client';
 
 // Main App CSS
 import './index.css';
+import './theme.css'; // Import theme.css after index.css
 
 // Component CSS files
 import './components/GridCell/GridCell.css'
 import './components/GridShake/GridShake.css'
+import './components/ChangeLog/ChangeLog.css'; 
+import './components/TechTree/TechTree.css';
 
 import App from './App';
 

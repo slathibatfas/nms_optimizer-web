@@ -1,13 +1,17 @@
 // src/components/GridContainer/GridContainer.tsx
 import React from "react";
-import GridTable from "./../GridTable";
-import TechTreeComponent from "./../TechTree";
+import GridTable from "../GridTable/GridTable";
+import TechTreeComponent from "../TechTree/TechTree";
 import { useGridStore } from "../../store/useGridStore";
 import { useOptimize } from "../../hooks/useOptimize";
 import { Box, Flex, ScrollArea } from "@radix-ui/themes";
 import { useBreakpoint } from "../../hooks/useBreakpoint"; // Import useBreakpoint
 
-const GridContainer: React.FC = () => {
+interface GridContainerProps {
+  setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog }) => {
   const { solving, handleOptimize } = useOptimize(); // Only get solving and handleOptimize
   const {
     grid,
@@ -46,6 +50,7 @@ const GridContainer: React.FC = () => {
           activateRow={activateRow}
           deActivateRow={deActivateRow}
           resetGrid={resetGrid}
+          setShowChangeLog={setShowChangeLog} // Pass setShowChangeLog to GridTable
         />
       </Box>
 

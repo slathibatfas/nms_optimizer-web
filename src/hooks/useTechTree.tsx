@@ -1,4 +1,4 @@
-import { TechTree } from "../components/TechTree";
+import { TechTree } from "../components/TechTree/TechTree";
 import { API_URL } from "../constants";
 
 type Resource<T> = {

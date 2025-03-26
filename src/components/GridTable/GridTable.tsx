@@ -1,13 +1,12 @@
 // src/components/GridTable.tsx
-import { ResetIcon } from "@radix-ui/react-icons";
+import { ResetIcon, QuestionMarkCircledIcon, CounterClockwiseClockIcon } from "@radix-ui/react-icons";
 import { Button } from "@radix-ui/themes";
-import React from "react";
-import { ApiResponse, Grid } from "../store/useGridStore";
-import GridCell from "./GridCell/GridCell";
-import GridRowActions from "./GridRowActions";
-import ShakingWrapper from "./GridShake/GridShake";
-import MessageSpinner from "./MessageSpinner/MessageSpinner";
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { ApiResponse, Grid } from "../../store/useGridStore";
+import GridCell from "../GridCell/GridCell";
+import GridRowActions from "../GridRowActions";
+import ShakingWrapper from "../GridShake/GridShake";
+import MessageSpinner from "../MessageSpinner/MessageSpinner";
 
 interface GridTableProps {
   grid: Grid;
@@ -17,6 +16,7 @@ interface GridTableProps {
   activateRow: (rowIndex: number) => void;
   deActivateRow: (rowIndex: number) => void;
   solving: boolean; // Receive solving as a prop
+  setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /**
@@ -32,7 +32,7 @@ interface GridTableProps {
  *   or null if no calculation has been done.
  * @param {function} resetGrid - A function to reset the grid
  */
-const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRow, deActivateRow, resetGrid, solving }) => {
+const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRow, deActivateRow, resetGrid, solving, setShowChangeLog }) => {
   const [shaking, setShaking] = React.useState(false);
 
   const gridRef = useRef<HTMLDivElement>(null);
@@ -60,7 +60,6 @@ const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRo
 
   // Whether there are any modules in the grid
   const hasModulesInGrid = grid.cells.flat().some((cell) => cell.module !== null);
-
 
   return (
     <>
@@ -102,18 +101,9 @@ const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRo
         </div>
       </ShakingWrapper>
       <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 pt-4 pr-9">
-          <ul className="pl-4 font-thin list-disc" style={{ color: "var(--gray-12)" }}>
-            <li>
-              <strong>Click</strong> a cell to toggle its <em>Supercharged</em> state. No more than 4.
-            </li>
-            <li>
-              <strong>Ctrl-Click</strong> on a cell to enable or disable it individually.
-            </li>
-            <li>
-              Use the buttons on the right to <strong>Activate</strong> or <strong>Deactivate</strong> entire rows at once.
-            </li>
-          </ul>
+        <div className="z-10 pt-4 pr-8">
+          <Button variant="soft" className="!mr-2"><QuestionMarkCircledIcon />Instructions</Button>
+          <Button variant="soft" onClick={() => setShowChangeLog(true)}><CounterClockwiseClockIcon />Changelog</Button>
         </div>
         <div className="z-10 pt-4" style={{ paddingRight: columnWidth }}>
           <Button variant="solid" onClick={resetGrid} disabled={solving}>
@@ -124,4 +114,6 @@ const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRo
       </div>
     </>
   );
-};export default GridTable;
+};
+
+export default GridTable;
