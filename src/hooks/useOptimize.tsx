@@ -1,19 +1,18 @@
 // src/hooks/useOptimize.tsx
 import { useState, useCallback } from "react";
-import { useGridStore, Grid, ApiResponse } from "../store/useGridStore";
-// import { useSSE } from "./useSSE.tsx_old"; // Import useSSE
+import { useGridStore, Grid, ApiResponse } from "../store/useGridStore"; // Import useGridStore
 import { API_URL } from "../constants";
 
 export const useOptimize = () => {
-  const { setGrid, setResult, grid } = useGridStore();
+  const { setGrid, setResult, grid } = useGridStore(); // Get serializeGrid
   const [solving, setSolving] = useState<boolean>(false);
-  // const { clientId } = useSSE(); // Get clientId from useSSE
+
+  // Remove updateUrl function
 
   const handleOptimize = useCallback(
     async (tech: string) => {
-      setSolving(true); // Set solving to true here
+      setSolving(true);
       try {
-        // Create a new grid without modifying state immediately
         const updatedGrid: Grid = {
           ...grid,
           cells: grid.cells.map((row) =>
@@ -51,18 +50,19 @@ export const useOptimize = () => {
         if (!response.ok) throw new Error("Failed to fetch data");
 
         const data: ApiResponse = await response.json();
-        setResult(data, tech); // Pass tech to setResult
+        setResult(data, tech);
         setGrid(data.grid);
         console.log("Response from API:", data.grid);
+        // Remove updateUrl();
       } catch (error) {
         console.error("Error during optimization:", error);
         setResult(null, tech);
       } finally {
-        console.log("useOptimize: finally block called"); // Add this log
-        setSolving(false); // Set solving to false here, in the finally block
+        console.log("useOptimize: finally block called");
+        setSolving(false);
       }
     },
-    [grid, setGrid, setResult] // Add clientId to the dependency array
+    [grid, setGrid, setResult] // Remove updateUrl from the dependency array
   );
 
   return { solving, handleOptimize };

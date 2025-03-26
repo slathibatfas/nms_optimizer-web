@@ -2,13 +2,14 @@
 import { Box, Flex, Heading } from "@radix-ui/themes";
 import GridContainer from "./components/GridContainer/GridContainer";
 import { useState } from "react";
-import InfoDialog from "./components/InfoDialog/InfoDialog"; // Import InfoDialog
-import ChangeLogContent from "./components/InfoDialog/ChangeLogContent"; // Import ChangeLogContent
-import InstructionsContent from "./components/InfoDialog/InstructionsContent"; // Import InstructionsContent
+import InfoDialog from "./components/InfoDialog/InfoDialog";
+import ChangeLogContent from "./components/InfoDialog/ChangeLogContent";
+import InstructionsContent from "./components/InfoDialog/InstructionsContent";
 
 const App: React.FC = () => {
-  const [showInfoDialog, setShowInfoDialog] = useState(false); // State for changelog visibility (initially false)
-  const [showInstructionsDialog, setShowInstructionsDialog] = useState(false); // State for instructions visibility
+  const [showInfoDialog, setShowInfoDialog] = useState(false);
+  const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
+
   return (
     <>
       {/* The main container of the app */}
@@ -32,7 +33,7 @@ const App: React.FC = () => {
           <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} /> {/* Render GridContainer */}
         </Box>
       </Flex>
-      <Box className="p-4 font-light text-center lg:p-0">Built by jbelew (void23 / QQ9Y-EJRS-P8KGW) • <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank">GitHub</a></Box>
+      <Box className="p-4 font-light text-center lg:p-0">Built by jbelew (void23 / QQ9Y-EJRS-P8KGW) • <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">GitHub</a></Box>
       {showInfoDialog && (
         <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} />
       )}
