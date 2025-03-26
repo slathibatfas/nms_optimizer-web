@@ -9,9 +9,20 @@ export const useOptimize = () => {
   const gridContainerRef = useRef<HTMLDivElement>(null);
 
   // Scroll to top of GridContainer when solving changes to false
+  // Scroll to top of GridContainer when solving changes to false
   useEffect(() => {
     if (!solving && gridContainerRef.current) {
-      gridContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const element = gridContainerRef.current;
+      const offset = 24; // Adjust this value to change the offset (in pixels)
+
+      const elementRect = element.getBoundingClientRect();
+      const absoluteElementTop = elementRect.top + window.pageYOffset;
+      const targetScrollPosition = absoluteElementTop - offset;
+
+      window.scrollTo({
+        top: targetScrollPosition,
+        behavior: 'smooth',
+      });
     }
   }, [solving]);
 
