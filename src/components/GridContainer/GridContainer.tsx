@@ -1,5 +1,5 @@
 // src/components/GridContainer/GridContainer.tsx
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import GridTable from "../GridTable/GridTable";
 import TechTreeComponent from "../TechTree/TechTree";
 import { useGridStore } from "../../store/useGridStore";
@@ -23,12 +23,20 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
   } = useGridStore();
 
   const isLarge = useBreakpoint("1024px"); // lg breakpoint in Tailwind // Use the hook
+  const [gridHeight, setGridHeight] = useState<number>(0);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (gridRef.current) {
+      setGridHeight(gridRef.current.offsetHeight);
+    }
+  }, [grid]);
 
   return (
-    <Box className="optimizer__grid-container" ref={gridContainerRef}> {/* Attach the ref here */}
+    <Box className="optimizer__grid-container" ref={gridContainerRef} style={{ marginTop: '16px' }}> {/* Attach the ref here */}
       <Flex className="flex-col items-start optimizer__layout lg:flex-row">
         {/* Main Content */}
-        <Box className="flex-grow w-auto pt-2 optimizer__grid lg:flex-shrink-0">
+        <Box className="flex-grow w-auto pt-2 optimizer__grid lg:flex-shrink-0" ref={gridRef}>
           <GridTable
             grid={grid}
             solving={solving}
@@ -48,6 +56,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
             style={{
               backgroundColor: "var(--gray-a3)",
               width: "320px",
+              height: `${gridHeight}px`,
             }}
           >
             <TechTreeComponent

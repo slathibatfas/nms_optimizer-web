@@ -13,7 +13,7 @@ export const useOptimize = () => {
   useEffect(() => {
     if (!solving && gridContainerRef.current) {
       const element = gridContainerRef.current;
-      const offset = 24; // Adjust this value to change the offset (in pixels)
+      const offset = 16; // Adjust this value to change the offset (in pixels)
 
       const elementRect = element.getBoundingClientRect();
       const absoluteElementTop = elementRect.top + window.pageYOffset;
