@@ -68,5 +68,9 @@ body::before {
 }
 
 .optimizer__header--logo {
-    filter: invert(90%);
+    filter: invert(90%) drop-shadow(0 0 16px var(--blue-9));
+}
+
+.optimizer__header--icon {
+  filter: drop-shadow(0 0 16px var(--blue-9));
 }

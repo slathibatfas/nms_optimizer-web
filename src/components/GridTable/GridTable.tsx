@@ -31,7 +31,15 @@ interface GridTableProps {
  *   or null if no calculation has been done.
  * @param {function} resetGrid - A function to reset the grid
  */
-const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow, resetGrid, solving, setShowChangeLog, setShowInstructions }) => {
+const GridTable: React.FC<GridTableProps> = ({
+  grid,
+  activateRow,
+  deActivateRow,
+  resetGrid,
+  solving,
+  setShowChangeLog,
+  setShowInstructions,
+}) => {
   const [shaking, setShaking] = React.useState(false);
 
   const gridRef = useRef<HTMLDivElement>(null);

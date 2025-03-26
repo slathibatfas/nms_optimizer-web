@@ -1,20 +1,25 @@
 // src/hooks/useOptimize.tsx
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useGridStore, Grid, ApiResponse } from "../store/useGridStore";
+import { useOptimizeStore } from "../store/useOptimize";
 import { API_URL } from "../constants";
 
-export const useOptimize = () => {
+interface UseOptimizeReturn {
+  solving: boolean;
+  handleOptimize: (tech: string) => Promise<void>;
+  gridContainerRef: React.MutableRefObject<HTMLDivElement | null>;
+  showError: boolean; // Added this line
+  setShowError: React.Dispatch<React.SetStateAction<boolean>>; // Added this line
+}
+
+export const useOptimize = (): UseOptimizeReturn => {
   const { setGrid, setResult, grid } = useGridStore();
   const [solving, setSolving] = useState<boolean>(false);
   const gridContainerRef = useRef<HTMLDivElement>(null);
-  const isInitialRender = useRef(true); // Add a ref to track initial render
+  const { showError, setShowError: setShowErrorStore } = useOptimizeStore();
 
   // Scroll to top of GridContainer when solving changes to false
   useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false; // Set to false after the first render
-      return; // Skip the scroll logic on the initial render
-    }
     if (solving && gridContainerRef.current) {
       const element = gridContainerRef.current;
       const offset = 16; // Adjust this value to change the offset (in pixels)
@@ -25,7 +30,7 @@ export const useOptimize = () => {
 
       window.scrollTo({
         top: targetScrollPosition,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   }, [solving]);
@@ -68,7 +73,11 @@ export const useOptimize = () => {
           }),
         });
 
-        if (!response.ok) throw new Error("Failed to fetch data");
+        if (!response.ok) {
+          const errorData = await response.json();
+          const errorMessage = errorData.message || "Failed to fetch data";
+          throw new Error(errorMessage);
+        }
 
         const data: ApiResponse = await response.json();
         setResult(data, tech);
@@ -77,13 +86,21 @@ export const useOptimize = () => {
       } catch (error) {
         console.error("Error during optimization:", error);
         setResult(null, tech);
+        setShowErrorStore(true);
       } finally {
         console.log("useOptimize: finally block called");
         setSolving(false);
       }
     },
-    [grid, setGrid, setResult]
+    [grid, setGrid, setResult, setShowErrorStore]
   );
 
-  return { solving, handleOptimize, gridContainerRef };
-};
+  const setShowError: React.Dispatch<React.SetStateAction<boolean>> = (value) => {
+    if (typeof value === 'function') {
+      setShowErrorStore(value(showError));
+    } else {
+      setShowErrorStore(value);
+    }
+  };
+
+  return { solving, handleOptimize, gridContainerRef, showError, setShowError }};

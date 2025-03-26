@@ -1,16 +1,35 @@
 // src/App.tsx
 import { Box, Flex } from "@radix-ui/themes";
 import GridContainer from "./components/GridContainer/GridContainer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InfoDialog from "./components/InfoDialog/InfoDialog";
 import ChangeLogContent from "./components/InfoDialog/ChangeLogContent";
 import InstructionsContent from "./components/InfoDialog/InstructionsContent";
+import ErrorContent from "./components/InfoDialog/ErrorContent";
 import NMSLogo from "./assets/svg/nms_logo.svg";
 import NMSIcon from "./assets/img/nms_icon2.webp";
+import { useOptimizeStore } from "./store/useOptimize";
 
 const App: React.FC = () => {
   const [showInfoDialog, setShowInfoDialog] = useState(false);
   const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
+  const [showErrorDialog, setShowErrorDialog] = useState<boolean>(false);
+  const { showError, setShowError } = useOptimizeStore(); // Uses global state
+
+  console.log("App.tsx: useOptimize state ->", showError);
+
+  useEffect(() => {
+    console.log("App.tsx: useEffect triggered, showError =", showError);
+    if (showError) {
+      setShowErrorDialog(true);
+    }
+  }, [showError]);
+
+  // Reset showError when the dialog is closed
+  const handleCloseErrorDialog = () => {
+    setShowError(false);
+    setShowErrorDialog(false);
+  };
 
   return (
     <>
@@ -33,15 +52,9 @@ const App: React.FC = () => {
                   <span className="font-thin sm:text-2xl optimizer__title" style={{ color: "var(--gray-12)" }}>
                     Starship Optimizer - 0.93
                   </span>
-                  {/* <span className="text-2xl font-thin optimizer__title" style={{ color: "var(--gray-12)", fontFamily: "GeosansLight" }}>
-                    STARSHIP OPTIMIZER - 0.93
-                  </span> */}
                 </div>
               </div>
             </div>
-            {/* <div className="text-3xl font-bold optimizer__title" style={{ color: "var(--gray-12)" }}>
-              No Man's Sky Starship Optimizer <span className="font-extralight" style={{ color: "var(--gray-11)" }}>v0.91α</span>
-            </div> */}
           </Box>
           {/* Main Layout */}
           <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} /> {/* Render GridContainer */}
@@ -55,6 +68,7 @@ const App: React.FC = () => {
       </Box>
       {showInfoDialog && <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} />}
       {showInstructionsDialog && <InfoDialog onClose={() => setShowInstructionsDialog(false)} content={<InstructionsContent />} />}
+      {showErrorDialog && <InfoDialog onClose={handleCloseErrorDialog} content={<ErrorContent />} />}
     </>
   );
 };
