@@ -14,21 +14,14 @@ interface GridContainerProps {
 
 const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShowInstructions }) => {
   const { solving, handleOptimize, gridContainerRef } = useOptimize(); // Get gridContainerRef
-  const {
-    grid,
-    result,
-    activateRow,
-    deActivateRow,
-    resetGrid,
-  } = useGridStore();
-
+  const { grid, result, activateRow, deActivateRow, resetGrid } = useGridStore();
 
   const gridRef = useRef<HTMLDivElement>(null);
 
   const [gridHeight, setGridHeight] = useState<number | null>(null);
   const isLarge = useBreakpoint("1024px"); // lg breakpoint in Tailwind // Use the hook
 
- useEffect(() => {
+  useEffect(() => {
     const updateGridHeight = () => {
       const gridElement = document.querySelector(".optimizer__grid");
       if (gridElement) {
@@ -42,7 +35,9 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
   }, [grid]);
 
   return (
-    <Box className="optimizer__grid-container" ref={gridContainerRef} style={{ marginTop: '16px' }}> {/* Attach the ref here */}
+    <Box className="optimizer__grid-container" ref={gridContainerRef} style={{ marginTop: "16px" }}>
+      {" "}
+      {/* Attach the ref here */}
       <Flex className="flex-col items-start optimizer__layout lg:flex-row">
         {/* Main Content */}
         <Box className="flex-grow w-auto pt-2 optimizer__grid lg:flex-shrink-0" ref={gridRef}>
@@ -68,17 +63,11 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
               height: `${gridHeight}px`,
             }}
           >
-            <TechTreeComponent
-              handleOptimize={handleOptimize}
-              solving={solving}
-            />
+            <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
           </ScrollArea>
         ) : (
           <Box className="z-10 items-start flex-grow-0 flex-shrink-0 w-full pt-8 sidebar">
-            <TechTreeComponent
-              handleOptimize={handleOptimize}
-              solving={solving}
-            />
+            <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
           </Box>
         )}
       </Flex>

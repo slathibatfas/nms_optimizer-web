@@ -7,11 +7,15 @@ export const useOptimize = () => {
   const { setGrid, setResult, grid } = useGridStore();
   const [solving, setSolving] = useState<boolean>(false);
   const gridContainerRef = useRef<HTMLDivElement>(null);
+  const isInitialRender = useRef(true); // Add a ref to track initial render
 
   // Scroll to top of GridContainer when solving changes to false
-  // Scroll to top of GridContainer when solving changes to false
   useEffect(() => {
-    if (!solving && gridContainerRef.current) {
+    if (isInitialRender.current) {
+      isInitialRender.current = false; // Set to false after the first render
+      return; // Skip the scroll logic on the initial render
+    }
+    if (solving && gridContainerRef.current) {
       const element = gridContainerRef.current;
       const offset = 16; // Adjust this value to change the offset (in pixels)
 

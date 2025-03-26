@@ -29,7 +29,7 @@ const App: React.FC = () => {
               <div className="flex items-center">
                 <img src={NMSIcon} className="h-[56px] sm:h-[80px] mr-4 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
-                  <img src={NMSLogo} className="h-[20px] sm:h-[36px] mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
+                  <img src={NMSLogo} className="h-[20px] sm:h-[36px] mb-1 sm:mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
                   <span className="font-thin sm:text-2xl optimizer__title" style={{ color: "var(--gray-12)" }}>
                     Starship Optimizer - 0.93
                   </span>
