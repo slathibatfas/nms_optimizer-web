@@ -6,6 +6,14 @@ const ChangeLogContent: React.FC = () => {
       <div className="infodialog__title">Changelog</div>
       <div className="infodialog__item">
       <div className="infodialog__item">
+      <h3 className="mb-2 font-bold">Version 0.94 (2025-03-26)</h3>
+        <ul className="infodialog__list">
+          <li className="infodialog__list-item">Added error message if the solver fails..</li>
+          <li className="infodialog__list-item">Updated the header.</li>
+          <li className="infodialog__list-item">Additional mobile UX refinements.</li>
+        </ul>
+      </div>
+      <div className="infodialog__item">
         <h3 className="mb-2 font-bold">Version 0.93 (2025-03-26)</h3>
         <ul className="infodialog__list">
           <li className="infodialog__list-item">Added support for mobile touch events.</li>

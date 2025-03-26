@@ -10,7 +10,7 @@ const InstructionsContent: React.FC = () => {
 
           <ul className="mb-4 infodialog__list">
             <li>
-              <strong>Click</strong> a cell to toggle its <em>Supercharged</em> state. No more than 4.
+              <strong>Click</strong> a cell to toggle its <em>Supercharged</em> state. Select no more than 4.
             </li>
             <li>
               <strong>Ctrl-Click</strong> on a cell to enable or disable it individually.
