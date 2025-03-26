@@ -25,12 +25,12 @@ const App: React.FC = () => {
           <Box className="absolute inset-0 z-0 bg-white rounded-none optimizer__overlay opacity-10"></Box>
           {/* Header */}
           <Box asChild className="optimizer__header">
-            <div className="pb-4 mb-6 border-b-1" style={{ borderColor: "rgba(214, 235, 253, 0.19)" }}>
+            <div className="pb-4 mb-4 sm:mb-6 border-b-1" style={{ borderColor: "rgba(214, 235, 253, 0.19)" }}>
               <div className="flex items-center">
-                <img src={NMSIcon} className="h-[80px] mr-4 optimizer__header--icon" alt="No Man's Sky Logo" />
+                <img src={NMSIcon} className="h-[56px] sm:h-[80px] mr-4 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
-                  <img src={NMSLogo} className="h-[36px] mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
-                  <span className="text-2xl font-thin optimizer__title" style={{ color: "var(--gray-12)" }}>
+                  <img src={NMSLogo} className="h-[20px] sm:h-[36px] mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
+                  <span className="font-thin sm:text-2xl optimizer__title" style={{ color: "var(--gray-12)" }}>
                     Starship Optimizer - 0.93
                   </span>
                   {/* <span className="text-2xl font-thin optimizer__title" style={{ color: "var(--gray-12)", fontFamily: "GeosansLight" }}>

@@ -1,13 +1,19 @@
 // src/hooks/useOptimize.tsx
-import { useState, useCallback } from "react";
-import { useGridStore, Grid, ApiResponse } from "../store/useGridStore"; // Import useGridStore
+import { useState, useCallback, useEffect, useRef } from "react";
+import { useGridStore, Grid, ApiResponse } from "../store/useGridStore";
 import { API_URL } from "../constants";
 
 export const useOptimize = () => {
-  const { setGrid, setResult, grid } = useGridStore(); // Get serializeGrid
+  const { setGrid, setResult, grid } = useGridStore();
   const [solving, setSolving] = useState<boolean>(false);
+  const gridContainerRef = useRef<HTMLDivElement>(null);
 
-  // Remove updateUrl function
+  // Scroll to top of GridContainer when solving changes to false
+  useEffect(() => {
+    if (!solving && gridContainerRef.current) {
+      gridContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [solving]);
 
   const handleOptimize = useCallback(
     async (tech: string) => {
@@ -53,7 +59,6 @@ export const useOptimize = () => {
         setResult(data, tech);
         setGrid(data.grid);
         console.log("Response from API:", data.grid);
-        // Remove updateUrl();
       } catch (error) {
         console.error("Error during optimization:", error);
         setResult(null, tech);
@@ -62,8 +67,8 @@ export const useOptimize = () => {
         setSolving(false);
       }
     },
-    [grid, setGrid, setResult] // Remove updateUrl from the dependency array
+    [grid, setGrid, setResult]
   );
 
-  return { solving, handleOptimize };
+  return { solving, handleOptimize, gridContainerRef };
 };
