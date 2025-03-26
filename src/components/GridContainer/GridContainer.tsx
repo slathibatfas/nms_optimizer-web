@@ -22,14 +22,23 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
     resetGrid,
   } = useGridStore();
 
-  const isLarge = useBreakpoint("1024px"); // lg breakpoint in Tailwind // Use the hook
-  const [gridHeight, setGridHeight] = useState<number>(0);
+
   const gridRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (gridRef.current) {
-      setGridHeight(gridRef.current.offsetHeight);
-    }
+  const [gridHeight, setGridHeight] = useState<number | null>(null);
+  const isLarge = useBreakpoint("1024px"); // lg breakpoint in Tailwind // Use the hook
+
+ useEffect(() => {
+    const updateGridHeight = () => {
+      const gridElement = document.querySelector(".optimizer__grid");
+      if (gridElement) {
+        setGridHeight(gridElement.getBoundingClientRect().height);
+      }
+    };
+
+    updateGridHeight(); // Initial calculation
+    window.addEventListener("resize", updateGridHeight);
+    return () => window.removeEventListener("resize", updateGridHeight);
   }, [grid]);
 
   return (
