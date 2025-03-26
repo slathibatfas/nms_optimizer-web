@@ -27,8 +27,8 @@ const InstructionsContent: React.FC = () => {
               Upgrade modules are labeled <strong>Sigma, Tau, and Theta</strong>, which are visible via the <strong>tooltip UI element</strong>.
             </li>
             <li>
-              For the <strong>best score</strong>, arrange upgrades so that:
-              <ul>
+              For the <strong>best score in game</strong>, arrange upgrades so that:
+              <ul className="mb-4 infodialog__list">
                 <li>
                   <strong>Sigma</strong> is the best upgrade you have for that technology.
                 </li>
@@ -37,13 +37,12 @@ const InstructionsContent: React.FC = () => {
                 </li>
               </ul>
             </li>
-            <li>Following this order ensures that bonuses are maximized when the optimizer arranges modules.</li>
           </ul>
 
           <h2 className="mb-2 font-bold">Tips for Usage</h2>
 
-          <p>
-            If you want to use a <strong>4SC (four supercharged slots) or an L-shaped supercharger layout</strong> across multiple technology types, follow this
+          <p className="mb-4">
+            If you want to use a <strong>Square or an L-shaped supercharger layout</strong> across multiple technology types, follow this
             approach:
           </p>
           <ul className="mb-4 infodialog__list">
