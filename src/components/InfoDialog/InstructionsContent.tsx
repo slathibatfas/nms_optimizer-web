@@ -16,7 +16,7 @@ const InstructionsContent: React.FC = () => {
               <strong>Ctrl-Click</strong> on a cell to enable or disable it individually.
             </li>
             <li>
-              Use the buttons on the right to <strong>Activate</strong> or <strong>Deactivate</strong> entire rows at once.
+              Use the buttons on the right to <strong>Activate</strong> or <strong>Deactivate</strong> entire rows at once. Once you start adding modules to the grid though, these buttons become disabled until you press <strong>Reset Grid</strong>.
             </li>
           </ul>
 
