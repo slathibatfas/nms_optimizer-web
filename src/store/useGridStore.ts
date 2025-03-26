@@ -48,13 +48,11 @@ const createEmptyCell = (supercharged = false, active = true): Cell => ({
 });
 
 const createGrid = (width: number, height: number): Grid => ({
-  cells: Array.from(
-    { length: height },
-    () => Array.from({ length: width }, () => createEmptyCell(false, true))
-    // cells: Array.from({ length: height }, (_, rowIndex) =>
-    //   Array.from({ length: width }, () =>
-    //     createEmptyCell(false, rowIndex >= height - 3 ? false : true)
-    //   )
+
+    cells: Array.from({ length: height }, (_, rowIndex) =>
+      Array.from({ length: width }, () =>
+        createEmptyCell(false, rowIndex >= height - 3 ? false : true)
+      )
   ),
   width,
   height,

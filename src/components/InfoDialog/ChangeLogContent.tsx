@@ -5,11 +5,12 @@ const ChangeLogContent: React.FC = () => {
     <>
       <div className="infodialog__title">Changelog</div>
       <div className="infodialog__item">
+        <h3 className="mb-2">Touch event support for mobile devices will be coming in the next release!</h3>
         <h3 className="mb-2 font-bold">Version 0.91α (2025-03-25)</h3>
         <ul className="infodialog__list">
           <li className="infodialog__list-item">Added Instructions Dialog.</li>
           <li className="infodialog__list-item">Added Changelog Dialog.</li>
-          <li className="infodialog__list-item">Improved UI/UX.</li>
+          <li className="infodialog__list-item">Improved UI/UX on mobile devices.</li>
           <li className="infodialog__list-item">
             Fixed an issue with grid refinement not finding the best solve.
             Improved packing algorithms.

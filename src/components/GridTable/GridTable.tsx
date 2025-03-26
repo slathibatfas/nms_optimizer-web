@@ -101,10 +101,10 @@ const GridTable: React.FC<GridTableProps> = ({ grid, toggleCellState, activateRo
           ))}
         </div>
       </ShakingWrapper>
-      <div className="flex items-start justify-between gap-4">
-        <div className="z-10 pt-4 pr-8">
-          <Button variant="soft" className="!mr-2" onClick={() => setShowInstructions(true)}><QuestionMarkCircledIcon />Instructions</Button>
-          <Button variant="soft" onClick={() => setShowChangeLog(true)}><CounterClockwiseClockIcon />Changelog</Button>
+      <div className="flex items-start gap-4">
+        <div className="z-10 flex-1 pt-4 flex-nowrap">
+          <Button variant="soft" className="!mr-2 p-0" onClick={() => setShowInstructions(true)}><QuestionMarkCircledIcon />Help</Button>
+          <Button variant="soft" onClick={() => setShowChangeLog(true)}><CounterClockwiseClockIcon />Changes</Button>
         </div>
         <div className="z-10 pt-4" style={{ paddingRight: columnWidth }}>
           <Button variant="solid" onClick={resetGrid} disabled={solving}>

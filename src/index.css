@@ -24,7 +24,7 @@
 /* Apply custom font styles using Tailwind's @layer directive */
 
 .radix-themes {
-  --default-font-family: "SourceSans", sans-serif;
+  --default-font-family: -apple-system, BlinkMacSystemFont, SourceSans,'Segoe UI (Custom)', Roboto, 'Helvetica Neue', 'Open Sans (Custom)', system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'
 }
 
 /* Background styles */
@@ -49,7 +49,7 @@ body::before {
 
 /* Vaiablies for our grid CLAMP calculations */
 :root {
-  --grid-cell-size: clamp(36px, 7.2vw, 64px);
+  --grid-cell-size: clamp(2px, 7.0vw, 64px);
   --grid-gap: clamp(2px, 1vw, 8px);
 }
 

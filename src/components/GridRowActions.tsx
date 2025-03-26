@@ -1,5 +1,6 @@
 // RowControlButton.tsx
 import React from "react";
+import { useState, useEffect } from "react";
 import { IconButton, Tooltip } from "@radix-ui/themes";
 import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
 
@@ -33,12 +34,32 @@ const RowControlButton: React.FC<RowControlButtonProps> = ({
   isFirstInactiveRow,
   isLastActiveRow,
 }) => {
+
+  const [screenSize, setScreenSize] = useState("sm");
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 640) {
+        setScreenSize("sm");
+      } else {
+        setScreenSize("xs");
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
   return (
     <div style={{ gridColumn: 11, gridRow: rowIndex + 1, width: "40px" }} className="flex items-center justify-center">
       {isFirstInactiveRow && (
         <div className="align-middle">
           <Tooltip content="Activate Row">
             <IconButton
+              size={screenSize === "sm" ? "3" : "1"}
               variant="soft"
               className="mx-auto"
               onClick={() => activateRow(rowIndex)}
@@ -55,6 +76,7 @@ const RowControlButton: React.FC<RowControlButtonProps> = ({
           <Tooltip content="Deactivate Row">
             <IconButton
               variant="soft"
+              size={screenSize === "sm" ? "3" : "1"}
               className="mx-auto"
               onClick={() => deActivateRow(rowIndex)}
               disabled={hasModulesInGrid}

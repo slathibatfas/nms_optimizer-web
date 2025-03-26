@@ -15,7 +15,7 @@ const App: React.FC = () => {
       <Flex className="items-start justify-center optimizer lg:pt-16 lg:items-top lg:p-4">
         {/* Container Box */}
         <Box
-          className="optimizer__container relative min-w-[min-content] max-w-fit mx-auto overflow-hidden p-8 rounded-none shadow-lg lg:rounded-xl lg:border-1 lg:shadow-xl backdrop-blur-lg"
+          className="optimizer__container relative min-w-[min-content] max-w-fit mx-auto overflow-hidden p-6 lg:p-8 rounded-none shadow-lg lg:rounded-xl lg:border-1 lg:shadow-xl backdrop-blur-lg"
           style={{ borderColor: "var(--blue-1)" }}
         >
           {/* Background Overlay */}
@@ -23,7 +23,7 @@ const App: React.FC = () => {
 
           {/* Header */}
           <Box asChild className="pb-4 optimizer__header text-custom-cyan-light">
-            <Heading as="h1" size="7" className="font-bold optimizer__title" style={{ color: "var(--gray-12)" }}>
+            <Heading as="h1" size="7" className="optimizer__title" style={{ color: "var(--gray-12)" }}>
               No Man's Sky Starship Optimizer v0.91α
             </Heading>
           </Box>
