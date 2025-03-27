@@ -1,5 +1,5 @@
 import React from "react";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 const ChangeLogContent: React.FC = () => {
   return (
@@ -9,10 +9,12 @@ const ChangeLogContent: React.FC = () => {
         <h2 className="pt-4 text-2xl text-center" style={{ color: "#e6c133", fontFamily: "GeosansLight" }}>
           -kzzkt- Error! -kzzkt-
         </h2>
-        <p className="text-center sidebar__error" style={{ color: "var(--gray-12)" }}>
-          We're sorry! The server timed out generating a solve. Try placing modules in a different order or adding additional cells to the grid.<br />
+        <p className="font-bold text-center sidebar__error" style={{ color: "var(--gray-12)" }}>
+          The server couldn't generate a solution for your grid.
         </p>
-        <p className="mt-4">We hope to solve this issue in the next update!</p>
+        <p className="mt-4 text-center sidebar__error" style={{ color: "var(--gray-12)" }}>
+          Try a different placement order, reducing the number of technology types, or expanding your grid.
+        </p>
       </div>
     </>
   );
