@@ -16,12 +16,32 @@ const InstructionsContent: React.FC = () => {
               <strong>Ctrl-Click</strong> on a cell to enable or disable it individually.
             </li>
             <li>
-              Use the buttons on the right to <strong>Activate</strong> or <strong>Deactivate</strong> entire rows at once. Once you start adding modules to the grid though, these buttons become disabled until you press <strong>Reset Grid</strong>.
+              Use the buttons on the right to <strong>Activate</strong> or <strong>Deactivate</strong> entire rows at once. Once you start adding modules to the
+              grid though, these buttons become disabled until you press <strong>Reset Grid</strong>.
             </li>
           </ul>
+          <h2 className="mb-2 font-bold">About This Tool</h2>
+          <p className="mb-4">
+            This tool is designed for <strong>endgame players</strong> who want to <strong>optimize</strong> their starship layouts for maximum efficiency. It
+            is most useful for players who have:
+          </p>
+          <ul className="mb-4 infodialog__list">
+            <li>
+              <strong>Most or all slots unlocked</strong> in their starship.
+            </li>
+            <li>
+              Access to <strong>all available technology upgrades</strong>.
+            </li>
+            <li>
+              A <strong>full set of three upgrade modules</strong> for each applicable technology.
+            </li>
+          </ul>
+          <p className="mb-4">
+            If you are still unlocking slots or collecting upgrades, this tool can still provide useful insights, but it is primarily intended for fully
+            equipped ships.
+          </p>
 
           <h2 className="mb-2 font-bold">Upgrade Modules & Scoring</h2>
-
           <ul className="mb-4 infodialog__list">
             <li>
               Upgrade modules are labeled <strong>Sigma, Tau, and Theta</strong>, which are visible via the <strong>tooltip UI element</strong>.
@@ -42,8 +62,7 @@ const InstructionsContent: React.FC = () => {
           <h2 className="mb-2 font-bold">Tips for Usage</h2>
 
           <p className="mb-4">
-            If you want to use a <strong>Square or an L-shaped supercharger layout</strong> across multiple technology types, follow this
-            approach:
+            If you want to use a <strong>Square or an L-shaped supercharger layout</strong> across multiple technology types, follow this approach:
           </p>
           <ul className="mb-4 infodialog__list">
             <li>
@@ -53,7 +72,9 @@ const InstructionsContent: React.FC = () => {
               <strong>Once the solution is set, activate the remaining supercharged slots</strong> and solve for the next technology type.
             </li>
           </ul>
-          <p className="mb-4">This ensures that each technology benefits from the same optimized supercharger layout without interfering with previous solves.</p>
+          <p className="mb-4">
+            This ensures that each technology benefits from the same optimized supercharger layout without interfering with previous solves.
+          </p>
 
           <h2 className="mb-2 font-bold">How the Optimizer Finds the Best Layout</h2>
 
