@@ -7,6 +7,7 @@ const InstructionsContent: React.FC = () => {
       <div className="infodialog__item">
         <>
           <h2 className="mb-2 font-bold">About This Tool</h2>
+
           <p className="mb-4">
             This tool is designed for <strong>endgame players</strong> who want to <strong>optimize</strong> their starship layouts for maximum efficiency. It
             is most useful for players who have:
@@ -43,20 +44,17 @@ const InstructionsContent: React.FC = () => {
           </ul>
 
           <h2 className="mb-2 font-bold">Upgrade Modules & Scoring</h2>
+
+          <p className="mb-4">
+            Upgrade modules are labeled <strong>Sigma, Tau, and Theta</strong>, which are visible via the <strong>tooltip UI element</strong>. For the{" "}
+            <strong>best score in game</strong>, arrange upgrades so that:
+          </p>
           <ul className="mb-4 infodialog__list">
             <li>
-              Upgrade modules are labeled <strong>Sigma, Tau, and Theta</strong>, which are visible via the <strong>tooltip UI element</strong>.
+              <strong>Sigma</strong> is the best upgrade you have for that technology.
             </li>
             <li>
-              For the <strong>best score in game</strong>, arrange upgrades so that:
-              <ul className="mb-4 infodialog__list">
-                <li>
-                  <strong>Sigma</strong> is the best upgrade you have for that technology.
-                </li>
-                <li>
-                  <strong>Theta</strong> is the weakest upgrade.
-                </li>
-              </ul>
+              <strong>Theta</strong> is the weakest upgrade.
             </li>
           </ul>
 
@@ -83,7 +81,6 @@ const InstructionsContent: React.FC = () => {
             The optimizer's job is to figure out the best way to arrange your ship's technology modules to get the highest possible bonus. It does this in a few
             steps:
           </p>
-
           <ol className="mb-4 infodialog__list">
             <li className="infodialog__list-item">
               <strong>Looks for a Known Solution:</strong> First, it checks if it already knows a good layout for the specific ship and technology you've
