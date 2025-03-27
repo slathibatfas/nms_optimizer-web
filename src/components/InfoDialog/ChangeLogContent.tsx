@@ -8,7 +8,7 @@ const ChangeLogContent: React.FC = () => {
       <div className="infodialog__item">
       <h3 className="mb-2 font-bold">Version 0.95 (2025-03-27)</h3>
         <ul className="infodialog__list">
-          <li className="infodialog__list-item">Added an simulated annealing solver and depricated the brute force solver due to server timeout issues.</li>
+          <li className="infodialog__list-item">Added a <strong>simulated annealing</strong> solver and depricated the brute force solver due to server timeout issues.</li>
           <li className="infodialog__list-item">Added additional error handling.</li>
         </ul>
       </div>
