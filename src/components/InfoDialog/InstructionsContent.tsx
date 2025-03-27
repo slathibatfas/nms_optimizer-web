@@ -6,20 +6,6 @@ const InstructionsContent: React.FC = () => {
       <div className="infodialog__title">Instructions</div>
       <div className="infodialog__item">
         <>
-          <h2 className="mb-2 font-bold">Basic Usage</h2>
-
-          <ul className="mb-4 infodialog__list">
-            <li>
-              <strong>Click</strong> a cell to toggle its <em>Supercharged</em> state. Select no more than 4.
-            </li>
-            <li>
-              <strong>Ctrl-Click</strong> on a cell to enable or disable it individually.
-            </li>
-            <li>
-              Use the buttons on the right to <strong>Activate</strong> or <strong>Deactivate</strong> entire rows at once. Once you start adding modules to the
-              grid though, these buttons become disabled until you press <strong>Reset Grid</strong>.
-            </li>
-          </ul>
           <h2 className="mb-2 font-bold">About This Tool</h2>
           <p className="mb-4">
             This tool is designed for <strong>endgame players</strong> who want to <strong>optimize</strong> their starship layouts for maximum efficiency. It
@@ -40,6 +26,21 @@ const InstructionsContent: React.FC = () => {
             If you are still unlocking slots or collecting upgrades, this tool can still provide useful insights, but it is primarily intended for fully
             equipped ships.
           </p>
+
+          <h2 className="mb-2 font-bold">Basic Usage</h2>
+
+          <ul className="mb-4 infodialog__list">
+            <li>
+              <strong>Click</strong> a cell to toggle its <em>Supercharged</em> state. Select no more than 4.
+            </li>
+            <li>
+              <strong>Ctrl-Click</strong> on a cell to enable or disable it individually.
+            </li>
+            <li>
+              Use the buttons on the right to <strong>Activate</strong> or <strong>Deactivate</strong> entire rows at once. Once you start adding modules to the
+              grid though, these buttons become disabled until you press <strong>Reset Grid</strong>.
+            </li>
+          </ul>
 
           <h2 className="mb-2 font-bold">Upgrade Modules & Scoring</h2>
           <ul className="mb-4 infodialog__list">
