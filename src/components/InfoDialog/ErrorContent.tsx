@@ -10,7 +10,7 @@ const ChangeLogContent: React.FC = () => {
           -kzzkt- Error! -kzzkt-
         </h2>
         <p className="text-center sidebar__error" style={{ color: "var(--gray-12)" }}>
-          We are having trouble generating a solve!<br />
+          Sorry, the server timed out generating a solve! Try placing modules in a different order or adding additional cells to the grid.<br />
         </p>
       </div>
     </>
