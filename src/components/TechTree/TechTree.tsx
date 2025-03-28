@@ -2,7 +2,7 @@ import { Separator } from "@radix-ui/themes";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useFetchTechTreeSuspense } from "../../hooks/useTechTree";
-import OptimizationButton from "../OptimizationButton";
+import OptimizationButton from "../OptimizationButton/OptimizationButton";
 import Spinner from "../Spinner";
 
 export interface TechTree {

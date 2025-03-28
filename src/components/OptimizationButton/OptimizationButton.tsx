@@ -1,7 +1,7 @@
 // src/components/OptimizationButton.tsx
 import React from "react";
-import { useGridStore } from "../store/useGridStore";
-import { useTechStore } from "../store/useTechStore";
+import { useGridStore } from "../../store/useGridStore";
+import { useTechStore } from "../../store/useTechStore";
 import { IconButton, Flex, Text, Tooltip } from "@radix-ui/themes";
 import { UpdateIcon, ResetIcon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 
@@ -34,9 +34,15 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
   };
 
   return (
-    <Flex className="items-center gap-2 mt-2 mb-2">
+    <Flex className="flex items-center gap-2 mt-2 mb-2 optimizationButton">
       <Tooltip content={hasTechInGrid ? "Update" : "Solve"}>
-        <IconButton onClick={() => handleOptimize(tech)} disabled={solving} variant="soft" highContrast>
+        <IconButton
+          onClick={() => handleOptimize(tech)}
+          disabled={solving}
+          variant="soft"
+          highContrast
+          className="optimizationButton__optimizeButton"
+        >
           {hasTechInGrid ? <UpdateIcon /> : <DoubleArrowLeftIcon />}
         </IconButton>
       </Tooltip>
@@ -44,20 +50,34 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
       {/* Reset button: Explicit `else` case when `hasTechInGrid` is false */}
       {hasTechInGrid ? (
         <Tooltip content="Reset">
-          <IconButton onClick={handleReset} disabled={solving} variant="soft" highContrast>
+          <IconButton
+            onClick={handleReset}
+            disabled={solving}
+            variant="soft"
+            highContrast
+            className="optimizationButton__resetButton"
+          >
             <ResetIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <IconButton onClick={handleReset} disabled variant="soft" highContrast>
-          <ResetIcon /> 
+        <IconButton
+          onClick={handleReset}
+          disabled
+          variant="soft"
+          highContrast
+          className="optimizationButton__resetButton"
+        >
+          <ResetIcon />
         </IconButton>
       )}
 
-      <Text className="font-semibolds" style={{ color: "var(--gray-12)" }}>{label}</Text>
+      <Text className="font-normal optimizationButton__label" style={{ color: "var(--gray-12)" }}>
+        {label}
+      </Text>
       {techMaxBonus !== undefined && techMaxBonus !== 0 && (
         <Text
-          className="font-thin"
+          className="font-thin optimizationButton__bonus"
           style={{
             color: techMaxBonus > 101 ? "#e6c133" : "var(--gray-11)", // Highlight if > 101%
           }}

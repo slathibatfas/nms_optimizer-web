@@ -11,6 +11,7 @@ import './components/GridCell/GridCell.css'
 import './components/GridShake/GridShake.css'
 import './components/InfoDialog/InfoDialog.css'; 
 import './components/TechTree/TechTree.css';
+import './components/OptimizationButton/OptimizationButton.css';
 
 import App from './App';
 

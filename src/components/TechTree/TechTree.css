@@ -1,3 +1,4 @@
 .sidebar__title {
     font-family: "GeosansLight", sans-serif;
+    filter: drop-shadow(0 0 8px var(--gray-2));
 }

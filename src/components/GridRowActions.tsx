@@ -60,7 +60,7 @@ const RowControlButton: React.FC<RowControlButtonProps> = ({
           <Tooltip content="Activate Row">
             <IconButton
               size={screenSize === "sm" ? "2" : "1"}
-              variant="soft"
+              variant="soft" highContrast
               className="mx-auto"
               onClick={() => activateRow(rowIndex)}
               disabled={hasModulesInGrid}
@@ -75,7 +75,7 @@ const RowControlButton: React.FC<RowControlButtonProps> = ({
         <div className="align-middle">
           <Tooltip content="Deactivate Row">
             <IconButton
-              variant="soft"
+              variant="soft" highContrast
               size={screenSize === "sm" ? "2" : "1"}
               className="mx-auto"
               onClick={() => deActivateRow(rowIndex)}
