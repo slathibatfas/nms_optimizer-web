@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest --watchAll",
+    "test:ci": "jest",
     "start": "node server.js",
     "postinstall": "npm run build"
   },
