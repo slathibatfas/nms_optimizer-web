@@ -30,7 +30,7 @@ const TechTreeSection: React.FC<{
   handleOptimize: (tech: string) => Promise<void>;
   solving: boolean;
 }> = ({ type, technologies, handleOptimize, solving }) => (
-  <div className="mb-6 sm:mb-4 sidebar__section">
+  <div className="mb-6 lg:mb-4 sidebar__section">
     <h2 className="text-2xl sidebar__title" style={{ color: "var(--gray-12)" }}>
       {type.toUpperCase()}
     </h2>
