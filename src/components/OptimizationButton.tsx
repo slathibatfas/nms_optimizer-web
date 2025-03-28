@@ -36,7 +36,7 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
   return (
     <Flex className="items-center gap-2 mt-2 mb-2">
       <Tooltip content={hasTechInGrid ? "Update" : "Solve"}>
-        <IconButton onClick={() => handleOptimize(tech)} disabled={solving} variant="soft">
+        <IconButton onClick={() => handleOptimize(tech)} disabled={solving} variant="soft" highContrast>
           {hasTechInGrid ? <UpdateIcon /> : <DoubleArrowLeftIcon />}
         </IconButton>
       </Tooltip>
@@ -44,13 +44,13 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
       {/* Reset button: Explicit `else` case when `hasTechInGrid` is false */}
       {hasTechInGrid ? (
         <Tooltip content="Reset">
-          <IconButton onClick={handleReset} disabled={solving} variant="soft">
+          <IconButton onClick={handleReset} disabled={solving} variant="soft" highContrast>
             <ResetIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <IconButton onClick={handleReset} disabled variant="soft">
-          <ResetIcon />
+        <IconButton onClick={handleReset} disabled variant="soft" highContrast>
+          <ResetIcon /> 
         </IconButton>
       )}
 

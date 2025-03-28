@@ -58,7 +58,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
           <ScrollArea
             className="p-4 ml-4 rounded-xl optimizer__sidebar"
             style={{
-              backgroundColor: "var(--gray-a2)",
+              backgroundColor: "var(--gray-a3)",
               width: "320px",
               height: `${gridHeight}px`,
             }}
