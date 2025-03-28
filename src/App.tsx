@@ -44,7 +44,7 @@ const App: React.FC = () => {
           <Box className="absolute inset-0 z-0 bg-white rounded-none optimizer__overlay opacity-10"></Box>
           {/* Header */}
           <Box asChild className="optimizer__header">
-            <div className="mb-4 sm:pb-4 sm:mb-6 border-b-1" style={{ borderColor: "rgba(214, 235, 253, 0.19)" }}>
+            <div className="mb-4 sm:pb-4 sm:mb-4 border-b-1" style={{ borderColor: "rgba(214, 235, 253, 0.19)" }}>
               <div className="flex items-center">
                 <img src={NMSIcon} className="h-[56px] sm:h-[80px] mr-4 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
