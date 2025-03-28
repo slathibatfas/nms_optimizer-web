@@ -9,7 +9,7 @@ This tool optimizes starship layouts by calculating pattern-based scores. It pri
 
 [Live Instance](https://nms-optimizer-web-ac700a458f0a.herokuapp.com/)
 
-![Screenshot](https://github.com/jbelew/nms_optimizer-web/blob/master/screenshot.png?raw=true)
+![Screenshot](https://github.com/jbelew/nms_optimizer-web/blob/main/screenshot.png?raw=true)
 
 ### **Tech Stack**
 - **React**
