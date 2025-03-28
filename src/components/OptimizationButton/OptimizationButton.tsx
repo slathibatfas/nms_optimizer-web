@@ -41,6 +41,7 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
           disabled={solving}
           variant="soft"
           highContrast
+          style={{ backgroundColor: "var(--accent-a4)" }}
           className="optimizationButton__optimizeButton"
         >
           {hasTechInGrid ? <UpdateIcon /> : <DoubleArrowLeftIcon />}
@@ -55,24 +56,19 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
             disabled={solving}
             variant="soft"
             highContrast
+            style={{ backgroundColor: "var(--accent-a4)" }}
             className="optimizationButton__resetButton"
           >
             <ResetIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <IconButton
-          onClick={handleReset}
-          disabled
-          variant="soft"
-          highContrast
-          className="optimizationButton__resetButton"
-        >
+        <IconButton onClick={handleReset} disabled variant="soft" highContrast className="optimizationButton__resetButton">
           <ResetIcon />
         </IconButton>
       )}
 
-      <Text className="font-normal optimizationButton__label" style={{ color: "var(--gray-12)" }}>
+      <Text className="font-light optimizationButton__label" style={{ color: "var(--gray-12)" }}>
         {label}
       </Text>
       {techMaxBonus !== undefined && techMaxBonus !== 0 && (

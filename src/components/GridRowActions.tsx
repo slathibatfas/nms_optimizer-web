@@ -52,9 +52,10 @@ const RowControlButton: React.FC<RowControlButtonProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const buttonBackgroundColor = hasModulesInGrid ? "var(--gray-a3)" : "var(--accent-a4)";
 
   return (
-    <div style={{ gridColumn: 11, gridRow: rowIndex + 1, width: "40px" }} className="flex items-center justify-center">
+    <div style={{ gridColumn: 11, gridRow: rowIndex + 1, width: "40px" }} className="flex items-center ">
       {isFirstInactiveRow && (
         <div className="align-middle">
           <Tooltip content="Activate Row">
@@ -62,6 +63,7 @@ const RowControlButton: React.FC<RowControlButtonProps> = ({
               size={screenSize === "sm" ? "2" : "1"}
               variant="soft" highContrast
               className="mx-auto"
+              style={{ backgroundColor: buttonBackgroundColor }}
               onClick={() => activateRow(rowIndex)}
               disabled={hasModulesInGrid}
             >
@@ -78,6 +80,7 @@ const RowControlButton: React.FC<RowControlButtonProps> = ({
               variant="soft" highContrast
               size={screenSize === "sm" ? "2" : "1"}
               className="mx-auto"
+              style={{ backgroundColor: buttonBackgroundColor }}
               onClick={() => deActivateRow(rowIndex)}
               disabled={hasModulesInGrid}
             >
