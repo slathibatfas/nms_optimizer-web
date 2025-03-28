@@ -6,7 +6,7 @@ const ChangeLogContent: React.FC = () => {
       <div className="infodialog__title">Changelog</div>
       <div className="infodialog__item">
         <div className="infodialog__item">
-          <h3 className="mb-2 font-bold">Version 0.951 (2025-03-27)</h3>
+          <h3 className="mb-2 font-bold">Version 0.96 (2025-03-27)</h3>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">
               Additional tuning of <strong>simulated annealing</strong> solver.

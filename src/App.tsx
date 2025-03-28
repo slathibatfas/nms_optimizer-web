@@ -37,20 +37,20 @@ const App: React.FC = () => {
       <Flex className="items-start justify-center optimizer lg:pt-16 lg:items-top lg:p-4">
         {/* Container Box */}
         <Box
-          className="optimizer__container relative min-w-[min-content] max-w-fit mx-auto overflow-hidden p-6 lg:p-8 rounded-none shadow-lg lg:rounded-xl lg:border-1 lg:shadow-xl backdrop-blur-lg"
+          className="optimizer__container relative min-w-[min-content] max-w-fit mx-auto overflow-hidden p-4 lg:p-8 rounded-none shadow-lg lg:rounded-xl lg:border-1 lg:shadow-xl backdrop-blur-lg"
           style={{ borderColor: "var(--blue-1)" }}
         >
           {/* Background Overlay */}
           <Box className="absolute inset-0 z-0 bg-white rounded-none optimizer__overlay opacity-10"></Box>
           {/* Header */}
           <Box asChild className="optimizer__header">
-            <div className="mb-4 sm:pb-4 sm:mb-6 border-b-1" style={{ borderColor: "rgba(214, 235, 253, 0.19)" }}>
+            <div className="pb-2 mb-4 sm:pb-4 sm:mb-6 border-b-1" style={{ borderColor: "rgba(214, 235, 253, 0.19)" }}>
               <div className="flex items-center">
                 <img src={NMSIcon} className="h-[56px] sm:h-[80px] mr-4 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
                   <img src={NMSLogo} className="h-[20px] sm:h-[36px] mb-1 sm:mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
                   <span className="font-thin sm:text-2xl optimizer__title" style={{ color: "var(--gray-12)" }}>
-                    Starship Optimizer - v0.951
+                    Starship Optimizer - v0.96
                   </span>
                 </div>
               </div>

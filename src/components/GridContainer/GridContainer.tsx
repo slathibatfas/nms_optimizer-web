@@ -35,12 +35,12 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
   }, [grid]);
 
   return (
-    <Box className="optimizer__grid-container" ref={gridContainerRef} style={{ marginTop: "16px" }}>
+    <Box className="pt-1 md:pt-2 optimizer__grid-container" ref={gridContainerRef}>
       {" "}
       {/* Attach the ref here */}
       <Flex className="flex-col items-start optimizer__layout lg:flex-row">
         {/* Main Content */}
-        <Box className="flex-grow w-auto pt-2 optimizer__grid lg:flex-shrink-0" ref={gridRef}>
+        <Box className="flex-grow w-auto optimizer__grid lg:flex-shrink-0" ref={gridRef}>
           <GridTable
             grid={grid}
             solving={solving}
@@ -56,7 +56,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
         {/* Sidebar */}
         {isLarge ? (
           <ScrollArea
-            className="p-4 ml-4 sm:mt-1 rounded-xl optimizer__sidebar"
+            className="p-4 ml-4 rounded-xl optimizer__sidebar"
             style={{
               backgroundColor: "var(--gray-a3)",
               width: "320px",
