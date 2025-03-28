@@ -112,7 +112,7 @@ const GridTable: React.FC<GridTableProps> = ({
           <Button variant="soft" radius="large" highContrast style={{ backgroundColor: "var(--accent-a4)" }} className="font-light sm:!px-2" onClick={() => setShowChangeLog(true)}><CounterClockwiseClockIcon /><span className="hidden sm:inline">Change Log</span></Button>
         </div>
         <div className="z-10 pt-4" style={{ paddingRight: columnWidth }}>
-          <Button className="font-light"variant="solid" style={{ backgroundColor: "var(--accent-a8)" }} onClick={resetGrid} disabled={solving}>
+          <Button className="font-light" variant="solid" style={{ backgroundColor: "var(--accent-a8)" }} onClick={resetGrid} disabled={solving}>
             <ResetIcon />
             Reset Grid
           </Button>

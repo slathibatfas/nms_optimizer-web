@@ -68,7 +68,7 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
         </IconButton>
       )}
 
-      <Text className="font-light optimizationButton__label" style={{ color: "var(--gray-12)" }}>
+      <Text className="font-normal optimizationButton__label" style={{ color: "var(--gray-12)" }}>
         {label}
       </Text>
       {techMaxBonus !== undefined && techMaxBonus !== 0 && (
