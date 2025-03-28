@@ -67,10 +67,10 @@ body::before {
   gap: var(--grid-gap);
 }
 
-.optimizer__header--logo {
+.optimizer__header--logo  {
     filter: invert(90%) drop-shadow(0 0 16px var(--gray-12));
 }
 
-.optimizer__header--icon {
+.optimizer__header--icon, .optimizer__header--title {
   filter: drop-shadow(0 0 16px var(--gray-9));
 }

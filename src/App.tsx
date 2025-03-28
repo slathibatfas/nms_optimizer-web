@@ -49,7 +49,7 @@ const App: React.FC = () => {
                 <img src={NMSIcon} className="h-[56px] sm:h-[80px] mr-4 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
                   <img src={NMSLogo} className="h-[20px] sm:h-[36px] mb-1 sm:mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
-                  <span className="font-light sm:text-2xl optimizer__title" style={{ color: "var(--gray-12)" }}>
+                  <span className="font-thin sm:font-light sm:text-2xl optimizer__header--title" style={{ color: "var(--gray-12)" }}>
                     Starship Optimizer - v0.96
                   </span>
                 </div>
