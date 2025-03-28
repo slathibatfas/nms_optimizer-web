@@ -3,7 +3,8 @@ import React from "react";
 import { useGridStore } from "../../store/useGridStore";
 import { useTechStore } from "../../store/useTechStore";
 import { IconButton, Flex, Text, Tooltip } from "@radix-ui/themes";
-import { UpdateIcon, ResetIcon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
+import { UpdateIcon, ResetIcon, DoubleArrowLeftIcon, CheckIcon } from "@radix-ui/react-icons";
+import { Checkbox } from "radix-ui";
 
 interface OptimizationButtonProps {
   label: string;
@@ -41,8 +42,7 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
           disabled={solving}
           variant="soft"
           highContrast
-          style={{ backgroundColor: "var(--accent-a4)" }}
-          className="optimizationButton__optimizeButton"
+          className="z-10 techRow__optimizeButton"
         >
           {hasTechInGrid ? <UpdateIcon /> : <DoubleArrowLeftIcon />}
         </IconButton>
@@ -56,31 +56,40 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
             disabled={solving}
             variant="soft"
             highContrast
-            style={{ backgroundColor: "var(--accent-a4)" }}
-            className="optimizationButton__resetButton"
+            className="techRow__resetButton"
           >
             <ResetIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <IconButton onClick={handleReset} disabled variant="soft" highContrast className="optimizationButton__resetButton">
+        <IconButton onClick={handleReset} disabled variant="soft" highContrast className="techRow__resetButton">
           <ResetIcon />
         </IconButton>
       )}
 
-      <Text className="font-normal optimizationButton__label" style={{ color: "var(--gray-12)" }}>
-        {label}
-      </Text>
-      {techMaxBonus !== undefined && techMaxBonus !== 0 && (
-        <Text
-          className="font-thin optimizationButton__bonus"
-          style={{
-            color: techMaxBonus > 101 ? "#e6c133" : "var(--gray-11)", // Highlight if > 101%
-          }}
-        >
-          {techMaxBonus.toFixed(0)}%
-        </Text>
-      )}
+      <div>
+
+        <Text className="font-normal techRow__label">{label}</Text>
+        {/* <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
+          <Checkbox.Indicator className="CheckboxIndicator">
+            <CheckIcon />
+          </Checkbox.Indicator>
+        </Checkbox.Root>
+        <label className="Label" htmlFor="c1">
+          Photonix Core
+        </label> */}
+
+        {techMaxBonus !== undefined && techMaxBonus !== 0 && (
+          <Text
+            className="font-thin optimizationButton__bonus"
+            style={{
+              color: techMaxBonus > 101 ? "#e6c133" : "var(--gray-11)", // Highlight if > 101%
+            }}
+          >
+            {techMaxBonus.toFixed(0)}%
+          </Text>
+        )}
+      </div>
     </Flex>
   );
 };

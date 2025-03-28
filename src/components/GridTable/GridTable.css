@@ -10,6 +10,16 @@
   background-color: var(--accent-a4);
 }
 
+.gridTable__button--instructions:hover,
+.gridTable__button--changelog:hover {
+  background-color: var(--accent-a6);
+}
+
 .gridTable__button--reset {
   background-color: var(--accent-a8);
 }
+
+.gridTable__button--reset:hover {
+    background-color: var(--accent-a10);
+}
+  
