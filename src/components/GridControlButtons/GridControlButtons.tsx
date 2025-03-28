@@ -26,7 +26,7 @@ interface RowControlButtonProps {
  * @param {boolean} isFirstInactiveRow - Whether the row is the first inactive row.
  * @param {boolean} isLastActiveRow - Whether the row is the last active row.
  */
-const RowControlButton: React.FC<RowControlButtonProps> = ({
+const GridControlButtons: React.FC<RowControlButtonProps> = ({
   rowIndex,
   activateRow,
   deActivateRow,
@@ -93,4 +93,4 @@ const RowControlButton: React.FC<RowControlButtonProps> = ({
   );
 };
 
-export default RowControlButton;
+export default GridControlButtons;

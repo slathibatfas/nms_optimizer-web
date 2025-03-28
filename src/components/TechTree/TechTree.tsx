@@ -1,9 +1,10 @@
-import { Separator } from "@radix-ui/themes";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Separator } from "@radix-ui/themes";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useFetchTechTreeSuspense } from "../../hooks/useTechTree";
-import OptimizationButton from "../OptimizationButton/OptimizationButton";
-import Spinner from "../Spinner";
+import MessageSpinner from "../MessageSpinner/MessageSpinner";
+import OptimizationButton from "../TechTreeRow/TechTreeRow";
+
 
 export interface TechTree {
   [key: string]: { label: string; key: string }[];
@@ -31,7 +32,7 @@ const TechTreeSection: React.FC<{
   solving: boolean;
 }> = ({ type, technologies, handleOptimize, solving }) => (
   <div className="mb-6 lg:mb-4 sidebar__section">
-    <h2 className="text-2xl sidebar__title" style={{ color: "var(--gray-12)" }}>
+    <h2 className="text-2xl sidebar__title">
       {type.toUpperCase()}
     </h2>
     <Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />
@@ -76,9 +77,7 @@ const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
 
   return (
     <Suspense
-      fallback={
-        <Spinner solving={true} message="Loading Technology. Please wait..." />
-      }
+      fallback={<MessageSpinner solving={true} initialMessage="Loading Technology. Please wait..." />} // Use MessageSpinner
     >
       {error ? (
         <div className="flex flex-col items-center justify-center h-full">
@@ -86,7 +85,7 @@ const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
           <h2 className="pt-4 text-2xl text-center" style={{ color: "#e6c133" }}>
             -kzzkt- Error! -kzzkt-
           </h2>
-          <p className="text-center sidebar__error" style={{ color: "var(--gray-12)" }}>
+          <p className="text-center sidebar__error">
             Problem connecting to the server!<br />
             {error.message}
           </p>
@@ -98,7 +97,9 @@ const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
       )}
     </Suspense>
   );
-};interface ErrorBoundaryProps {
+};
+
+interface ErrorBoundaryProps {
   onError: (error: Error) => void;
   children: React.ReactNode;
 }

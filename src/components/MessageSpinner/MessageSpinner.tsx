@@ -18,7 +18,7 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({ solving, initialMessage
   return (
     solving && (
       <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-opacity-75 rounded-lg">
-        <div className="w-16 h-16 border-8 rounded-full border-slate-600 animate-spin" style={{ borderTopColor: "var(--blue-9)" }}></div>
+        <div className="w-16 h-16 border-8 rounded-full border-slate-600 animate-spin messageSpinner"></div>
         <Text className="pt-4">{initialMessage}</Text>
       </div>
     )

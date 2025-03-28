@@ -7,11 +7,15 @@ import './index.css';
 import './theme.css'; // Import theme.css after index.css
 
 // Component CSS files
-import './components/GridCell/GridCell.css'
-import './components/GridShake/GridShake.css'
-import './components/InfoDialog/InfoDialog.css'; 
+// TODO: Need to find a way to import these in the components, but not interfere with Jest. 
+import './components/GridCell/GridCell.css';
+import './components/GridContainer/GridContainer.css';
+import './components/GridShake/GridShake.css';
+import './components/GridTable/GridTable.css';
+import './components/InfoDialog/InfoDialog.css';
+import './components/MessageSpinner/MessageSpinner.css';
+import './components/TechTreeRow/TechTreeRow.css';
 import './components/TechTree/TechTree.css';
-import './components/OptimizationButton/OptimizationButton.css';
 
 import App from './App';
 

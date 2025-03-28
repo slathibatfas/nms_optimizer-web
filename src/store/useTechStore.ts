@@ -1,5 +1,4 @@
 // src/store/useTechStore.ts
-// src/store/useTechStore.ts
 import { create } from "zustand";
 
 interface TechStore {

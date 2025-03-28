@@ -8,7 +8,7 @@ export type Cell = {
   adjacency: boolean;
   adjacency_bonus: number;
   bonus: number;
-  image: string | null;
+  image: string | null | undefined;
   module: string | null;
   label: string;
   sc_eligible: boolean;
@@ -58,7 +58,7 @@ const createGrid = (width: number, height: number): Grid => ({
 });
 
 // Zustand Store
-type GridStore = {
+export type GridStore = {
   grid: Grid;
   result: ApiResponse | null;
   setGrid: (grid: Grid) => void;
@@ -68,8 +68,6 @@ type GridStore = {
   deActivateRow: (rowIndex: number) => void;
   hasTechInGrid: (tech: string) => boolean;
   resetGridTech: (tech: string) => void;
-  serializeGrid: () => string;
-  deserializeGrid: (serializedGrid: string) => void;
   toggleCellActive: (rowIndex: number, columnIndex: number) => void;
   toggleCellSupercharged: (rowIndex: number, columnIndex: number) => void;
   setCellActive: (rowIndex: number, columnIndex: number, active: boolean) => void;
@@ -209,57 +207,4 @@ export const useGridStore = create<GridStore>((set, get) => ({
     }));
   },
 
-  serializeGrid: () => {
-    const { grid } = get();
-    const serializedCells = grid.cells.map((row) =>
-      row.map((cell) => {
-        return `${cell.active ? "1" : "0"}${cell.supercharged ? "1" : "0"}${cell.module ? "1" : "0"}${cell.tech ? cell.tech.charAt(0) : "0"}`;
-      }).join("")
-    ).join("|");
-    return serializedCells;
-  },
-
-  deserializeGrid: (serializedGrid) => {
-    const { grid } = get();
-    const rows = serializedGrid.split("|");
-    const newCells: Cell[][] = [];
-
-    if (rows.length !== grid.height) {
-      console.error("Invalid serialized grid height");
-      return;
-    }
-
-    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-      const row = rows[rowIndex];
-      const newRow: Cell[] = [];
-
-      if (row.length !== grid.width * 4) {
-        console.error("Invalid serialized grid width");
-        return;
-      }
-
-      for (let cellIndex = 0; cellIndex < grid.width; cellIndex++) {
-        const cellString = row.substring(cellIndex * 4, (cellIndex + 1) * 4);
-        const active = cellString[0] === "1";
-        const supercharged = cellString[1] === "1";
-        const hasModule = cellString[2] === "1";
-        const tech = cellString[3] === "0" ? null : cellString[3];
-
-        const newCell: Cell = {
-          ...createEmptyCell(supercharged, active),
-          module: hasModule ? "module" : null,
-          tech: tech,
-        };
-        newRow.push(newCell);
-      }
-      newCells.push(newRow);
-    }
-
-    set({
-      grid: {
-        ...grid,
-        cells: newCells,
-      },
-    });
-  },
 }));

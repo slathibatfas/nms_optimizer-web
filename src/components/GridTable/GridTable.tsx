@@ -1,10 +1,10 @@
 // src/components/GridTable/GridTable.tsx
-import { ResetIcon, QuestionMarkCircledIcon, CounterClockwiseClockIcon } from "@radix-ui/react-icons";
+import { CounterClockwiseClockIcon, QuestionMarkCircledIcon, ResetIcon } from "@radix-ui/react-icons";
 import { Button } from "@radix-ui/themes";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ApiResponse, Grid } from "../../store/useGridStore";
 import GridCell from "../GridCell/GridCell";
-import GridRowActions from "../GridRowActions";
+import GridControlButtons from "../GridControlButtons/GridControlButtons";
 import ShakingWrapper from "../GridShake/GridShake";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
 
@@ -14,7 +14,7 @@ interface GridTableProps {
   result: ApiResponse | null;
   activateRow: (rowIndex: number) => void;
   deActivateRow: (rowIndex: number) => void;
-  solving: boolean; // Receive solving as a prop
+  solving: boolean;
   setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
   setShowInstructions: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -31,15 +31,7 @@ interface GridTableProps {
  *   or null if no calculation has been done.
  * @param {function} resetGrid - A function to reset the grid
  */
-const GridTable: React.FC<GridTableProps> = ({
-  grid,
-  activateRow,
-  deActivateRow,
-  resetGrid,
-  solving,
-  setShowChangeLog,
-  setShowInstructions,
-}) => {
+const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow, resetGrid, solving, setShowChangeLog, setShowInstructions }) => {
   const [shaking, setShaking] = React.useState(false);
 
   const gridRef = useRef<HTMLDivElement>(null);
@@ -72,7 +64,7 @@ const GridTable: React.FC<GridTableProps> = ({
     <>
       <ShakingWrapper shaking={shaking}>
         <MessageSpinner solving={solving} initialMessage={"Calling optimization API..."} />
-        <div ref={gridRef} className={`gridContainer ${solving ? "opacity-50" : ""}`}>
+        <div ref={gridRef} className={`gridTable ${solving ? "opacity-50" : ""}`}>
           {grid.cells.map((row, rowIndex) => (
             <React.Fragment key={rowIndex}>
               {row.map((cell, columnIndex) => (
@@ -90,7 +82,7 @@ const GridTable: React.FC<GridTableProps> = ({
                   setShaking={setShaking}
                 />
               ))}
-              <GridRowActions
+              <GridControlButtons
                 rowIndex={rowIndex}
                 activateRow={activateRow}
                 deActivateRow={deActivateRow}
@@ -106,13 +98,31 @@ const GridTable: React.FC<GridTableProps> = ({
           ))}
         </div>
       </ShakingWrapper>
-      <div className="flex items-start gap-4">
-        <div className="z-10 flex-1 pt-4 flex-nowrap">
-          <Button variant="soft" radius="large" highContrast style={{ backgroundColor: "var(--accent-a4)" }} className="font-light !mr-2 p-0 sm:!px-2" onClick={() => setShowInstructions(true)}><QuestionMarkCircledIcon /><span className="hidden sm:inline">Instructions</span></Button>
-          <Button variant="soft" radius="large" highContrast style={{ backgroundColor: "var(--accent-a4)" }} className="font-light sm:!px-2" onClick={() => setShowChangeLog(true)}><CounterClockwiseClockIcon /><span className="hidden sm:inline">Change Log</span></Button>
+      <div className="flex items-start gap-4 gridTable__footer__left">
+        <div className="z-10 flex-1 pt-4 flex-nowrap gridTable__footer__left">
+          <Button
+            variant="soft"
+            radius="large"
+            highContrast
+            className={`gridTable__button gridTable__button--instructions !mr-2 p-0 sm:!px-2`}
+            onClick={() => setShowInstructions(true)}
+          >
+            <QuestionMarkCircledIcon />
+            <span className="hidden sm:inline">Instructions</span>
+          </Button>
+          <Button
+            variant="soft"
+            radius="large"
+            highContrast
+            className={`gridTable__button gridTable__button--changelog sm:!px-2`}
+            onClick={() => setShowChangeLog(true)}
+          >
+            <CounterClockwiseClockIcon />
+            <span className="hidden sm:inline">Change Log</span>
+          </Button>
         </div>
-        <div className="z-10 pt-4" style={{ paddingRight: columnWidth }}>
-          <Button className="font-light" variant="solid" style={{ backgroundColor: "var(--accent-a8)" }} onClick={resetGrid} disabled={solving}>
+        <div className="z-10 pt-4 gridTable__footer__right" style={{ paddingRight: columnWidth }}>
+          <Button className={`gridTable__button gridTable__button--reset`} variant="solid" onClick={resetGrid} disabled={solving}>
             <ResetIcon />
             Reset Grid
           </Button>

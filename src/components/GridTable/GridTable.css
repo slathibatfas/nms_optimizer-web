@@ -1,0 +1,15 @@
+.gridTable {
+  display: grid;
+  grid-template-columns: repeat(10, var(--grid-cell-size)) auto;
+  grid-template-rows: repeat(6, var(--grid-cell-size));
+  gap: var(--grid-gap);
+}
+
+.gridTable__button--instructions,
+.gridTable__button--changelog {
+  background-color: var(--accent-a4);
+}
+
+.gridTable__button--reset {
+  background-color: var(--accent-a8);
+}

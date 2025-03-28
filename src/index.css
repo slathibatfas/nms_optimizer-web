@@ -7,24 +7,14 @@
 }
 
 @font-face {
-  font-family: "SourceSans";
-  src: url("/src/assets/fonts/SourceSans3-VariableFont_wght.ttf") format("truetype");
-  font-display: swap;
-}
-
-@font-face {
   font-family: 'Raleway';
   src: url('/src/assets/fonts/Raleway-VariableFont_wght.ttf') format('truetype');
   font-weight: 100 900;
   font-style: normal;
 }
 
-/* Import Radix styles first */
 @import "@radix-ui/themes/styles.css";
-
-/* Use @tailwind to import Tailwind layers */
 @import "tailwindcss/theme.css" layer(theme);
-/* THEN import Tailwind's preflight */
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
@@ -33,6 +23,19 @@
 .radix-themes {
   --default-font-family: Raleway, Helvetica, Arial, sans-serif
 }
+
+
+/* Vaiablies for our grid CLAMP calculations */
+:root {
+  --grid-min-size: 2px;
+  --grid-max-size: 64px;
+  --grid-gap-min-size: 2px;
+  --grid-gap-max-size: 8px;
+  --grid-cell-size: clamp(var(--grid-min-size), 7.0vw, var(--grid-max-size));
+  --grid-gap: clamp(var(--grid-gap-min-size), 1vw, var(--grid-gap-max-size));
+}
+
+/* App.tsx level styling */
 
 /* Background styles */
 body {
@@ -45,26 +48,13 @@ body {
 /* Background overlay */
 body::before {
   content: "";
-  position: fixed; /* Covers the entire screen */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: -1;
-}
-
-/* Vaiablies for our grid CLAMP calculations */
-:root {
-  --grid-cell-size: clamp(2px, 7.0vw, 64px);
-  --grid-gap: clamp(2px, 1vw, 8px);
-}
-
-.gridContainer {
-  display: grid;
-  grid-template-columns: repeat(10, var(--grid-cell-size)) auto;
-  grid-template-rows: repeat(6, var(--grid-cell-size));
-  gap: var(--grid-gap);
 }
 
 .optimizer__header--logo  {
