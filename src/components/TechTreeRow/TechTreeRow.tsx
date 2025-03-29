@@ -80,7 +80,7 @@ const TechTreeRow: React.FC<TechTreeRowProps> = ({
       )}
 
       <div className="flex flex-col self-start techRow_module">
-        <Text className="pt-1 font-bold techRow__label">
+        <Text className="pt-1 font-semibold techRow__label">
           {label}
           {techMaxBonus !== undefined && techMaxBonus !== 0 && (
             <span className="pl-1 font-thin optimizationButton__bonus" style={{ color: techMaxBonus > 101 ? "#e6c133" : "var(--gray-11)" }}>
@@ -102,7 +102,7 @@ const TechTreeRow: React.FC<TechTreeRowProps> = ({
                   <CheckIcon />
                 </Checkbox.Indicator>
               </Checkbox.Root>
-              <label className="font-light Label" htmlFor={module.id}>
+              <label className="text-sm font-light Label" htmlFor={module.id}>
                 {module.label}
               </label>
             </div>
