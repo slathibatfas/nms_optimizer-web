@@ -1,3 +1,8 @@
 .messageSpinner {
     border-top-color: var(--accent-a8);
 }
+
+.messageSpinner__header {
+    font-family: "GeosansLight", sans-serif;
+    filter: drop-shadow(0 0 8px var(--gray-0));
+}

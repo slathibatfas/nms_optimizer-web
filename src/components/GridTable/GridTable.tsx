@@ -63,7 +63,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
   return (
     <>
       <ShakingWrapper shaking={shaking}>
-        <MessageSpinner solving={solving} initialMessage={"Calling optimization API..."} />
+        <MessageSpinner solving={solving} initialMessage={"OPTIMIZING!"} />
         <div ref={gridRef} className={`gridTable ${solving ? "opacity-50" : ""}`}>
           {grid.cells.map((row, rowIndex) => (
             <React.Fragment key={rowIndex}>
