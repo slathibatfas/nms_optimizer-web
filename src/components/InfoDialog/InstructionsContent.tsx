@@ -32,10 +32,10 @@ const InstructionsContent: React.FC = () => {
 
           <ul className="mb-4 infodialog__list">
             <li>
-              <strong>Click</strong> a cell to toggle its <em>Supercharged</em> state. Select no more than 4.
+              <strong>Click</strong> or <strong>Touch</strong> a cell to toggle its <em>Supercharged</em> state. Select no more than 4.
             </li>
             <li>
-              <strong>Ctrl-Click</strong> on a cell to enable or disable it individually.
+              <strong>Ctrl-Click</strong> or <strong>Long Press</strong> on a cell to enable or disable it individually.
             </li>
             <li>
               Use the buttons on the right to <strong>Activate</strong> or <strong>Deactivate</strong> entire rows at once. Once you start adding modules to the

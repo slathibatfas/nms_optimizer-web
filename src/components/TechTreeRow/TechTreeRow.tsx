@@ -92,22 +92,21 @@ const TechTreeRow: React.FC<TechTreeRowProps> = ({
           .filter((module) => module.type === "reward")
           .map((module) => (
             <div key={module.id} className="inline-flex items-center gap-2 mt-2">
-              <Checkbox.Root
+              <Checkbox.Root 
                 className="CheckboxRoot"
                 id={module.id}
                 checked={currentCheckedModules.includes(module.id)} // Use the currentCheckedModules array
                 onClick={() => handleCheckboxChange(module.id)}
               >
                 <Checkbox.Indicator className="CheckboxIndicator">
-                  <CheckIcon />
+                  <CheckIcon style={{ color: "var(--gray-11)" }} />
                 </Checkbox.Indicator>
               </Checkbox.Root>
               <label className="text-sm font-light Label" htmlFor={module.id}>
                 {module.label}
               </label>
             </div>
-          ))}
-      </div>
+          ))}      </div>
     </Flex>
   );
 };
