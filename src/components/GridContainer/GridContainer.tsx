@@ -44,6 +44,10 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
     return () => window.removeEventListener("resize", updateGridHeight); // Cleanup listener on unmount
   }, [grid]);
 
+  const handleOptimizeWrapper = (tech: string) => {
+    return handleOptimize(tech, []);
+  };
+
   return (
     <Box className="pt-1 md:pt-2 gridContainer" ref={gridContainerRef}>
       <Flex className="flex-col items-start gridContainer__layout lg:flex-row">
@@ -69,16 +73,15 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
               height: `${gridHeight}px`,
             }}
           >
-            <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
+            <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
           </ScrollArea>
         ) : (
           <Box className="z-10 items-start flex-grow-0 flex-shrink-0 w-full pt-8">
-            <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
+            <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
           </Box>
         )}
       </Flex>
     </Box>
   );
 };
-
 export default GridContainer;
