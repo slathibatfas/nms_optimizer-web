@@ -3,11 +3,23 @@ import { Separator } from "@radix-ui/themes";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useFetchTechTreeSuspense } from "../../hooks/useTechTree";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
-import OptimizationButton from "../TechTreeRow/TechTreeRow";
+import TechTreeRow from "../TechTreeRow/TechTreeRow";
 
+// Define interfaces to ensure type safety
+interface TechTreeModule {
+  label: string;
+  id: string;
+  image: string;
+}
 
-export interface TechTree {
-  [key: string]: { label: string; key: string }[];
+interface TechTreeItem {
+  label: string;
+  key: string;
+  modules: TechTreeModule[];
+}
+
+interface TechTree {
+  [key: string]: TechTreeItem[];
 }
 
 interface TechTreeComponentProps {
@@ -15,70 +27,62 @@ interface TechTreeComponentProps {
   solving: boolean;
 }
 
-/**
- * Renders a section of the tech tree with a title and optimization buttons.
- *
- * @param {Object} props - Component properties.
- * @param {string} props.type - The tech category name.
- * @param {Array} props.technologies - List of technologies in this section.
- * @param {function} props.handleOptimize - Callback for optimization.
- * @param {boolean} props.solving - Whether optimization is in progress.
- * @returns {JSX.Element} Rendered section of the tech tree.
- */
 const TechTreeSection: React.FC<{
   type: string;
-  technologies: { label: string; key: string }[];
+  technologies: TechTreeItem[]; // Corrected type
   handleOptimize: (tech: string) => Promise<void>;
   solving: boolean;
 }> = ({ type, technologies, handleOptimize, solving }) => (
   <div className="mb-6 lg:mb-4 sidebar__section">
-    <h2 className="text-2xl sidebar__title">
-      {type.toUpperCase()}
-    </h2>
+    <h2 className="text-2xl sidebar__title">{type.toUpperCase()}</h2>
     <Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />
     {technologies.map((tech) => (
-      <OptimizationButton key={tech.key} label={tech.label} tech={tech.key} handleOptimize={handleOptimize} solving={solving} />
+      <TechTreeRow
+        key={tech.key}
+        label={tech.label}
+        tech={tech.key}
+        handleOptimize={handleOptimize}
+        solving={solving}
+        modules={tech.modules}
+      />
     ))}
   </div>
 );
 
-/**
- * Provides tech tree data via Suspense and renders it using TechTreeSection.
- *
- * @param {TechTreeComponentProps} props - Component properties.
- * @returns {JSX.Element} The rendered technology tree.
- */
 const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(({ handleOptimize, solving }) => {
-  const techTree = useFetchTechTreeSuspense(); // Fetch data using Suspense
+  const techTree = useFetchTechTreeSuspense();
 
+  // Correctly map and add modules to each technology object
+  const processedTechTree = useMemo(() => {
+    const result: TechTree = {};
+    Object.entries(techTree).forEach(([category, technologies]) => {
+      result[category] = technologies.map((tech: TechTreeItem) => ({
+        ...tech,
+        modules: tech.modules || [], // Handle cases where modules might be missing
+      }));
+    });
+    return result;
+  }, [techTree]);
   const renderedTechTree = useMemo(
     () =>
-      Object.entries(techTree).map(([type, technologies]) => (
+      Object.entries(processedTechTree).map(([type, technologies]) => (
         <TechTreeSection key={type} type={type} technologies={technologies} handleOptimize={handleOptimize} solving={solving} />
       )),
-    [techTree, handleOptimize, solving]
+    [processedTechTree, handleOptimize, solving]
   );
 
   return <>{renderedTechTree}</>;
 });
 
-/**
- * Wraps TechTreeContent with React Suspense for lazy data fetching.
- *
- * @param {TechTreeComponentProps} props - Component properties.
- * @returns {JSX.Element} Suspense-wrapped tech tree content or loading state.
- */
 const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    setError(null); // Reset error when component mounts or props change
+    setError(null);
   }, [props]);
 
   return (
-    <Suspense
-      fallback={<MessageSpinner solving={true} initialMessage="Loading Technology. Please wait..." />} // Use MessageSpinner
-    >
+    <Suspense fallback={<MessageSpinner solving={true} initialMessage="Loading Technology. Please wait..." />}>
       {error ? (
         <div className="flex flex-col items-center justify-center h-full">
           <ExclamationTriangleIcon className="w-16 h-16" style={{ color: "#C44A34" }} />
@@ -86,7 +90,8 @@ const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
             -kzzkt- Error! -kzzkt-
           </h2>
           <p className="text-center sidebar__error">
-            Problem connecting to the server!<br />
+            Problem connecting to the server!
+            <br />
             {error.message}
           </p>
         </div>

@@ -1,42 +1,44 @@
-.techRow__label{
-    filter: drop-shadow(0 0 16px var(--gray-1));
-  }
+.techRow__label {
+  filter: drop-shadow(0 0 16px var(--gray-1));
+}
 
-  .techRow__resetButton, .techRow__optimizeButton {
-    background-color: var(--accent-a4)
-  }
+.techRow__resetButton,
+.techRow__optimizeButton {
+  background-color: var(--accent-a4);
+}
 
-  .techRow__resetButton:hover, .techRow__optimizeButton:hover {
-    background-color: var(--accent-a6)
-  }
+.techRow__resetButton:hover,
+.techRow__optimizeButton:hover {
+  background-color: var(--accent-a6);
+}
 
-  .techRow__resetButton:disabled, .techRow__optimizeButton:disabled {
-    background-color: var(--gray-a2)
-  }
-
-  /* reset */
-button {
-	all: unset;
+.techRow__resetButton:disabled,
+.techRow__optimizeButton:disabled {
+  background-color: var(--gray-a2);
 }
 
 .CheckboxRoot {
-	background-color: var(--gray-a6);
-	width: 25px;
-	height: 25px;
-	border-radius: 4px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  background-color: var(--accent-a4);
+  width: 20px;
+  height: 20px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .CheckboxRoot:hover {
-	background-color: var(--violet-3);
+  background-color: var(--accent-a6);
 }
 
 .CheckboxRoot:focus {
-	box-shadow: 0 0 0 2px black;
+  box-shadow: 0 0 0 2px var(--accent-a8);
 }
 
 .CheckboxIndicator {
-	color: var(--violet-11);
+  color: var(--violet-11);
+}
+
+.Label {
+  color: white;
 }

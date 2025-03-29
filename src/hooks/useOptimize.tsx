@@ -1,4 +1,3 @@
-// src/hooks/useOptimize.tsx
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useGridStore, Grid, ApiResponse } from "../store/useGridStore";
 import { useOptimizeStore } from "../store/useOptimize";
@@ -6,10 +5,10 @@ import { API_URL } from "../constants";
 
 interface UseOptimizeReturn {
   solving: boolean;
-  handleOptimize: (tech: string) => Promise<void>;
+  handleOptimize: (tech: string, checkedModules: string[]) => Promise<void>;
   gridContainerRef: React.MutableRefObject<HTMLDivElement | null>;
-  showError: boolean; // Added this line
-  setShowError: React.Dispatch<React.SetStateAction<boolean>>; // Added this line
+  showError: boolean;
+  setShowError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const useOptimize = (): UseOptimizeReturn => {
@@ -18,11 +17,10 @@ export const useOptimize = (): UseOptimizeReturn => {
   const gridContainerRef = useRef<HTMLDivElement>(null);
   const { showError, setShowError: setShowErrorStore } = useOptimizeStore();
 
-  // Scroll to top of GridContainer when solving changes to false
   useEffect(() => {
     if (solving && gridContainerRef.current) {
       const element = gridContainerRef.current;
-      const offset = 16; // Adjust this value to change the offset (in pixels)
+      const offset = 16;
 
       const elementRect = element.getBoundingClientRect();
       const absoluteElementTop = elementRect.top + window.pageYOffset;
@@ -36,7 +34,7 @@ export const useOptimize = (): UseOptimizeReturn => {
   }, [solving]);
 
   const handleOptimize = useCallback(
-    async (tech: string) => {
+    async (tech: string, checkedModules: string[]) => {
       setSolving(true);
       try {
         const updatedGrid: Grid = {
@@ -69,6 +67,7 @@ export const useOptimize = (): UseOptimizeReturn => {
           body: JSON.stringify({
             ship: "Exotic",
             tech,
+            player_owned_rewards: checkedModules,
             grid: updatedGrid,
           }),
         });
@@ -103,4 +102,5 @@ export const useOptimize = (): UseOptimizeReturn => {
     }
   };
 
-  return { solving, handleOptimize, gridContainerRef, showError, setShowError }};
+  return { solving, handleOptimize, gridContainerRef, showError, setShowError };
+};

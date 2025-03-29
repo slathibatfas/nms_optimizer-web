@@ -27,7 +27,7 @@
 
 .gridCell--interactive:hover {
   /* Styles for hovered grid cells */
-  background-color: var(--accent-a);
+  background-color: var(--accent-a4);
   transition: opacity 0.25s ease, background-color 0.25s ease;
 }
 

@@ -108,7 +108,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
             onClick={() => setShowInstructions(true)}
           >
             <QuestionMarkCircledIcon />
-            <span className="hidden sm:inline">Instructions</span>
+            <span className="hidden font-light sm:inline">Instructions</span>
           </Button>
           <Button
             variant="soft"
@@ -118,13 +118,13 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
             onClick={() => setShowChangeLog(true)}
           >
             <CounterClockwiseClockIcon />
-            <span className="hidden sm:inline">Change Log</span>
+            <span className="hidden font-light sm:inline">Change Log</span>
           </Button>
         </div>
         <div className="z-10 pt-4 gridTable__footer__right" style={{ paddingRight: columnWidth }}>
           <Button className={`gridTable__button gridTable__button--reset`} variant="solid" onClick={resetGrid} disabled={solving}>
             <ResetIcon />
-            Reset Grid
+            <span className="font-bold">Reset Grid</span>
           </Button>
         </div>
       </div>
