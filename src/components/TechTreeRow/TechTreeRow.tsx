@@ -1,54 +1,63 @@
-import React, { useState } from "react";
+// src/components/TechTreeRow/TechTreeRow.tsx
+import React, { useEffect } from "react";
 import { useGridStore } from "../../store/useGridStore";
 import { useTechStore } from "../../store/useTechStore";
 import { IconButton, Flex, Text, Tooltip } from "@radix-ui/themes";
 import { UpdateIcon, ResetIcon, DoubleArrowLeftIcon, CheckIcon } from "@radix-ui/react-icons";
 import { Checkbox } from "radix-ui";
 
-interface OptimizationButtonProps {
+interface TechTreeRowProps {
   label: string;
   tech: string;
-  handleOptimize: (tech: string, checkedModules: string[]) => Promise<void>;
+  handleOptimize: (tech: string) => Promise<void>;
   solving: boolean;
   modules: { label: string; id: string; image: string; type?: string }[];
 }
 
-const OptimizationButton: React.FC<OptimizationButtonProps> = ({
+const TechTreeRow: React.FC<TechTreeRowProps> = ({
   label,
   tech,
   handleOptimize,
   solving,
   modules,
 }) => {
-  const [checkedModules, setCheckedModules] = useState<string[]>([]);
   const hasTechInGrid = useGridStore((state) => state.hasTechInGrid(tech));
   const handleResetGridTech = useGridStore((state) => state.resetGridTech);
-  const { max_bonus, clearTechMaxBonus } = useTechStore();
+  const { max_bonus, clearTechMaxBonus, checkedModules, setCheckedModules, clearCheckedModules } = useTechStore();
   const techMaxBonus = max_bonus?.[tech];
+
+  useEffect(() => {
+    return () => {
+      clearCheckedModules(tech);
+    };
+  }, [tech, clearCheckedModules]);
 
   const handleReset = () => {
     handleResetGridTech(tech);
     clearTechMaxBonus(tech);
-    setCheckedModules([]);
+    clearCheckedModules(tech);
   };
 
   const handleCheckboxChange = (moduleId: string) => {
-    setCheckedModules((prevChecked) => {
+    setCheckedModules(tech, (prevChecked = []) => { // Provide a default empty array
       const isChecked = prevChecked.includes(moduleId);
       return isChecked ? prevChecked.filter((id) => id !== moduleId) : [...prevChecked, moduleId];
     });
   };
 
   const handleOptimizeClick = async () => {
-    console.log("Checked Modules for", tech + ":", checkedModules); // Log checked modules
-    await handleOptimize(tech, checkedModules);
+    console.log("Checked Modules for", tech + ":", checkedModules[tech]);
+    await handleOptimize(tech);
   };
+
+  // Get the checked modules for the current tech, or an empty array if undefined
+  const currentCheckedModules = checkedModules[tech] || [];
 
   return (
     <Flex className="flex gap-2 mt-2 mb-2 items-top optimizationButton">
       <Tooltip content={hasTechInGrid ? "Update" : "Solve"}>
         <IconButton
-          onClick={handleOptimizeClick} // Call handleOptimizeClick
+          onClick={handleOptimizeClick}
           disabled={solving}
           variant="soft"
           highContrast
@@ -86,14 +95,14 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
               <Checkbox.Root
                 className="CheckboxRoot"
                 id={module.id}
-                checked={checkedModules.includes(module.id)}
-                onClick={() => handleCheckboxChange(module.id)} // Use onClick here
+                checked={currentCheckedModules.includes(module.id)} // Use the currentCheckedModules array
+                onClick={() => handleCheckboxChange(module.id)}
               >
                 <Checkbox.Indicator className="CheckboxIndicator">
                   <CheckIcon />
                 </Checkbox.Indicator>
               </Checkbox.Root>
-              <label className="font-extralight Label" htmlFor={module.id}>
+              <label className="font-light Label" htmlFor={module.id}>
                 {module.label}
               </label>
             </div>
@@ -103,4 +112,4 @@ const OptimizationButton: React.FC<OptimizationButtonProps> = ({
   );
 };
 
-export default OptimizationButton;
+export default TechTreeRow;

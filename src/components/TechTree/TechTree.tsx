@@ -33,8 +33,8 @@ const TechTreeSection: React.FC<{
   handleOptimize: (tech: string) => Promise<void>;
   solving: boolean;
 }> = ({ type, technologies, handleOptimize, solving }) => (
-  <div className="mb-6 lg:mb-4 sidebar__section">
-    <h2 className="text-2xl sidebar__title">{type.toUpperCase()}</h2>
+  <div className="mb-6 lg:mb-6 last:mb-0 sidebar__section">
+    <h2 className="text-2xl font-semibold tracking-widest sidebar__title">{type.toUpperCase()}</h2>
     <Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />
     {technologies.map((tech) => (
       <TechTreeRow

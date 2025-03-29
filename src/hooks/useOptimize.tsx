@@ -1,11 +1,13 @@
+// src/hooks/useOptimize.tsx
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useGridStore, Grid, ApiResponse } from "../store/useGridStore";
 import { useOptimizeStore } from "../store/useOptimize";
 import { API_URL } from "../constants";
+import { useTechStore } from "../store/useTechStore"; // Import useTechStore
 
 interface UseOptimizeReturn {
   solving: boolean;
-  handleOptimize: (tech: string, checkedModules: string[]) => Promise<void>;
+  handleOptimize: (tech: string) => Promise<void>; // Remove checkedModules from the signature
   gridContainerRef: React.MutableRefObject<HTMLDivElement | null>;
   showError: boolean;
   setShowError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,6 +18,7 @@ export const useOptimize = (): UseOptimizeReturn => {
   const [solving, setSolving] = useState<boolean>(false);
   const gridContainerRef = useRef<HTMLDivElement>(null);
   const { showError, setShowError: setShowErrorStore } = useOptimizeStore();
+  const { checkedModules } = useTechStore(); // Get checkedModules from useTechStore
 
   useEffect(() => {
     if (solving && gridContainerRef.current) {
@@ -34,7 +37,7 @@ export const useOptimize = (): UseOptimizeReturn => {
   }, [solving]);
 
   const handleOptimize = useCallback(
-    async (tech: string, checkedModules: string[]) => {
+    async (tech: string) => { // Remove checkedModules from the signature
       setSolving(true);
       try {
         const updatedGrid: Grid = {
@@ -67,7 +70,7 @@ export const useOptimize = (): UseOptimizeReturn => {
           body: JSON.stringify({
             ship: "Exotic",
             tech,
-            player_owned_rewards: checkedModules,
+            player_owned_rewards: checkedModules[tech] || [], // Use checkedModules from the store
             grid: updatedGrid,
           }),
         });
@@ -91,7 +94,7 @@ export const useOptimize = (): UseOptimizeReturn => {
         setSolving(false);
       }
     },
-    [grid, setGrid, setResult, setShowErrorStore]
+    [grid, setGrid, setResult, setShowErrorStore, checkedModules] // Add checkedModules to the dependency array
   );
 
   const setShowError: React.Dispatch<React.SetStateAction<boolean>> = (value) => {

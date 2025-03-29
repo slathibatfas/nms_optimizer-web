@@ -24,7 +24,7 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({ solving, initialMessage
     if (solving) {
       timer = setTimeout(() => {
         setShowAdditionalMessage(true);
-      }, 2000);
+      }, 2500);
     } else {
       setShowAdditionalMessage(false);
     }
