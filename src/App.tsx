@@ -38,13 +38,13 @@ const App: React.FC = () => {
         {/* Container Box */}
         <Box
           className="optimizer__container relative min-w-[min-content] max-w-fit mx-auto overflow-hidden p-4 lg:p-8 rounded-none shadow-lg lg:rounded-xl lg:border-1 lg:shadow-xl backdrop-blur-lg"
-          style={{ borderColor: "var(--blue-1)" }}
+          style={{ borderColor: "var(--gray-3)" }}
         >
           {/* Background Overlay */}
           <Box className="absolute inset-0 z-0 bg-white rounded-none optimizer__overlay opacity-10"></Box>
           {/* Header */}
-          <Box asChild className="optimizer__header">
-            <div className="pb-2 mb-4 sm:pb-4 sm:mb-6 border-b-1" style={{ borderColor: "rgba(214, 235, 253, 0.19)" }}>
+          <Box asChild className="p-0 optimizer__header">
+            <div className="pb-2 mb-4 sm:pb-4 sm:mb-6 border-b-1" style={{ borderColor: "var(--accent-a5)" }}>
               <div className="flex items-center">
                 <img src={NMSIcon} className="h-[56px] sm:h-[80px] mr-4 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>

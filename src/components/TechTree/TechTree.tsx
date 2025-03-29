@@ -1,3 +1,4 @@
+// src/components/TechTree/TechTree.tsx
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Separator } from "@radix-ui/themes";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
@@ -16,11 +17,24 @@ interface TechTreeItem {
   label: string;
   key: string;
   modules: TechTreeModule[];
+  image: string | null; // Add image property
 }
 
 interface TechTree {
   [key: string]: TechTreeItem[];
 }
+
+// --- Image Map (This is the key part) ---
+type TypeImageMap = {
+  [key: string]: string;
+};
+
+const typeImageMap: TypeImageMap = {
+  "Weaponry": "weaponry.png", // Replace with your actual image paths
+  "Defensive Systems": "defensive.png",
+  "Hyperdrive": "hyperdrive.png",
+  "Utilities": "utilities.png",
+};
 
 interface TechTreeComponentProps {
   handleOptimize: (tech: string) => Promise<void>;
@@ -30,24 +44,40 @@ interface TechTreeComponentProps {
 const TechTreeSection: React.FC<{
   type: string;
   technologies: TechTreeItem[]; // Corrected type
+  
   handleOptimize: (tech: string) => Promise<void>;
   solving: boolean;
-}> = ({ type, technologies, handleOptimize, solving }) => (
-  <div className="mb-6 lg:mb-6 last:mb-0 sidebar__section">
-    <h2 className="text-2xl font-semibold tracking-widest sidebar__title">{type.toUpperCase()}</h2>
-    <Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />
-    {technologies.map((tech) => (
-      <TechTreeRow
-        key={tech.key}
-        label={tech.label}
-        tech={tech.key}
-        handleOptimize={handleOptimize}
-        solving={solving}
-        modules={tech.modules}
-      />
-    ))}
-  </div>
-);
+}> = ({ type, technologies, handleOptimize, solving }) => {
+  // Get the image path from the typeImageMap
+  const imagePath = typeImageMap[type] ? `/assets/img/icons/${typeImageMap[type]}` : null;
+
+  return (
+    <div className="mb-6 lg:mb-6 last:mb-0 sidebar__section">
+      <div className="flex items-center">
+        {imagePath && (
+          <img
+            src={imagePath}
+            alt={type}
+            className="w-8 h-8 mr-2 opacity-25" // Adjust size and spacing as needed
+          />
+        )}
+        <h2 className="text-2xl font-semibold tracking-widest sidebar__title">{type.toUpperCase()}</h2>
+      </div>
+      <Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />
+      {technologies.map((tech) => (
+        <TechTreeRow
+          key={tech.key}
+          label={tech.label}
+          tech={tech.key}
+          handleOptimize={handleOptimize}
+          solving={solving}
+          modules={tech.modules}
+          techImage={tech.image} // Pass the tech.image here
+        />
+      ))}
+    </div>
+  );
+};
 
 const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(({ handleOptimize, solving }) => {
   const techTree = useFetchTechTreeSuspense();
@@ -59,6 +89,7 @@ const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(({ handleOp
       result[category] = technologies.map((tech: TechTreeItem) => ({
         ...tech,
         modules: tech.modules || [], // Handle cases where modules might be missing
+        image: tech.image || null, // Handle cases where image might be missing
       }));
     });
     return result;

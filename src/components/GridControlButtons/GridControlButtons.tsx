@@ -52,7 +52,7 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const buttonBackgroundColor = hasModulesInGrid ? "var(--gray-a2)" : "var(--accent-a4)";
+  const buttonBackgroundColor = hasModulesInGrid ? "var(--gray-a2)" : "var(--accent-a5)";
 
   return (
     <div style={{ gridColumn: 11, gridRow: rowIndex + 1, width: "40px" }} className="flex items-center justify-center">

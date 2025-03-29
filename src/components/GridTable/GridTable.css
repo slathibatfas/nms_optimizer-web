@@ -7,19 +7,19 @@
 
 .gridTable__button--instructions,
 .gridTable__button--changelog {
-  background-color: var(--accent-a4);
+  background-color: var(--accent-a5);
 }
 
 .gridTable__button--instructions:hover,
 .gridTable__button--changelog:hover {
-  background-color: var(--accent-a6);
+  background-color: var(--accent-a3);
 }
 
 .gridTable__button--reset {
-  background-color: var(--accent-a8);
+  background-color: var(--accent-9);
 }
 
 .gridTable__button--reset:hover {
-    background-color: var(--accent-a10);
+    background-color: var(--accent-a5);
 }
   
