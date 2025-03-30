@@ -49,7 +49,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
   };
   
   return (
-    <Box className="pt-1 md:pt-2 gridContainer" ref={gridContainerRef}>
+    <Box className="p-6 border-t-1 sm:p-8 gridContainer" style={{ borderColor: "var(--gray-a4)" }} ref={gridContainerRef}>
       <Flex className="flex-col items-start gridContainer__layout lg:flex-row">
         {/* Main Content */}
         <Box className="flex-grow w-auto gridContainer__grid lg:flex-shrink-0" ref={gridRef}>
@@ -68,7 +68,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
         {/* Sidebar */}
         {isLarge ? (
           <ScrollArea
-            className="p-4 ml-4 rounded-xl gridContainer__sidebar"
+            className="p-4 ml-4 shadow-lg rounded-xl gridContainer__sidebar"
             style={{
               height: `${gridHeight}px`,
             }}

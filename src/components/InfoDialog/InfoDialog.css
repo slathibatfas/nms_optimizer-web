@@ -80,7 +80,7 @@
     opacity: 0; /* Start at full opacity */
   }
   to {
-    opacity: 0.25; /* Animate to 25% opacity */
+    opacity: 0.50; /* Animate to 25% opacity */
   }
 }
 

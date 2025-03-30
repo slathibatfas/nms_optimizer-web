@@ -21,6 +21,7 @@ const ShipSelection: React.FC = () => {
   };
 
   return (
+
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <Button variant="soft" color="gray">
@@ -37,6 +38,7 @@ const ShipSelection: React.FC = () => {
         </DropdownMenu.RadioGroup>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
+
   );
 };
 

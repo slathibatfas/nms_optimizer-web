@@ -99,10 +99,10 @@ const GridCell: React.FC<GridCellProps> = ({
 
   const cellClassName = `gridCell gridCell--interactive shadow-md sm:border-2 border-1 sm:rounded-lg transition-all ${
     cell.supercharged
-      ? "gridCell--supercharged"
+      ? "gridCell--supercharged shadow-lg"
       : cell.active
-      ? "gridCell--active"
-      : "gridCell--inactive"
+      ? "gridCell--active shadow-lg"
+      : "gridCell--inactive shadow-lg"
   }`;
 
   return (

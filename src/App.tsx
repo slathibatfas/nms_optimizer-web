@@ -37,23 +37,25 @@ const App: React.FC = () => {
       <Flex className="items-start justify-center optimizer lg:pt-16 lg:items-top lg:p-4">
         {/* Container Box */}
         <Box
-          className="optimizer__container relative min-w-[min-content] max-w-fit mx-auto overflow-hidden p-4 lg:p-8 rounded-none shadow-lg lg:rounded-xl lg:border-1 lg:shadow-xl backdrop-blur-lg"
-          style={{ borderColor: "var(--gray-3)" }}
+          className="optimizer__container relative min-w-[min-content] max-w-fit mx-auto overflow-hidden rounded-none shadow-lg lg:rounded-xl lg:border-2 lg:shadow-xl backdrop-blur-lg"
+          style={{ borderColor: "var(--gray-a2)" }}
         >
           {/* Background Overlay */}
-          <Box className="absolute inset-0 z-0 bg-white rounded-none optimizer__overlay opacity-10"></Box>
           <Box asChild className="p-0 optimizer__header">
-            <div className="pb-2 mb-4 border-b sm:pb-4 sm:mb-6" style={{ borderColor: "var(--accent-a5)" }}>
+            <div className="p-4 pl-8 border-b-1" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-3)" }}>
               <div className="flex items-center">
                 <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
                   <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
-                  <span className="font-thin sm:font-light sm:text-2xl optimizer__header--title">Starship Optimizer - v0.98</span>
+                  <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
+                    Starship Optimizer <span className="font-thin">v0.98</span>
+                  </span>
                 </div>
               </div>
             </div>
           </Box>
           {/* Main Layout */}
+          <Box className="absolute inset-0 z-0 bg-white rounded-none optimizer__overlay opacity-5"></Box>
           <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} /> {/* Render GridContainer */}
         </Box>
       </Flex>

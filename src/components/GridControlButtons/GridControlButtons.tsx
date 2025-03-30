@@ -62,7 +62,7 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
             <IconButton
               size={screenSize === "sm" ? "2" : "1"}
               variant="soft" highContrast
-              className="mx-auto"
+              className="mx-auto shadow-lg"
               style={{ backgroundColor: buttonBackgroundColor }}
               onClick={() => activateRow(rowIndex)}
               disabled={hasModulesInGrid}
@@ -79,7 +79,7 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
             <IconButton
               variant="soft" highContrast
               size={screenSize === "sm" ? "2" : "1"}
-              className="mx-auto"
+              className="mx-auto shadow-lg"
               style={{ backgroundColor: buttonBackgroundColor }}
               onClick={() => deActivateRow(rowIndex)}
               disabled={hasModulesInGrid}

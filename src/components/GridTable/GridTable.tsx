@@ -98,13 +98,13 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
           ))}
         </div>
       </ShakingWrapper>
-      <div className="flex items-start gap-4 gridTable__footer__left">
-        <div className="z-10 flex-1 pt-4 flex-nowrap gridTable__footer__left">
+      <div className="flex items-start gap-4 pt-5 gridTable__footer__left">
+        <div className="z-10 flex-1 flex-nowrap gridTable__footer__left">
           <Button
             variant="soft"
             radius="large"
             highContrast
-            className={`gridTable__button gridTable__button--instructions !mr-2 p-0 sm:!px-2`}
+            className={`gridTable__button gridTable__button--instructions shadow-lg !mr-2 p-0 sm:!px-2`}
             onClick={() => setShowInstructions(true)}
           >
             <QuestionMarkCircledIcon />
@@ -114,15 +114,15 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
             variant="soft"
             radius="large"
             highContrast
-            className={`gridTable__button gridTable__button--changelog sm:!px-2`}
+            className={`gridTable__button gridTable__button--changelog shadow-lg sm:!px-2`}
             onClick={() => setShowChangeLog(true)}
           >
             <CounterClockwiseClockIcon />
             <span className="hidden font-light sm:inline">Change Log</span>
           </Button>
         </div>
-        <div className="z-10 pt-4 gridTable__footer__right" style={{ paddingRight: columnWidth }}>
-          <Button className={`gridTable__button gridTable__button--reset`} variant="solid" onClick={resetGrid} disabled={solving}>
+        <div className="z-10 gridTable__footer__right" style={{ paddingRight: columnWidth }}>
+          <Button className={`gridTable__button gridTable__button--reset shadow-lg`} variant="solid" onClick={resetGrid} disabled={solving}>
             <ResetIcon />
             <span className="font-bold">Reset Grid</span>
           </Button>
