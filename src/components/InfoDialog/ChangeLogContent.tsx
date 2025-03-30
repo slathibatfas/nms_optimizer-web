@@ -8,8 +8,8 @@ const ChangeLogContent: React.FC = () => {
         <div className="infodialog__item">
           <h3 className="mb-2 font-bold">Version 0.98 (2025-03-29)</h3>
           <ul className="infodialog__list">
-            <li className="infodialog__list-item">Added support Sentinel Interceptors.</li>
-            <li className="infodialog__list-item">Significant UI updates.</li>
+            <li className="infodialog__list-item">Added support for Sentinel Interceptors.</li>
+            <li className="infodialog__list-item">Major UI updates.</li>
           </ul>
         </div>
         <div className="infodialog__item">
@@ -17,14 +17,14 @@ const ChangeLogContent: React.FC = () => {
           <ul className="infodialog__list">
             <li className="infodialog__list-item">Added support for optional modules received as Expedition Rewards.</li>
             <li className="infodialog__list-item">Additional UI refinements.</li>
-            <li className="infodialog__list-item">Significant code base clean-up.</li>
+            <li className="infodialog__list-item">Significant codebase cleanup.</li>
           </ul>
         </div>
         <div className="infodialog__item">
           <h3 className="mb-2 font-bold">Version 0.96 (2025-03-27)</h3>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">
-              Additional tuning of <strong>simulated annealing</strong> solver.
+              Further tuning of the <strong>simulated annealing</strong> solver.
             </li>
           </ul>
         </div>
@@ -32,9 +32,9 @@ const ChangeLogContent: React.FC = () => {
           <h3 className="mb-2 font-bold">Version 0.95 (2025-03-27)</h3>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">
-              Added a <strong>simulated annealing</strong> solver and depricated the brute force solver due to server timeout issues.
+              Introduced a <strong>simulated annealing</strong> solver and deprecated the brute-force solver due to server timeout issues.
             </li>
-            <li className="infodialog__list-item">Added additional error handling.</li>
+            <li className="infodialog__list-item">Improved error handling.</li>
           </ul>
         </div>
         <div className="infodialog__item">
@@ -42,7 +42,7 @@ const ChangeLogContent: React.FC = () => {
           <ul className="infodialog__list">
             <li className="infodialog__list-item">Added an error message for solver failures.</li>
             <li className="infodialog__list-item">Updated the header.</li>
-            <li className="infodialog__list-item">Additional mobile UX refinements.</li>
+            <li className="infodialog__list-item">Refined mobile UX.</li>
           </ul>
         </div>
         <div className="infodialog__item">
@@ -51,29 +51,31 @@ const ChangeLogContent: React.FC = () => {
             <li className="infodialog__list-item">Added support for mobile touch events.</li>
             <li className="infodialog__list-item">Updated main font to match current Hello Games branding.</li>
             <li className="infodialog__list-item">Additional UI refinements.</li>
-            <li className="infodialog__list-item">Fixed wrong image being mapped to Photon Cannon upgrades.</li>
-            <li className="infodialog__list-item">Reverted default grid state back to 3 rows.</li>
-            <li className="infodialog__list-item">Added authorship footer and links to the GitHub repo.</li>
+            <li className="infodialog__list-item">Fixed incorrect image mapping for Photon Cannon upgrades.</li>
+            <li className="infodialog__list-item">Reverted default grid state to 3 rows.</li>
+            <li className="infodialog__list-item">Added authorship footer and GitHub repo links.</li>
           </ul>
         </div>
-        <h3 className="mb-2 font-bold">Version 0.91α (2025-03-25)</h3>
-        <ul className="infodialog__list">
-          <li className="infodialog__list-item">Added Instructions Dialog.</li>
-          <li className="infodialog__list-item">Added Changelog Dialog.</li>
-          <li className="infodialog__list-item">Improved UI/UX on mobile devices.</li>
-          <li className="infodialog__list-item">Fixed an issue with grid refinement not finding the best solve. Improved packing algorithms.</li>
-        </ul>
-      </div>
-      <div className="infodialog__item">
-        <h3 className="mb-2 font-bold">Version 0.90α (2025-03-24)</h3>
-        <ul className="infodialog__list">
-          <li className="infodialog__list-item">Initial alpha release.</li>
-          <li className="infodialog__list-item">Basic grid functionality.</li>
-          <li className="infodialog__list-item">Row activation/deactivation.</li>
-          <li className="infodialog__list-item">Cell state toggling.</li>
-          <li className="infodialog__list-item">Optimization API integration.</li>
-          <li className="infodialog__list-item">Grid reset functionality.</li>
-        </ul>
+        <div className="infodialog__item">
+          <h3 className="mb-2 font-bold">Version 0.91α (2025-03-25)</h3>
+          <ul className="infodialog__list">
+            <li className="infodialog__list-item">Added Instructions Dialog.</li>
+            <li className="infodialog__list-item">Added Changelog Dialog.</li>
+            <li className="infodialog__list-item">Enhanced UI/UX on mobile devices.</li>
+            <li className="infodialog__list-item">Fixed an issue with grid refinement not finding the best solve; improved packing algorithms.</li>
+          </ul>
+        </div>
+        <div className="infodialog__item">
+          <h3 className="mb-2 font-bold">Version 0.90α (2025-03-24)</h3>
+          <ul className="infodialog__list">
+            <li className="infodialog__list-item">Initial alpha release.</li>
+            <li className="infodialog__list-item">Implemented basic grid functionality.</li>
+            <li className="infodialog__list-item">Enabled row activation/deactivation.</li>
+            <li className="infodialog__list-item">Added cell state toggling.</li>
+            <li className="infodialog__list-item">Integrated optimization API.</li>
+            <li className="infodialog__list-item">Added grid reset functionality.</li>
+          </ul>
+        </div>
       </div>
     </>
   );
