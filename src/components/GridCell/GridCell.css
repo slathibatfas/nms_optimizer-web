@@ -1,7 +1,8 @@
 /* Grid Cell Styles (BEM) */
 .gridCell {
   background-size: cover;  
-  background-position: center;  
+  background-position: center; 
+  background-color: var(--gray-a2); 
   width: var(--grid-cell-size);
   height: var(--grid-cell-size);
   user-select: none; /* Prevents text selection */
