@@ -41,11 +41,16 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({ solving, initialMessage
       <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-opacity-75 rounded-lg">
         <div className="w-16 h-16 border-8 rounded-full border-slate-600 animate-spin messageSpinner"></div>
         <Text className="pt-4 text-2xl font-semibold !tracking-widest messageSpinner__header">{initialMessage}</Text>
-        {showAdditionalMessage && (
+        {showAdditionalMessage ? (
           <Text style={{ color: "#e6c133" }}>
              {`-{{ Found an opportunity to refine the solution! Working ... }}-`}
           </Text>
+        ) : (
+          <Text style={{ color: "#e6c133" }}>
+            <br />
+          </Text>
         )}
+
       </div>
     )
   );
