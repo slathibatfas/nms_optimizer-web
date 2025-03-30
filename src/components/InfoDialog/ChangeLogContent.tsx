@@ -5,6 +5,12 @@ const ChangeLogContent: React.FC = () => {
     <>
       <div className="infodialog__title">Changelog</div>
       <div className="infodialog__item">
+      <div className="infodialog__item">
+          <h3 className="mb-2 font-bold">Version 0.985 (2025-03-30)</h3>
+          <ul className="infodialog__list">
+            <li className="infodialog__list-item">UI refinements.</li>
+          </ul>
+        </div>
         <div className="infodialog__item">
           <h3 className="mb-2 font-bold">Version 0.98 (2025-03-29)</h3>
           <ul className="infodialog__list">

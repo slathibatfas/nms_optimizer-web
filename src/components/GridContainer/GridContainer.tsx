@@ -4,8 +4,10 @@ import GridTable from "../GridTable/GridTable";
 import TechTreeComponent from "../TechTree/TechTree";
 import { useGridStore } from "../../store/useGridStore";
 import { useOptimize } from "../../hooks/useOptimize";
-import { Box, Flex, ScrollArea } from "@radix-ui/themes";
+import { Box, Flex, ScrollArea, Tooltip } from "@radix-ui/themes";
 import { useBreakpoint } from "../../hooks/useBreakpoint"; // Import useBreakpoint
+import { useFetchShipTypesSuspense, useShipTypesStore } from "../../hooks/useShipTypes";
+import ShipSelection from "../ShipSelection/ShipSelection";
 
 interface GridContainerProps {
   setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,6 +26,10 @@ interface GridContainerProps {
 const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShowInstructions }) => {
   const { solving, handleOptimize, gridContainerRef } = useOptimize(); // Get gridContainerRef from useOptimize hook
   const { grid, result, activateRow, deActivateRow, resetGrid } = useGridStore(); // Get grid-related actions and data
+
+  const shipTypes = useFetchShipTypesSuspense();
+  const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
+  const selectedShipTypeLabel = shipTypes[selectedShipType] || "Unknown Ship Type";
 
   const gridRef = useRef<HTMLDivElement>(null); // Ref for the grid element
 
@@ -47,12 +53,21 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
   const handleOptimizeWrapper = (tech: string) => {
     return handleOptimize(tech);
   };
-  
+
   return (
     <Box className="p-6 border-t-1 sm:p-8 gridContainer" style={{ borderColor: "var(--gray-a4)" }} ref={gridContainerRef}>
       <Flex className="flex-col items-start gridContainer__layout lg:flex-row">
         {/* Main Content */}
         <Box className="flex-grow w-auto gridContainer__grid lg:flex-shrink-0" ref={gridRef}>
+          {/* Render ShipSelection only on the first row and align it to the far right */}
+
+          <h2 className="mb-4 text-2xl font-semibold tracking-widest uppercase sidebar__title">
+            <Tooltip content="Select Ship Type">
+              <span className="mr-2"><ShipSelection /></span>
+            </Tooltip>
+            <span style={{ color: "var(--accent-11)" }}>PLATFORM:</span> { selectedShipTypeLabel }
+          </h2>
+
           <GridTable
             grid={grid}
             solving={solving}
@@ -83,5 +98,5 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
       </Flex>
     </Box>
   );
-};
-export default GridContainer;
+
+};export default GridContainer;

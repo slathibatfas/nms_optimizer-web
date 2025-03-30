@@ -2,9 +2,10 @@
 import React, { useEffect } from "react";
 import { useGridStore } from "../../store/useGridStore";
 import { useTechStore } from "../../store/useTechStore";
-import { IconButton, Flex, Text, Tooltip } from "@radix-ui/themes";
-import { UpdateIcon, ResetIcon, MagicWandIcon, CheckIcon } from "@radix-ui/react-icons";
-import { Checkbox } from "radix-ui";
+import { IconButton, Flex, Text, Tooltip, Checkbox } from "@radix-ui/themes";
+import { UpdateIcon, ResetIcon, ChevronDownIcon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
+// import { Checkbox } from "radix-ui";
+import { Accordion } from "radix-ui";
 
 interface TechTreeRowProps {
   label: string;
@@ -15,14 +16,13 @@ interface TechTreeRowProps {
   techImage: string | null; // Add techImage prop
 }
 
-const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOptimize, solving, modules, techImage }) => {
+export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOptimize, solving, modules, techImage }) => {
   const hasTechInGrid = useGridStore((state) => state.hasTechInGrid(tech));
   const handleResetGridTech = useGridStore((state) => state.resetGridTech);
   const { max_bonus, clearTechMaxBonus, checkedModules, setCheckedModules, clearCheckedModules } = useTechStore();
   const techMaxBonus = max_bonus?.[tech] ?? 0;
   const tooltipLabel = hasTechInGrid ? "Update" : "Solve";
-  const IconComponent = hasTechInGrid ? UpdateIcon : MagicWandIcon;
-
+  const IconComponent = hasTechInGrid ? UpdateIcon : DoubleArrowLeftIcon;
 
   useEffect(() => {
     return () => {
@@ -55,6 +55,16 @@ const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOptimize, 
   // Construct the image path dynamically
   const imagePath = techImage ? `/assets/img/icons/${techImage}` : "/assets/img/infra-upgrade.png";
 
+  const AccordionTrigger = React.forwardRef(
+    ({ children, className, ...props }: { children: React.ReactNode; className?: string }, forwardedRef: React.Ref<HTMLButtonElement>) => (
+      <Accordion.Header className="AccordionHeader">
+        <Accordion.Trigger className={`AccordionTrigger ${className || ""}`} {...props} ref={forwardedRef}>
+          {children}
+          <ChevronDownIcon className="AccordionChevron" aria-hidden />
+        </Accordion.Trigger>
+      </Accordion.Header>
+    )
+  );
   return (
     <Flex className="flex gap-2 mt-2 mb-2 items-top optimizationButton">
       <Tooltip delayDuration={1000} content={tooltipLabel}>
@@ -71,7 +81,7 @@ const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOptimize, 
               src={imagePath}
               alt={label}
               className="object-cover w-full h-full transition duration-200 border-2 rounded-sm techRow__optimizeButton--image group-hover:brightness-75"
-              style={{ borderColor: "var(--accent-9)" }}
+              style={{ borderColor: "var(--accent-a9)" }}
             />
             <IconComponent
               className="absolute top-0 right-0 w-8 h-8 p-1 transition-opacity opacity-0 group-hover:opacity-100"
@@ -83,55 +93,54 @@ const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOptimize, 
 
       <div className="flex flex-col items-center">
         <Tooltip delayDuration={1000} content="Reset">
-          <IconButton
-            onClick={handleReset}
-            disabled={!hasTechInGrid || solving}
-            className="techRow__resetButton"
-            style={{ borderColor: "var(--accent-9)" }}
-          >
+          <IconButton onClick={handleReset} disabled={!hasTechInGrid || solving} className="techRow__resetButton" style={{ borderColor: "var(--accent-9)" }}>
             <ResetIcon />
           </IconButton>
         </Tooltip>
-
-        {modules.filter((module) => module.type === "reward").map((module) => (
-          <div key={module.id} className="flex justify-center mt-2" style={{ height: "1.25rem" }}>
-            <Checkbox.Root
-              className="CheckboxRoot"
-              id={module.id}
-              checked={currentCheckedModules.includes(module.id)}
-              onClick={() => handleCheckboxChange(module.id)}
-            >
-              <Checkbox.Indicator className="CheckboxIndicator">
-                <CheckIcon style={{ color: "var(--accent-12)" }} />
-              </Checkbox.Indicator>
-            </Checkbox.Root>
-          </div>
-        ))}
       </div>
 
-      <div className="flex flex-col self-start techRow_module">
-        <Text className="pt-1 font-semibold techRow__label">
-          {label}
-          {techMaxBonus > 0 && (
-            <span
-              className="pl-1 font-thin optimizationButton__bonus"
-              style={{ color: techMaxBonus > 101 ? "#e6c133" : "var(--gray-11)" }}
+      <div className="flex flex-col self-start w-full techRow_module">
+        <Text className="pt-1 font-semibold techRow__label >">
+          {modules.some((module) => module.type === "reward") ? (
+            <Accordion.Root
+              className="w-full pb-1 border-b-1 AccordionRoot"
+              style={{ borderColor: "var(--gray-a6)" }}
+              type="single"
+              collapsible
+              defaultValue=""
             >
+              <Accordion.Item className="AccordionItem" value="item-1">
+                <AccordionTrigger>{label}</AccordionTrigger>
+                <Accordion.Content className="AccordionContent">
+                  {modules
+                    .filter((module) => module.type === "reward")
+                    .map((module) => (
+                      <div key={module.id} className="flex items-center gap-2 AccordionContentText">
+                        <Checkbox
+                          className="CheckboxRoot"
+                          id={module.id}
+                          checked={currentCheckedModules.includes(module.id)}
+                          onClick={() => handleCheckboxChange(module.id)}
+                        />
+                        <label className="Label" htmlFor={module.id}>
+                          {module.label}
+                        </label>
+                      </div>
+                    ))}
+                </Accordion.Content>
+              </Accordion.Item>
+            </Accordion.Root>
+          ) : (
+            label
+          )}
+
+          {techMaxBonus > 0 && (
+            <span className="pl-1 font-thin optimizationButton__bonus" style={{ color: techMaxBonus > 101 ? "#e6c133" : "var(--gray-11)" }}>
               {techMaxBonus.toFixed(0)}%
             </span>
           )}
-        </Text>
-
-        {modules.filter((module) => module.type === "reward").map((module) => (
-          <div key={module.id} style={{ marginTop: "0.575rem", height: "1.25rem" }} >
-            <label className="text-sm font-light Label" htmlFor={module.id}>
-              {module.label}
-            </label>
-          </div>
-        ))}
+        </Text>{" "}
       </div>
     </Flex>
   );
 };
-
-export default TechTreeRow;

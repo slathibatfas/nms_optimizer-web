@@ -1,11 +1,10 @@
 // src/components/TechTree/TechTree.tsx
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { Separator, Tooltip } from "@radix-ui/themes";
+import { Separator } from "@radix-ui/themes";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useFetchTechTreeSuspense } from "../../hooks/useTechTree";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
-import TechTreeRow from "../TechTreeRow/TechTreeRow";
-import ShipSelection from "../ShipSelection/ShipSelection"; // Import the new component
+import { TechTreeRow } from "../TechTreeRow/TechTreeRow";
 import { useShipTypesStore } from "../../hooks/useShipTypes"; // Import the store
 
 // Define interfaces to ensure type safety
@@ -50,7 +49,7 @@ const TechTreeSection: React.FC<{
   handleOptimize: (tech: string) => Promise<void>;
   solving: boolean;
   selectedShipType: string; // Add this prop
-}> = ({ type, technologies, handleOptimize, solving, index }) => {
+}> = ({ type, technologies, handleOptimize, solving }) => {
   // Get the image path from the typeImageMap
   const imagePath = typeImageMap[type] ? `/assets/img/icons/${typeImageMap[type]}` : null;
 
@@ -59,14 +58,6 @@ const TechTreeSection: React.FC<{
       <div className="flex items-center">
         {imagePath && <img src={imagePath} alt={type} className="w-8 h-8 mr-2 opacity-25" />}
         <h2 className="text-2xl font-semibold tracking-widest sidebar__title">{type.toUpperCase()}</h2>
-        {/* Render ShipSelection only on the first row and align it to the far right */}
-        {index === 0 && (
-          <div className="z-10 self-end mb-1 ml-auto optimizer__header--icon-right">
-            <Tooltip content="Select Ship Type">
-              <ShipSelection />
-            </Tooltip>
-          </div>
-        )}
       </div>
 
       <Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />

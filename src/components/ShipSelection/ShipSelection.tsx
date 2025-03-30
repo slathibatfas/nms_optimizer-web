@@ -1,6 +1,6 @@
 // src/components/ShipSelection/ShipSelection.tsx
 import React, { useRef } from "react";
-import { DropdownMenu, Button } from "@radix-ui/themes";
+import { DropdownMenu, IconButton } from "@radix-ui/themes";
 import { GearIcon } from "@radix-ui/react-icons";
 import { useFetchShipTypesSuspense, useShipTypesStore } from "../../hooks/useShipTypes";
 import { useGridStore } from "../../store/useGridStore"; // Import useGridStore
@@ -21,24 +21,22 @@ const ShipSelection: React.FC = () => {
   };
 
   return (
-
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Button variant="soft" color="gray">
+        <IconButton variant="surface">
           <GearIcon className="w-6 h-6" />
-        </Button>
+        </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content avoidCollisions={true}  >
+      <DropdownMenu.Content>
         <DropdownMenu.RadioGroup value={selectedShipType} onValueChange={handleOptionSelect}>
           {Object.entries(shipTypes).map(([key, label]) => (
-            <DropdownMenu.RadioItem key={key} value={key}>
+            <DropdownMenu.RadioItem key={key} value={key} className="font-bold">
               {label}
             </DropdownMenu.RadioItem>
           ))}
         </DropdownMenu.RadioGroup>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
-
   );
 };
 

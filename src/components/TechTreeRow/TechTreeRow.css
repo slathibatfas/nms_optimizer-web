@@ -1,41 +1,82 @@
 .techRow__label {
-  color: var(--gray-12);
   filter: drop-shadow(0 0 0px var(--gray-a1));
 }
 
-.techRow__resetButton,
-.techRow__optimizeButton {
-  /* background-color: var(--accent-a4); */
+/* reset */
+button,
+h3 {
+  all: unset;
 }
 
-.techRow__resetButton:hover,
-.techRow__optimizeButton:hover {
-  background-color: var(--accent-a5);
+.AccordionItem {
+  overflow: hidden;
+  margin-top: 1px;
 }
 
-.techRow__resetButton:disabled,
-.techRow__optimizeButton:disabled {
-  background-color: var(--gray-a2);
+.AccordionHeader {
+  display: flex;
 }
 
-.CheckboxRoot {
-  background-color: var(--accent-9);
-  width: 20px;
-  height: 20px;
-  border-radius: 16px;
+.AccordionTrigger {
+  font-family: inherit;
+  background-color: transparent;
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
-.CheckboxRoot:hover {
-  background-color: var(--accent-a5);
+.AccordionTrigger:hover {
+  border: 0px;
+  color: var(--accent-11);
 }
 
-.CheckboxIndicator {
-  color: var(--gray-12);
+.AccordionContent {
+  overflow: hidden;
 }
 
-.Label {
-  color: var(--gray-12);
+.AccordionContent[data-state="open"] {
+  animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+.AccordionContent[data-state="closed"] {
+  animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.AccordionContentText:first-of-type {
+  padding-top: .5rem ;
+}
+
+.AccordionContentText {
+  padding: .25rem 0px;
+}
+
+.AccordionContentText:last-of-type {
+  padding-bottom: .5rem ;
+}
+
+
+.AccordionChevron {
+  transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.AccordionTrigger[data-state="open"] > .AccordionChevron {
+  transform: rotate(180deg);
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
 }

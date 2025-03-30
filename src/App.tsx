@@ -48,7 +48,7 @@ const App: React.FC = () => {
                 <div>
                   <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
                   <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
-                    Starship Optimizer <span className="font-thin">v0.98</span>
+                    Starship Optimizer <span className="font-thin">v0.985</span>
                   </span>
                 </div>
               </div>

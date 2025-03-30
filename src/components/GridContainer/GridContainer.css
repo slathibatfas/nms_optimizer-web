@@ -2,3 +2,8 @@
     background-color: var(--gray-a2);
     width: 328px;
 }
+
+.gridContainer__platform {
+    font-family: "GeosansLight", sans-serif;
+    filter: drop-shadow(0 0 4px var(--gray-6));
+}
