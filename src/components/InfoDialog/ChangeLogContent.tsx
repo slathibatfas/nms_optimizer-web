@@ -5,18 +5,19 @@ const ChangeLogContent: React.FC = () => {
     <>
       <div className="infodialog__title">Changelog</div>
       <div className="infodialog__item">
-      <div className="infodialog__item">
+        <div className="infodialog__item">
+          <h3 className="mb-2 font-bold">Version 0.98 (2025-03-29)</h3>
+          <ul className="infodialog__list">
+            <li className="infodialog__list-item">Added support Sentinel Interceptors.</li>
+            <li className="infodialog__list-item">Significant UI updates.</li>
+          </ul>
+        </div>
+        <div className="infodialog__item">
           <h3 className="mb-2 font-bold">Version 0.97 (2025-03-28)</h3>
           <ul className="infodialog__list">
-            <li className="infodialog__list-item">
-              Added support for optional modules received as Expedition Rewards.
-            </li>
-            <li className="infodialog__list-item">
-              Additional UI refinements.
-            </li>
-            <li className="infodialog__list-item">
-              Significant code base clean-up.
-            </li>
+            <li className="infodialog__list-item">Added support for optional modules received as Expedition Rewards.</li>
+            <li className="infodialog__list-item">Additional UI refinements.</li>
+            <li className="infodialog__list-item">Significant code base clean-up.</li>
           </ul>
         </div>
         <div className="infodialog__item">

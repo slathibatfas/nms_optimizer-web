@@ -3,11 +3,12 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useGridStore, Grid, ApiResponse } from "../store/useGridStore";
 import { useOptimizeStore } from "../store/useOptimize";
 import { API_URL } from "../constants";
-import { useTechStore } from "../store/useTechStore"; // Import useTechStore
+import { useTechStore } from "../store/useTechStore";
+import { useShipTypesStore } from "./useShipTypes"; // Import useShipTypesStore
 
 interface UseOptimizeReturn {
   solving: boolean;
-  handleOptimize: (tech: string) => Promise<void>; // Remove checkedModules from the signature
+  handleOptimize: (tech: string) => Promise<void>;
   gridContainerRef: React.MutableRefObject<HTMLDivElement | null>;
   showError: boolean;
   setShowError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +19,8 @@ export const useOptimize = (): UseOptimizeReturn => {
   const [solving, setSolving] = useState<boolean>(false);
   const gridContainerRef = useRef<HTMLDivElement>(null);
   const { showError, setShowError: setShowErrorStore } = useOptimizeStore();
-  const { checkedModules } = useTechStore(); // Get checkedModules from useTechStore
+  const { checkedModules } = useTechStore();
+  const selectedShipType = useShipTypesStore((state) => state.selectedShipType); // Get selectedShipType
 
   useEffect(() => {
     if (solving && gridContainerRef.current) {
@@ -37,7 +39,7 @@ export const useOptimize = (): UseOptimizeReturn => {
   }, [solving]);
 
   const handleOptimize = useCallback(
-    async (tech: string) => { // Remove checkedModules from the signature
+    async (tech: string) => {
       setSolving(true);
       try {
         const updatedGrid: Grid = {
@@ -68,9 +70,9 @@ export const useOptimize = (): UseOptimizeReturn => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            ship: "Exotic",
+            ship: selectedShipType, // Use selectedShipType here
             tech,
-            player_owned_rewards: checkedModules[tech] || [], // Use checkedModules from the store
+            player_owned_rewards: checkedModules[tech] || [],
             grid: updatedGrid,
           }),
         });
@@ -94,7 +96,7 @@ export const useOptimize = (): UseOptimizeReturn => {
         setSolving(false);
       }
     },
-    [grid, setGrid, setResult, setShowErrorStore, checkedModules] // Add checkedModules to the dependency array
+    [grid, setGrid, setResult, setShowErrorStore, checkedModules, selectedShipType] // Add selectedShipType here
   );
 
   const setShowError: React.Dispatch<React.SetStateAction<boolean>> = (value) => {

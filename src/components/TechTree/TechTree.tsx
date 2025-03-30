@@ -5,6 +5,8 @@ import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useFetchTechTreeSuspense } from "../../hooks/useTechTree";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
 import TechTreeRow from "../TechTreeRow/TechTreeRow";
+import ShipSelection from "../ShipSelection/ShipSelection"; // Import the new component
+import { useShipTypesStore } from "../../hooks/useShipTypes"; // Import the store
 
 // Define interfaces to ensure type safety
 interface TechTreeModule {
@@ -30,10 +32,10 @@ type TypeImageMap = {
 };
 
 const typeImageMap: TypeImageMap = {
-  "Weaponry": "weaponry.png", // Replace with your actual image paths
+  Weaponry: "weaponry.png", // Replace with your actual image paths
   "Defensive Systems": "defensive.png",
-  "Hyperdrive": "hyperdrive.png",
-  "Utilities": "utilities.png",
+  Hyperdrive: "hyperdrive.png",
+  Utilities: "utilities.png",
 };
 
 interface TechTreeComponentProps {
@@ -44,10 +46,11 @@ interface TechTreeComponentProps {
 const TechTreeSection: React.FC<{
   type: string;
   technologies: TechTreeItem[]; // Corrected type
-  
+  index: number; // Accept index
   handleOptimize: (tech: string) => Promise<void>;
   solving: boolean;
-}> = ({ type, technologies, handleOptimize, solving }) => {
+  selectedShipType: string; // Add this prop
+}> = ({ type, technologies, handleOptimize, solving, index }) => {
   // Get the image path from the typeImageMap
   const imagePath = typeImageMap[type] ? `/assets/img/icons/${typeImageMap[type]}` : null;
 
@@ -58,11 +61,18 @@ const TechTreeSection: React.FC<{
           <img
             src={imagePath}
             alt={type}
-            className="w-8 h-8 mr-2 opacity-25" // Adjust size and spacing as needed
+            className="w-8 h-8 mr-2 opacity-25"
           />
         )}
         <h2 className="text-2xl font-semibold tracking-widest sidebar__title">{type.toUpperCase()}</h2>
+        {/* Render ShipSelection only on the first row and align it to the far right */}
+        {index === 0 && (
+          <div className="z-10 self-end mb-1 ml-auto optimizer__header--icon-right">
+            <ShipSelection />
+          </div>
+        )}
       </div>
+
       <Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />
       {technologies.map((tech) => (
         <TechTreeRow
@@ -78,9 +88,9 @@ const TechTreeSection: React.FC<{
     </div>
   );
 };
-
 const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(({ handleOptimize, solving }) => {
-  const techTree = useFetchTechTreeSuspense();
+  const selectedShipType = useShipTypesStore((state) => state.selectedShipType); // Get selectedShipType from the store
+  const techTree = useFetchTechTreeSuspense(selectedShipType); // Pass selectedShipType to useFetchTechTreeSuspense
 
   // Correctly map and add modules to each technology object
   const processedTechTree = useMemo(() => {
@@ -94,12 +104,21 @@ const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(({ handleOp
     });
     return result;
   }, [techTree]);
+
   const renderedTechTree = useMemo(
     () =>
-      Object.entries(processedTechTree).map(([type, technologies]) => (
-        <TechTreeSection key={type} type={type} technologies={technologies} handleOptimize={handleOptimize} solving={solving} />
+      Object.entries(processedTechTree).map(([type, technologies], index) => (
+        <TechTreeSection
+          key={type}
+          type={type}
+          technologies={technologies}
+          handleOptimize={handleOptimize}
+          solving={solving}
+          index={index}
+          selectedShipType={selectedShipType} // Pass selectedShipType to TechTreeSection
+        />
       )),
-    [processedTechTree, handleOptimize, solving]
+    [processedTechTree, handleOptimize, solving, selectedShipType] // Add selectedShipType to the dependency array
   );
 
   return <>{renderedTechTree}</>;

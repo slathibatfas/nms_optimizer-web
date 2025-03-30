@@ -1,16 +1,10 @@
-// src/hooks/useTechTree.tsx
+// src/hooks/useShipTypes.tsx
 import { API_URL } from "../constants";
+import { create } from "zustand";
 
-// Define the structure of the tech tree data (replace with your actual type)
-interface TechTreeItem {
-  label: string;
-  key: string;
-  modules: { label: string; id: string; image: string; type?: string }[];
-  image: string | null;
-}
-
-interface TechTree {
-  [key: string]: TechTreeItem[];
+// Define the structure of the ship types data
+export interface ShipTypes {
+  [key: string]: string;
 }
 
 type Resource<T> = {
@@ -56,20 +50,20 @@ const createResource = <T,>(promise: Promise<T>): Resource<T> => {
   };
 };
 
-const cache = new Map<string, Resource<TechTree>>(); // Store successful fetches
+const cache = new Map<string, Resource<ShipTypes>>(); // Store successful fetches
 
 /**
- * Fetches a tech tree by ship type and stores it in the cache.
+ * Fetches ship types and stores them in the cache.
  * If the resource is already in the cache, it will return the cached version.
- * @param {string} shipType - The type of ship to fetch the tech tree for. Defaults to "standard".
- * @returns {Resource<TechTree>} An object with a read method that can be used with React Suspense.
+ * @returns {Resource<ShipTypes>} An object with a read method that can be used with React Suspense.
  */
-function fetchTechTree(shipType: string = "standard"): Resource<TechTree> {
-  const cacheKey = shipType;
+export function fetchShipTypes(): Resource<ShipTypes> {
+  const cacheKey = "shipTypes"; // Use a constant key for ship types
+
   // Check if the resource is already in the cache
   if (!cache.has(cacheKey)) {
-    // Create a promise to fetch the tech tree
-    const promise = fetch(`${API_URL}/tech_tree/${shipType}`)
+    // Create a promise to fetch the ship types
+    const promise = fetch(`${API_URL}/ship_types`)
       .then((res) => {
         // Check for HTTP errors
         if (!res.ok) {
@@ -78,8 +72,8 @@ function fetchTechTree(shipType: string = "standard"): Resource<TechTree> {
         // Return the JSON response
         return res.json();
       })
-      .then((data: TechTree) => {
-        console.log(`Fetched tech tree for ${shipType}:`, data); // Log the data here
+      .then((data: ShipTypes) => {
+        console.log(`Fetched ship types:`, data); // Log the data here
         return data;
       });
 
@@ -92,12 +86,23 @@ function fetchTechTree(shipType: string = "standard"): Resource<TechTree> {
 }
 
 /**
- * Custom React hook to fetch a tech tree for a given ship type using Suspense.
+ * Custom React hook to fetch ship types using Suspense.
  *
- * @param {string} shipType - The type of ship to fetch the tech tree for. Defaults to "standard".
- * @returns {TechTree} The fetched tech tree data for the specified ship type.
+ * @returns {ShipTypes} The fetched ship types data.
  */
-export function useFetchTechTreeSuspense(shipType: string = "standard"): TechTree {
-  // Fetch the tech tree resource and use the read method to get the data
-  return fetchTechTree(shipType).read();
+export function useFetchShipTypesSuspense(): ShipTypes {
+  return fetchShipTypes().read();
 }
+
+// --- Zustand Store ---
+interface ShipTypesState {
+  shipTypes: ShipTypes | null; // shipTypes can be null initially
+  selectedShipType: string;
+  setSelectedShipType: (shipType: string) => void;
+}
+
+export const useShipTypesStore = create<ShipTypesState>((set) => ({
+  shipTypes: null, // Initialize as null
+  selectedShipType: "standard", // Default selected ship type
+  setSelectedShipType: (shipType) => set({ selectedShipType: shipType }),
+}));
