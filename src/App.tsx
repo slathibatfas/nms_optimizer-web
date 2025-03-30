@@ -42,7 +42,7 @@ const App: React.FC = () => {
         >
           {/* Background Overlay */}
           <Box asChild className="p-0 optimizer__header">
-            <div className="p-4 pl-8 border-b-1" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-3)" }}>
+            <div className="pt-4 pb-2 pl-6 sm:pl-8 sm:pt-4 border-b-1" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-3)" }}>
               <div className="flex items-center">
                 <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
