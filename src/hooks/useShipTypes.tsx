@@ -103,6 +103,16 @@ interface ShipTypesState {
 
 export const useShipTypesStore = create<ShipTypesState>((set) => ({
   shipTypes: null, // Initialize as null
-  selectedShipType: "standard", // Default selected ship type
-  setSelectedShipType: (shipType) => set({ selectedShipType: shipType }),
+  selectedShipType: (() => {
+    // Read ship type from URL on initial load
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("ship") || "standard"; // Default to "standard" if not found
+  })(),
+  setSelectedShipType: (shipType) => {
+    set({ selectedShipType: shipType });
+    // Update URL when ship type changes
+    const url = new URL(window.location.href);
+    url.searchParams.set("ship", shipType);
+    window.history.pushState({}, "", url);
+  },
 }));

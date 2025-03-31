@@ -1,12 +1,13 @@
 // src/components/GridTable/GridTable.tsx
-import { CounterClockwiseClockIcon, QuestionMarkCircledIcon, ResetIcon } from "@radix-ui/react-icons";
+import { CounterClockwiseClockIcon, QuestionMarkCircledIcon, ResetIcon, Share1Icon } from "@radix-ui/react-icons";
 import { Button } from "@radix-ui/themes";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ApiResponse, Grid } from "../../store/useGridStore";
 import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
 import ShakingWrapper from "../GridShake/GridShake";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
+import { useGridDeserializer } from "../../hooks/useGridDeserializer"; // Import useGridDeserializer
 
 interface GridTableProps {
   grid: Grid;
@@ -33,9 +34,29 @@ interface GridTableProps {
  */
 const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow, resetGrid, solving, setShowChangeLog, setShowInstructions }) => {
   const [shaking, setShaking] = React.useState(false);
-
   const gridRef = useRef<HTMLDivElement>(null);
   const [columnWidth, setColumnWidth] = useState("40px");
+  const { serializeGrid, deserializeGrid } = useGridDeserializer();
+
+  const handleShareClick = useCallback(() => {
+    const serializedGrid = serializeGrid();
+    console.log("GridTable.tsx: Serialized Grid (on Share button click):", serializedGrid); // Log serialized string
+    const url = new URL(window.location.href);
+    url.searchParams.set("grid", serializedGrid);
+    const newWindow = window.open(url.toString(), "_blank", "noopener,noreferrer");
+    if (newWindow) {
+      // Deserialize the grid from the URL
+      deserializeGrid(serializedGrid);
+      newWindow.focus();
+    }
+  }, [serializeGrid, deserializeGrid]);
+
+  const handleResetGrid = useCallback(() => {
+    resetGrid(); // Call the original resetGrid function
+    const url = new URL(window.location.href);
+    url.searchParams.delete("grid"); // Remove the 'grid' query parameter
+    window.history.pushState({}, "", url); // Update the URL without reloading
+  }, [resetGrid]);
 
   useEffect(() => {
     const updateColumnWidth = () => {
@@ -55,7 +76,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
     updateColumnWidth();
     window.addEventListener("resize", updateColumnWidth);
     return () => window.removeEventListener("resize", updateColumnWidth);
-  }, []);
+  }, [grid]);
 
   // Whether there are any modules in the grid
   const hasModulesInGrid = grid.cells.flat().some((cell) => cell.module !== null);
@@ -102,27 +123,23 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
         <div className="z-10 flex-1 flex-nowrap gridTable__footer__left">
           <Button
             variant="soft"
-            radius="large"
-            highContrast
             className={`gridTable__button gridTable__button--instructions shadow-lg !mr-2 p-0 sm:!px-2`}
             onClick={() => setShowInstructions(true)}
           >
             <QuestionMarkCircledIcon />
-            <span className="hidden font-light sm:inline">Instructions</span>
+            <span className="hidden sm:inline">Instructions</span>
           </Button>
-          <Button
-            variant="soft"
-            radius="large"
-            highContrast
-            className={`gridTable__button gridTable__button--changelog shadow-lg sm:!px-2`}
-            onClick={() => setShowChangeLog(true)}
-          >
+          <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-lg !mr-2 sm:!px-2`} onClick={() => setShowChangeLog(true)}>
             <CounterClockwiseClockIcon />
-            <span className="hidden font-light sm:inline">Change Log</span>
+            <span className="hidden sm:inline">Change Log</span>
+          </Button>
+          <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-lg sm:!px-2`} onClick={handleShareClick}>
+            <Share1Icon />
+            <span className="hidden sm:inline">Share Link</span>
           </Button>
         </div>
         <div className="z-10 gridTable__footer__right" style={{ paddingRight: columnWidth }}>
-          <Button className={`gridTable__button gridTable__button--reset shadow-lg`} variant="solid" onClick={resetGrid} disabled={solving}>
+          <Button className={`gridTable__button gridTable__button--reset shadow-lg`} variant="solid" onClick={handleResetGrid} disabled={solving}>
             <ResetIcon />
             <span className="font-bold">Reset Grid</span>
           </Button>

@@ -3,23 +3,24 @@ import React from "react";
 const ChangeLogContent: React.FC = () => {
   return (
     <>
-      <div className="infodialog__title">Changelog</div>
+      <div className="text-2xl font-semibold tracking-widest uppercase infodialog__title">Changelog</div>
       <div className="infodialog__item">
       <div className="infodialog__item">
-          <h3 className="mb-2 font-bold">Version 0.985 (2025-03-30)</h3>
+          <h2 className="mb-2 font-bold">Version 0.99 (2025-03-30)</h2>
           <ul className="infodialog__list">
+            <li className="infodialog__list-item">Added the ability to share and bookmark solves (grid serialization).</li>
             <li className="infodialog__list-item">UI refinements.</li>
           </ul>
         </div>
         <div className="infodialog__item">
-          <h3 className="mb-2 font-bold">Version 0.98 (2025-03-29)</h3>
+          <h2 className="mb-2 font-bold">Version 0.98 (2025-03-29)</h2>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">Added support for Sentinel Interceptors.</li>
             <li className="infodialog__list-item">Major UI updates.</li>
           </ul>
         </div>
         <div className="infodialog__item">
-          <h3 className="mb-2 font-bold">Version 0.97 (2025-03-28)</h3>
+          <h2 className="mb-2 font-bold">Version 0.97 (2025-03-28)</h2>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">Added support for optional modules received as Expedition Rewards.</li>
             <li className="infodialog__list-item">Additional UI refinements.</li>
@@ -27,7 +28,7 @@ const ChangeLogContent: React.FC = () => {
           </ul>
         </div>
         <div className="infodialog__item">
-          <h3 className="mb-2 font-bold">Version 0.96 (2025-03-27)</h3>
+          <h2 className="mb-2 font-bold">Version 0.96 (2025-03-27)</h2>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">
               Further tuning of the <strong>simulated annealing</strong> solver.
@@ -35,7 +36,7 @@ const ChangeLogContent: React.FC = () => {
           </ul>
         </div>
         <div className="infodialog__item">
-          <h3 className="mb-2 font-bold">Version 0.95 (2025-03-27)</h3>
+          <h2 className="mb-2 font-bold">Version 0.95 (2025-03-27)</h2>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">
               Introduced a <strong>simulated annealing</strong> solver and deprecated the brute-force solver due to server timeout issues.
@@ -44,7 +45,7 @@ const ChangeLogContent: React.FC = () => {
           </ul>
         </div>
         <div className="infodialog__item">
-          <h3 className="mb-2 font-bold">Version 0.94 (2025-03-26)</h3>
+          <h2 className="mb-2 font-bold">Version 0.94 (2025-03-26)</h2>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">Added an error message for solver failures.</li>
             <li className="infodialog__list-item">Updated the header.</li>
@@ -52,7 +53,7 @@ const ChangeLogContent: React.FC = () => {
           </ul>
         </div>
         <div className="infodialog__item">
-          <h3 className="mb-2 font-bold">Version 0.93 (2025-03-26)</h3>
+          <h2 className="mb-2 font-bold">Version 0.93 (2025-03-26)</h2>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">Added support for mobile touch events.</li>
             <li className="infodialog__list-item">Updated main font to match current Hello Games branding.</li>
@@ -63,7 +64,7 @@ const ChangeLogContent: React.FC = () => {
           </ul>
         </div>
         <div className="infodialog__item">
-          <h3 className="mb-2 font-bold">Version 0.91α (2025-03-25)</h3>
+          <h2 className="mb-2 font-bold">Version 0.91α (2025-03-25)</h2>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">Added Instructions Dialog.</li>
             <li className="infodialog__list-item">Added Changelog Dialog.</li>
@@ -72,7 +73,7 @@ const ChangeLogContent: React.FC = () => {
           </ul>
         </div>
         <div className="infodialog__item">
-          <h3 className="mb-2 font-bold">Version 0.90α (2025-03-24)</h3>
+          <h2 className="mb-2 font-bold">Version 0.90α (2025-03-24)</h2>
           <ul className="infodialog__list">
             <li className="infodialog__list-item">Initial alpha release.</li>
             <li className="infodialog__list-item">Implemented basic grid functionality.</li>

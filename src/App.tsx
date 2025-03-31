@@ -14,7 +14,7 @@ const App: React.FC = () => {
   const [showInfoDialog, setShowInfoDialog] = useState(false);
   const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState<boolean>(false);
-  const { showError, setShowError } = useOptimizeStore(); // Uses global state
+  const { showError, setShowError } = useOptimizeStore();
 
   console.log("App.tsx: useOptimize state ->", showError);
 
@@ -25,7 +25,6 @@ const App: React.FC = () => {
     }
   }, [showError]);
 
-  // Reset showError when the dialog is closed
   const handleCloseErrorDialog = () => {
     setShowError(false);
     setShowErrorDialog(false);
@@ -42,7 +41,10 @@ const App: React.FC = () => {
         >
           {/* Background Overlay */}
           <Box asChild className="p-0 optimizer__header">
-            <div className="pt-4 pb-2 pl-6 sm:pl-8 sm:pt-4 border-b-1" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-3)" }}>
+            <div
+              className="pt-4 pb-2 pl-6 sm:pl-8 sm:pt-4 border-b-1"
+              style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-3)" }}
+            >
               <div className="flex items-center">
                 <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
@@ -56,17 +58,24 @@ const App: React.FC = () => {
           </Box>
           {/* Main Layout */}
           <Box className="absolute inset-0 z-0 bg-white rounded-none optimizer__overlay opacity-5"></Box>
-          <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} /> {/* Render GridContainer */}
+          <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} />
         </Box>
       </Flex>
       <Box className="p-4 font-light text-center lg:p-0">
         Built by jbelew (void23 / QQ9Y-EJRS-P8KGW) •{" "}
-        <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://github.com/jbelew/nms_optimizer-web"
+          className="underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           GitHub
         </a>
       </Box>
       {showInfoDialog && <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} />}
-      {showInstructionsDialog && <InfoDialog onClose={() => setShowInstructionsDialog(false)} content={<InstructionsContent />} />}
+      {showInstructionsDialog && (
+        <InfoDialog onClose={() => setShowInstructionsDialog(false)} content={<InstructionsContent />} />
+      )}
       {showErrorDialog && <InfoDialog onClose={handleCloseErrorDialog} content={<ErrorContent />} />}
     </>
   );
