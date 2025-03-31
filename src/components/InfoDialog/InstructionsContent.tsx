@@ -3,7 +3,6 @@ import React from "react";
 const InstructionsContent: React.FC = () => {
   return (
 	<>
-<div className="text-2xl font-semibold tracking-widest uppercase infodialog__title">INSTRUCTIONS</div>
 <div className="infodialog__item">
   <>
     <h2 className="mb-2 font-bold">About This Tool</h2>

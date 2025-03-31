@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import { DropdownMenu, IconButton } from "@radix-ui/themes";
 import { GearIcon } from "@radix-ui/react-icons";
 import { useFetchShipTypesSuspense, useShipTypesStore } from "../../hooks/useShipTypes";
-import { useGridStore } from "../../store/useGridStore"; // Import useGridStore
+import { useGridStore } from "../../store/GridStore"; // Import useGridStore
 
 const ShipSelection: React.FC = () => {
   const shipTypes = useFetchShipTypesSuspense();

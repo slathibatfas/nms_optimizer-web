@@ -2,7 +2,7 @@
 import { CounterClockwiseClockIcon, QuestionMarkCircledIcon, ResetIcon, Share1Icon } from "@radix-ui/react-icons";
 import { Button } from "@radix-ui/themes";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { ApiResponse, Grid } from "../../store/useGridStore";
+import { ApiResponse, Grid } from "../../store/GridStore";
 import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
 import ShakingWrapper from "../GridShake/GridShake";

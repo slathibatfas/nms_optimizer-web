@@ -1,7 +1,7 @@
 // src/components/TechTreeRow/TechTreeRow.tsx
 import React, { useEffect } from "react";
-import { useGridStore } from "../../store/useGridStore";
-import { useTechStore } from "../../store/useTechStore";
+import { useGridStore } from "../../store/GridStore";
+import { useTechStore } from "../../store/TechStore";
 import { IconButton, Flex, Text, Tooltip, Checkbox } from "@radix-ui/themes";
 import { UpdateIcon, ResetIcon, ChevronDownIcon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 // import { Checkbox } from "radix-ui";
@@ -110,7 +110,16 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
               defaultValue=""
             >
               <Accordion.Item className="AccordionItem" value="item-1">
-                <AccordionTrigger>{label}</AccordionTrigger>
+                <AccordionTrigger>
+                  <div>
+                  {label}
+                  {techMaxBonus > 0 && (
+                    <span className="inline-block pl-1 font-thin optimizationButton__bonus" style={{ color: techMaxBonus > 101 ? "#e6c133" : "var(--gray-11)" }}>
+                      {techMaxBonus.toFixed(0)}%
+                    </span>
+                  )}
+                  </div>
+                </AccordionTrigger>
                 <Accordion.Content className="AccordionContent">
                   {modules
                     .filter((module) => module.type === "reward")
@@ -131,15 +140,16 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
               </Accordion.Item>
             </Accordion.Root>
           ) : (
-            label
+            <>
+              {label}
+              {techMaxBonus > 0 && (
+                <span className="pl-1 font-thin optimizationButton__bonus" style={{ color: techMaxBonus > 101 ? "#e6c133" : "var(--gray-11)" }}>
+                  {techMaxBonus.toFixed(0)}%
+                </span>
+              )}
+            </>
           )}
-
-          {techMaxBonus > 0 && (
-            <span className="pl-1 font-thin optimizationButton__bonus" style={{ color: techMaxBonus > 101 ? "#e6c133" : "var(--gray-11)" }}>
-              {techMaxBonus.toFixed(0)}%
-            </span>
-          )}
-        </Text>{" "}
+        </Text>
       </div>
     </Flex>
   );

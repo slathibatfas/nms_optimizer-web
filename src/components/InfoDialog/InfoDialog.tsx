@@ -6,10 +6,11 @@ import { Button, Theme } from "@radix-ui/themes";
 
 interface InfoDialogProps {
   onClose: () => void;
-  content: ReactNode; // Accept any React node as content
+  title?: string;
+  content: ReactNode; 
 }
 
-const InfoDialog: React.FC<InfoDialogProps> = ({ onClose, content }) => {
+const InfoDialog: React.FC<InfoDialogProps> = ({ onClose, content, title = "Information" }) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -23,19 +24,20 @@ const InfoDialog: React.FC<InfoDialogProps> = ({ onClose, content }) => {
   return (
     <Dialog.Root open={true} onOpenChange={onClose}>
       <Dialog.Portal>
-        <Dialog.Overlay className="infodialog__overlay" />
-        <Theme appearance="dark" accentColor="blue">
-          <Dialog.Title className="infodialog__title">Info</Dialog.Title>
-          <Dialog.Description className="infodialog__description">
+        <Theme appearance="dark">
+          <Dialog.Overlay className="infodialog__overlay" />
+          <Dialog.Content className="infodialog__content">
+            <Dialog.Title className="text-2xl font-semibold tracking-widest uppercase infodialog__title">{title}</Dialog.Title>
+            <Dialog.Description className="hidden infodialog__description">
               {/* Default description */}
               This dialog contains information.
             </Dialog.Description>
-          <Dialog.Content className="infodialog__content">
+
             <div className="infodialog__container">
               {content} {/* Render the passed content here */}
             </div>
             <Dialog.Close asChild>
-              <Button variant="soft" className="infodialog__close">
+              <Button variant="soft" color="gray"className="infodialog__close">
                 <Cross2Icon />
               </Button>
             </Dialog.Close>

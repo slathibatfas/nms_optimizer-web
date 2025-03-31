@@ -8,7 +8,7 @@ import InstructionsContent from "./components/InfoDialog/InstructionsContent";
 import ErrorContent from "./components/InfoDialog/ErrorContent";
 import NMSLogo from "./assets/svg/nms_logo.svg";
 import NMSIcon from "./assets/img/nms_icon2.webp";
-import { useOptimizeStore } from "./store/useOptimize";
+import { useOptimizeStore } from "./store/OptimizeStore";
 
 const App: React.FC = () => {
   const [showInfoDialog, setShowInfoDialog] = useState(false);
@@ -36,28 +36,28 @@ const App: React.FC = () => {
       <Flex className="items-start justify-center optimizer lg:pt-16 lg:items-top lg:p-4">
         {/* Container Box */}
         <Box
-          className="optimizer__container relative min-w-[min-content] max-w-fit mx-auto overflow-hidden rounded-none shadow-lg lg:rounded-xl lg:border-2 lg:shadow-xl backdrop-blur-lg"
+          className="optimizer__container relative min-w-[min-content] max-w-fit mx-auto overflow-hidden rounded-none shadow-lg lg:rounded-xl lg:border-2 lg:shadow-xl backdrop-blur-xl"
           style={{ borderColor: "var(--gray-a2)" }}
         >
           {/* Background Overlay */}
           <Box asChild className="p-0 optimizer__header">
             <div
               className="pt-4 pb-2 pl-6 sm:pl-8 sm:pt-4 border-b-1"
-              style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-3)" }}
+              style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-5)" }}
             >
               <div className="flex items-center">
                 <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
                   <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
                   <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
-                    Starship Optimizer <span className="font-thin">v0.99</span>
+                    Starship Optimizer <span className="font-thin">v0.99.1</span>
                   </span>
                 </div>
               </div>
             </div>
           </Box>
           {/* Main Layout */}
-          <Box className="absolute inset-0 z-0 bg-white rounded-none optimizer__overlay opacity-5"></Box>
+          <Box className="absolute z-0 bg-white rounded-none optimizer__overlay opacity-5"></Box>
           <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} />
         </Box>
       </Flex>
@@ -72,11 +72,11 @@ const App: React.FC = () => {
           GitHub
         </a>
       </Box>
-      {showInfoDialog && <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} />}
+      {showInfoDialog && <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} title="Changelog"/>}
       {showInstructionsDialog && (
-        <InfoDialog onClose={() => setShowInstructionsDialog(false)} content={<InstructionsContent />} />
+        <InfoDialog onClose={() => setShowInstructionsDialog(false)} content={<InstructionsContent />} title="Instructions" />
       )}
-      {showErrorDialog && <InfoDialog onClose={handleCloseErrorDialog} content={<ErrorContent />} />}
+      {showErrorDialog && <InfoDialog onClose={handleCloseErrorDialog} content={<ErrorContent />} title="Error!" />}
     </>
   );
 };

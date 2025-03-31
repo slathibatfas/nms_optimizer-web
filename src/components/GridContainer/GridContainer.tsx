@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import GridTable from "../GridTable/GridTable";
 import TechTreeComponent from "../TechTree/TechTree";
-import { useGridStore } from "../../store/useGridStore";
+import { useGridStore } from "../../store/GridStore";
 import { useOptimize } from "../../hooks/useOptimize";
 import { Box, Flex, ScrollArea, Tooltip } from "@radix-ui/themes";
 import { useBreakpoint } from "../../hooks/useBreakpoint"; // Import useBreakpoint
@@ -61,11 +61,14 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
         <Box className="flex-grow w-auto gridContainer__grid lg:flex-shrink-0" ref={gridRef}>
           {/* Render ShipSelection only on the first row and align it to the far right */}
 
-          <h2 className="mb-4 text-2xl font-semibold tracking-widest uppercase sidebar__title">
+          <h2 className="flex flex-wrap items-start gap-2 mb-4 text-2xl font-semibold tracking-widest uppercase sidebar__title">
             <Tooltip content="Select Ship Type">
-              <span className="mr-2"><ShipSelection /></span>
+              <span className="flex-shrink-0">
+                <ShipSelection />
+              </span>
             </Tooltip>
-            <span className="hidden sm:inline"style={{ color: "var(--accent-11)" }}>PLATFORM:</span> { selectedShipTypeLabel }
+            <span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>PLATFORM:</span>
+            <span className="flex-1 min-w-0">{selectedShipTypeLabel}</span>
           </h2>
 
           <GridTable
@@ -98,5 +101,5 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
       </Flex>
     </Box>
   );
-
-};export default GridContainer;
+};
+export default GridContainer;

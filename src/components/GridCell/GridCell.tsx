@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Tooltip } from "@radix-ui/themes";
-import { Grid } from "../../store/useGridStore";
-import { useGridStore } from "../../store/useGridStore";
+import { Grid } from "../../store/GridStore";
+import { useGridStore } from "../../store/GridStore";
 
 // TODO: Configure jest so this doesn't interfere in the future.
 // import "./GridCell.css"; 

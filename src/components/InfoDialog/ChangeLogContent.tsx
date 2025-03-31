@@ -3,8 +3,6 @@ import React from "react";
 const ChangeLogContent: React.FC = () => {
   return (
     <>
-      <div className="text-2xl font-semibold tracking-widest uppercase infodialog__title">Changelog</div>
-      <div className="infodialog__item">
       <div className="infodialog__item">
           <h2 className="mb-2 font-bold">Version 0.99 (2025-03-30)</h2>
           <ul className="infodialog__list">
@@ -83,7 +81,6 @@ const ChangeLogContent: React.FC = () => {
             <li className="infodialog__list-item">Added grid reset functionality.</li>
           </ul>
         </div>
-      </div>
     </>
   );
 };

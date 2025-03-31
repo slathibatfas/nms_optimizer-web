@@ -1,6 +1,6 @@
-// src/store/useGridStore.ts
+// src/store/GridStore.ts
 import { create } from "zustand";
-import { useTechStore } from "./useTechStore"; // Import useTechStore
+import { useTechStore } from "./TechStore";
 
 // Define types
 export type Cell = {
@@ -31,7 +31,7 @@ export type ApiResponse = {
 };
 
 // Utility functions
-const createEmptyCell = (supercharged = false, active = true): Cell => ({
+export const createEmptyCell = (supercharged = false, active = true): Cell => ({
   active,
   adjacency: false,
   adjacency_bonus: 0.0,
@@ -47,11 +47,10 @@ const createEmptyCell = (supercharged = false, active = true): Cell => ({
   value: 0,
 });
 
-const createGrid = (width: number, height: number): Grid => ({
+export const createGrid = (width: number, height: number): Grid => ({
   cells: Array.from({ length: height }, () =>
     Array.from({ length: width }, () =>
-      // createEmptyCell(false, rowIndex >= height - 3 ? false : true) // Original line: Bottom 3 rows inactive
-      createEmptyCell(false, true) // Modified line: All cells active
+      createEmptyCell(false, true)
     )  ),
   width,
   height,
@@ -90,7 +89,7 @@ export const useGridStore = create<GridStore>((set, get) => ({
   setResult: (result, tech) => {
     set({ result });
     if (result) {
-      useTechStore.getState().setMaxBonus(tech, result.max_bonus);
+      useTechStore.getState().setTechMaxBonus(tech, result.max_bonus); // Corrected function name
     }
   },
 

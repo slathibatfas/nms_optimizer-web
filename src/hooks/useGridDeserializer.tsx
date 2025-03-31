@@ -1,6 +1,6 @@
-// src/hooks/useGridDeserializer.ts
+// src/hooks/useGridDeserializer.tsx
 import { useCallback, useEffect } from "react";
-import { useGridStore, Grid, Cell } from "../store/useGridStore";
+import { useGridStore, Grid, Cell } from "../store/GridStore";
 import { API_URL } from "../constants";
 import { useShipTypesStore } from "./useShipTypes"; // Import useShipTypesStore
 
@@ -72,7 +72,7 @@ const createEmptyCell = (supercharged = false, active = true): Cell => ({
   label: "",
   sc_eligible: false,
   supercharged: supercharged,
-  tech: null,
+  tech: null, // <--- Correct: tech: null
   total: 0.0,
   type: "",
   value: 0,
@@ -99,7 +99,7 @@ const serialize = (grid: Grid): string => {
   for (const row of grid.cells) {
     for (const cell of row) {
       gridString += cell.active ? (cell.supercharged ? "2" : "1") : "0";
-      techString += cell.tech ? (techMap[cell.tech] || (techMap[cell.tech] = String.fromCharCode(nextTechCode++))) : " ";
+      techString += cell.tech ? (techMap[cell.tech] || (techMap[cell.tech] = String.fromCharCode(nextTechCode++))) : " "; // Correct: Handle tech: null
       moduleString += cell.module ? (moduleMap[cell.module] || (moduleMap[cell.module] = String.fromCharCode(nextModuleCode++ + 65))) : " ";
     }
   }
@@ -181,11 +181,13 @@ const deserialize = async (serializedGrid: string, shipType: string): Promise<Gr
         newGrid.cells[r][c].active = char !== "0";
         newGrid.cells[r][c].supercharged = char === "2";
         const techChar = decompressedTech[index];
-        const techName = techChar === " " ? null : techMap[techChar];
+        const techName = techChar === " " ? null : techMap[techChar]; // Correct: Handle tech: null
         const moduleChar = decompressedModule[index];
         const moduleName = moduleChar === " " ? null : moduleMap[moduleChar];
 
-        newGrid.cells[r][c].tech = techName;
+        if (newGrid.cells[r][c].tech === undefined) {
+          newGrid.cells[r][c].tech = null; // Or "" if you prefer an empty string
+        }
 
         if (moduleName && techName) {
           const moduleData = modulesMap[techName]?.[moduleName]; // Look up by tech type and module ID
@@ -229,7 +231,7 @@ export const useGridDeserializer = () => {
     const newGrid = await deserialize(serializedGrid, selectedShipType); // Pass selectedShipType
     if (newGrid) {
       console.log("useGridDeserializer.tsx: Deserialized Grid:", newGrid); // Log the newGrid object
-      setGrid(newGrid);
+      setGrid(newGrid); // Correct: Set the grid directly (no need to remove tech)
     }
   }, [setGrid, selectedShipType]); // Add selectedShipType to the dependency array
 

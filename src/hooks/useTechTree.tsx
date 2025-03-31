@@ -1,5 +1,7 @@
 // src/hooks/useTechTree.tsx
 import { API_URL } from "../constants";
+import { useTechStore } from "../store/TechStore"; // Import useTechStore
+import { useEffect } from "react";
 
 // Define the structure of the tech tree data (replace with your actual type)
 interface TechTreeItem {
@@ -7,6 +9,7 @@ interface TechTreeItem {
   key: string;
   modules: { label: string; id: string; image: string; type?: string }[];
   image: string | null;
+  color: string; // Add color property
 }
 
 interface TechTree {
@@ -98,6 +101,19 @@ function fetchTechTree(shipType: string = "standard"): Resource<TechTree> {
  * @returns {TechTree} The fetched tech tree data for the specified ship type.
  */
 export function useFetchTechTreeSuspense(shipType: string = "standard"): TechTree {
-  // Fetch the tech tree resource and use the read method to get the data
-  return fetchTechTree(shipType).read();
+  const techTree = fetchTechTree(shipType).read();
+  const { setTechColors } = useTechStore();
+
+  // Extract and set tech colors when the tech tree is available
+  useEffect(() => {
+    const colors: { [key: string]: string } = {};
+    for (const category in techTree) {
+      techTree[category].forEach((tech) => {
+        colors[tech.key] = tech.color;
+      });
+    }
+    setTechColors(colors);
+  }, [techTree, setTechColors]);
+
+  return techTree;
 }
