@@ -65,7 +65,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
             <Tooltip content="Select Ship Type">
               <span className="mr-2"><ShipSelection /></span>
             </Tooltip>
-            <span style={{ color: "var(--accent-11)" }}>PLATFORM:</span> { selectedShipTypeLabel }
+            <span className="hidden sm:inline"style={{ color: "var(--accent-11)" }}>PLATFORM:</span> { selectedShipTypeLabel }
           </h2>
 
           <GridTable
