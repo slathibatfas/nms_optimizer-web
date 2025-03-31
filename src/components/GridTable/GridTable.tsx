@@ -37,6 +37,12 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
   const gridRef = useRef<HTMLDivElement>(null);
   const [columnWidth, setColumnWidth] = useState("40px");
   const { serializeGrid, deserializeGrid } = useGridDeserializer();
+  const [isSharedGrid, setIsSharedGrid] = useState(false);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    setIsSharedGrid(url.searchParams.has("grid"));
+  }, [resetGrid]);
 
   const handleShareClick = useCallback(() => {
     const serializedGrid = serializeGrid();
@@ -56,6 +62,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
     const url = new URL(window.location.href);
     url.searchParams.delete("grid"); // Remove the 'grid' query parameter
     window.history.pushState({}, "", url); // Update the URL without reloading
+    setIsSharedGrid(false);
   }, [resetGrid]);
 
   useEffect(() => {
@@ -133,7 +140,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
             <CounterClockwiseClockIcon />
             <span className="hidden sm:inline">Change Log</span>
           </Button>
-          <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-lg sm:!px-2`} onClick={handleShareClick}>
+          <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-lg sm:!px-2`} onClick={handleShareClick} disabled={isSharedGrid}>
             <Share1Icon />
             <span className="hidden sm:inline">Share Link</span>
           </Button>
