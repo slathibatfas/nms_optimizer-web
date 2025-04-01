@@ -33,7 +33,6 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
   const handleReset = () => {
     handleResetGridTech(tech);
     clearTechMaxBonus(tech);
-    clearCheckedModules(tech);
   };
 
   const handleCheckboxChange = (moduleId: string) => {
@@ -45,7 +44,8 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
   };
 
   const handleOptimizeClick = async () => {
-    console.log("Checked Modules for", tech + ":", checkedModules[tech]);
+    handleResetGridTech(tech);
+    clearTechMaxBonus(tech);
     await handleOptimize(tech);
   };
 

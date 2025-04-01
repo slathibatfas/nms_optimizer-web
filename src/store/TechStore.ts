@@ -8,11 +8,13 @@ interface TechState {
   clearTechMaxBonus: (tech: string) => void;
   setTechMaxBonus: (tech: string, bonus: number) => void;
   setTechColors: (colors: { [key: string]: string }) => void;
+  getTechColor: (tech: string) => string | undefined;
   setCheckedModules: (tech: string, updater: (prev?: string[]) => string[]) => void;
   clearCheckedModules: (tech: string) => void;
   clearResult: () => void; // Add clearResult to the TechState interface
 }
-export const useTechStore = create<TechState>((set) => ({
+
+export const useTechStore = create<TechState>((set, get) => ({ // Note the 'get' parameter
   max_bonus: {},
   techColors: {},
   checkedModules: {},
@@ -25,6 +27,7 @@ export const useTechStore = create<TechState>((set) => ({
       max_bonus: { ...state.max_bonus, [tech]: bonus },
     })),
   setTechColors: (colors) => set({ techColors: colors }),
+  getTechColor: (tech) => get().techColors[tech], // Access state using 'get'
   setCheckedModules: (tech, updater) =>
     set((state) => ({
       checkedModules: {

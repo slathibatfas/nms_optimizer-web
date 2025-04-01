@@ -2,18 +2,21 @@ import React, { useState, useRef } from "react";
 import { Tooltip } from "@radix-ui/themes";
 import { Grid } from "../../store/GridStore";
 import { useGridStore } from "../../store/GridStore";
+import { useTechStore } from "../../store/TechStore";
 
 // TODO: Configure jest so this doesn't interfere in the future.
-// import "./GridCell.css"; 
+// import "./GridCell.css";
 
 interface GridCellProps {
   rowIndex: number;
   columnIndex: number;
   cell: {
-    label?: string;
+    label?: string; // Make label optional
     supercharged?: boolean;
     active?: boolean;
-    image: string | null | undefined;
+    tech?: string | null; // Make tech optional
+    adjacency_bonus?: number; // Make adjacency_bonus optional
+    image?: string | null | undefined; // Make image optional
   };
   grid: Grid;
   setShaking: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,6 +40,7 @@ const GridCell: React.FC<GridCellProps> = ({
 }) => {
   const toggleCellActive = useGridStore((state) => state.toggleCellActive);
   const toggleCellSupercharged = useGridStore((state) => state.toggleCellSupercharged);
+  const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
   const [longPressTriggered, setLongPressTriggered] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -105,6 +109,20 @@ const GridCell: React.FC<GridCellProps> = ({
       : "gridCell--inactive shadow-lg"
   }`;
 
+  const techColor = getTechColor(cell.tech ?? "") ?? "default-color";
+
+  // Helper function to determine the border color
+  const getCellBorderColor = (cell: { adjacency_bonus?: number, supercharged?: boolean, label?: string }): string => {
+    if (cell.supercharged) {
+      return "#e6c133";
+    } 
+    if (cell.label === undefined || cell.label === null || cell.label === "") {
+      return "#36a1ea";
+    } 
+    return cell.adjacency_bonus && cell.adjacency_bonus > 0 ? techColor : "black";
+  };
+  
+
   return (
     <div
       className="gridCell__container"
@@ -122,6 +140,7 @@ const GridCell: React.FC<GridCellProps> = ({
             className={cellClassName}
             style={{
               backgroundImage: cell.image ? `url(/assets/img/${cell.image})` : "none",
+              borderColor: getCellBorderColor(cell), // Use the helper function
             }}
           />
         </Tooltip>
@@ -136,6 +155,7 @@ const GridCell: React.FC<GridCellProps> = ({
           className={cellClassName}
           style={{
             backgroundImage: cell.image ? `url(/assets/img/${cell.image})` : "none",
+            borderColor: getCellBorderColor(cell), // Use the helper function
           }}
         />
       )}

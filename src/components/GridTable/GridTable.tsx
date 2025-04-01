@@ -104,6 +104,8 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
                     label: cell.label,
                     supercharged: cell.supercharged,
                     active: cell.active,
+                    tech: cell.tech ?? "",
+                    adjacency_bonus: cell.adjacency_bonus,
                     image: cell.image || undefined,
                   }}
                   grid={grid}

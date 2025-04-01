@@ -16,13 +16,12 @@
 }
 
 .gridCell--active {
-  /* Styles for active grid cells */
   border-color: var(--accent-9);
+  transition: border-color 0.25s ease;
 }
 
 .gridCell--inactive {
-  /* Styles for inactive grid cells */
-  border-color: var(--accent-a5);
+  border-color: var(--accent-5);
   transition: border-color 0.25s ease;
 }
 
