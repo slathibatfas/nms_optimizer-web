@@ -112,9 +112,13 @@ const GridCell: React.FC<GridCellProps> = ({
   const techColor = getTechColor(cell.tech ?? "") ?? "default-color";
 
   // Helper function to determine the border color
-  const getCellBorderColor = (cell: { adjacency_bonus?: number, supercharged?: boolean, label?: string }): string => {
+  const getCellBorderColor = (cell: { adjacency_bonus?: number, supercharged?: boolean, label?: string, active?: boolean }): string => {
     if (cell.supercharged) {
       return "#e6c133";
+    } 
+    if (cell.active === false) {
+      return "#0d507b";
+
     } 
     if (cell.label === undefined || cell.label === null || cell.label === "") {
       return "#36a1ea";
