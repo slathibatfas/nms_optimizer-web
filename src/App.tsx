@@ -16,8 +16,6 @@ const App: React.FC = () => {
   const [showErrorDialog, setShowErrorDialog] = useState<boolean>(false);
   const { showError, setShowError } = useOptimizeStore();
 
-  console.log("App.tsx: useOptimize state ->", showError);
-
   useEffect(() => {
     console.log("App.tsx: useEffect triggered, showError =", showError);
     if (showError) {
@@ -30,6 +28,7 @@ const App: React.FC = () => {
     setShowErrorDialog(false);
   };
 
+
   return (
     <>
       {/* The main container of the app */}
@@ -41,16 +40,13 @@ const App: React.FC = () => {
         >
           {/* Background Overlay */}
           <Box asChild className="p-0 optimizer__header">
-            <div
-              className="pt-4 pb-2 pl-6 sm:pl-8 sm:pt-4 border-b-1"
-              style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-5)" }}
-            >
+            <div className="pt-4 pb-2 pl-6 sm:pl-8 sm:pt-4 border-b-1" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-5)" }}>
               <div className="flex items-center">
                 <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
                   <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
                   <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
-                    Starship Optimizer <span className="font-thin">v0.99.1</span>
+                    "Starship Optimizer <span className="font-thin">v0.99.5</span>
                   </span>
                 </div>
               </div>
@@ -63,19 +59,12 @@ const App: React.FC = () => {
       </Flex>
       <Box className="p-4 font-light text-center lg:p-0">
         Built by jbelew (void23 / QQ9Y-EJRS-P8KGW) •{" "}
-        <a
-          href="https://github.com/jbelew/nms_optimizer-web"
-          className="underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
           GitHub
         </a>
       </Box>
-      {showInfoDialog && <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} title="Changelog"/>}
-      {showInstructionsDialog && (
-        <InfoDialog onClose={() => setShowInstructionsDialog(false)} content={<InstructionsContent />} title="Instructions" />
-      )}
+      {showInfoDialog && <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} title="Changelog" />}
+      {showInstructionsDialog && <InfoDialog onClose={() => setShowInstructionsDialog(false)} content={<InstructionsContent />} title="Instructions" />}
       {showErrorDialog && <InfoDialog onClose={handleCloseErrorDialog} content={<ErrorContent />} title="Error!" />}
     </>
   );

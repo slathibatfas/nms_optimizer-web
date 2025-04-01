@@ -19,6 +19,7 @@ interface GridCellProps {
     image?: string | null | undefined; // Make image optional
   };
   grid: Grid;
+  isSharedGrid: boolean;
   setShaking: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -31,13 +32,7 @@ interface GridCellProps {
  * @param grid - The grid object, containing all cells and grid properties
  * @param setShaking - A function to set the shaking state of the grid
  */
-const GridCell: React.FC<GridCellProps> = ({
-  rowIndex,
-  columnIndex,
-  cell,
-  grid,
-  setShaking,
-}) => {
+const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, setShaking, isSharedGrid }) => {
   const toggleCellActive = useGridStore((state) => state.toggleCellActive);
   const toggleCellSupercharged = useGridStore((state) => state.toggleCellSupercharged);
   const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
@@ -50,6 +45,10 @@ const GridCell: React.FC<GridCellProps> = ({
    * @param event - The event object
    */
   const handleClick = (event: React.MouseEvent) => {
+    if (isSharedGrid) {
+      return;
+    }
+
     if (longPressTriggered) {
       event.stopPropagation(); // Prevents unintended click after long press
       return;
@@ -101,37 +100,31 @@ const GridCell: React.FC<GridCellProps> = ({
     event.preventDefault();
   };
 
-  const cellClassName = `gridCell gridCell--interactive shadow-md sm:border-2 border-1 sm:rounded-lg transition-all ${
-    cell.supercharged
-      ? "gridCell--supercharged shadow-lg"
-      : cell.active
-      ? "gridCell--active shadow-lg"
-      : "gridCell--inactive shadow-lg"
-  }`;
+  const techColor = getTechColor(cell.tech ?? "");
+  const cellClassName = `gridCell gridCell--interactive shadow-md sm:border-2 border-1 sm:rounded-lg transition-all
+  ${cell.supercharged ? "gridCell--supercharged shadow-lg" : ""}
+  ${cell.active ? "gridCell--active shadow-lg" : "gridCell--inactive shadow-lg"}
+  ${cell.adjacency_bonus === 0 && cell.image ? "gridCell--black" : techColor ? `gridCell--${techColor}` : ""}`.trim();
 
-  const techColor = getTechColor(cell.tech ?? "") ?? "default-color";
-
-  // Helper function to determine the border color
-  const getCellBorderColor = (cell: { adjacency_bonus?: number, supercharged?: boolean, label?: string, active?: boolean }): string => {
-    if (cell.supercharged) {
-      return "#e6c133";
-    } 
-    if (cell.active === false) {
-      return "#0d507b";
-
-    } 
-    if (cell.label === undefined || cell.label === null || cell.label === "") {
-      return "#36a1ea";
-    } 
-    return cell.adjacency_bonus && cell.adjacency_bonus > 0 ? techColor : "black";
+  const getUpgradePriority = (label: string | undefined): number => {
+    if (!label) return 0;
+    switch (true) {
+      case label.toLowerCase().includes("sigma"):
+        return 1;
+      case label.toLowerCase().includes("theta"):
+        return 2;
+      case label.toLowerCase().includes("tau"):
+        return 3;
+      default:
+        return 0;
+    }
   };
-  
+
+  // Get the upgrade priority for the current cell
+  const upGradePriority = getUpgradePriority(cell.label);
 
   return (
-    <div
-      className="gridCell__container"
-      style={{ gridColumn: columnIndex + 1, gridRow: rowIndex + 1 }}
-    >
+    <div className="gridCell__container" style={{ gridColumn: columnIndex + 1, gridRow: rowIndex + 1 }}>
       {cell.label ? (
         <Tooltip content={cell.label}>
           <div
@@ -144,9 +137,15 @@ const GridCell: React.FC<GridCellProps> = ({
             className={cellClassName}
             style={{
               backgroundImage: cell.image ? `url(/assets/img/${cell.image})` : "none",
-              borderColor: getCellBorderColor(cell), // Use the helper function
+              // borderColor: getCellBorderColor(cell), // Use the helper function
             }}
-          />
+          >
+            <div className="flex items-center justify-center w-full h-full">
+              <span className="text-3xl font-extrabold gridCell__label" style={{ color: "var(--gray-12)", fontFamily: "GeosansLight" }}>
+                {upGradePriority > 0 ? upGradePriority : null}
+              </span>
+            </div>
+          </div>
         </Tooltip>
       ) : (
         <div
@@ -159,7 +158,7 @@ const GridCell: React.FC<GridCellProps> = ({
           className={cellClassName}
           style={{
             backgroundImage: cell.image ? `url(/assets/img/${cell.image})` : "none",
-            borderColor: getCellBorderColor(cell), // Use the helper function
+            // borderColor: getCellBorderColor(cell), // Use the helper function
           }}
         />
       )}

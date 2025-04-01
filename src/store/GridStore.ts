@@ -71,11 +71,16 @@ export type GridStore = {
   toggleCellSupercharged: (rowIndex: number, columnIndex: number) => void;
   setCellActive: (rowIndex: number, columnIndex: number, active: boolean) => void;
   setCellSupercharged: (rowIndex: number, columnIndex: number, supercharged: boolean) => void;
+  isSharedGrid: boolean; // New state variable
+  setIsSharedGrid: (isShared: boolean) => void; // New setter function
+
 };
 
 export const useGridStore = create<GridStore>((set, get) => ({
   grid: createGrid(10, 6),
   result: null,
+  isSharedGrid: false, // Initial value
+  setIsSharedGrid: (isShared) => set({ isSharedGrid: isShared }), // Setter function
 
   setGrid: (grid) => set({ grid }),
   resetGrid: () => {
@@ -205,5 +210,6 @@ export const useGridStore = create<GridStore>((set, get) => ({
       },
     }));
   },
+  
 
 }));

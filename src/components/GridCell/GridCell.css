@@ -10,29 +10,108 @@
   -webkit-touch-callout: none; /* Disables long-press context menu */
 }
 
+.gridCell__label {
+  filter: drop-shadow(0px 0px 4px black);
+}
+
 .gridCell--interactive {
   /* Styles for grid cells interaction*/
   cursor: pointer;
 }
 
-.gridCell--active {
-  border-color: var(--accent-9);
-  transition: border-color 0.25s ease;
-}
-
 .gridCell--inactive {
-  border-color: var(--accent-5);
+  border-color: var(--blue-7);
+  background-color: var(--gray-a2) ;
+  transition: background-color 0.25s ease;
+}
+
+.gridCell--inactive:hover {
+  /* Styles for hovered grid cells */
+  background-color: var(--blue-a5) ;
+  transition: background-color 0.25s ease;
+}
+
+.gridCell--active {
+  border-color: var(--blue-9);
+  background-color: var(--gray-a2);
   transition: border-color 0.25s ease;
 }
 
-.gridCell--interactive:hover {
-  /* Styles for hovered grid cells */
-  background-color: var(--accent-a5);
-  transition: opacity 0.25s ease, background-color 0.25s ease;
+.gridCell--active:hover {
+  background-color: var(--blue-a5);
+  transition: background-color 0.25s ease;
+}
+
+.gridCell--active #red {
+  border-color: var(--red-9);
+  background-color: var(--red-a2);
+  transition: border-color 0.25s ease;
+}
+
+.gridCell--active:hover #red {
+  background-color: var(--red-a5);
+  transition: background-color 0.25s ease;
 }
 
 .gridCell--supercharged {
   /* Styles for supercharged grid cells */
-  border-color: #e6c133;
-  transition: border-color 0.25s ease;
+  border-color:var(--amber-9) !important;
+  background-color: var(--amber-a4) !important;
+  background-blend-mode: overlay;
+  transition: background-color 0.25s ease;
+}
+
+.gridCell--supercharged:hover {
+  /* Styles for supercharged grid cells */
+  background-color: var(--yellow-a7) ;
+  transition: background-color 0.25s ease;
+}
+
+.gridCell--red {
+  border-color: var(--red-9);
+
+}
+
+.gridCell--purple {
+  border-color: var(--purple-10);
+}
+
+.gridCell--green {
+  border-color: var(--green-10);
+}
+
+.gridCell--cyan {
+  border-color: var(--cyan-11);
+}
+
+.gridCell--amber {
+  border-color: var(--amber-8);
+}
+
+.gridCell--iris {
+  border-color: var(--iris-11);
+}
+
+.gridCell--yellow {
+  border-color: var(--yellow-8);
+}
+
+.gridCell--sky {
+  border-color: var(--sky-9);
+}
+
+.gridCell--jade {
+  border-color: var(--jade-10);
+}
+
+.gridCell--orange {
+  border-color: var(--orange-10);
+}
+
+.gridCell--black {
+  border-color: var(--gray-7);
+}
+
+.gridCell--gray {
+  border-color: var(--gray-12);
 }

@@ -16,6 +16,7 @@ interface GridTableProps {
   activateRow: (rowIndex: number) => void;
   deActivateRow: (rowIndex: number) => void;
   solving: boolean;
+  shared: boolean;
   setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
   setShowInstructions: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -110,6 +111,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
                   }}
                   grid={grid}
                   setShaking={setShaking}
+                  isSharedGrid={isSharedGrid}
                 />
               ))}
               <GridControlButtons
@@ -142,10 +144,17 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
             <CounterClockwiseClockIcon />
             <span className="hidden sm:inline">Change Log</span>
           </Button>
-          <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-lg sm:!px-2`} onClick={handleShareClick} disabled={isSharedGrid}>
-            <Share1Icon />
-            <span className="hidden sm:inline">Share Link</span>
-          </Button>
+          {!isSharedGrid && (
+            <Button
+              variant="soft"
+              className={`gridTable__button gridTable__button--changelog shadow-lg sm:!px-2`}
+              onClick={handleShareClick}
+              disabled={isSharedGrid}
+            >
+              <Share1Icon />
+              <span className="hidden sm:inline">Share Link</span>
+            </Button>
+          )}
         </div>
         <div className="z-10 gridTable__footer__right" style={{ paddingRight: columnWidth }}>
           <Button className={`gridTable__button gridTable__button--reset shadow-lg`} variant="solid" onClick={handleResetGrid} disabled={solving}>
