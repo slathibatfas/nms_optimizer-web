@@ -36,13 +36,13 @@ const App: React.FC = () => {
           className="relative min-w-[min-content] max-w-fit mx-auto overflow-hidden border-1 rounded-none shadow-lg lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5 border-white/5" 
         >
           <div className="p-0 optimizer__header">
-            <div className="pt-4 pb-2 pl-6 sm:pl-8 sm:pt-4 border-b-1" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-5)" }}>
+            <div className="pt-4 pb-2 pl-6 sm:pl-8 sm:pb-4 sm:pt-6" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-4)" }}>
               <div className="flex items-center">
                 <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
                 <div>
-                  <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
+                  <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2.5 optimizer__header--logo" alt="No Man's Sky Logo" />
                   <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
-                    "Starship Optimizer <span className="font-thin">v0.99.5</span>
+                    Starship Optimizer <span className="font-thin">v0.99.5</span>
                   </span>
                 </div>
               </div>
