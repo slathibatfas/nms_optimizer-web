@@ -89,7 +89,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
 
         {isLarge ? (
           <ScrollArea
-            className={`gridContainer__sidebar p-4 ml-4 shadow-xl rounded-xl backdrop-blur-xl border-white/5 ${isSharedGrid ? '!hidden' : ''}`}
+            className={`gridContainer__sidebar p-4 ml-4 shadow-md rounded-xl backdrop-blur-xl border-white/5 ${isSharedGrid ? '!hidden' : ''}`}
             style={{
               height: `${gridHeight}px`,
             }}
