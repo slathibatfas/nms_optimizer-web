@@ -33,7 +33,7 @@ const App: React.FC = () => {
       <div className="flex flex-col items-center justify-center min-h-screen">
         {/* Container Box */}
         <div className="relative min-w-[min-content] max-w-fit mx-auto overflow-hidden border-1 rounded-none shadow-lg lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5 border-white/5">
-          <div className="pt-4 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-6" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-4)" }}>
+          <div className="pt-4 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-6" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-2)" }}>
             <div className="flex items-center">
               <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
               <div>

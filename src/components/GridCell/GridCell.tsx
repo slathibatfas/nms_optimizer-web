@@ -140,7 +140,7 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
             }}
           >
             <div className="flex items-center justify-center w-full h-full">
-              <span className="text-3xl font-extrabold gridCell__label" style={{ color: "var(--gray-12)", fontFamily: "GeosansLight" }}>
+              <span className="text-2xl font-extrabold sm:text-3xl gridCell__label" style={{ color: "var(--gray-12)", fontFamily: "GeosansLight" }}>
                 {upGradePriority > 0 ? upGradePriority : null}
               </span>
             </div>

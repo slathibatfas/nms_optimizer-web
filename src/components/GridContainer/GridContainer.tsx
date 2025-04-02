@@ -16,7 +16,7 @@ interface GridContainerProps {
 
 const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShowInstructions }) => {
   const { solving, handleOptimize, gridContainerRef } = useOptimize(); // Get solving from useOptimize
-  const { grid, result, activateRow, deActivateRow, resetGrid } = useGridStore();
+  const { grid, result, activateRow, deActivateRow, resetGrid, setIsSharedGrid } = useGridStore();
 
   const shipTypes = useFetchShipTypesSuspense();
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
@@ -27,7 +27,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
   const isLarge = useBreakpoint("1024px");
 
   // State for shared grid (moved to the top)
-  const [isSharedGrid, setIsSharedGrid] = useState(false);
+  const [isSharedGridLocal, setIsSharedGridLocal] = useState(false);
 
   useEffect(() => {
     // Combined useEffect for URL and grid height
@@ -40,11 +40,15 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
 
     const handlePopState = () => {
       const newUrl = new URL(window.location.href);
-      setIsSharedGrid(newUrl.searchParams.has("grid"));
+      const isShared = newUrl.searchParams.has("grid");
+      setIsSharedGridLocal(isShared);
+      setIsSharedGrid(isShared);
     };
 
     const url = new URL(window.location.href);
-    setIsSharedGrid(url.searchParams.has("grid"));
+    const isShared = url.searchParams.has("grid");
+    setIsSharedGridLocal(isShared);
+    setIsSharedGrid(isShared);
 
     updateGridHeight();
     window.addEventListener("resize", updateGridHeight);
@@ -54,7 +58,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
       window.removeEventListener("resize", updateGridHeight);
       window.removeEventListener('popstate', handlePopState);
     };
-  }, [grid]);
+  }, [grid, setIsSharedGrid]);
 
   const handleOptimizeWrapper = (tech: string) => {
     return handleOptimize(tech);
@@ -66,7 +70,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
         <Box className="flex-grow w-auto gridContainer__grid lg:flex-shrink-0" ref={gridRef}>
           <h2 className="flex flex-wrap items-start gap-2 mb-4 text-2xl font-semibold tracking-widest uppercase sidebar__title">
             <Tooltip content="Select Ship Type">
-              <span className={`flex-shrink-0 ${isSharedGrid ? '!hidden' : ''}`}>
+              <span className={`flex-shrink-0 ${isSharedGridLocal ? '!hidden' : ''}`}>
                 <ShipSelection solving={solving} /> {/* Pass the solving prop here */}
               </span>
             </Tooltip>
@@ -77,7 +81,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
           <GridTable
             grid={grid}
             solving={solving}
-            shared={isSharedGrid}
+            shared={isSharedGridLocal}
             result={result}
             activateRow={activateRow}
             deActivateRow={deActivateRow}
@@ -88,8 +92,8 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
         </Box>
 
         {isLarge ? (
-          <ScrollArea
-            className={`gridContainer__sidebar p-4 ml-4 shadow-md rounded-xl backdrop-blur-xl border-white/5 ${isSharedGrid ? '!hidden' : ''}`}
+          !isSharedGridLocal && <ScrollArea
+            className={`gridContainer__sidebar p-4 ml-4 shadow-md rounded-xl backdrop-blur-xl border-white/5`}
             style={{
               height: `${gridHeight}px`,
             }}
@@ -97,7 +101,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
             <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
           </ScrollArea>
         ) : (
-          <Box className="z-10 items-start flex-grow-0 flex-shrink-0 w-full pt-8">
+          !isSharedGridLocal && <Box className="z-10 items-start flex-grow-0 flex-shrink-0 w-full pt-8">
             <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
           </Box>
         )}

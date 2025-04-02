@@ -27,7 +27,7 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <IconButton variant="surface" disabled={solving}>
+        <IconButton variant="soft" disabled={solving}>
           <GearIcon className="w-6 h-6" />
         </IconButton>
       </DropdownMenu.Trigger>
