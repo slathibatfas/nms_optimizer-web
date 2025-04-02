@@ -29,43 +29,37 @@ const App: React.FC = () => {
 
   return (
     <>
-<div className="flex flex-col min-h-screen">
-  {/* Main Content - Centered */}
-  <div className="flex items-center justify-center flex-grow lg:p-4">
-    {/* Container Box */}
-    <div
-      className="optimizer__container relative min-w-[min-content] max-w-fit mx-auto overflow-hidden rounded-none shadow-lg lg:rounded-xl lg:border-2 lg:shadow-xl backdrop-blur-xl"
-      style={{ borderColor: "var(--gray-a2)" }}
-    >
-      {/* Background Overlay */}
-      <div className="p-0 optimizer__header">
-        <div className="pt-4 pb-2 pl-6 sm:pl-8 sm:pt-4 border-b-1" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-5)" }}>
-          <div className="flex items-center">
-            <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
-            <div>
-              <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
-              <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
-                "Starship Optimizer <span className="font-thin">v0.99.5</span>
-              </span>
+      {/* The main container of the app */}
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        {/* Container Box */}
+        <div
+          className="relative min-w-[min-content] max-w-fit mx-auto overflow-hidden border-1 rounded-none shadow-lg lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5 border-white/5" 
+        >
+          <div className="p-0 optimizer__header">
+            <div className="pt-4 pb-2 pl-6 sm:pl-8 sm:pt-4 border-b-1" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-5)" }}>
+              <div className="flex items-center">
+                <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
+                <div>
+                  <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2 optimizer__header--logo" alt="No Man's Sky Logo" />
+                  <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
+                    Starship Optimizer <span className="font-thin">v0.99.5</span>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
+          {/* Main Layout */}
+          <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} />
         </div>
+
+        {/* Footer Text */}
+        <p className="pb-4 mt-4 text-center lg:pb-0">
+          Built by jbelew (void23 / QQ9Y-EJRS-P8KGW) •{" "}
+          <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+        </p>
       </div>
-      {/* Main Layout */}
-      <div className="absolute z-0 bg-white rounded-none optimizer__overlay opacity-5"></div>
-      <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} />
-    </div>
-  </div>
-
-  {/* Footer - Directly Below Main Content */}
-  <div className="pt-8 font-light text-center lg:p-0">
-    Built by jbelew (void23 / QQ9Y-EJRS-P8KGW) •{" "}
-    <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
-      GitHub
-    </a>
-  </div>
-</div>
-
 
       {showInfoDialog && <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} title="Changelog" />}
       {showInstructionsDialog && <InfoDialog onClose={() => setShowInstructionsDialog(false)} content={<InstructionsContent />} title="Instructions" />}
