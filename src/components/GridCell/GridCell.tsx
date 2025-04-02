@@ -137,7 +137,6 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
             className={cellClassName}
             style={{
               backgroundImage: cell.image ? `url(/assets/img/${cell.image})` : "none",
-              // borderColor: getCellBorderColor(cell), // Use the helper function
             }}
           >
             <div className="flex items-center justify-center w-full h-full">
@@ -158,7 +157,6 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
           className={cellClassName}
           style={{
             backgroundImage: cell.image ? `url(/assets/img/${cell.image})` : "none",
-            // borderColor: getCellBorderColor(cell), // Use the helper function
           }}
         />
       )}

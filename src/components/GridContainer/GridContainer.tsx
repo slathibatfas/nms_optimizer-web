@@ -89,7 +89,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
 
         {isLarge ? (
           <ScrollArea
-            className={`p-4 ml-4 shadow-lg rounded-xl gridContainer__sidebar ${isSharedGrid ? '!hidden' : ''}`}
+            className={`gridContainer__sidebar p-4 ml-4 shadow-xl rounded-xl backdrop-blur-xl border-white/5 ${isSharedGrid ? '!hidden' : ''}`}
             style={{
               height: `${gridHeight}px`,
             }}
@@ -101,7 +101,10 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
             <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
           </Box>
         )}
+
+
       </Flex>
+
     </Box>
   );
 };
