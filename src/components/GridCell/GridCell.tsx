@@ -111,9 +111,9 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
     switch (true) {
       case label.toLowerCase().includes("sigma"):
         return 1;
-      case label.toLowerCase().includes("theta"):
-        return 2;
       case label.toLowerCase().includes("tau"):
+        return 2;
+      case label.toLowerCase().includes("theta"):
         return 3;
       default:
         return 0;

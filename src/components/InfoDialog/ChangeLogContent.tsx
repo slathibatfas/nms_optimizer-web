@@ -9,6 +9,8 @@ const ChangeLogContent: React.FC = () => {
           <li className="infodialog__list-item">Additional tech color color coding.</li>
           <li className="infodialog__list-item">Added upgrade priority labels.</li>
           <li className="infodialog__list-item">Refactored the "Shared" link UI.</li>
+          <li className="infodialog__list-item">More solver refinements (should be finished!).</li>
+          <li className="infodialog__list-item">Improve usage of available space in the gird.</li>
         </ul>
       </div>
       <div className="infodialog__item">

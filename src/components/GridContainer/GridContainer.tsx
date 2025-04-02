@@ -15,7 +15,7 @@ interface GridContainerProps {
 }
 
 const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShowInstructions }) => {
-  const { solving, handleOptimize, gridContainerRef } = useOptimize();
+  const { solving, handleOptimize, gridContainerRef } = useOptimize(); // Get solving from useOptimize
   const { grid, result, activateRow, deActivateRow, resetGrid } = useGridStore();
 
   const shipTypes = useFetchShipTypesSuspense();
@@ -67,8 +67,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
           <h2 className="flex flex-wrap items-start gap-2 mb-4 text-2xl font-semibold tracking-widest uppercase sidebar__title">
             <Tooltip content="Select Ship Type">
               <span className={`flex-shrink-0 ${isSharedGrid ? '!hidden' : ''}`}>
-              
-                <ShipSelection />
+                <ShipSelection solving={solving} /> {/* Pass the solving prop here */}
               </span>
             </Tooltip>
             <span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>PLATFORM:</span>

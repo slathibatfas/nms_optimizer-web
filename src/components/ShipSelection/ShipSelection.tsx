@@ -3,14 +3,18 @@ import React, { useRef } from "react";
 import { DropdownMenu, IconButton } from "@radix-ui/themes";
 import { GearIcon } from "@radix-ui/react-icons";
 import { useFetchShipTypesSuspense, useShipTypesStore } from "../../hooks/useShipTypes";
-import { useGridStore } from "../../store/GridStore"; // Import useGridStore
+import { useGridStore } from "../../store/GridStore";
 
-const ShipSelection: React.FC = () => {
+interface ShipSelectionProps {
+  solving: boolean;
+}
+
+const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
   const shipTypes = useFetchShipTypesSuspense();
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
   const setSelectedShipType = useShipTypesStore((state) => state.setSelectedShipType);
-  const resetGrid = useGridStore((state) => state.resetGrid); // Get resetGrid
-  const previousSelectionRef = useRef<string | null>(null); // Track previous selection
+  const resetGrid = useGridStore((state) => state.resetGrid);
+  const previousSelectionRef = useRef<string | null>(null);
 
   const handleOptionSelect = (option: string) => {
     if (option !== previousSelectionRef.current) {
@@ -23,7 +27,7 @@ const ShipSelection: React.FC = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <IconButton variant="surface">
+        <IconButton variant="surface" disabled={solving}>
           <GearIcon className="w-6 h-6" />
         </IconButton>
       </DropdownMenu.Trigger>
