@@ -6,7 +6,7 @@ const ChangeLogContent: React.FC = () => {
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.99.5 (2025-04-01)</h2>
         <ul className="infodialog__list">
-          <li className="infodialog__list-item">Additional tech color color coding.</li>
+          <li className="infodialog__list-item">Additional tech color coding.</li>
           <li className="infodialog__list-item">Added upgrade priority labels.</li>
           <li className="infodialog__list-item">Refactored the "Shared" link UI.</li>
           <li className="infodialog__list-item">More solver refinements (should be finished!).</li>
