@@ -43,7 +43,7 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({ solving, initialMessage
         <Text className="pt-4 text-2xl font-semibold !tracking-widest messageSpinner__header">{initialMessage}</Text>
         {showAdditionalMessage ? (
           <Text className="text-center" style={{ color: "#e6c133" }}>
-             {`-{{ Found an opportunity to refine the solution! Working ... }}-`}
+             {`-{{ Attempting to refine the solution! }}-`}
           </Text>
         ) : (
           <Text style={{ color: "#e6c133" }}>
