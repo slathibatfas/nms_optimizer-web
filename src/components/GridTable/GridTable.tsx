@@ -149,7 +149,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
               variant="soft"
               className={`gridTable__button gridTable__button--changelog shadow-lg sm:!px-2`}
               onClick={handleShareClick}
-              disabled={isSharedGrid}
+              disabled={isSharedGrid || !hasModulesInGrid}
             >
               <Share1Icon />
               <span className="hidden sm:inline">Share Link</span>
