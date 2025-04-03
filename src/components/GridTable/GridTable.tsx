@@ -7,7 +7,9 @@ import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
 import ShakingWrapper from "../GridShake/GridShake";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
-import { useGridDeserializer } from "../../hooks/useGridDeserializer"; // Import useGridDeserializer
+import { useGridDeserializer } from "../../hooks/useGridDeserializer"; 
+import { useShakeStore } from "../../store/ShakeStore"; 
+
 
 interface GridTableProps {
   grid: Grid;
@@ -19,6 +21,7 @@ interface GridTableProps {
   shared: boolean;
   setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
   setShowInstructions: React.Dispatch<React.SetStateAction<boolean>>;
+  setShaking: React.Dispatch<React.SetStateAction<boolean>>; 
 }
 
 /**
@@ -34,11 +37,12 @@ interface GridTableProps {
  * @param {function} resetGrid - A function to reset the grid
  */
 const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow, resetGrid, solving, setShowChangeLog, setShowInstructions }) => {
-  const [shaking, setShaking] = React.useState(false);
+  // const [shaking, setShaking] = React.useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
   const [columnWidth, setColumnWidth] = useState("40px");
   const { serializeGrid, deserializeGrid } = useGridDeserializer();
   const [isSharedGrid, setIsSharedGrid] = useState(false);
+  const { shaking } = useShakeStore();
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -91,7 +95,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
 
   return (
     <>
-      <ShakingWrapper shaking={shaking}>
+      <ShakingWrapper shaking={shaking} duration={500}>
         <MessageSpinner solving={solving} initialMessage={"OPTIMIZING!"} />
         <div ref={gridRef} className={`gridTable ${solving ? "opacity-50" : ""}`}>
           {grid.cells.map((row, rowIndex) => (
@@ -110,7 +114,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
                     image: cell.image || undefined,
                   }}
                   grid={grid}
-                  setShaking={setShaking}
+                  // setShaking={setShaking}
                   isSharedGrid={isSharedGrid}
                 />
               ))}

@@ -5,6 +5,7 @@ import { useTechStore } from "../../store/TechStore";
 import { IconButton, Flex, Text, Tooltip, Checkbox } from "@radix-ui/themes";
 import { UpdateIcon, ResetIcon, ChevronDownIcon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 import { Accordion } from "radix-ui";
+import { useShakeStore } from "../../store/ShakeStore";
 
 interface TechTreeRowProps {
   label: string;
@@ -23,12 +24,14 @@ type IconButtonColor = ColorMapKey;
 
 export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOptimize, solving, modules, techImage }) => {
   const hasTechInGrid = useGridStore((state) => state.hasTechInGrid(tech));
+  const isGridFull = useGridStore((state) => state.isGridFull(tech));
   const handleResetGridTech = useGridStore((state) => state.resetGridTech);
   const { max_bonus, clearTechMaxBonus, checkedModules, setCheckedModules, clearCheckedModules } = useTechStore();
   const techMaxBonus = max_bonus?.[tech] ?? 0;
   const tooltipLabel = hasTechInGrid ? "Update" : "Solve";
   const IconComponent = hasTechInGrid ? UpdateIcon : DoubleArrowLeftIcon;
   const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
+  const { setShaking } = useShakeStore();
 
   useEffect(() => {
     return () => {
@@ -50,9 +53,16 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
   };
 
   const handleOptimizeClick = async () => {
-    handleResetGridTech(tech);
-    clearTechMaxBonus(tech);
-    await handleOptimize(tech);
+    if (isGridFull && !hasTechInGrid) {
+      setShaking(true); // Trigger the shake
+      setTimeout(() => {
+        setShaking(false); // Stop the shake after a delay
+      }, 500); // Adjust the duration as needed
+    } else {
+      handleResetGridTech(tech);
+      clearTechMaxBonus(tech);
+      await handleOptimize(tech);
+    }
   };
 
   // Get the checked modules for the current tech, or an empty array if undefined
@@ -80,7 +90,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
           onClick={handleOptimizeClick}
           disabled={solving}
           variant="soft"
-          color={techColor as IconButtonColor} // Use the techColor string directly
+          color={techColor as IconButtonColor}
           className="z-10 techRow__optimizeButton"
           style={{ backgroundImage: `url(${imagePath})` }}
         >

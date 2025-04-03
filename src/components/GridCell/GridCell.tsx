@@ -3,6 +3,7 @@ import { Tooltip } from "@radix-ui/themes";
 import { Grid } from "../../store/GridStore";
 import { useGridStore } from "../../store/GridStore";
 import { useTechStore } from "../../store/TechStore";
+import { useShakeStore } from "../../store/ShakeStore"; 
 
 // TODO: Configure jest so this doesn't interfere in the future.
 // import "./GridCell.css";
@@ -20,7 +21,7 @@ interface GridCellProps {
   };
   grid: Grid;
   isSharedGrid: boolean;
-  setShaking: React.Dispatch<React.SetStateAction<boolean>>;
+  // setShaking: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /**
@@ -30,14 +31,14 @@ interface GridCellProps {
  * @param columnIndex - The column index of the cell
  * @param cell - The cell object, containing properties like label, supercharged, active, and image
  * @param grid - The grid object, containing all cells and grid properties
- * @param setShaking - A function to set the shaking state of the grid
  */
-const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, setShaking, isSharedGrid }) => {
+const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, isSharedGrid }) => {
   const toggleCellActive = useGridStore((state) => state.toggleCellActive);
   const toggleCellSupercharged = useGridStore((state) => state.toggleCellSupercharged);
   const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
   const [longPressTriggered, setLongPressTriggered] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const { setShaking } = useShakeStore();
 
   /**
    * Handles a click on the cell.
@@ -60,9 +61,11 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
       const totalSupercharged = grid.cells.flat().filter((cell) => cell.supercharged).length;
       const currentCellSupercharged = grid.cells[rowIndex][columnIndex]?.supercharged;
       if (totalSupercharged >= 4 && !currentCellSupercharged) {
-        setShaking(true);
-        setTimeout(() => setShaking(false), 500);
-        return;
+        setShaking(true); // Trigger the shake
+        setTimeout(() => {
+          setShaking(false); // Stop the shake after a delay
+        }, 500);
+        return
       }
       toggleCellSupercharged(rowIndex, columnIndex);
     }

@@ -56,7 +56,7 @@ describe("GridCell Component", () => {
     (useGridStore as jest.MockedFunction<typeof useGridStore>).mockReturnValue(mockGridStore);
     render(
       <TooltipProvider>
-        <GridCell rowIndex={0} columnIndex={0} cell={mockCell} grid={mockGrid} setShaking={mockSetShaking} isSharedGrid={false} />
+        <GridCell rowIndex={0} columnIndex={0} cell={mockCell} grid={mockGrid} isSharedGrid={false} />
       </TooltipProvider>
     );
     expect(screen.getByRole("gridCell")).toBeInTheDocument();
@@ -87,7 +87,7 @@ describe("GridCell Component", () => {
     (useGridStore as jest.MockedFunction<typeof useGridStore>).mockReturnValue(mockGridStore);
     render(
       <TooltipProvider>
-        <GridCell rowIndex={0} columnIndex={0} cell={mockCell} grid={mockGrid} setShaking={mockSetShaking} isSharedGrid={false}/>
+        <GridCell rowIndex={0} columnIndex={0} cell={mockCell} grid={mockGrid}  isSharedGrid={false}/>
       </TooltipProvider>
     );
     const gridCell = screen.getByRole("gridCell");
@@ -127,7 +127,7 @@ describe("GridCell Component", () => {
     const mockCellWithImage: Cell = { ...mockCell, image: "test.jpg" };
     render(
       <TooltipProvider>
-        <GridCell rowIndex={0} columnIndex={0} cell={mockCellWithImage} grid={mockGrid} setShaking={mockSetShaking} isSharedGrid={false}/>
+        <GridCell rowIndex={0} columnIndex={0} cell={mockCellWithImage} grid={mockGrid} isSharedGrid={false}/>
       </TooltipProvider>
     );
     expect(screen.getByRole("gridCell")).toHaveStyle({ backgroundImage: `url(/assets/img/test.jpg)` });

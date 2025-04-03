@@ -48,10 +48,7 @@ export const createEmptyCell = (supercharged = false, active = true): Cell => ({
 });
 
 export const createGrid = (width: number, height: number): Grid => ({
-  cells: Array.from({ length: height }, () =>
-    Array.from({ length: width }, () =>
-      createEmptyCell(false, true)
-    )  ),
+  cells: Array.from({ length: height }, () => Array.from({ length: width }, () => createEmptyCell(false, true))),
   width,
   height,
 });
@@ -66,6 +63,7 @@ export type GridStore = {
   activateRow: (rowIndex: number) => void;
   deActivateRow: (rowIndex: number) => void;
   hasTechInGrid: (tech: string) => boolean;
+  isGridFull: (tech: string) => boolean;
   resetGridTech: (tech: string) => void;
   toggleCellActive: (rowIndex: number, columnIndex: number) => void;
   toggleCellSupercharged: (rowIndex: number, columnIndex: number) => void;
@@ -73,7 +71,6 @@ export type GridStore = {
   setCellSupercharged: (rowIndex: number, columnIndex: number, supercharged: boolean) => void;
   isSharedGrid: boolean; // New state variable
   setIsSharedGrid: (isShared: boolean) => void; // New setter function
-
 };
 
 export const useGridStore = create<GridStore>((set, get) => ({
@@ -104,9 +101,7 @@ export const useGridStore = create<GridStore>((set, get) => ({
         ...state.grid,
         cells: state.grid.cells.map((row, rIdx) =>
           row.map((cell, cIdx) =>
-            rIdx === rowIndex && cIdx === columnIndex
-              ? { ...cell, active: !cell.active, supercharged: !cell.active ? false : cell.supercharged }
-              : cell
+            rIdx === rowIndex && cIdx === columnIndex ? { ...cell, active: !cell.active, supercharged: !cell.active ? false : cell.supercharged } : cell
           )
         ),
       },
@@ -123,11 +118,7 @@ export const useGridStore = create<GridStore>((set, get) => ({
         grid: {
           ...state.grid,
           cells: state.grid.cells.map((row, rIdx) =>
-            row.map((cell, cIdx) =>
-              rIdx === rowIndex && cIdx === columnIndex
-                ? { ...cell, supercharged: !cell.supercharged }
-                : cell
-            )
+            row.map((cell, cIdx) => (rIdx === rowIndex && cIdx === columnIndex ? { ...cell, supercharged: !cell.supercharged } : cell))
           ),
         },
       };
@@ -140,9 +131,7 @@ export const useGridStore = create<GridStore>((set, get) => ({
         ...state.grid,
         cells: state.grid.cells.map((row, rIdx) =>
           row.map((cell, cIdx) =>
-            rIdx === rowIndex && cIdx === columnIndex
-              ? { ...cell, active: active, supercharged: active ? cell.supercharged : false }
-              : cell
+            rIdx === rowIndex && cIdx === columnIndex ? { ...cell, active: active, supercharged: active ? cell.supercharged : false } : cell
           )
         ),
       },
@@ -159,11 +148,7 @@ export const useGridStore = create<GridStore>((set, get) => ({
         grid: {
           ...state.grid,
           cells: state.grid.cells.map((row, rIdx) =>
-            row.map((cell, cIdx) =>
-              rIdx === rowIndex && cIdx === columnIndex
-                ? { ...cell, supercharged: supercharged }
-                : cell
-            )
+            row.map((cell, cIdx) => (rIdx === rowIndex && cIdx === columnIndex ? { ...cell, supercharged: supercharged } : cell))
           ),
         },
       };
@@ -210,6 +195,10 @@ export const useGridStore = create<GridStore>((set, get) => ({
       },
     }));
   },
-  
-
+  isGridFull: (): boolean => {
+    const { grid } = get();
+    const activeCells = grid.cells.flat().filter((cell) => cell.active);
+    const allActiveCellsHaveModules = activeCells.every((cell) => cell.module !== null);
+    return allActiveCellsHaveModules;
+  },
 }));
