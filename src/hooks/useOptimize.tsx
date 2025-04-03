@@ -4,7 +4,8 @@ import { useGridStore, Grid, ApiResponse } from "../store/GridStore";
 import { useOptimizeStore } from "../store/OptimizeStore";
 import { API_URL } from "../constants";
 import { useTechStore } from "../store/TechStore";
-import { useShipTypesStore } from "./useShipTypes"; // Import useShipTypesStore
+import { useShipTypesStore } from "./useShipTypes";
+import { useSSE } from "./useSSE"; // Import useSSE
 
 interface UseOptimizeReturn {
   solving: boolean;
@@ -12,6 +13,7 @@ interface UseOptimizeReturn {
   gridContainerRef: React.MutableRefObject<HTMLDivElement | null>;
   showError: boolean;
   setShowError: React.Dispatch<React.SetStateAction<boolean>>;
+  stopStream: () => void;
 }
 
 export const useOptimize = (): UseOptimizeReturn => {
@@ -20,7 +22,8 @@ export const useOptimize = (): UseOptimizeReturn => {
   const gridContainerRef = useRef<HTMLDivElement>(null);
   const { showError, setShowError: setShowErrorStore } = useOptimizeStore();
   const { checkedModules } = useTechStore();
-  const selectedShipType = useShipTypesStore((state) => state.selectedShipType); // Get selectedShipType
+  const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
+  const { startStream, stopStream } = useSSE(); // Use the useSSE hook
 
   useEffect(() => {
     if (solving && gridContainerRef.current) {
@@ -38,9 +41,11 @@ export const useOptimize = (): UseOptimizeReturn => {
     }
   }, [solving]);
 
+  // --- Optimization Request Logic ---
   const handleOptimize = useCallback(
     async (tech: string) => {
       setSolving(true);
+      startStream(); // Start the stream when optimization begins
       try {
         const updatedGrid: Grid = {
           ...grid,
@@ -53,7 +58,7 @@ export const useOptimize = (): UseOptimizeReturn => {
                     label: "",
                     type: "",
                     bonus: 0.0,
-                    adjacency_bonus: 0.0, // Reset adjacency_bonus here
+                    adjacency_bonus: 0.0,
                     total: 0.0,
                     value: 0,
                     image: null,
@@ -70,7 +75,7 @@ export const useOptimize = (): UseOptimizeReturn => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            ship: selectedShipType, // Use selectedShipType here
+            ship: selectedShipType,
             tech,
             player_owned_rewards: checkedModules[tech] || [],
             grid: updatedGrid,
@@ -78,36 +83,38 @@ export const useOptimize = (): UseOptimizeReturn => {
         });
 
         if (!response.ok) {
-          console.log(tech)
           const errorData = await response.json();
-          const errorMessage = errorData.message || "Failed to fetch data";
-          throw new Error(errorMessage);
+          throw new Error(errorData.message || `Failed to fetch data: ${response.status} ${response.statusText}`);
         }
 
         const data: ApiResponse = await response.json();
         setResult(data, tech);
-        setGrid(data.grid); // Directly set the grid from the response
+        setGrid(data.grid);
         console.log("Response from API:", data.grid);
       } catch (error) {
         console.error("Error during optimization:", error);
-        console.log(grid)
         setResult(null, tech);
         setShowErrorStore(true);
       } finally {
-        console.log("useOptimize: finally block called");
         setSolving(false);
       }
     },
-    [grid, setGrid, setResult, setShowErrorStore, checkedModules, selectedShipType] // Add selectedShipType here
+    [grid, setGrid, setResult, setShowErrorStore, checkedModules, selectedShipType, startStream]
   );
 
   const setShowError: React.Dispatch<React.SetStateAction<boolean>> = (value) => {
-    if (typeof value === 'function') {
+    if (typeof value === "function") {
       setShowErrorStore(value(showError));
     } else {
       setShowErrorStore(value);
     }
   };
 
-  return { solving, handleOptimize, gridContainerRef, showError, setShowError };
+  useEffect(() => {
+    if (!solving) {
+      stopStream();
+    }
+  }, [solving, stopStream]);
+
+  return { solving, handleOptimize, gridContainerRef, showError, setShowError, stopStream };
 };

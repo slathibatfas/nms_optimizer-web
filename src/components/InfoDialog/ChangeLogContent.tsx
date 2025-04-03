@@ -4,6 +4,14 @@ const ChangeLogContent: React.FC = () => {
   return (
     <>
       <div className="infodialog__item">
+        <h2 className="mb-2 font-bold">Version 0.99.9 (2025-04-02)</h2>
+        <ul className="infodialog__list">
+          <li className="infodialog__list-item">Improved scoring algorithm.</li>
+          <li className="infodialog__list-item">Added support for Living ships.</li>
+          <li className="infodialog__list-item">Various bug fixes and UI enhancements.</li>
+        </ul>
+      </div>
+      <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.99.5 (2025-04-01)</h2>
         <ul className="infodialog__list">
           <li className="infodialog__list-item">Additional tech color coding.</li>

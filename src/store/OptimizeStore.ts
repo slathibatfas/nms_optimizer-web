@@ -1,12 +1,12 @@
-// src/store/useOptimizeStore.ts
+// src/store/OptimizeStore.tsx
 import { create } from "zustand";
 
-interface OptimizeStore {
+interface OptimizeState {
   showError: boolean;
-  setShowError: (value: boolean) => void;
+  setShowError: (showError: boolean) => void;
 }
 
-export const useOptimizeStore = create<OptimizeStore>((set) => ({
+export const useOptimizeStore = create<OptimizeState>((set) => ({
   showError: false,
-  setShowError: (value) => set({ showError: value }),
+  setShowError: (showError) => set({ showError }),
 }));

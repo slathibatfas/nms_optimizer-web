@@ -102,8 +102,8 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
 
   const techColor = getTechColor(cell.tech ?? "");
   const cellClassName = `gridCell gridCell--interactive shadow-md sm:border-2 border-1 sm:rounded-lg transition-all
-  ${cell.supercharged ? "gridCell--supercharged shadow-lg" : ""}
-  ${cell.active ? "gridCell--active shadow-lg" : "gridCell--inactive shadow-lg"}
+  ${cell.supercharged ? "gridCell--supercharged shadow-md" : ""}
+  ${cell.active ? "gridCell--active shadow-md" : "gridCell--inactive shadow-md"}
   ${cell.adjacency_bonus === 0 && cell.image ? "gridCell--black" : techColor ? `gridCell--${techColor}` : ""}`.trim();
 
   const getUpgradePriority = (label: string | undefined): number => {

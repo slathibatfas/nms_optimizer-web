@@ -1,6 +1,7 @@
 // src/hooks/useShipTypes.tsx
 import { API_URL } from "../constants";
 import { create } from "zustand";
+import { useOptimizeStore } from "../store/OptimizeStore"; // Import useOptimizeStore
 
 // Define the structure of the ship types data
 export interface ShipTypes {
@@ -58,33 +59,41 @@ const cache = new Map<string, Resource<ShipTypes>>(); // Store successful fetche
  * @returns {Resource<ShipTypes>} An object with a read method that can be used with React Suspense.
  */
 export function fetchShipTypes(): Resource<ShipTypes> {
-  const cacheKey = "shipTypes"; // Use a constant key for ship types
+  const cacheKey = "shipTypes";
+  const { setShowError } = useOptimizeStore.getState();
 
-  // Check if the resource is already in the cache
   if (!cache.has(cacheKey)) {
-    // Create a promise to fetch the ship types
     const promise = fetch(`${API_URL}/ship_types`)
       .then((res) => {
-        // Check for HTTP errors
+        // Check for HTTP errors (4xx or 5xx status codes)
         if (!res.ok) {
+          console.error(`HTTP error fetching ship types: ${res.status} ${res.statusText}`);
           throw new Error(`HTTP error! status: ${res.status}`);
         }
-        // Return the JSON response
         return res.json();
       })
       .then((data: ShipTypes) => {
-        console.log(`Fetched ship types:`, data); // Log the data here
+        console.log(`Fetched ship types:`, data);
         return data;
+      })
+      .catch((error) => {
+        console.error("Error fetching ship types:", error);
+        console.log("useShipTypes.tsx: catch block executed"); // Add this line
+        // Check if it's a network error (e.g., connection refused)
+        if (error instanceof TypeError && error.message === "Failed to fetch") {
+          console.error("Likely a network issue or server not running.");
+        }
+        console.log("useShipTypes.tsx: setShowError(true) about to be called"); // Add this line
+        setShowError(true); // Set showError to true on any error
+        console.log("useShipTypes.tsx: setShowError(true) called"); // Add this line
+        throw error; // Re-throw to be caught by Suspense
       });
 
-    // Store the promise in the cache
     cache.set(cacheKey, createResource(promise));
   }
 
-  // Return the cached resource
   return cache.get(cacheKey)!;
 }
-
 /**
  * Custom React hook to fetch ship types using Suspense.
  *
