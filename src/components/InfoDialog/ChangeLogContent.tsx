@@ -4,7 +4,7 @@ const ChangeLogContent: React.FC = () => {
   return (
     <>
       <div className="infodialog__item">
-  <h2 className="mb-2 font-bold">Version 0.99.9 (Release Candidate 1) (2025-04-03)</h2>
+  <h2 className="mb-2 font-bold">Version 1.0 (Release Candidate 1) (2025-04-03)</h2>
   <ul className="infodialog__list">
     <li className="infodialog__list-item">
       Completely refactored scoring algorithm. Please <a href="https://github.com/jbelew/nms_optimizer-web/issues" className="underline" target="_blank" rel="noopener noreferrer">file a report</a> if you identify a persistent issue. Be sure to include a link to your solve map.

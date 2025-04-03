@@ -58,8 +58,11 @@
   border-color:var(--amber-9) !important;
   background-color: var(--amber-a4) !important;
   background-blend-mode: overlay;
-  transition: background-color 0.25s ease;
+  box-shadow: 0 0 4px 0px var(--amber-a7); /* Soft glow effect */
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  animation: pulseGlow .5s infinite alternate ease-in-out;
 }
+
 
 .gridCell--supercharged:hover {
   /* Styles for supercharged grid cells */
@@ -114,4 +117,13 @@
 
 .gridCell--gray {
   border-color: var(--gray-12);
+}
+
+@keyframes pulseGlow {
+  from {
+    box-shadow: 0 0 4px 0px var(--amber-a7);
+  }
+  to {
+    box-shadow: 0 0 4px 2px var(--amber-a8);
+  }
 }

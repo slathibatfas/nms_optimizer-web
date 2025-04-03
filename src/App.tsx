@@ -40,7 +40,7 @@ const App: React.FC = () => {
               <div >
                 <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2.5 optimizer__header--logo" alt="No Man's Sky Logo" />
                 <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
-                  Starship Optimizer <span className="font-thin">v0.99.9 (RC1)</span>
+                  Starship Optimizer <span className="font-thin">v1.0 (RC1)</span>
                 </span>
               </div>
             </div>
@@ -55,7 +55,7 @@ const App: React.FC = () => {
 
         {/* Footer Text */}
         <p className="pb-4 mt-4 text-center lg:pb-0">
-          Built by jbelew (void23 / QQ9Y-EJRS-P8KGW) •{" "}
+          Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
           <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
