@@ -32,10 +32,10 @@ const App: React.FC = () => {
       <div className="flex flex-col items-center justify-center lg:min-h-screen">
         {/* Container Box */}
         <div className="relative mx-auto overflow-hidden border rounded-none shadow-lg border-white/5 lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
-          <div className="pt-3 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-6" style={{ borderColor: "var(--gray-a1)", backgroundColor: "var(--gray-2)" }}>
+          <div className="pt-3 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-6 bg-black/40" style={{ borderColor: "var(--gray-a1)" }}>
             <div className="flex items-center">
               <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
-              <div>
+              <div >
                 <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2.5 optimizer__header--logo" alt="No Man's Sky Logo" />
                 <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
                   Starship Optimizer <span className="font-thin">v0.99.9</span>
