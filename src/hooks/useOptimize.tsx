@@ -5,7 +5,6 @@ import { useOptimizeStore } from "../store/OptimizeStore";
 import { API_URL } from "../constants";
 import { useTechStore } from "../store/TechStore";
 import { useShipTypesStore } from "./useShipTypes";
-import { useSSE } from "./useSSE"; // Import useSSE
 
 interface UseOptimizeReturn {
   solving: boolean;
@@ -13,7 +12,6 @@ interface UseOptimizeReturn {
   gridContainerRef: React.MutableRefObject<HTMLDivElement | null>;
   showError: boolean;
   setShowError: React.Dispatch<React.SetStateAction<boolean>>;
-  stopStream: () => void;
 }
 
 export const useOptimize = (): UseOptimizeReturn => {
@@ -23,7 +21,6 @@ export const useOptimize = (): UseOptimizeReturn => {
   const { showError, setShowError: setShowErrorStore } = useOptimizeStore();
   const { checkedModules } = useTechStore();
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
-  const { startStream, stopStream } = useSSE(); // Use the useSSE hook
 
   useEffect(() => {
     if (solving && gridContainerRef.current) {
@@ -45,7 +42,7 @@ export const useOptimize = (): UseOptimizeReturn => {
   const handleOptimize = useCallback(
     async (tech: string) => {
       setSolving(true);
-      startStream(); // Start the stream when optimization begins
+      // tartStream(); // Start the stream when optimization begins
       try {
         const updatedGrid: Grid = {
           ...grid,
@@ -99,7 +96,7 @@ export const useOptimize = (): UseOptimizeReturn => {
         setSolving(false);
       }
     },
-    [grid, setGrid, setResult, setShowErrorStore, checkedModules, selectedShipType, startStream]
+    [grid, setGrid, setResult, setShowErrorStore, checkedModules, selectedShipType]
   );
 
   const setShowError: React.Dispatch<React.SetStateAction<boolean>> = (value) => {
@@ -110,11 +107,5 @@ export const useOptimize = (): UseOptimizeReturn => {
     }
   };
 
-  useEffect(() => {
-    if (!solving) {
-      stopStream();
-    }
-  }, [solving, stopStream]);
-
-  return { solving, handleOptimize, gridContainerRef, showError, setShowError, stopStream };
+  return { solving, handleOptimize, gridContainerRef, showError, setShowError };
 };
