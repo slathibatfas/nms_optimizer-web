@@ -8,6 +8,8 @@ import ErrorContent from "./components/InfoDialog/ErrorContent";
 import NMSLogo from "./assets/svg/nms_logo.svg";
 import NMSIcon from "./assets/img/nms_icon2.webp";
 import { useOptimizeStore } from "./store/OptimizeStore";
+import ErrorBoundary from './components/ErrorBoundry/ErrorBoundry';
+
 
 const App: React.FC = () => {
   const [showInfoDialog, setShowInfoDialog] = useState(false);
@@ -32,7 +34,7 @@ const App: React.FC = () => {
       <div className="flex flex-col items-center justify-center lg:min-h-screen">
         {/* Container Box */}
         <div className="relative mx-auto overflow-hidden border rounded-none shadow-lg border-white/5 lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
-          <div className="pt-3 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-6 bg-black/40" style={{ borderColor: "var(--gray-a1)" }}>
+          <div className="pt-3 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-6 bg-black/50" style={{ borderColor: "var(--gray-a1)" }}>
             <div className="flex items-center">
               <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
               <div >
@@ -45,7 +47,9 @@ const App: React.FC = () => {
           </div>
           {/* Main Layout */}
           <div className="flex flex-col lg:flex-row">
+          <ErrorBoundary>
             <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} />
+            </ErrorBoundary>
           </div>
         </div>
 

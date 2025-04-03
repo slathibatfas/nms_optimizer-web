@@ -1,7 +1,6 @@
 // src/hooks/useShipTypes.tsx
 import { API_URL } from "../constants";
 import { create } from "zustand";
-import { useOptimizeStore } from "../store/OptimizeStore"; // Import useOptimizeStore
 
 // Define the structure of the ship types data
 export interface ShipTypes {
@@ -60,7 +59,6 @@ const cache = new Map<string, Resource<ShipTypes>>(); // Store successful fetche
  */
 export function fetchShipTypes(): Resource<ShipTypes> {
   const cacheKey = "shipTypes";
-  const { setShowError } = useOptimizeStore.getState();
 
   if (!cache.has(cacheKey)) {
     const promise = fetch(`${API_URL}/ship_types`)
@@ -78,14 +76,11 @@ export function fetchShipTypes(): Resource<ShipTypes> {
       })
       .catch((error) => {
         console.error("Error fetching ship types:", error);
-        console.log("useShipTypes.tsx: catch block executed"); // Add this line
         // Check if it's a network error (e.g., connection refused)
         if (error instanceof TypeError && error.message === "Failed to fetch") {
           console.error("Likely a network issue or server not running.");
         }
-        console.log("useShipTypes.tsx: setShowError(true) about to be called"); // Add this line
-        setShowError(true); // Set showError to true on any error
-        console.log("useShipTypes.tsx: setShowError(true) called"); // Add this line
+        // setShowError(true); // Set showError to true on any error
         throw error; // Re-throw to be caught by Suspense
       });
 
