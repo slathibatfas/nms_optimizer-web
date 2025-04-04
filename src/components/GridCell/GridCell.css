@@ -42,21 +42,10 @@
   transition: background-color 0.25s ease;
 }
 
-.gridCell--active #red {
-  border-color: var(--red-9);
-  background-color: var(--red-a2);
-  transition: border-color 0.25s ease;
-}
-
-.gridCell--active:hover #red {
-  background-color: var(--red-a5);
-  transition: background-color 0.25s ease;
-}
-
 .gridCell--supercharged {
   /* Styles for supercharged grid cells */
-  border-color:var(--amber-9) !important;
-  background-color: var(--amber-a4) !important;
+  border-color:var(--amber-11) !important;
+  background-color: var(--amber-a3) !important;
   background-blend-mode: overlay;
   box-shadow: 0 0 4px 0px var(--amber-a7); /* Soft glow effect */
   transition: background-color 0.25s ease, box-shadow 0.25s ease;
@@ -65,8 +54,7 @@
 
 
 .gridCell--supercharged:hover {
-  /* Styles for supercharged grid cells */
-  background-color: var(--yellow-a7) ;
+  background-color: var(--amber-a5) !important;
   transition: background-color 0.25s ease;
 }
 
@@ -76,11 +64,11 @@
 }
 
 .gridCell--purple {
-  border-color: var(--purple-10);
+  border-color: var(--purple-11);
 }
 
 .gridCell--green {
-  border-color: var(--green-10);
+  border-color: var(--green-11);
 }
 
 .gridCell--cyan {
@@ -92,7 +80,7 @@
 }
 
 .gridCell--iris {
-  border-color: var(--iris-11);
+  border-color: var(--iris-10);
 }
 
 .gridCell--yellow {
@@ -104,11 +92,11 @@
 }
 
 .gridCell--jade {
-  border-color: var(--jade-10);
+  border-color: var(--jade-11);
 }
 
 .gridCell--orange {
-  border-color: var(--orange-10);
+  border-color: var(--orange-11);
 }
 
 .gridCell--black {
