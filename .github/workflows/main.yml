@@ -28,13 +28,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Create Vite environment file with build version
-        run: |
-          echo "VITE_BUILD_VERSION=build-${{ github.run_number }}" > .env.production
-
       - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Set Heroku config var for build version
         run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
+          heroku config:set VITE_BUILD_VERSION=build-${{ github.run_number }} --app nms-optimizer-web
 
       - uses: akhileshns/heroku-deploy@v3.14.15
         with:
