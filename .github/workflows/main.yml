@@ -23,13 +23,16 @@ jobs:
 
       - name: Run Jest tests in CI mode
         run: npm run test:ci  # Use the test:ci script
+        
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install Heroku CLI
-        run: curl https://cli-assets.heroku.com/install.sh | sh
+      - name: Login to Heroku
+        uses: heroku/actions/setup@v1
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
 
       - name: Set Heroku config var for build version
         run: |
@@ -37,6 +40,7 @@ jobs:
 
       - uses: akhileshns/heroku-deploy@v3.14.15
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "nms-optimizer-web"
           heroku_email: "john.belew@gmail.com"
+
