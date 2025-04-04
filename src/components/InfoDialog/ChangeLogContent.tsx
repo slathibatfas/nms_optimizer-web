@@ -13,6 +13,7 @@ const ChangeLogContent: React.FC = () => {
             </a>{" "}
             if you identify a persistent issue. Be sure to include a <strong>Share Link</strong> to your solve map.
           </li>
+          <li className="infodialog__list-item">Calculations now take into account greater and lesser adjacency.</li>
           <li className="infodialog__list-item">Improved solver opportunity detection.</li>
           <li className="infodialog__list-item">
             Implemented conditional algorithm selection. If a technology has fewer than 6 modules, the solver will use the brute force method; otherwise, it
