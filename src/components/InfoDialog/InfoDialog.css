@@ -19,7 +19,6 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  font-weight: 200;
   transform: translate(-50%, -50%);
   width: 90vw;
   max-width: 512px;
