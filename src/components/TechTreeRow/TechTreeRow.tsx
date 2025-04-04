@@ -42,10 +42,10 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
   const handleReset = () => {
     handleResetGridTech(tech);
     clearTechMaxBonus(tech);
-  };
+  }; 
 
   const handleCheckboxChange = (moduleId: string) => {
-    setCheckedModules(tech, (prevChecked = []) => {
+    setCheckedModules(tech, (prevChecked = []) => { // Provide a default empty array
       // Provide a default empty array
       const isChecked = prevChecked.includes(moduleId);
       return isChecked ? prevChecked.filter((id) => id !== moduleId) : [...prevChecked, moduleId];
