@@ -20,19 +20,19 @@ type Resource<T> = {
  * if the resource is pending, or the error if it failed, or return the result if successful.
  */
 const createResource = <T,>(promise: Promise<T>): Resource<T> => {
-  let status: "pending" | "success" | "error" = "pending";
-  let result: T;
-  let error: Error;
+  let status: "pending" | "success" | "error" = "pending"; // Initial status of the resource
+  let result: T; // Variable to store the resolved value of the promise
+  let error: Error; // Variable to store any error that occurs during promise resolution
 
   // Create a suspender by handling the promise
   const suspender = promise
     .then((res) => {
-      status = "success";
-      result = res;
+      status = "success"; // Update status to success when the promise resolves
+      result = res; // Store the resolved value
     })
     .catch((err) => {
-      status = "error";
-      error = err;
+      status = "error"; // Update status to error if the promise rejects
+      error = err; // Store the error
     });
 
   return {
@@ -43,7 +43,7 @@ const createResource = <T,>(promise: Promise<T>): Resource<T> => {
      * @returns {T} The result of the promise if successful.
      */
     read() {
-      if (status === "pending") throw suspender; // Throw the promise for suspense
+      if (status === "pending") throw suspender; // Throw the promise for suspense, if it's still pending
       if (status === "error") throw error; // Throw the error if there was one
       return result!; // Return the result if successful
     },
@@ -61,6 +61,7 @@ export function fetchShipTypes(): Resource<ShipTypes> {
   const cacheKey = "shipTypes";
 
   if (!cache.has(cacheKey)) {
+    // Create a promise to fetch the ship types
     const promise = fetch(`${API_URL}/ship_types`)
       .then((res) => {
         // Check for HTTP errors (4xx or 5xx status codes)
@@ -80,21 +81,25 @@ export function fetchShipTypes(): Resource<ShipTypes> {
         if (error instanceof TypeError && error.message === "Failed to fetch") {
           console.error("Likely a network issue or server not running.");
         }
-        // setShowError(true); // Set showError to true on any error
         throw error; // Re-throw to be caught by Suspense
       });
 
+    // Store the promise in the cache
     cache.set(cacheKey, createResource(promise));
   }
 
+  // Return the cached resource
   return cache.get(cacheKey)!;
 }
 /**
  * Custom React hook to fetch ship types using Suspense.
+ * Utilizes a cached resource to minimize unnecessary network requests.
  *
  * @returns {ShipTypes} The fetched ship types data.
+ * @throws Will throw the promise if the fetch is pending, or an error if it failed.
  */
 export function useFetchShipTypesSuspense(): ShipTypes {
+  // Retrieve and return the ship types resource, triggering Suspense if necessary
   return fetchShipTypes().read();
 }
 
