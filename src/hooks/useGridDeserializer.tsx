@@ -1,6 +1,5 @@
-// src/hooks/useGridDeserializer.tsx
 import { useCallback, useEffect } from "react";
-import { useGridStore, Grid, Cell } from "../store/GridStore";
+import { useGridStore, Grid, createGrid } from "../store/GridStore";
 import { API_URL } from "../constants";
 import { useShipTypesStore } from "./useShipTypes"; // Import useShipTypesStore
 
@@ -50,41 +49,26 @@ const compressRLE = (input: string): string => {
 const decompressRLE = (input: string): string => {
   if (!input) return "";
   let decompressed = "";
-  for (let i = 0; i < input.length; i++) {
-    if (isNaN(parseInt(input[i + 1]))) {
-      decompressed += input[i];
+  let i = 0;
+  while (i < input.length) {
+    const currentChar = input[i];
+    let nextChar = input[i + 1];
+    if (isNaN(parseInt(nextChar))) {
+      decompressed += currentChar;
+      i++;
     } else {
-      const count = parseInt(input[i + 1]);
-      decompressed += input[i].repeat(count);
+      let count = "";
+      while (!isNaN(parseInt(nextChar))) {
+        count += nextChar;
+        i++;
+        nextChar = input[i + 1];
+      }
+      decompressed += currentChar.repeat(parseInt(count));
       i++;
     }
   }
   return decompressed;
 };
-
-const createEmptyCell = (supercharged = false, active = true): Cell => ({
-  active,
-  adjacency: false,
-  adjacency_bonus: 0.0,
-  bonus: 0.0,
-  image: null,
-  module: null,
-  label: "",
-  sc_eligible: false,
-  supercharged: supercharged,
-  tech: null, // <--- Correct: tech: null
-  total: 0.0,
-  type: "",
-  value: 0,
-});
-
-const createGrid = (width: number, height: number): Grid => ({
-  cells: Array.from({ length: height }, () =>
-    Array.from({ length: width }, () => createEmptyCell(false, true))
-  ),
-  width,
-  height,
-});
 
 // --- Grid Serialization/Deserialization Logic ---
 const serialize = (grid: Grid): string => {
@@ -151,7 +135,6 @@ const deserialize = async (serializedGrid: string, shipType: string): Promise<Gr
     }, {});
 
     const newGrid = createGrid(10, 6);
-    let index = 0;
 
     // Fetch modules directly here, using the shipType
     const modulesResponse = await fetch(`${API_URL}/tech_tree/${shipType}`);
@@ -172,25 +155,22 @@ const deserialize = async (serializedGrid: string, shipType: string): Promise<Gr
       }
     }
 
-    // Log the modulesMap for inspection
-    console.log("useGridDeserializer.tsx: modulesMap:", modulesMap);
-
+    let index = 0;
     for (let r = 0; r < newGrid.height; r++) {
       for (let c = 0; c < newGrid.width; c++) {
         const char = gridString[index];
         newGrid.cells[r][c].active = char !== "0";
         newGrid.cells[r][c].supercharged = char === "2";
+
         const techChar = decompressedTech[index];
-        const techName = techChar === " " ? null : techMap[techChar]; // Correct: Handle tech: null
+        const techName = techChar === " " ? null : techMap[techChar];
         const moduleChar = decompressedModule[index];
-        const moduleName = moduleChar === " " ? null : moduleMap[moduleChar];
+        const moduleId = moduleChar === " " ? null : moduleMap[moduleChar];
 
-        if (newGrid.cells[r][c].tech === undefined) {
-          newGrid.cells[r][c].tech = null; // Or "" if you prefer an empty string
-        }
+        newGrid.cells[r][c].tech = techName;
 
-        if (moduleName && techName) {
-          const moduleData = modulesMap[techName]?.[moduleName]; // Look up by tech type and module ID
+        if (moduleId && techName) {
+          const moduleData = modulesMap[techName]?.[moduleId];
           if (moduleData) {
             newGrid.cells[r][c].module = moduleData.id;
             newGrid.cells[r][c].type = moduleData.type;
@@ -201,7 +181,7 @@ const deserialize = async (serializedGrid: string, shipType: string): Promise<Gr
             newGrid.cells[r][c].adjacency = moduleData.adjacency;
             newGrid.cells[r][c].sc_eligible = moduleData.sc_eligible;
           } else {
-            console.warn(`Module not found for tech: ${techName}, module: ${moduleName}`);
+            console.warn(`Module not found for tech: ${techName}, module: ${moduleId}`);
           }
         }
         index++;
@@ -230,7 +210,6 @@ export const useGridDeserializer = () => {
   const deserializeGrid = useCallback(async (serializedGrid: string) => {
     const newGrid = await deserialize(serializedGrid, selectedShipType); // Pass selectedShipType
     if (newGrid) {
-      console.log("useGridDeserializer.tsx: Deserialized Grid:", newGrid); // Log the newGrid object
       setGrid(newGrid); // Correct: Set the grid directly (no need to remove tech)
     }
   }, [setGrid, selectedShipType]); // Add selectedShipType to the dependency array
