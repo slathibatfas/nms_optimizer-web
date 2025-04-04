@@ -23,14 +23,13 @@ jobs:
 
       - name: Run Jest tests in CI mode
         run: npm run test:ci  # Use the test:ci script
-        
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
       - name: Login to Heroku
-        uses: heroku/actions/setup@v1
+        uses: heroku/actions/setup@v2
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
 
