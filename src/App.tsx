@@ -57,7 +57,7 @@ const App: React.FC = () => {
         <p className="pb-4 mt-4 text-center lg:pb-0">
           Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
           <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
-            GitHub
+            GitHub •{" "} Build: {import.meta.env.VITE_BUILD_VERSION}
           </a>
         </p>
       </div>

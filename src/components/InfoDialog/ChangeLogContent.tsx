@@ -14,7 +14,10 @@ const ChangeLogContent: React.FC = () => {
             if you identify a persistent issue. Be sure to include a <strong>Share Link</strong> to your solve map.
           </li>
           <li className="infodialog__list-item">Improved solver opportunity detection.</li>
-          <li className="infodialog__list-item">Implemented conditional algorithm selection. If a technology has less than 6 modules, the solver will use the brute force method, otherwise, the simulated annealing algorithm will be used.</li>
+          <li className="infodialog__list-item">
+            Implemented conditional algorithm selection. If a technology has fewer than 6 modules, the solver will use the brute force method; otherwise, it
+            will use the simulated annealing algorithm.
+          </li>
           <li className="infodialog__list-item">Added support for Living Ships.</li>
           <li className="infodialog__list-item">Various bug fixes and UI enhancements.</li>
         </ul>
