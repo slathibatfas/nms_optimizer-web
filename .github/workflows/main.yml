@@ -30,7 +30,7 @@ jobs:
 
       - name: Create Vite environment file with build version
         run: |
-          echo "VITE_BUILD_VERSION=${GITHUB_SHA::7}" > .env.production
+          echo "VITE_BUILD_VERSION=build-${{ github.run_number }}" > .env.production
 
       - name: Install Heroku CLI
         run: |
