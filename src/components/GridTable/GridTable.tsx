@@ -21,7 +21,6 @@ interface GridTableProps {
   shared: boolean;
   setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
   setShowInstructions: React.Dispatch<React.SetStateAction<boolean>>;
-  setShaking: React.Dispatch<React.SetStateAction<boolean>>; 
 }
 
 /**
