@@ -28,18 +28,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Login to Heroku
-        uses: heroku/actions/setup@v2
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-
-      - name: Set Heroku config var for build version
-        run: |
-          heroku config:set VITE_BUILD_VERSION=build-${{ github.run_number }} --app nms-optimizer-web
+      - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
 
       - uses: akhileshns/heroku-deploy@v3.14.15
         with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "nms-optimizer-web"
           heroku_email: "john.belew@gmail.com"
-
+          
+      - name: Set Heroku Config
+        run: heroku config:set VITE_BUILD_VERSION=build-${{ github.run_number }} --app nms-optimizer-web
