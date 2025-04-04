@@ -60,7 +60,7 @@ const App: React.FC = () => {
           <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
             GitHub 
           </a>
-          {" "}• Build: {build}
+          {" "}• Build: {build} 
         </p>
       </div>
 
