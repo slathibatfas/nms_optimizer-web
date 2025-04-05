@@ -1,7 +1,7 @@
 import React from "react";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
-const ChangeLogContent: React.FC = () => {
+const ErrorContent: React.FC = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center h-full p-8">
@@ -20,4 +20,4 @@ const ChangeLogContent: React.FC = () => {
   );
 };
 
-export default ChangeLogContent;
+export default ErrorContent;

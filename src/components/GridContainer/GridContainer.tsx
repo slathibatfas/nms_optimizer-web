@@ -14,23 +14,34 @@ interface GridContainerProps {
   setShowInstructions: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+/**
+ * GridContainer component that manages the main layout of the grid and sidebar.
+ * It handles the display of the grid, ship selection, and tech tree components.
+ *
+ * @param {Object} props - The component props
+ * @param {Function} props.setShowChangeLog - Function to set the visibility of the change log
+ * @param {Function} props.setShowInstructions - Function to set the visibility of the instructions
+ */
 const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShowInstructions }) => {
-  const { solving, handleOptimize, gridContainerRef } = useOptimize(); // Get solving from useOptimize
+  // Destructure necessary values and functions from hooks
+  const { solving, handleOptimize, gridContainerRef } = useOptimize(); 
   const { grid, result, activateRow, deActivateRow, resetGrid, setIsSharedGrid } = useGridStore();
 
+  // Fetch ship types and get the selected ship type
   const shipTypes = useFetchShipTypesSuspense();
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
   const selectedShipTypeLabel = shipTypes[selectedShipType] || "Unknown Ship Type";
 
+  // Refs and state for grid dimensions and shared grid status
   const gridRef = useRef<HTMLDivElement>(null);
   const [gridHeight, setGridHeight] = useState<number | null>(null);
   const isLarge = useBreakpoint("1024px");
-
-  // State for shared grid (moved to the top)
   const [isSharedGridLocal, setIsSharedGridLocal] = useState(false);
 
   useEffect(() => {
-    // Combined useEffect for URL and grid height
+    /**
+     * Updates the height of the grid element.
+     */
     const updateGridHeight = () => {
       const gridElement = document.querySelector(".gridContainer__grid");
       if (gridElement) {
@@ -38,6 +49,9 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
       }
     };
 
+    /**
+     * Handles the popstate event to check for shared grid state in the URL.
+     */
     const handlePopState = () => {
       const newUrl = new URL(window.location.href);
       const isShared = newUrl.searchParams.has("grid");
@@ -45,21 +59,30 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
       setIsSharedGrid(isShared);
     };
 
+    // Check for shared grid state on initial load
     const url = new URL(window.location.href);
     const isShared = url.searchParams.has("grid");
     setIsSharedGridLocal(isShared);
     setIsSharedGrid(isShared);
 
+    // Initial setup
     updateGridHeight();
     window.addEventListener("resize", updateGridHeight);
-    window.addEventListener('popstate', handlePopState);
+    window.addEventListener("popstate", handlePopState);
 
+    // Cleanup function
     return () => {
       window.removeEventListener("resize", updateGridHeight);
-      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener("popstate", handlePopState);
     };
   }, [grid, setIsSharedGrid]);
 
+  /**
+   * Wrapper function for handleOptimize to be passed down to children components.
+   *
+   * @param {string} tech - The technology to optimize
+   * @returns {Promise<void>}
+   */
   const handleOptimizeWrapper = (tech: string) => {
     return handleOptimize(tech);
   };
@@ -105,10 +128,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
             <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
           </Box>
         )}
-
-
       </Flex>
-
     </Box>
   );
 };

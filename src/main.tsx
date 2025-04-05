@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 
 // Main App CSS
 import './index.css';
-import './theme.css'; // Import theme.css after index.css
+import './theme.css';
 
 // Component CSS files
 // TODO: Need to find a way to import these in the components, but not interfere with Jest. 

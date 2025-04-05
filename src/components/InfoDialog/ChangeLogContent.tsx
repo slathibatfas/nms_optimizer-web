@@ -1,8 +1,22 @@
 import React from "react";
 
+/**
+ * ChangeLogContent component displays the version history and changes made
+ * to the application in a list format.
+ */
 const ChangeLogContent: React.FC = () => {
   return (
     <>
+
+      {/* Version 1.0 */}
+      <div className="infodialog__item">
+        <h2 className="mb-2 font-bold">Version 1.0 (Release Candidate 4) (2025-04-05)</h2>
+        <ul className="infodialog__list">
+          <li className="infodialog__list-item">Additional solver improvements.</li>
+        </ul>
+      </div>
+
+      {/* Version 1.0 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 1.0 (Release Candidate 3) (2025-04-04)</h2>
         <ul className="infodialog__list">
@@ -14,7 +28,7 @@ const ChangeLogContent: React.FC = () => {
             if you identify a persistent issue. Be sure to include a <strong>Share Link</strong> to your solve map.
           </li>
           <li className="infodialog__list-item">Calculations now take into account greater and lesser adjacency.</li>
-          <li className="infodialog__list-item">Core Hyperdirve documented as lessers, but actually perform as greater.</li>
+          <li className="infodialog__list-item">Core Hyperdrive documented as lessers, but actually perform as greater.</li>
           <li className="infodialog__list-item">Improved solver opportunity detection.</li>
           <li className="infodialog__list-item">
             Implemented conditional algorithm selection. If a technology has fewer than 6 modules, the solver will use the brute force method; otherwise, it
@@ -25,6 +39,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.99.5 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.99.5 (2025-04-01)</h2>
         <ul className="infodialog__list">
@@ -36,6 +51,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.99.1 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.99.1 (2025-03-31)</h2>
         <ul className="infodialog__list">
@@ -46,6 +62,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.99 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.99 (2025-03-30)</h2>
         <ul className="infodialog__list">
@@ -54,6 +71,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.98 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.98 (2025-03-29)</h2>
         <ul className="infodialog__list">
@@ -62,6 +80,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.97 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.97 (2025-03-28)</h2>
         <ul className="infodialog__list">
@@ -71,6 +90,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.96 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.96 (2025-03-27)</h2>
         <ul className="infodialog__list">
@@ -80,6 +100,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.95 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.95 (2025-03-27)</h2>
         <ul className="infodialog__list">
@@ -90,6 +111,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.94 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.94 (2025-03-26)</h2>
         <ul className="infodialog__list">
@@ -99,6 +121,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.93 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.93 (2025-03-26)</h2>
         <ul className="infodialog__list">
@@ -111,6 +134,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.91α */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.91α (2025-03-25)</h2>
         <ul className="infodialog__list">
@@ -121,6 +145,7 @@ const ChangeLogContent: React.FC = () => {
         </ul>
       </div>
 
+      {/* Version 0.90α */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 0.90α (2025-03-24)</h2>
         <ul className="infodialog__list">
