@@ -4,7 +4,7 @@ const ChangeLogContent: React.FC = () => {
   return (
     <>
       <div className="infodialog__item">
-        <h2 className="mb-2 font-bold">Version 1.0 (Release Candidate 2) (2025-04-04)</h2>
+        <h2 className="mb-2 font-bold">Version 1.0 (Release Candidate 3) (2025-04-04)</h2>
         <ul className="infodialog__list">
           <li className="infodialog__list-item">
             Completely refactored scoring algorithm. Please{" "}
@@ -14,6 +14,7 @@ const ChangeLogContent: React.FC = () => {
             if you identify a persistent issue. Be sure to include a <strong>Share Link</strong> to your solve map.
           </li>
           <li className="infodialog__list-item">Calculations now take into account greater and lesser adjacency.</li>
+          <li className="infodialog__list-item">Core Hyperdirve documented as lessers, but actually perform as greater.</li>
           <li className="infodialog__list-item">Improved solver opportunity detection.</li>
           <li className="infodialog__list-item">
             Implemented conditional algorithm selection. If a technology has fewer than 6 modules, the solver will use the brute force method; otherwise, it
