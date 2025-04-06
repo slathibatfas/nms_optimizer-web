@@ -5,6 +5,7 @@ import { useOptimizeStore } from "../store/OptimizeStore";
 import { API_URL } from "../constants";
 import { useTechStore } from "../store/TechStore";
 import { useShipTypesStore } from "./useShipTypes";
+import ReactGA from 'react-ga4'
 
 interface UseOptimizeReturn {
   solving: boolean;
@@ -67,6 +68,12 @@ export const useOptimize = (): UseOptimizeReturn => {
             )
           ),
         };
+
+        ReactGA.event({
+          category: 'Optimize',
+          action: 'Click',
+          label: selectedShipType + ' ' + tech,
+        });
 
         const response = await fetch(API_URL + "/optimize", {
           method: "POST",

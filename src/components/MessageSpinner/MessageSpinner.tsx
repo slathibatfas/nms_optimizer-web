@@ -19,40 +19,30 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({ solving, initialMessage
   const [showAdditionalMessage, setShowAdditionalMessage] = useState(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-
     if (solving) {
-      timer = setTimeout(() => {
-        setShowAdditionalMessage(true);
-      }, 2500);
+      const timer = setTimeout(() => setShowAdditionalMessage(true), 2500);
+      return () => clearTimeout(timer);
     } else {
       setShowAdditionalMessage(false);
     }
-
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
   }, [solving]);
 
-  return (
-    solving && (
-      <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-opacity-75 rounded-lg">
-        <div className="w-16 h-16 border-8 rounded-full border-slate-600 animate-spin messageSpinner"></div>
-        <Text className="pt-4 text-2xl font-semibold !tracking-widest messageSpinner__header">{initialMessage}</Text>
-        {showAdditionalMessage ? (
-          <Text className="text-center" style={{ color: "#e6c133" }}>
-             {`-{{ Attempting to refine the solution! }}-`}
-          </Text>
-        ) : (
-          <Text style={{ color: "#e6c133" }}>
-            <br />
-          </Text>
-        )}
+  if (!solving) return null;
 
-      </div>
-    )
+  return (
+    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-opacity-75 rounded-lg">
+      <div className="w-16 h-16 border-8 rounded-full border-slate-600 animate-spin messageSpinner"></div>
+      <Text className="pt-4 text-2xl font-semibold !tracking-widest messageSpinner__header">{initialMessage}</Text>
+      {showAdditionalMessage ? (
+        <Text className="text-center" style={{ color: "#e6c133" }}>
+          {`-{{ Attempting to refine the solution! }}-`}
+        </Text>
+      ) : (
+        <Text style={{ color: "#e6c133" }}>
+          <br />
+        </Text>
+      )}
+    </div>
   );
 };
 

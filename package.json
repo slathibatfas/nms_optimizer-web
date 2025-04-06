@@ -24,6 +24,7 @@
     "path": "^0.12.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-ga4": "^2.1.0",
     "react-icons": "^5.5.0",
     "require": "^2.4.20",
     "tailwind-merge": "^3.0.2",
