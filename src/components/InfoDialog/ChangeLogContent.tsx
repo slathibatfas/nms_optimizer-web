@@ -10,9 +10,10 @@ const ChangeLogContent: React.FC = () => {
 
       {/* Version 1.0 */}
       <div className="infodialog__item">
-        <h2 className="mb-2 font-bold">Version 1.0 (Release Candidate 4) (2025-04-05)</h2>
+        <h2 className="mb-2 font-bold">Version 1.0 (2025-04-05)</h2>
         <ul className="infodialog__list">
-          <li className="infodialog__list-item">Additional solver improvements.</li>
+        <li className="infodialog__list-item">Calling it done!</li>
+        <li className="infodialog__list-item">Additional solver improvements.</li>
         </ul>
       </div>
 
