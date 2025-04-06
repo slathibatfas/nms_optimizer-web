@@ -29,6 +29,7 @@ const App: React.FC = () => {
 
   // Retrieve error state from the optimize store
   const { showError, setShowError } = useOptimizeStore();
+
   // Retrieve build version from environment variables
   const build = import.meta.env.VITE_BUILD_VERSION;
 
@@ -57,8 +58,10 @@ const App: React.FC = () => {
     <>
       {/* The main container of the app */}
       <div className="flex flex-col items-center justify-center lg:min-h-screen">
+ 
         {/* Container Box */}
         <div className="relative mx-auto overflow-hidden border rounded-none shadow-lg border-white/5 lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
+
           {/* Header */}
           <div className="pt-3 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-8 bg-black/50" style={{ borderColor: "var(--gray-a1)" }}>
             <div className="flex items-center">

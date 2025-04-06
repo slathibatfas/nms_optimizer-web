@@ -55,7 +55,6 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
     ReactGA.event({
       category: "User Interactions",
       action: "share",
-      label: serializedGrid,
     });
 
     const url = new URL(window.location.href);
