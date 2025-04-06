@@ -70,7 +70,7 @@ export const useOptimize = (): UseOptimizeReturn => {
         };
 
         ReactGA.event({
-          category: 'User Interaction',
+          category: 'User Interactions',
           action: 'optimize',
           label: selectedShipType + ' ' + tech,
         });

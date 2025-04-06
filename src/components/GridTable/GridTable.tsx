@@ -7,9 +7,9 @@ import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
 import ShakingWrapper from "../GridShake/GridShake";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
-import { useGridDeserializer } from "../../hooks/useGridDeserializer"; 
-import { useShakeStore } from "../../store/ShakeStore"; 
-
+import { useGridDeserializer } from "../../hooks/useGridDeserializer";
+import { useShakeStore } from "../../store/ShakeStore";
+import ReactGA from "react-ga4";
 
 interface GridTableProps {
   grid: Grid;
@@ -50,7 +50,14 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
 
   const handleShareClick = useCallback(() => {
     const serializedGrid = serializeGrid();
-    console.log("GridTable.tsx: Serialized Grid (on Share button click):", serializedGrid); // Log serialized string
+    console.log("GridTable.tsx: Serialized Grid (on Share button click):", serializedGrid);
+
+    ReactGA.event({
+      category: "User Interactions",
+      action: "share",
+      label: serializedGrid,
+    });
+
     const url = new URL(window.location.href);
     url.searchParams.set("grid", serializedGrid);
     const newWindow = window.open(url.toString(), "_blank", "noopener,noreferrer");
