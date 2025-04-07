@@ -35,8 +35,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
     ReactGA.initialize(TRACKING_ID);
-    // Send pageview with a custom path
-    ReactGA.send({ hitType: "pageview", page: "/index.html", title: "Main Page - React" });
   }, []);
 
   // Effect to open the error dialog when an error occurs
