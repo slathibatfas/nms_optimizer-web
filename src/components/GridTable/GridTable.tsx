@@ -50,16 +50,15 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
 
   const handleShareClick = useCallback(() => {
     const serializedGrid = serializeGrid();
-    console.log("GridTable.tsx: Serialized Grid (on Share button click):", serializedGrid);
+    const url = new URL(window.location.href);
+    url.searchParams.set("grid", serializedGrid);
+    const newWindow = window.open(url.toString(), "_blank", "noopener,noreferrer");
 
     ReactGA.event({
       category: "User Interactions",
       action: "share",
     });
 
-    const url = new URL(window.location.href);
-    url.searchParams.set("grid", serializedGrid);
-    const newWindow = window.open(url.toString(), "_blank", "noopener,noreferrer");
     if (newWindow) {
       // Deserialize the grid from the URL
       deserializeGrid(serializedGrid);
@@ -68,6 +67,10 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
   }, [serializeGrid, deserializeGrid]);
 
   const handleResetGrid = useCallback(() => {
+    ReactGA.event({
+      category: "User Interactions",
+      action: "resetGrid",
+    });
     resetGrid(); // Call the original resetGrid function
     const url = new URL(window.location.href);
     url.searchParams.delete("grid"); // Remove the 'grid' query parameter
@@ -144,12 +147,28 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
           <Button
             variant="soft"
             className={`gridTable__button gridTable__button--instructions shadow-lg !mr-2 p-0 sm:!px-2`}
-            onClick={() => setShowInstructions(true)}
+            onClick={() => {
+              ReactGA.event({
+                category: "User Interactions",
+                action: "showStrunctions",
+              });
+              setShowInstructions(true)
+            }}
           >
             <QuestionMarkCircledIcon />
             <span className="hidden sm:inline">Instructions</span>
           </Button>
-          <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-lg !mr-2 sm:!px-2`} onClick={() => setShowChangeLog(true)}>
+          <Button
+            variant="soft"
+            className={`gridTable__button gridTable__button--changelog shadow-lg !mr-2 sm:!px-2`}
+            onClick={() => {
+              ReactGA.event({
+                category: "User Interactions",
+                action: "showChangeLog",
+              });
+              setShowChangeLog(true);
+            }}
+          >
             <CounterClockwiseClockIcon />
             <span className="hidden sm:inline">Change Log</span>
           </Button>

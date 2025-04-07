@@ -137,7 +137,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
                         className="inline-block pl-1 font-thin optimizationButton__bonus"
                         style={{ color: techMaxBonus > 100 ? "#e6c133" : "var(--gray-11)" }}
                       >
-                        ~{techSolvedBonus.toFixed(2)}x                      </span>
+                        ~{techSolvedBonus.toFixed(0)}x                      </span>
                     )}
                   </div>
                 </AccordionTrigger>
@@ -165,7 +165,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
               {label}
               {techSolvedBonus > 0 && (
                 <span className="pl-1 font-thin optimizationButton__bonus" style={{ color: techMaxBonus > 100 ? "#e6c133" : "var(--gray-11)" }}>
-                  ~{techSolvedBonus.toFixed(2)}x
+                  ~{techSolvedBonus.toFixed(0)}x
                 </span>
               )}
             </>

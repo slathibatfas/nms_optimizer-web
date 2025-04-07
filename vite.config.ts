@@ -8,6 +8,9 @@ export default defineConfig({
     host: '0.0.0.0',  // Listen on all network interfaces
     port: 5173        // Use the desired port
   },
+  css: {
+    transformer: 'lightningcss'
+  },
   build: {
     minify: 'esbuild', // Default option, optimized for speed
     cssCodeSplit: true, // Ensures CSS is split for better optimization
