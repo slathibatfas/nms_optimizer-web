@@ -8,6 +8,15 @@ const ChangeLogContent: React.FC = () => {
   return (
     <>
 
+      {/* Version 1.1 */}
+      <div className="infodialog__item">
+        <h2 className="mb-2 font-bold">Version 1.1 (2025-04-07)</h2>
+        <ul className="infodialog__list">
+        <li className="infodialog__list-item">Improved scoring algorithms to provide more consistant solves.</li>
+        <li className="infodialog__list-item">Minor UI enchancements.</li>
+        </ul>
+      </div>
+
       {/* Version 1.0 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 1.0 (2025-04-05)</h2>

@@ -88,7 +88,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
   };
 
   return (
-    <Box className="p-6 border-t-1 sm:p-8 gridContainer" style={{ borderColor: "var(--gray-a4)" }} ref={gridContainerRef}>
+    <Box className="p-6 pt-3 border-t-1 lg:p-8 md:p-8 md:pt-4 gridContainer" style={{ borderColor: "var(--gray-a4)" }} ref={gridContainerRef}>
       <Flex className="flex-col items-start gridContainer__layout lg:flex-row">
         <Box className="flex-grow w-auto gridContainer__grid lg:flex-shrink-0" ref={gridRef}>
           <h2 className="flex flex-wrap items-start gap-2 mb-4 text-2xl font-semibold tracking-widest uppercase sidebar__title">

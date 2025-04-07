@@ -29,6 +29,7 @@ export type Grid = {
 export type ApiResponse = {
   grid: Grid;
   max_bonus: number;
+  solved_bonus: number;
 };
 
 // Utility functions
@@ -86,7 +87,7 @@ export const useGridStore = create<GridStore>()(
       grid: createGrid(10, 6),
       result: null,
       isSharedGrid: false, // Initial value
-      setIsSharedGrid: (isShared) => set({ isSharedGrid: isShared }), // Setter function
+      setIsSharedGrid: (isShared) => set({ isSharedGrid: isShared }),
 
       setGrid: (grid) => set({ grid }),
       resetGrid: () => {
@@ -94,16 +95,18 @@ export const useGridStore = create<GridStore>()(
           grid: createGrid(state.grid.width, state.grid.height),
           result: null,
         }));
-        useTechStore.getState().clearResult(); // Clear the max_bonus when the grid is reset
+        useTechStore.getState().clearResult();
       },
 
       setResult: (result, tech) => {
+        const { setTechSolvedBonus } = useTechStore.getState();
+
         set({ result });
         if (result) {
-          useTechStore.getState().setTechMaxBonus(tech, result.max_bonus); // Corrected function name
+          useTechStore.getState().setTechMaxBonus(tech, result.max_bonus);
+          setTechSolvedBonus(tech, result.solved_bonus);
         }
       },
-
       toggleCellActive: (rowIndex, columnIndex) => {
         set((state) => ({
           grid: {

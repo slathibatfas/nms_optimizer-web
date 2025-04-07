@@ -139,7 +139,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
           ))}
         </div>
       </ShakingWrapper>
-      <div className="flex items-start gap-4 pt-5 gridTable__footer__left">
+      <div className="flex items-start gap-4 pt-4 sm:pt-6 gridTable__footer__left">
         <div className="z-10 flex-1 flex-nowrap gridTable__footer__left">
           <Button
             variant="soft"

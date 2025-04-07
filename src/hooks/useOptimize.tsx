@@ -43,7 +43,6 @@ export const useOptimize = (): UseOptimizeReturn => {
   const handleOptimize = useCallback(
     async (tech: string) => {
       setSolving(true);
-      // tartStream(); // Start the stream when optimization begins
       try {
         const updatedGrid: Grid = {
           ...grid,

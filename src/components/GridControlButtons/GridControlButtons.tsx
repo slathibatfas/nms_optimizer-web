@@ -74,7 +74,7 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
       )}
 
       {isLastActiveRow && (
-        <div className="align-middle">
+        <div className="align-left">
           <Tooltip content="Deactivate Row">
             <IconButton
               variant="soft" highContrast
