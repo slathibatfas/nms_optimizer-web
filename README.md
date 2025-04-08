@@ -1,3 +1,6 @@
+
+# No Man's Sky Starship Optimizer
+
 ## CI/CD Status
 
 ![Tests](https://github.com/jbelew/nms_optimizer-web/actions/workflows/main.yml/badge.svg?branch=main)
