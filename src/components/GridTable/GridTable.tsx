@@ -150,7 +150,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
             onClick={() => {
               ReactGA.event({
                 category: "User Interactions",
-                action: "showStrunctions",
+                action: "showInstrunctions",
               });
               setShowInstructions(true)
             }}
