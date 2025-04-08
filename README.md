@@ -1,5 +1,5 @@
 
-# No Man's Sky Starship Optimizer
+# No Man's Sky Starship Optimizer (Web UI)
 
 ## CI/CD Status
 
