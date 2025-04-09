@@ -21,13 +21,13 @@
 
 .gridCell--inactive {
   border-color: var(--blue-a4);
-  background-color: var(--gray-a3) ;
+  background-color: var(--gray-a2) ;
   transition: background-color 0.125s ease;
 }
 
 .gridCell--inactive:hover {
   /* Styles for hovered grid cells */
-  background-color: var(--blue-a5) ;
+  background-color: var(--blue-a4) ;
   transition: background-color 0.125s ease;
 }
 
