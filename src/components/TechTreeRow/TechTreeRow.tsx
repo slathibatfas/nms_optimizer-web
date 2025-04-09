@@ -34,8 +34,6 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
   const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
   const { setShaking } = useShakeStore();
 
-  console.log(`TechTreeRow - tech: ${tech}, techSolvedBonus:`, techSolvedBonus); // Log techSolvedBonus
-
   useEffect(() => {
     return () => {
       clearCheckedModules(tech);
