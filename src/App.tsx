@@ -70,7 +70,7 @@ const App: React.FC = () => {
                   <span className="font-extrabold" style={{ color: "var(--accent-11)" }}>
                     Neural{" "}
                   </span>
-                  Technology Optimizer <span className="font-thin">v2.0 Experimental</span>
+                  Technology Optimizer <span className="font-thin">v2.0</span>
                 </span>
               </div>
             </div>
