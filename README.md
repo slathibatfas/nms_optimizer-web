@@ -6,7 +6,7 @@
 ![Tests](https://github.com/jbelew/nms_optimizer-web/actions/workflows/main.yml/badge.svg?branch=main)
 ![Deployment](https://img.shields.io/badge/Deployment-Heroku-blue?logo=heroku)
 
-**Web UI for a No Man's Sky Technology Layout Optimization Tool**
+**A Web UI for a No Man's Sky technology layout optimization tool**
 
 This tool optimizes technology layouts by calculating pattern-based scores. It prioritizes supercharged slots using game-tested configurations and ensures the best fit within the grid. When additional supercharged slots are in range of a pattern, the tool runs a localized Simulated Annealing or ML-Driven solves to explore layouts outside of the base configurations that offer additional benefits. The goal is not to calculate in-game stats but to use a thoroughly tested weighting system for layout optimization.
 
