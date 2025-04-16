@@ -98,7 +98,7 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({ solving, initialMessage
   return (
     <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-opacity-75 rounded-lg">
       <div className="w-16 h-16 border-8 rounded-full shadow-2xl border-slate-600 animate-spin messageSpinner"></div>
-      <Text className="pt-4 text-2xl font-semibold !tracking-widest shadow-2xl messageSpinner__header">{initialMessage}</Text>
+      <Text className="pt-4 text-2xl font-bold shadow-2xl messageSpinner__header">{initialMessage}</Text>
       {showAdditionalMessage ? (
         // --- Render the random message from state ---
         <Text className="font-semibold text-center uppercase shadow-2xl" style={{ color: "#e6c133" }}>

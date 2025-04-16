@@ -5,4 +5,5 @@
 .messageSpinner__header {
     font-family: "GeosansLight", sans-serif;
     filter: drop-shadow(0 0 8px var(--gray-0));
+    letter-spacing: 0.25rem;
 }
