@@ -87,14 +87,14 @@ const App: React.FC = () => {
 
         {/* Footer Text */}
         <div className="flex flex-wrap items-center justify-center gap-2 p-4 text-center">
-          <span className="text-xs sm:text-base">
+          <span className="text-sm sm:text-base">
             Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
             <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
               GitHub
             </a>{" "}
             • {build}
           </span>
-          <Buymeacoffee />
+          • <Buymeacoffee />
         </div>
       </div>
 

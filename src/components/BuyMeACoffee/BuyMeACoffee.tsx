@@ -19,10 +19,8 @@ export default function Buymeacoffee() {
   };
 
   return (
-    <Button size="2" variant="soft" asChild>
-      <a href="https://www.buymeacoffee.com/jbelew" onClick={handleClick}>
-        ☕ Buy me a Coffee!
-      </a>
+    <Button size="2" variant="surface" asChild>
+      <a href="https://www.buymeacoffee.com/jbelew" onClick={handleClick}>☕ Buy me a Coffee!</a>
     </Button>
   );
 }
