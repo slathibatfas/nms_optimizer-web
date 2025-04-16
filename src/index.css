@@ -1,6 +1,6 @@
 @font-face {
   font-family: "GeosansLight";
-  src: url("/src/assets/fonts/GeosansLight.woff") format("woff");
+  src: url("/src/assets/fonts/geonms-font.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: auto;
@@ -55,6 +55,10 @@ body::before {
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: -1;
+}
+
+.sidebar__title{
+  letter-spacing: 0.25rem;
 }
 
 .optimizer__header--logo  {

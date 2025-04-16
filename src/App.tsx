@@ -12,7 +12,6 @@ import ErrorBoundary from "./components/ErrorBoundry/ErrorBoundry";
 import ReactGA from "react-ga4";
 import Buymeacoffee from "./components/BuyMeACoffee/BuyMeACoffee";
 
-
 /**
  * The main App component.
  *
@@ -94,7 +93,7 @@ const App: React.FC = () => {
             </a>{" "}
             • {build}
           </span>
-          • <Buymeacoffee />
+          <Buymeacoffee />
         </div>
       </div>
 
