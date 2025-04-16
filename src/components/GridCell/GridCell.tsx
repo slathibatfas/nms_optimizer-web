@@ -61,9 +61,9 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
       const totalSupercharged = grid.cells.flat().filter((cell) => cell.supercharged).length;
       const currentCellSupercharged = grid.cells[rowIndex][columnIndex]?.supercharged;
       if (totalSupercharged >= 4 && !currentCellSupercharged) {
-        setShaking(true); // Trigger the shake
+        setShaking(true); 
         setTimeout(() => {
-          setShaking(false); // Stop the shake after a delay
+          setShaking(false);
         }, 500);
         return
       }
@@ -91,7 +91,7 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current);
     }
-    setTimeout(() => setLongPressTriggered(false), 50); // Reset state after touch ends
+    setTimeout(() => setLongPressTriggered(false), 250); // Reset state after touch ends
   };
 
   /**

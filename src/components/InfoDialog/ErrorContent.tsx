@@ -20,4 +20,4 @@ const ErrorContent: React.FC = () => {
   );
 };
 
-export default ErrorContent;
+export default React.memo(ErrorContent);

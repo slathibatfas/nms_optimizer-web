@@ -45,7 +45,7 @@ const InfoDialog: React.FC<InfoDialogProps> = ({ onClose, content, title = "Info
         <Theme appearance="dark">
           <Dialog.Overlay className="infodialog__overlay" />
           <Dialog.Content className="infodialog__content">
-            <Dialog.Title className="text-2xl font-semibold tracking-widest uppercase infodialog__title">{title}</Dialog.Title>
+            <Dialog.Title className="text-2xl font-bold tracking-widest uppercase infodialog__title">{title}</Dialog.Title>
             <Dialog.Description className="hidden infodialog__description">This dialog contains information.</Dialog.Description>
             <div className="infodialog__container">{content}</div>
             <Dialog.Close asChild>

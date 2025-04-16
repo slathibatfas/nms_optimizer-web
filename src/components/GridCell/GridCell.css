@@ -8,6 +8,7 @@
   user-select: none; /* Prevents text selection */
   -webkit-user-select: none; /* iOS Safari */
   -webkit-touch-callout: none; /* Disables long-press context menu */
+  image-rendering: high-quality;
 }
 
 .gridCell__label {
@@ -45,8 +46,7 @@
 .gridCell--supercharged {
   /* Styles for supercharged grid cells */
   border-color:var(--amber-11) !important;
-  background-color: var(--amber-a3) !important;
-  background-blend-mode: overlay;
+  background-color: var(--amber-a7) !important;
   box-shadow: 0 0 4px 0px var(--amber-a7); /* Soft glow effect */
   transition: background-color 0.25s ease, box-shadow 0.25s ease;
   animation: pulseGlow .5s infinite alternate ease-in-out;
@@ -54,57 +54,69 @@
 
 
 .gridCell--supercharged:hover {
-  background-color: var(--amber-a5) !important;
+  background-color: var(--amber-a8) !important;
   transition: background-color 0.25s ease;
 }
 
 .gridCell--red {
   border-color: var(--red-9);
+  background-color: var(--red-a5);
 
 }
 
 .gridCell--purple {
   border-color: var(--purple-11);
+  background-color: var(--purple-a5);
 }
 
 .gridCell--green {
   border-color: var(--green-11);
+  background-color: var(--green-a5);
 }
 
 .gridCell--cyan {
   border-color: var(--cyan-11);
+  background-color: var(--cyan-a6);
 }
 
 .gridCell--amber {
   border-color: var(--amber-8);
+  background-color: var(--amber-a5);
 }
 
 .gridCell--iris {
   border-color: var(--iris-10);
+  background-color: var(--iris-a5);
 }
 
 .gridCell--yellow {
-  border-color: var(--yellow-8);
+  border-color: var(--yellow-11);
+  background-color: var(--yellow-a5);
 }
 
 .gridCell--sky {
-  border-color: var(--sky-9);
+  border-color: var(--sky-10);
+  background-color: var(--sky-a6);
 }
 
 .gridCell--jade {
   border-color: var(--jade-11);
+  background-color: var(--jade-a5);
 }
 
 .gridCell--orange {
   border-color: var(--orange-10);
+  background-color: var(--orange-a5);
 }
 
 .gridCell--black {
   border-color: var(--gray-7);
+  background-color: var(--gray-a5);
 }
 
 .gridCell--gray {
   border-color: var(--gray-12);
+  background-color: var(--gray-a7);
 }
 
 @keyframes pulseGlow {
@@ -112,6 +124,6 @@
     box-shadow: 0 0 4px 0px var(--amber-a7);
   }
   to {
-    box-shadow: 0 0 4px 2px var(--amber-a8);
+    box-shadow: 0 0 4px 4px var(--amber-a8);
   }
 }

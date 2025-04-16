@@ -8,6 +8,18 @@ const ChangeLogContent: React.FC = () => {
   return (
     <>
 
+      {/* Version 2.0 */}
+      <div className="infodialog__item">
+        <h2 className="mb-2 font-bold">Version 2.0 (Experimental) (2025-04-15)</h2>
+        <ul className="infodialog__list">
+        <li className="infodialog__list-item">Renamed tool to Neural Technology Optimizer.</li>
+        <li className="infodialog__list-item">Added support for Tensorflow (AI) based solves.</li>
+        <li className="infodialog__list-item">Implemented support for Multi-tools.</li>
+        <li className="infodialog__list-item">New, higher quality, grid graphical assets.</li>
+        <li className="infodialog__list-item">Various bug fixes, enhancements, and performance improvements.</li>
+        </ul>
+      </div>
+
       {/* Version 1.1 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 1.1 (2025-04-07)</h2>
@@ -171,4 +183,4 @@ const ChangeLogContent: React.FC = () => {
   );
 };
 
-export default ChangeLogContent;
+export default React.memo(ChangeLogContent);

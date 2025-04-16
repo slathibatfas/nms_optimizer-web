@@ -5,13 +5,13 @@ const InstructionsContent: React.FC = () => {
     <>
       <div className="infodialog__item">
         <>
-          <h2 className="mb-2 font-bold">About This Tool</h2>
-          <p className="mb-4">
-            This tool is for <strong>endgame players</strong> optimizing their starship layouts for maximum efficiency. It is most effective if you:
+          <h2 className="mb-2 text-xl font-bold">About This Tool</h2>
+          <p className="mb-2">
+            This tool is for <strong>endgame players</strong> optimizing their technology layouts for maximum efficiency. It is most effective if you:
           </p>
-          <ul className="mb-4 infodialog__list">
+          <ul className="mb-2 infodialog__list">
             <li>
-              <strong>Have most or all slots unlocked</strong> in your starship.
+              <strong>Have most or all slots unlocked</strong> on your item.
             </li>
             <li>
               Have access to <strong>all technology upgrades</strong>.
@@ -22,10 +22,10 @@ const InstructionsContent: React.FC = () => {
           </ul>
           <p className="mb-4">
             If you’re still unlocking slots or gathering upgrades, the tool can still offer insights but is primarily intended for{" "}
-            <strong>fully equipped and upgraded ships</strong>.
+            <strong>fully equipped and upgraded items</strong>.
           </p>
 
-          <h2 className="mb-2 font-bold">Basic Usage</h2>
+          <h2 className="mb-2 text-xl font-bold">Basic Usage</h2>
           <ul className="mb-4 infodialog__list">
             <li>
               <strong>Click or tap</strong> a cell to toggle its <em>Supercharged</em> state (max 4).
@@ -39,82 +39,60 @@ const InstructionsContent: React.FC = () => {
             </li>
           </ul>
 
-          <h2 className="mb-2 font-bold">Solving Times and Quality</h2>
-          <p className="mb-4">
-            When you have open supercharged slots, the tool will use a <strong>Simulated Annealing</strong> algorithm to attempt to find the best placement.
-            These solves typically take around <strong>20 seconds</strong> and are usually the best available <strong>98% of the time</strong>.
+          <h2 className="mb-2 text-xl font-bold">Tips for Multi-Tech Layouts</h2>
+          <p className="mb-2">
+            The system is designed to prioritize supercharged slots, which can lead to "greedy" behavior in the layout process. For{" "}
+            <strong>square or L-shaped supercharged layouts</strong> across multiple technology types:
           </p>
-          <ul className="mb-4 infodialog__list">
-            <li>
-              <strong>Quality of Solves:</strong> The longer the algorithm runs, the better the quality of the solve, but there is a{" "}
-              <strong>hard limit of 30 seconds</strong> for each attempt to prevent excessive processing time.
-            </li>
-            <li>
-              <strong>Occasional Issues:</strong> On rare occasions, the simulated annealing solve may return results that are obviously questionable. If that
-              happens, simply <strong>re-run the solve</strong> for a better solution.
-            </li>
-          </ul>
-          <p className="mb-4">
-            Simulated annealing with also kick in if you attempt to place technology but lack space for a proper solve on the grid. It will simply attempt to
-            give you the best solution it can find.
-          </p>
-
-          <h2 className="mb-2 font-bold">Upgrade Modules & Scoring</h2>
-          <p className="mb-4">
-            Upgrade modules are labeled <strong>Sigma, Tau, and Theta</strong> (visible via tooltips). To maximize in-game scoring:
-          </p>
-          <ul className="mb-4 infodialog__list">
-            <li>
-              <strong>Sigma</strong> should be the best upgrade available.
-            </li>
-            <li>
-              <strong>Theta</strong> should be the weakest.
-            </li>
-          </ul>
-
-          <h2 className="mb-2 font-bold">Tips for Multi-Tech Layouts</h2>
-          <p className="mb-4">
-            For <strong>Square or L-shaped supercharged layouts</strong> across multiple technology types:
-          </p>
-          <ul className="mb-4 infodialog__list">
+          <ul className="mb-2 infodialog__list">
             <li>
               <strong>Activate only a few supercharged slots</strong> and solve for the first technology.
             </li>
             <li>
-              <strong>Then activate the remaining supercharged slots</strong> and solve for the next technology.
+              <strong>Activate the remaining supercharged slots</strong> and solve for the next technology.
             </li>
           </ul>
-          <p className="mb-4">This ensures all technologies benefit from an optimized layout without interfering with prior solves.</p>
+          <p className="mb-4">
+            This approach ensures that each technology benefits from an optimized layout without interfering with the previous tech's solve.
+          </p>
 
-          <h2 className="mb-2 font-bold">How the Optimizer Works</h2>
-          <p className="mb-4">The optimizer figures out the best module layout for your ship by following these steps:</p>
-          <ol className="mb-4 infodialog__list">
+          <h2 className="mb-2 text-xl font-bold">How the Optimizer Works</h2>
+          <p className="mb-2">The optimizer figures out the best module layout for your platform by following these steps:</p>
+          <ol className="mb-2 infodialog__list">
             <li className="infodialog__list-item">
-              <strong>Tries a known best layout:</strong> If there's a recommended setup for your tech, it tests that pattern in different positions
-              and rotations to find a best fit.
+              <strong>Starts with proven layouts (best practices):</strong> It checks a library of high-scoring patterns for your selected tech. It tries
+              fitting these patterns onto your grid in different positions and rotations, making sure they work with your supercharged and inactive slots. If
+              one fits well and scores high, it uses that as a strong starting point.
             </li>
             <li className="infodialog__list-item">
-              <strong>Optimizes around supercharged slots:</strong> If your ship has available, unused supercharged slots, it tries to make the most of them by reworking the pattern to maximize power.
+              <strong>Makes a smart guess using AI (experimental):</strong> If no known layout fits—or if you're using experimental mode—the optimizer uses an
+              AI model trained on thousands of examples. It quickly predicts a promising layout based on the configuration of your grid.
             </li>
             <li className="infodialog__list-item">
-              <strong>Falls back on smart searching:</strong> If no preset layout fits or works better, it uses a custom algorithm to search for a strong
-              arrangement from scratch.
+              <strong>Refines and polishes the layout:</strong> Whether it started with a known pattern or an AI prediction, it improves the layout through
+              refinement:
+              <ul className="mt-1 infodialog__list">
+                <li className="infodialog__list-item">
+                  <strong>Intelligent swapping & moving:</strong> It tries swapping modules or moving one to an empty active slot.
+                </li>
+                <li className="infodialog__list-item">
+                  <strong>Score checking:</strong> After each change, it recalculates your total bonus score.
+                </li>
+                <li className="infodialog__list-item">
+                  <strong>Keeps what works:</strong> It only keeps changes that improve the score, repeating this until no further improvements are found.
+                </li>
+              </ul>
+              (For smaller layouts, it might even check every possible arrangement!)
             </li>
             <li className="infodialog__list-item">
-              <strong>Makes sure everything fits:</strong> It double-checks that all your selected modules are placed and working together properly.
-            </li>
-            <li className="infodialog__list-item">
-              <strong>Gives you the best result:</strong> It shows you the highest-scoring layout it found, along with how close it is to a perfect score.
+              <strong>Presents the best result:</strong> After all refinements, the optimizer shows the layout that achieved the highest bonus score during the
+              process.
             </li>
           </ol>
-          <p className="mb-4">
-            <strong>In short:</strong> The optimizer tests smart layouts first, tweaks them for extra potentual, and uses advanced logic if needed to give you the
-            strongest possible setup.
-          </p>
         </>
       </div>
     </>
   );
 };
 
-export default InstructionsContent;
+export default React.memo(InstructionsContent);

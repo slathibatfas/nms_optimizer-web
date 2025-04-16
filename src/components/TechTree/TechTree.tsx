@@ -31,7 +31,7 @@ type TypeImageMap = {
 };
 
 const typeImageMap: TypeImageMap = {
-  Weaponry: "weaponry.png", // Replace with your actual image paths
+  Weaponry: "weaponry.png",
   "Defensive Systems": "defensive.png",
   Hyperdrive: "hyperdrive.png",
   Utilities: "utilities.png",

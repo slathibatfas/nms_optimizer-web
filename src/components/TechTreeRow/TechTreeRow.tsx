@@ -24,7 +24,7 @@ type IconButtonColor = ColorMapKey;
 
 export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOptimize, solving, modules, techImage }) => {
   const hasTechInGrid = useGridStore((state) => state.hasTechInGrid(tech));
-  const isGridFull = useGridStore((state) => state.isGridFull(tech));
+  const isGridFull = useGridStore((state) => state.isGridFull);
   const handleResetGridTech = useGridStore((state) => state.resetGridTech);
   const { max_bonus, clearTechMaxBonus, solved_bonus, clearTechSolvedBonus, checkedModules, setCheckedModules, clearCheckedModules } = useTechStore();
   const techMaxBonus = max_bonus?.[tech] ?? 0;
@@ -35,7 +35,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
   const { setShaking } = useShakeStore();
 
   useEffect(() => {
-    return () => {
+    return () => { 
       clearCheckedModules(tech);
     };
   }, [tech, clearCheckedModules]);
@@ -55,7 +55,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
   };
 
   const handleOptimizeClick = async () => {
-    if (isGridFull && !hasTechInGrid) {
+    if (isGridFull() && !hasTechInGrid) {
       setShaking(true); // Trigger the shake
       setTimeout(() => {
         setShaking(false); // Stop the shake after a delay

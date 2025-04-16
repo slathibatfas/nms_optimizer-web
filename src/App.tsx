@@ -10,6 +10,8 @@ import NMSIcon from "./assets/img/nms_icon2.webp";
 import { useOptimizeStore } from "./store/OptimizeStore";
 import ErrorBoundary from "./components/ErrorBoundry/ErrorBoundry";
 import ReactGA from "react-ga4";
+import Buymeacoffee from "./components/BuyMeACoffee/BuyMeACoffee";
+
 
 /**
  * The main App component.
@@ -56,18 +58,19 @@ const App: React.FC = () => {
     <>
       {/* The main container of the app */}
       <div className="flex flex-col items-center justify-center lg:min-h-screen">
- 
         {/* Container Box */}
         <div className="relative mx-auto overflow-hidden border rounded-none shadow-lg border-white/5 lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
-
           {/* Header */}
-          <div className="pt-3 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-8 bg-black/50" style={{ borderColor: "var(--gray-a1)" }}>
+          <div className="pt-3 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-8 bg-black/25" style={{ borderColor: "var(--gray-a1)" }}>
             <div className="flex items-center">
               <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
               <div>
-                <img src={NMSLogo} className="h-5 mb-1 sm:h-9 sm:mb-2.5 optimizer__header--logo" alt="No Man's Sky Logo" />
+                <img src={NMSLogo} className="h-5 mb-1 sm:mb-2 sm:h-9 optimizer__header--logo" alt="No Man's Sky Logo" />
                 <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
-                  Starship Optimizer <span className="font-thin">v1.1</span>
+                  <span className="font-extrabold" style={{ color: "var(--accent-11)" }}>
+                    Neural{" "}
+                  </span>
+                  Technology Optimizer <span className="font-thin">v2.0 Experimental</span>
                 </span>
               </div>
             </div>
@@ -83,13 +86,16 @@ const App: React.FC = () => {
         </div>
 
         {/* Footer Text */}
-        <p className="pb-4 mt-4 text-center lg:pb-0">
-          Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
-          <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>{" "}
-          • {build}
-        </p>
+        <div className="flex flex-wrap items-center justify-center gap-2 p-4 text-center">
+          <span className="text-xs sm:text-base">
+            Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
+            <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>{" "}
+            • {build}
+          </span>
+          <Buymeacoffee />
+        </div>
       </div>
 
       {/* Info Dialogs */}

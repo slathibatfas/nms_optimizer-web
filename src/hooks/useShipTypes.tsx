@@ -2,9 +2,15 @@
 import { API_URL } from "../constants";
 import { create } from "zustand";
 
-// Define the structure of the ship types data
+// Define the structure for the details of a single ship type
+export interface ShipTypeDetail {
+  label: string;
+  type: string; // You could potentially use a union type like 'Starship' | 'Multi-Tool' if the types are fixed
+}
+
+// Define the structure of the ship types data using the detailed interface
 export interface ShipTypes {
-  [key: string]: string;
+  [key: string]: ShipTypeDetail;
 }
 
 type Resource<T> = {
@@ -50,7 +56,8 @@ const createResource = <T,>(promise: Promise<T>): Resource<T> => {
   };
 };
 
-const cache = new Map<string, Resource<ShipTypes>>(); // Store successful fetches
+// Store successful fetches - Note: The type parameter for Resource is now the updated ShipTypes
+const cache = new Map<string, Resource<ShipTypes>>();
 
 /**
  * Fetches ship types and stores them in the cache.
@@ -62,17 +69,19 @@ export function fetchShipTypes(): Resource<ShipTypes> {
 
   if (!cache.has(cacheKey)) {
     // Create a promise to fetch the ship types
-    const promise = fetch(`${API_URL}/ship_types`)
+    const promise = fetch(`${API_URL}/platforms`) // Assuming the endpoint is still /platforms
       .then((res) => {
         // Check for HTTP errors (4xx or 5xx status codes)
         if (!res.ok) {
           console.error(`HTTP error fetching ship types: ${res.status} ${res.statusText}`);
           throw new Error(`HTTP error! status: ${res.status}`);
         }
+        // The .json() method will now parse the new structure
         return res.json();
       })
+      // Ensure the type assertion matches the updated ShipTypes interface
       .then((data: ShipTypes) => {
-        console.log(`Fetched ship types:`, data);
+        console.log(`Fetched ship types:`, data); // Log the new structure
         return data;
       })
       .catch((error) => {
@@ -84,7 +93,7 @@ export function fetchShipTypes(): Resource<ShipTypes> {
         throw error; // Re-throw to be caught by Suspense
       });
 
-    // Store the promise in the cache
+    // Store the promise in the cache, using the updated ShipTypes type
     cache.set(cacheKey, createResource(promise));
   }
 
@@ -95,7 +104,7 @@ export function fetchShipTypes(): Resource<ShipTypes> {
  * Custom React hook to fetch ship types using Suspense.
  * Utilizes a cached resource to minimize unnecessary network requests.
  *
- * @returns {ShipTypes} The fetched ship types data.
+ * @returns {ShipTypes} The fetched ship types data (now with the new structure).
  * @throws Will throw the promise if the fetch is pending, or an error if it failed.
  */
 export function useFetchShipTypesSuspense(): ShipTypes {
@@ -104,8 +113,10 @@ export function useFetchShipTypesSuspense(): ShipTypes {
 }
 
 // --- Zustand Store ---
-interface ShipTypesState {
-  shipTypes: ShipTypes | null; // shipTypes can be null initially
+export interface ShipTypesState {
+  // The type here uses the updated ShipTypes interface
+  shipTypes: ShipTypes | null;
+  // selectedShipType still stores the key (e.g., 'standard'), which is a string
   selectedShipType: string;
   setSelectedShipType: (shipType: string) => void;
 }
@@ -113,15 +124,16 @@ interface ShipTypesState {
 export const useShipTypesStore = create<ShipTypesState>((set) => ({
   shipTypes: null, // Initialize as null
   selectedShipType: (() => {
-    // Read ship type from URL on initial load
+    // Reading the key from the URL is still correct
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get("ship") || "standard"; // Default to "standard" if not found
+    return urlParams.get("platform") || "standard"; // Default key is 'standard'
   })(),
   setSelectedShipType: (shipType) => {
+    // Setting the key is still correct
     set({ selectedShipType: shipType });
-    // Update URL when ship type changes
+    // Updating the URL with the key is still correct
     const url = new URL(window.location.href);
-    url.searchParams.set("ship", shipType);
+    url.searchParams.set("platform", shipType);
     window.history.pushState({}, "", url);
   },
 }));

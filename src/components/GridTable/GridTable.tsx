@@ -56,7 +56,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
 
     ReactGA.event({
       category: "User Interactions",
-      action: "share",
+      action: "shareLink",
     });
 
     if (newWindow) {

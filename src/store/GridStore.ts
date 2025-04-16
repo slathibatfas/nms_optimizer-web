@@ -1,9 +1,55 @@
 // src/store/GridStore.ts
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { persist, type StorageValue } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 import { useTechStore } from "./TechStore";
 
-// Define types
+// --- Define the specific function type we are debouncing ---
+type SetItemFunction = (
+    name: string,
+    value: StorageValue<Partial<GridStore>>
+) => Promise<void>; // Or just `void` if the original wasn't async
+
+/**
+ * Creates a debounced version of the specific setItem function that delays
+ * calling the original function until `wait` milliseconds have passed since
+ * the last time the debounced function was called.
+ *
+ * @param func The specific setItem function to debounce
+ * @param wait The number of milliseconds to wait
+ * @returns A debounced version of the setItem function
+ */
+function debounceSetItem(func: SetItemFunction, wait: number): SetItemFunction {
+    let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
+
+    // Return a function that matches the SetItemFunction signature
+    return (name: string, value: StorageValue<Partial<GridStore>>): Promise<void> => {
+        // We return a Promise because the debounced function might need to be awaitable,
+        // even though the actual execution is delayed. If the original wasn't async,
+        // you could return void here and adjust the SetItemFunction type.
+        return new Promise((resolve) => {
+            const later = async () => { // Make later async to await func
+                timeout = undefined;
+                await func(name, value); // Await the original async function
+                resolve(); // Resolve the promise after execution
+            };
+
+            if (timeout !== undefined) {
+                clearTimeout(timeout);
+            }
+
+            timeout = setTimeout(later, wait);
+
+            // Note: If the original func didn't return a Promise, you wouldn't need
+            // the outer Promise wrapper and resolve() call. The `later` function
+            // would just call `func(name, value);` directly.
+        });
+    };
+}
+
+
+// --- Define types (Cell, Grid, ApiResponse) ---
+// (Keep existing type definitions - no changes needed here)
 export type Cell = {
   active: boolean;
   adjacency: boolean;
@@ -32,7 +78,9 @@ export type ApiResponse = {
   solved_bonus: number;
 };
 
-// Utility functions
+
+// --- Utility functions (createEmptyCell, createGrid) ---
+// (Keep existing utility functions - no changes needed here)
 export const createEmptyCell = (supercharged = false, active = true): Cell => ({
   active,
   adjacency: false,
@@ -55,194 +103,207 @@ export const createGrid = (width: number, height: number): Grid => ({
   height,
 });
 
-// Zustand Store
+
+// --- Zustand Store Interface (GridStore) ---
+// (Keep existing GridStore interface - no changes needed here)
 export type GridStore = {
   grid: Grid;
   result: ApiResponse | null;
+  isSharedGrid: boolean;
   setGrid: (grid: Grid) => void;
   resetGrid: () => void;
   setResult: (result: ApiResponse | null, tech: string) => void;
   activateRow: (rowIndex: number) => void;
   deActivateRow: (rowIndex: number) => void;
   hasTechInGrid: (tech: string) => boolean;
-  isGridFull: (tech: string) => boolean;
+  isGridFull: () => boolean;
   resetGridTech: (tech: string) => void;
   toggleCellActive: (rowIndex: number, columnIndex: number) => void;
   toggleCellSupercharged: (rowIndex: number, columnIndex: number) => void;
   setCellActive: (rowIndex: number, columnIndex: number, active: boolean) => void;
   setCellSupercharged: (rowIndex: number, columnIndex: number, supercharged: boolean) => void;
-  isSharedGrid: boolean; // New state variable
-  setIsSharedGrid: (isShared: boolean) => void; // New setter function
+  setIsSharedGrid: (isShared: boolean) => void;
 };
 
-export const useGridStore = create<GridStore>()(
-  persist(
-    (set, get) => ({
-      grid: createGrid(10, 6),
-      result: null,
-      isSharedGrid: false, // Initial value
-      setIsSharedGrid: (isShared) => set({ isSharedGrid: isShared }),
 
-      setGrid: (grid) => set({ grid }),
-      resetGrid: () => {
-        set((state) => ({
-          grid: createGrid(state.grid.width, state.grid.height),
-          result: null,
-        }));
-        useTechStore.getState().clearResult();
-      },
+// --- Create Debounced Storage ---
+const debouncedStorage = {
+  // Use the specific debounceSetItem function
+  setItem: debounceSetItem(async (name: string, value: StorageValue<Partial<GridStore>>) => {
+    // console.log(`Debounced save for: ${name}`); // Optional: for debugging
+    try {
+      const storageValue = JSON.stringify(value);
+      localStorage.setItem(name, storageValue);
+    } catch (e) {
+      console.error("Failed to save to localStorage:", e);
+    }
+  }, 2000), // 2000ms = 2 seconds debounce time
 
-      setResult: (result, tech) => {
-        const { setTechSolvedBonus } = useTechStore.getState();
-
-        set({ result });
-        if (result) {
-          useTechStore.getState().setTechMaxBonus(tech, result.max_bonus);
-          setTechSolvedBonus(tech, result.solved_bonus);
-        }
-      },
-  toggleCellActive: (rowIndex, columnIndex) => {
-    set((state) => {
-      const currentGrid = state.grid;
-      const targetCell = currentGrid.cells[rowIndex]?.[columnIndex];
-
-      if (!targetCell) {
-        console.error(`Cell not found at [${rowIndex}, ${columnIndex}]`);
-        return {}; // Return unchanged state or handle error appropriately
+  // getItem and removeItem remain the same
+  getItem: (name: string): StorageValue<Partial<GridStore>> | null => {
+    try {
+      const str = localStorage.getItem(name);
+      if (!str) {
+        return null;
       }
-
-      const newActiveState = !targetCell.active;
-      let newSuperchargedState = targetCell.supercharged;
-
-      // --- This is the key logic addition ---
-      // If the cell is being deactivated, also remove supercharged status.
-      if (!newActiveState) {
-        newSuperchargedState = false;
-      }
-      // --- End of addition ---
-
-      // Create a new grid state immutably
-      const newCells = currentGrid.cells.map((row, rIdx) =>
-        row.map((cell, cIdx) => {
-          if (rIdx === rowIndex && cIdx === columnIndex) {
-            return {
-              ...cell,
-              active: newActiveState,
-              supercharged: newSuperchargedState, // Update supercharged state here
-            };
-          }
-          return cell;
-        })
-      );
-
-      return { grid: { ...currentGrid, cells: newCells } };
-    });
+      return JSON.parse(str);
+    } catch (e) {
+      console.error("Failed to load from localStorage:", e);
+      return null;
+    }
   },
 
+  removeItem: (name: string): void => {
+    localStorage.removeItem(name);
+  },
+};
 
-      toggleCellSupercharged: (rowIndex, columnIndex) => {
-        set((state) => {
-          const currentCell = state.grid.cells[rowIndex][columnIndex];
-          if (!currentCell.active) {
-            return state; // Do nothing if the cell is not active
+
+// --- Create the store using persist and immer middleware ---
+// (No changes needed in the store logic itself)
+export const useGridStore = create<GridStore>()(
+  persist(
+    immer(
+      (set, get) => ({
+        // --- State properties ---
+        grid: createGrid(10, 6),
+        result: null,
+        isSharedGrid: false,
+
+        // --- Actions ---
+        // (All your existing actions remain unchanged here)
+        setIsSharedGrid: (isShared) => set({ isSharedGrid: isShared }),
+
+        setGrid: (grid) => set({ grid }),
+
+        resetGrid: () => {
+          set((state) => {
+            state.grid = createGrid(state.grid.width, state.grid.height);
+            state.result = null;
+            state.isSharedGrid = false;
+          });
+          useTechStore.getState().clearResult();
+        },
+
+        setResult: (result, tech) => {
+          const { setTechMaxBonus, setTechSolvedBonus } = useTechStore.getState();
+          set((state) => {
+            state.result = result;
+          });
+          if (result) {
+            setTechMaxBonus(tech, result.max_bonus);
+            setTechSolvedBonus(tech, result.solved_bonus);
           }
-          return {
-            grid: {
-              ...state.grid,
-              cells: state.grid.cells.map((row, rIdx) =>
-                row.map((cell, cIdx) => (rIdx === rowIndex && cIdx === columnIndex ? { ...cell, supercharged: !cell.supercharged } : cell))
-              ),
-            },
-          };
-        });
-      },
+        },
 
-      setCellActive: (rowIndex, columnIndex, active) => {
-        set((state) => ({
-          grid: {
-            ...state.grid,
-            cells: state.grid.cells.map((row, rIdx) =>
-              row.map((cell, cIdx) =>
-                rIdx === rowIndex && cIdx === columnIndex
-                  ? {
-                      ...cell,
-                      active: active,
-                      supercharged: active ? cell.supercharged : false,
-                    }
-                  : cell
-              )
-            ),
-          },
-        }));
-      },
+        toggleCellActive: (rowIndex, columnIndex) => {
+          set((state) => {
+            const cell = state.grid.cells[rowIndex]?.[columnIndex];
+            if (cell) {
+              const newActiveState = !cell.active;
+              cell.active = newActiveState;
+              if (!newActiveState) {
+                cell.supercharged = false;
+              }
+            } else {
+              console.error(`Cell not found at [${rowIndex}, ${columnIndex}]`);
+            }
+          });
+        },
 
-      setCellSupercharged: (rowIndex, columnIndex, supercharged) => {
-        set((state) => {
-          const currentCell = state.grid.cells[rowIndex][columnIndex];
-          if (!currentCell.active) {
-            return state; // Do nothing if the cell is not active
+        toggleCellSupercharged: (rowIndex, columnIndex) => {
+          set((state) => {
+            const cell = state.grid.cells[rowIndex]?.[columnIndex];
+            if (cell?.active) {
+              cell.supercharged = !cell.supercharged;
+            }
+          });
+        },
+
+        setCellActive: (rowIndex, columnIndex, active) => {
+          set((state) => {
+            const cell = state.grid.cells[rowIndex]?.[columnIndex];
+            if (cell) {
+              cell.active = active;
+              if (!active) {
+                cell.supercharged = false;
+              }
+            }
+          });
+        },
+
+        setCellSupercharged: (rowIndex, columnIndex, supercharged) => {
+          set((state) => {
+            const cell = state.grid.cells[rowIndex]?.[columnIndex];
+            if (cell?.active) {
+              cell.supercharged = supercharged;
+            } else if (cell && !cell.active && supercharged) {
+              // console.warn("Attempted to supercharge an inactive cell.");
+            }
+          });
+        },
+
+        activateRow: (rowIndex: number) => {
+          set((state) => {
+            if (state.grid.cells[rowIndex]) {
+              state.grid.cells[rowIndex].forEach((cell: Cell) => {
+                cell.active = true;
+              });
+            }
+          });
+        },
+
+        deActivateRow: (rowIndex: number) => {
+          set((state) => {
+            if (state.grid.cells[rowIndex]) {
+              state.grid.cells[rowIndex].forEach((cell: Cell) => {
+                cell.active = false;
+                cell.supercharged = false;
+              });
+            }
+          });
+        },
+
+        hasTechInGrid: (tech: string): boolean => {
+          const grid = get().grid;
+          return grid.cells.some((row) => row.some((cell) => cell.tech === tech));
+        },
+
+        isGridFull: (): boolean => {
+          const grid = get().grid;
+          const activeCells = grid.cells.flat().filter((cell) => cell.active);
+          if (activeCells.length === 0) {
+             return false;
           }
-          return {
-            grid: {
-              ...state.grid,
-              cells: state.grid.cells.map((row, rIdx) =>
-                row.map((cell, cIdx) => (rIdx === rowIndex && cIdx === columnIndex ? { ...cell, supercharged: supercharged } : cell))
-              ),
-            },
-          };
-        });
-      },
+          return activeCells.every((cell) => cell.module !== null);
+        },
 
-      activateRow: (rowIndex: number) => {
-        set((state) => ({
-          grid: {
-            ...state.grid,
-            cells: state.grid.cells.map((row, rIdx) => (rIdx === rowIndex ? row.map((cell) => ({ ...cell, active: true })) : row)),
-          },
-        }));
-      },
-
-      deActivateRow: (rowIndex: number) => {
-        set((state) => ({
-          grid: {
-            ...state.grid,
-            cells: state.grid.cells.map((row, rIdx) => (rIdx === rowIndex ? row.map((cell) => ({ ...cell, active: false })) : row)),
-          },
-        }));
-      },
-
-      hasTechInGrid: (tech: string): boolean => {
-        const { grid } = get();
-        return grid.cells.some((row) => row.some((cell) => cell.tech === tech));
-      },
-
-      resetGridTech: (tech: string) => {
-        set((state) => ({
-          grid: {
-            ...state.grid,
-            cells: state.grid.cells.map((row) =>
-              row.map((cell) =>
-                cell.tech === tech
-                  ? {
-                      ...createEmptyCell(cell.supercharged, cell.active),
-                      tech: null,
-                    }
-                  : cell
-              )
-            ),
-          },
-        }));
-      },
-      isGridFull: (): boolean => {
-        const { grid } = get();
-        const activeCells = grid.cells.flat().filter((cell) => cell.active);
-        const allActiveCellsHaveModules = activeCells.every((cell) => cell.module !== null);
-        return allActiveCellsHaveModules;
-      },
-    }),
+        resetGridTech: (tech: string) => {
+          set((state) => {
+            state.grid.cells.forEach((row: Cell[]) => {
+              row.forEach((cell: Cell) => {
+                if (cell.tech === tech) {
+                  const { active, supercharged } = cell;
+                  Object.assign(cell, createEmptyCell(supercharged, active));
+                  cell.tech = null;
+                }
+              });
+            });
+          });
+        },
+      })
+    ),
+    // --- Persist Configuration ---
     {
-      name: "grid-storage", // unique name
-      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+      name: "grid-storage",
+      storage: debouncedStorage, // Use the storage object with the specifically debounced setItem
+      partialize: (state) => ({
+        grid: state.grid,
+        isSharedGrid: state.isSharedGrid,
+      }),
     }
   )
 );
+
+// Remember to install immer: npm install immer or yarn add immer
+
