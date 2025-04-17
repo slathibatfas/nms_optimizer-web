@@ -45,38 +45,57 @@
 
 .gridCell--supercharged {
   /* Styles for supercharged grid cells */
-  border-color:var(--amber-11) !important;
-  background-color: var(--amber-a7) !important;
-  box-shadow: 0 0 4px 0px var(--amber-a7); /* Soft glow effect */
+  border-color:var(--purple-a11) !important;
+  background-color: var(--purple-a7) !important;
+  background-blend-mode: color;
   transition: background-color 0.25s ease, box-shadow 0.25s ease;
   animation: pulseGlow .5s infinite alternate ease-in-out;
 }
 
 
 .gridCell--supercharged:hover {
-  background-color: var(--amber-a8) !important;
+  background-color: var(--purple-a8) !important;
   transition: background-color 0.25s ease;
 }
 
 .gridCell--red {
-  border-color: var(--red-9);
+  border-color: var(--red-10);
   background-color: var(--red-a5);
+}
 
+.gridCell--red:hover {
+  background-color: var(--red-a7);
+  transition: background-color 0.25s ease;
 }
 
 .gridCell--purple {
-  border-color: var(--purple-11);
+  border-color: var(--purple-10);
   background-color: var(--purple-a5);
 }
 
+.gridCell--purple:hover {
+  background-color: var(--purple-a7);
+  transition: background-color 0.25s ease;
+}
+
 .gridCell--green {
-  border-color: var(--green-11);
+  border-color: var(--green-10);
   background-color: var(--green-a5);
 }
 
+.gridCell--green:hover {
+  background-color: var(--green-a7);
+  transition: background-color 0.25s ease;
+}
+
 .gridCell--cyan {
-  border-color: var(--cyan-11);
-  background-color: var(--cyan-a6);
+  border-color: var(--cyan-10);
+  background-color: var(--cyan-a5);
+}
+
+.gridCell--cyan:hover {
+  background-color: var(--cyan-a7);
+  transition: background-color 0.25s ease;
 }
 
 .gridCell--amber {
@@ -84,24 +103,49 @@
   background-color: var(--amber-a5);
 }
 
+.gridCell--amber:hover {
+  background-color: var(--amber-a7);
+  transition: background-color 0.25s ease;
+}
+
 .gridCell--iris {
   border-color: var(--iris-10);
   background-color: var(--iris-a5);
 }
 
+.gridCell--iris:hover {
+  background-color: var(--iris-a7);
+  transition: background-color 0.25s ease;
+}
+
 .gridCell--yellow {
-  border-color: var(--yellow-11);
+  border-color: var(--yellow-9);
   background-color: var(--yellow-a5);
+}
+
+.gridCell--yellow:hover {
+  background-color: var(--yellow-a7);
+  transition: background-color 0.25s ease;
 }
 
 .gridCell--sky {
   border-color: var(--sky-10);
-  background-color: var(--sky-a6);
+  background-color: var(--sky-a5);
+}
+
+.gridCell--sky:hover {
+  background-color: var(--sky-a7);
+  transition: background-color 0.25s ease;
 }
 
 .gridCell--jade {
-  border-color: var(--jade-11);
+  border-color: var(--jade-10);
   background-color: var(--jade-a5);
+}
+
+.gridCell--jade:hover {
+  background-color: var(--jade-a7);
+  transition: background-color 0.25s ease;
 }
 
 .gridCell--orange {
@@ -109,21 +153,38 @@
   background-color: var(--orange-a5);
 }
 
+.gridCell--orange:hover {
+  background-color: var(--orange-a7);
+  transition: background-color 0.25s ease;
+}
+
 .gridCell--black {
   border-color: var(--gray-7);
   background-color: var(--gray-a5);
 }
+
+.gridCell--black:hover {
+  background-color: var(--gray-a7);
+  transition: background-color 0.25s ease;
+}
+
 
 .gridCell--gray {
   border-color: var(--gray-12);
   background-color: var(--gray-a7);
 }
 
+.gridCell--gray:hover {
+  background-color: var(--gray-a9);
+  transition: background-color 0.25s ease;
+}
+
+
 @keyframes pulseGlow {
   from {
-    box-shadow: 0 0 4px 0px var(--amber-a7);
+    box-shadow: 0 0 4px 0px var(--gray-a7);
   }
   to {
-    box-shadow: 0 0 4px 4px var(--amber-a8);
+    box-shadow: 0 0 4px 4px var(--gray-a8);
   }
 }
