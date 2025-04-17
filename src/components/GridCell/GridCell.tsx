@@ -112,11 +112,11 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
   const getUpgradePriority = (label: string | undefined): number => {
     if (!label) return 0;
     switch (true) {
-      case label.toLowerCase().includes("sigma"):
+      case label.toLowerCase().includes("theta"):
         return 1;
       case label.toLowerCase().includes("tau"):
         return 2;
-      case label.toLowerCase().includes("theta"):
+      case label.toLowerCase().includes("sigma"):
         return 3;
       default:
         return 0;

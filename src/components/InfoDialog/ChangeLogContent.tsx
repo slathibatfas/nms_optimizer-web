@@ -8,6 +8,13 @@ const ChangeLogContent: React.FC = () => {
   return (
     <>
 
+      <div className="border-b-1 border-white/5 infodialog__item">
+        <h2 className="mb-2 font-bold">Model Status</h2>
+        <p className="mb-2">See this <a className="underline" href="https://github.com/jbelew/nms_optimizer-service/tree/main/training/trained_models" target="_blank" rel="noopener noreferrer">GitHub page</a> for up to date model information.</p>
+      </div>
+
+
+
       {/* Version 2.0 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 2.0 (2025-04-15)</h2>
