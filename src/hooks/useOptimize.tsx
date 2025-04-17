@@ -5,6 +5,7 @@ import { useOptimizeStore } from "../store/OptimizeStore";
 import { API_URL } from "../constants";
 import { useTechStore } from "../store/TechStore";
 import { useShipTypesStore } from "./useShipTypes";
+import { useBreakpoint } from "./useBreakpoint";
 import ReactGA from 'react-ga4'
 
 interface UseOptimizeReturn {
@@ -22,11 +23,12 @@ export const useOptimize = (): UseOptimizeReturn => {
   const { showError, setShowError: setShowErrorStore } = useOptimizeStore();
   const { checkedModules } = useTechStore();
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
+  const isLarge = useBreakpoint("1024px");
 
   useEffect(() => {
-    if (solving && gridContainerRef.current) {
+    if (solving && gridContainerRef.current && !isLarge) {
       const element = gridContainerRef.current;
-      const offset = 16;
+      const offset = 0;
 
       const elementRect = element.getBoundingClientRect();
       const absoluteElementTop = elementRect.top + window.pageYOffset;
