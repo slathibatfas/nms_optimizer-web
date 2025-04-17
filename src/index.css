@@ -1,6 +1,7 @@
 @font-face {
   font-family: "GeosansLight";
-  src: url("/src/assets/fonts/geonms-font.ttf") format("truetype");
+  src: url("/src/assets/fonts/geonms-webfont.ttf") format("truetype"),
+       url("/src/assets/fonts/geonms-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: auto;

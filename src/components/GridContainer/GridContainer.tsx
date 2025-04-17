@@ -1,15 +1,15 @@
 // src/components/GridContainer/GridContainer.tsx
-import React, { useState, useEffect, useRef, Suspense } from "react"; // Import Suspense
+import React, { useState, useEffect, useRef, Suspense, useCallback } from "react";
 import GridTable from "../GridTable/GridTable";
 import TechTreeComponent from "../TechTree/TechTree";
 import { useGridStore } from "../../store/GridStore";
 import { useOptimize } from "../../hooks/useOptimize";
 import { Box, Flex, ScrollArea, Tooltip } from "@radix-ui/themes";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
-import { useFetchShipTypesSuspense, useShipTypesStore, ShipTypeDetail } from "../../hooks/useShipTypes";
-import { useFetchTechTreeSuspense } from "../../hooks/useTechTree"; // Import the hook needed for data
+// Import the suspense hook and the store hook/types
+import { useShipTypesStore, ShipTypeDetail, useFetchShipTypesSuspense } from "../../hooks/useShipTypes";
 import ShipSelection from "../ShipSelection/ShipSelection";
-import MessageSpinner from "../MessageSpinner/MessageSpinner"; // Import a fallback component
+import MessageSpinner from "../MessageSpinner/MessageSpinner";
 
 interface GridContainerProps {
   setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,93 +20,91 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
   const { solving, handleOptimize, gridContainerRef } = useOptimize();
   const { grid, result, activateRow, deActivateRow, resetGrid, setIsSharedGrid } = useGridStore();
 
-  // Fetch ship types (suspends if not ready)
-  const shipTypes = useFetchShipTypesSuspense();
+  // Get selected ship type *from the store*
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
 
-  // --- Ensure Tech Tree Data is Fetched ---
-  // Call the hook here directly. This triggers the data fetch and any side effects
-  // within the hook (like setting tech colors). It will suspend if data isn't ready.
-  useFetchTechTreeSuspense(selectedShipType);
-  // --- End Data Fetching ---
+  // Fetch ship types data using the suspense hook
+  // This will suspend rendering until the data is loaded
+  const shipTypes = useFetchShipTypesSuspense();
 
-  const selectedShipTypeDetails: ShipTypeDetail | undefined = shipTypes[selectedShipType];
-  const selectedShipTypeLabel = selectedShipTypeDetails?.label || "Unknown Ship Type";
+  // Derive details and label *after* shipTypes data is available
+  const selectedShipTypeDetails: ShipTypeDetail | undefined = shipTypes ? shipTypes[selectedShipType] : undefined;
+  const selectedShipTypeLabel = selectedShipTypeDetails?.label || `Unknown (${selectedShipType})`;
 
+  // Refs and State for layout
   const gridRef = useRef<HTMLDivElement>(null);
   const [gridHeight, setGridHeight] = useState<number | null>(null);
   const isLarge = useBreakpoint("1024px");
   const [isSharedGridLocal, setIsSharedGridLocal] = useState(false);
 
+  // Effect for handling shared grid state and dynamic height
   useEffect(() => {
-    // Function to calculate and set grid height for the sidebar
     const updateGridHeight = () => {
-      // Only calculate height if the sidebar is visible (large screen, not shared grid)
       if (isLarge && !isSharedGridLocal && gridRef.current) {
         setGridHeight(gridRef.current.getBoundingClientRect().height);
       } else {
-        setGridHeight(null); // Reset height if sidebar isn't shown or needed
+        setGridHeight(null);
       }
     };
 
-    // Function to handle URL changes affecting shared state
     const handlePopState = () => {
       const newUrl = new URL(window.location.href);
       const isShared = newUrl.searchParams.has("grid");
       setIsSharedGridLocal(isShared);
-      setIsSharedGrid(isShared); // Update global store as well
+      setIsSharedGrid(isShared);
     };
 
-    // Initial setup: Check URL for shared state
     const url = new URL(window.location.href);
     const isShared = url.searchParams.has("grid");
     setIsSharedGridLocal(isShared);
     setIsSharedGrid(isShared);
 
-    // Initial height calculation (debounced slightly for layout stability)
     const timerId = setTimeout(updateGridHeight, 100);
-
-    // Add event listeners
     window.addEventListener("resize", updateGridHeight);
     window.addEventListener("popstate", handlePopState);
 
-    // Cleanup function
     return () => {
       clearTimeout(timerId);
       window.removeEventListener("resize", updateGridHeight);
       window.removeEventListener("popstate", handlePopState);
     };
-    // Recalculate height/shared state if these dependencies change
   }, [isLarge, isSharedGridLocal, grid, setIsSharedGrid]);
 
-  const handleOptimizeWrapper = (tech: string) => {
-    return handleOptimize(tech);
-  };
+  // Memoize the optimize handler
+  const handleOptimizeWrapper = useCallback(
+    (tech: string) => {
+      return handleOptimize(tech);
+    },
+    [handleOptimize]
+  );
 
-  // --- Wrap JSX in Suspense ---
-  // Because useFetchShipTypesSuspense and useFetchTechTreeSuspense can suspend,
-  // we need a Suspense boundary.
+  // Wrap the main content in a Suspense boundary to handle data loading
   return (
-    <Suspense fallback={<MessageSpinner solving={true} initialMessage="Loading Data..." />}>
+    <Suspense fallback={<MessageSpinner isVisible={true} initialMessage="Loading Data..." />}>
       <Box className="p-6 pt-4 border-t-1 lg:p-8 md:p-8 md:pt-4 gridContainer" style={{ borderColor: "var(--gray-a4)" }} ref={gridContainerRef}>
         <Flex className="flex-col items-start gridContainer__layout lg:flex-row">
           {/* Grid Section */}
           <Box className="flex-grow w-auto gridContainer__grid lg:flex-shrink-0" ref={gridRef}>
+            {/* Title and Platform Selection */}
             <h2 className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
-              {/* Conditionally render ShipSelection based on shared state */}
+              {/* Show ShipSelection only if not a shared grid */}
               {!isSharedGridLocal && (
-                <Tooltip content="Select Tecgnology Platform" delayDuration={500}>
+                <Tooltip content="Select Technology Platform" delayDuration={500}>
                   <span className="flex-shrink-0">
+                    {/* ShipSelection uses the same fetched shipTypes, no extra Suspense needed here */}
                     <ShipSelection solving={solving} />
                   </span>
                 </Tooltip>
               )}
+              {/* Platform Label */}
               <span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>
                 PLATFORM:
               </span>
+              {/* Display the derived label (now correctly loaded) */}
               <span className="flex-1 min-w-0">{selectedShipTypeLabel}</span>
             </h2>
 
+            {/* Grid Table Component */}
             <GridTable
               grid={grid}
               solving={solving}
@@ -120,23 +118,26 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
             />
           </Box>
 
-          {/* Tech Tree Section (Conditionally Rendered UI) */}
-          {!isSharedGridLocal && // Only render this section's UI if not a shared grid
+          {/* Tech Tree Section (Conditionally Rendered) */}
+          {!isSharedGridLocal &&
             (isLarge ? (
-              // Desktop/Large Screen View
+              // Desktop: Scrollable sidebar
               <ScrollArea
                 className={`gridContainer__sidebar p-4 ml-4 border shadow-md rounded-xl backdrop-blur-xl border-white/5`}
-                // Set height dynamically based on the grid's height
-                style={{ height: gridHeight ? `${gridHeight}px` : "auto" }}
+                style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
               >
-                {/* TechTreeComponent handles its own internal suspense/loading */}
-                <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
+                {/* Suspense for TechTree's internal data fetch */}
+                <Suspense fallback={<MessageSpinner isVisible={true} initialMessage="Featching Tech..." />}>
+                  <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
+                </Suspense>
               </ScrollArea>
             ) : (
-              // Mobile View: Tech Tree below grid
+              // Mobile: Tech Tree below GridTable
               <Box className="z-10 items-start flex-grow-0 flex-shrink-0 w-full pt-8">
-                {/* TechTreeComponent handles its own internal suspense/loading */}
-                <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
+                {/* Suspense for TechTree's internal data fetch */}
+                <Suspense fallback={<MessageSpinner isVisible={true} initialMessage="Featching Tech..." />}>
+                  <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
+                </Suspense>
               </Box>
             ))}
         </Flex>
@@ -144,4 +145,5 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
     </Suspense>
   );
 };
+
 export default GridContainer;

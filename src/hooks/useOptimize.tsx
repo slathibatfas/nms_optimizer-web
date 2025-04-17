@@ -39,7 +39,7 @@ export const useOptimize = (): UseOptimizeReturn => {
         behavior: "smooth",
       });
     }
-  }, [solving]);
+  }, [isLarge, solving]);
 
   // --- Optimization Request Logic ---
   const handleOptimize = useCallback(

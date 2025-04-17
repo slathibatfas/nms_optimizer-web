@@ -138,7 +138,7 @@ const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
   }, [props]);
 
   return (
-    <Suspense fallback={<MessageSpinner solving={true} initialMessage="LOADING!" />}>
+    <Suspense fallback={<MessageSpinner isVisible={true} initialMessage="LOADING!" />}>
       {error ? (
         <div className="flex flex-col items-center justify-center h-full">
           <ExclamationTriangleIcon className="w-16 h-16" style={{ color: "#C44A34" }} />

@@ -3,11 +3,12 @@ import { Text } from "@radix-ui/themes";
 import React, { useState, useEffect } from "react";
 
 interface MessageSpinnerProps {
-  solving: boolean;
-  initialMessage: string; // Required initial message prop
+  isVisible: boolean;
+  initialMessage: string;
+  showRandomMessages?: boolean;
 }
 
-// --- Define your random messages here ---
+// --- Define your random messages here (remains the same) ---
 const randomMessages = [
   "-{{ Recalibrating flux capacitor! }}-",
   "-{{ Polishing the chrome! }}-",
@@ -53,64 +54,59 @@ const randomMessages = [
 // --- End of random messages ---
 
 /**
- * MessageSpinner component that displays a loading spinner overlay when solving is true.
- * It shows an initial message, and then a random message after a short delay.
- *
- * @param {MessageSpinnerProps} props - The properties passed to the component.
- * @param {boolean} props.solving - Determines whether the spinner is visible.
- * @param {string} props.initialMessage - The initial message to display.
- * @returns {JSX.Element | null} The rendered spinner element or null.
+ * MessageSpinner component that displays a loading spinner overlay.
+ * Can optionally show random messages after a delay for longer operations.
  */
-const MessageSpinner: React.FC<MessageSpinnerProps> = ({ solving, initialMessage }) => {
+const MessageSpinner: React.FC<MessageSpinnerProps> = ({ isVisible, initialMessage, showRandomMessages = false }) => {
   const [showAdditionalMessage, setShowAdditionalMessage] = useState(false);
-  // --- Add state for the random message ---
   const [currentRandomMessage, setCurrentRandomMessage] = useState<string>("");
-  // --- End state addition ---
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
-    if (solving) {
-      // Reset additional message state on new solve start
-      setShowAdditionalMessage(false);
-      setCurrentRandomMessage(""); // Clear previous random message
+    // Only run the random message logic if showRandomMessages is true and the spinner is visible
+    if (showRandomMessages && isVisible) {
+      setShowAdditionalMessage(false); // Reset visibility when conditions change
+      setCurrentRandomMessage(""); // Clear previous message
 
       timer = setTimeout(() => {
-        // --- Select and set a random message ---
         const randomIndex = Math.floor(Math.random() * randomMessages.length);
         setCurrentRandomMessage(randomMessages[randomIndex]);
-        // --- End random message selection ---
-        setShowAdditionalMessage(true);
-      }, 2500); // Keep the original delay
+        setShowAdditionalMessage(true); // Set to show after delay
+      }, 2500); // Delay before showing random message
 
       // Cleanup function
       return () => {
         if (timer) clearTimeout(timer);
       };
     } else {
-      // Ensure state is reset if solving becomes false
+      // Ensure state is reset if conditions aren't met
       setShowAdditionalMessage(false);
       setCurrentRandomMessage("");
     }
-  }, [solving]); // Dependency remains 'solving'
+    // Depend on both isVisible and showRandomMessages
+  }, [isVisible, showRandomMessages]);
 
-  if (!solving) return null;
+  // Use the isVisible prop to control rendering of the entire component
+  if (!isVisible) return null;
+
+  // Determine if the random message should be displayed based on state and props
+  const displayRandomMessage = showRandomMessages && showAdditionalMessage;
 
   return (
-    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-opacity-75 rounded-lg">
-      <div className="w-16 h-16 border-8 rounded-full shadow-2xl border-slate-600 animate-spin messageSpinner"></div>
-      <Text className="pt-4 text-2xl font-bold shadow-2xl messageSpinner__header">{initialMessage}</Text>
-      {showAdditionalMessage ? (
-        // --- Render the random message from state ---
-        <Text className="font-semibold text-center uppercase shadow-2xl" style={{ color: "#e6c133" }}>
-          {currentRandomMessage}
-        </Text>
-      ) : (
-        // --- End rendering random message ---
-        // Keep the placeholder for layout consistency before the message appears
-        <Text style={{ color: "#e6c133" }}>
-          <br />
-        </Text>
-      )}
+    // Restore original container class
+    <div className="z-50 flex flex-col items-center justify-center pt-8 bg-opacity-75 lg:pt-0 lg:absolute lg:inset-0">
+      <div className="w-16 h-16 border-8 rounded-full shadow-sm border-slate-600 animate-spin messageSpinner"></div>
+      <Text className="pt-4 text-2xl font-bold shadow-sm messageSpinner__header">{initialMessage}</Text>
+      <Text
+        className="font-semibold text-center uppercase shadow-2xl messageSpinner__random"
+        style={{
+          color: displayRandomMessage ? "#e6c133" : "transparent", // Use transparent color to hide when not ready/enabled
+          minHeight: "1.5em", // Maintain minimum height to prevent layout shift (adjust as needed)
+          userSelect: "none", // Prevent selecting the placeholder space
+        }}
+      >
+        {displayRandomMessage ? currentRandomMessage : "\u00A0"}
+      </Text>
     </div>
   );
 };
