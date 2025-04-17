@@ -4,13 +4,9 @@ import GridTable from "../GridTable/GridTable";
 import TechTreeComponent from "../TechTree/TechTree";
 import { useGridStore } from "../../store/GridStore";
 import { useOptimize } from "../../hooks/useOptimize";
-import { Box, Flex, ScrollArea } from "@radix-ui/themes";
+import { Box, Flex, ScrollArea, Tooltip } from "@radix-ui/themes";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
-import {
-  useFetchShipTypesSuspense,
-  useShipTypesStore,
-  ShipTypeDetail,
-} from "../../hooks/useShipTypes";
+import { useFetchShipTypesSuspense, useShipTypesStore, ShipTypeDetail } from "../../hooks/useShipTypes";
 import { useFetchTechTreeSuspense } from "../../hooks/useTechTree"; // Import the hook needed for data
 import ShipSelection from "../ShipSelection/ShipSelection";
 import MessageSpinner from "../MessageSpinner/MessageSpinner"; // Import a fallback component
@@ -83,7 +79,6 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
     // Recalculate height/shared state if these dependencies change
   }, [isLarge, isSharedGridLocal, grid, setIsSharedGrid]);
 
-
   const handleOptimizeWrapper = (tech: string) => {
     return handleOptimize(tech);
   };
@@ -93,18 +88,22 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
   // we need a Suspense boundary.
   return (
     <Suspense fallback={<MessageSpinner solving={true} initialMessage="Loading Data..." />}>
-      <Box className="p-6 pt-3 border-t-1 lg:p-8 md:p-8 md:pt-4 gridContainer" style={{ borderColor: "var(--gray-a4)" }} ref={gridContainerRef}>
+      <Box className="p-6 pt-4 border-t-1 lg:p-8 md:p-8 md:pt-4 gridContainer" style={{ borderColor: "var(--gray-a4)" }} ref={gridContainerRef}>
         <Flex className="flex-col items-start gridContainer__layout lg:flex-row">
           {/* Grid Section */}
           <Box className="flex-grow w-auto gridContainer__grid lg:flex-shrink-0" ref={gridRef}>
-            <h2 className="flex flex-wrap items-start gap-2 mb-4 text-2xl font-semibold tracking-widest uppercase sidebar__title">
+            <h2 className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
               {/* Conditionally render ShipSelection based on shared state */}
               {!isSharedGridLocal && (
-                <span className="flex-shrink-0">
-                  <ShipSelection solving={solving} />
-                </span>
+                <Tooltip content="Select Tecgnology Platform">
+                  <span className="flex-shrink-0">
+                    <ShipSelection solving={solving} />
+                  </span>
+                </Tooltip>
               )}
-              <span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>PLATFORM:</span>
+              <span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>
+                PLATFORM:
+              </span>
               <span className="flex-1 min-w-0">{selectedShipTypeLabel}</span>
             </h2>
 
@@ -122,13 +121,13 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
           </Box>
 
           {/* Tech Tree Section (Conditionally Rendered UI) */}
-          {!isSharedGridLocal && ( // Only render this section's UI if not a shared grid
-            isLarge ? (
+          {!isSharedGridLocal && // Only render this section's UI if not a shared grid
+            (isLarge ? (
               // Desktop/Large Screen View
               <ScrollArea
                 className={`gridContainer__sidebar p-4 ml-4 border shadow-md rounded-xl backdrop-blur-xl border-white/5`}
                 // Set height dynamically based on the grid's height
-                style={{ height: gridHeight ? `${gridHeight}px` : 'auto' }}
+                style={{ height: gridHeight ? `${gridHeight}px` : "auto" }}
               >
                 {/* TechTreeComponent handles its own internal suspense/loading */}
                 <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
@@ -139,8 +138,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
                 {/* TechTreeComponent handles its own internal suspense/loading */}
                 <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
               </Box>
-            )
-          )}
+            ))}
         </Flex>
       </Box>
     </Suspense>
