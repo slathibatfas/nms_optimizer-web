@@ -137,7 +137,7 @@ const debouncedStorage = {
     } catch (e) {
       console.error("Failed to save to localStorage:", e);
     }
-  }, 2000), // 2000ms = 2 seconds debounce time
+  }, 500), // 2000ms = 2 seconds debounce time
 
   // getItem and removeItem remain the same
   getItem: (name: string): StorageValue<Partial<GridStore>> | null => {
