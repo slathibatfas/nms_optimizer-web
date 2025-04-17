@@ -46,7 +46,7 @@
 .gridCell--supercharged {
   /* Styles for supercharged grid cells */
   border-color:var(--purple-a11) !important;
-  background-color: var(--purple-a7) !important;
+  background-color: var(--purple-a6) !important;
   background-blend-mode: color;
   transition: background-color 0.25s ease, box-shadow 0.25s ease;
   animation: pulseGlow .5s infinite alternate ease-in-out;
@@ -185,6 +185,6 @@
     box-shadow: 0 0 4px 0px var(--gray-a7);
   }
   to {
-    box-shadow: 0 0 4px 4px var(--gray-a8);
+    box-shadow: 0 0 4px 2px var(--gray-a8);
   }
 }
