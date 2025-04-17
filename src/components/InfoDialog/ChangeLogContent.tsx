@@ -10,7 +10,7 @@ const ChangeLogContent: React.FC = () => {
 
       {/* Version 2.0 */}
       <div className="infodialog__item">
-        <h2 className="mb-2 font-bold">Version 2.0 (Experimental) (2025-04-15)</h2>
+        <h2 className="mb-2 font-bold">Version 2.0 (2025-04-15)</h2>
         <ul className="infodialog__list">
         <li className="infodialog__list-item">Renamed tool to Neural Technology Optimizer.</li>
         <li className="infodialog__list-item">Added support for Tensorflow (AI) based solves.</li>
@@ -40,7 +40,7 @@ const ChangeLogContent: React.FC = () => {
 
       {/* Version 1.0 */}
       <div className="infodialog__item">
-        <h2 className="mb-2 font-bold">Version 1.0 (Release Candidate 3) (2025-04-04)</h2>
+        <h2 className="mb-2 font-bold">Version 1.0 (RC3) (2025-04-04)</h2>
         <ul className="infodialog__list">
           <li className="infodialog__list-item">
             Completely refactored scoring algorithm. Please{" "}
