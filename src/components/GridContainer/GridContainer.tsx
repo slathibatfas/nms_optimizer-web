@@ -95,7 +95,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
             <h2 className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
               {/* Conditionally render ShipSelection based on shared state */}
               {!isSharedGridLocal && (
-                <Tooltip content="Select Tecgnology Platform">
+                <Tooltip content="Select Tecgnology Platform" delayDuration={500}>
                   <span className="flex-shrink-0">
                     <ShipSelection solving={solving} />
                   </span>

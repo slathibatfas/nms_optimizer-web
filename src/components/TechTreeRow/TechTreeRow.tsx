@@ -70,7 +70,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
 
   // Get the checked modules for the current tech, or an empty array if undefined
   const currentCheckedModules = checkedModules[tech] || [];
-  const techColor = getTechColor(tech ?? "");
+  const techColor = getTechColor(tech ?? "gray");
 
   // Construct the image path dynamically
   const imagePath = techImage ? `/assets/img/icons/${techImage}` : "/assets/img/infra-upgrade.png";
@@ -92,7 +92,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
         <IconButton
           onClick={handleOptimizeClick}
           disabled={solving}
-          variant="soft"
+          variant="surface"
           color={techColor as IconButtonColor}
           className="z-10 techRow__optimizeButton"
           style={{ backgroundImage: `url(${imagePath})` }}
@@ -101,7 +101,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
             <img
               src={imagePath}
               alt={label}
-              className="object-cover w-full h-full transition duration-200 border-2 rounded-sm techRow__optimizeButton--image group-hover:brightness-75"
+              className="object-cover w-full h-full transition border-2 rounded-sm duration-250 techRow__optimizeButton--image"
             />
             <IconComponent className="absolute top-0 right-0 w-8 h-8 p-1 transition-opacity opacity-0 group-hover:opacity-100" />
           </div>

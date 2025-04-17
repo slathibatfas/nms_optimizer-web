@@ -4,22 +4,3 @@
   grid-template-rows: repeat(6, var(--grid-cell-size));
   gap: var(--grid-gap);
 }
-
-.gridTable__button--instructions,
-.gridTable__button--changelog {
-  background-color: var(--accent-a5);
-}
-
-.gridTable__button--instructions:hover,
-.gridTable__button--changelog:hover {
-  background-color: var(--accent-a3);
-}
-
-.gridTable__button--reset {
-  background-color: var(--accent-9);
-}
-
-.gridTable__button--reset:hover {
-    background-color: var(--accent-a5);
-}
-  

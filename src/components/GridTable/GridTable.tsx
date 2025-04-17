@@ -175,7 +175,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
           {!isSharedGrid && (
             <Button
               variant="soft"
-              className={`gridTable__button gridTable__button--changelog shadow-lg sm:!px-2`}
+              className={`gridTable__button gridTable__button--changelog shadow-sm sm:!px-2`}
               onClick={handleShareClick}
               disabled={isSharedGrid || !hasModulesInGrid}
             >
@@ -185,7 +185,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
           )}
         </div>
         <div className="z-10 gridTable__footer__right" style={{ paddingRight: columnWidth }}>
-          <Button className={`gridTable__button gridTable__button--reset shadow-lg`} variant="solid" onClick={handleResetGrid} disabled={solving}>
+          <Button className={`gridTable__button gridTable__button--reset shadow-sm`} variant="solid" onClick={handleResetGrid} disabled={solving}>
             <ResetIcon />
             <span className="font-bold">Reset Grid</span>
           </Button>

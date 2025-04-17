@@ -200,11 +200,23 @@ export const useGridStore = create<GridStore>()(
           set((state) => {
             const cell = state.grid.cells[rowIndex]?.[columnIndex];
             if (cell) {
+              // Check if we are trying to deactivate a cell that has a module
+              if (cell.active && cell.module !== null) {
+                // If the cell is active AND has a module, do nothing (prevent deactivation)
+                console.warn(`Cannot deactivate cell [${rowIndex}, ${columnIndex}] because it contains a module.`);
+                return; // Exit the function early
+              }
+
+              // If the cell is active but empty, or if it's inactive, proceed with toggling
               const newActiveState = !cell.active;
               cell.active = newActiveState;
+
+              // If the cell was just deactivated (must have been empty), ensure supercharged is off
               if (!newActiveState) {
                 cell.supercharged = false;
               }
+              // No special action needed when activating an inactive cell here
+
             } else {
               console.error(`Cell not found at [${rowIndex}, ${columnIndex}]`);
             }

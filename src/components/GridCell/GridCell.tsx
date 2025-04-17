@@ -104,10 +104,10 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
   };
 
   const techColor = getTechColor(cell.tech ?? "");
-  const cellClassName = `gridCell gridCell--interactive shadow-sm sm:border-2 border-1 sm:rounded-lg 
-  ${cell.supercharged ? "gridCell--supercharged shadow-md" : ""}
-  ${cell.active ? "gridCell--active shadow-md" : "gridCell--inactive shadow-md"}
-  ${cell.adjacency_bonus === 0 && cell.image ? "gridCell--black" : techColor ? `gridCell--${techColor}` : ""}`.trim();
+  const cellClassName = `gridCell gridCell--interactive shadow-sm sm:border-2 border-1 rounded-sm sm:rounded-md
+  ${cell.supercharged ? "gridCell--supercharged shadow-sm" : ""}
+  ${cell.active ? "gridCell--active shadow-md" : "gridCell--inactive shadow-sm"}
+  ${cell.adjacency_bonus === 0 && cell.image ? "gridCell--black" : ""}`.trim();
 
   const getUpgradePriority = (label: string | undefined): number => {
     if (!label) return 0;
@@ -129,9 +129,10 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
   return (
     <div className="gridCell__container" style={{ gridColumn: columnIndex + 1, gridRow: rowIndex + 1 }}>
       {cell.label ? (
-        <Tooltip content={cell.label}>
+        <Tooltip content={cell.label} delayDuration={500}>
           <div
             role="gridCell"
+            data-accent-color={techColor}
             onContextMenu={handleContextMenu}
             onClick={handleClick}
             onTouchStart={handleTouchStart}
