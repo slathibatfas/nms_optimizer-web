@@ -3,7 +3,7 @@ import { Tooltip } from "@radix-ui/themes";
 import { Grid } from "../../store/GridStore";
 import { useGridStore } from "../../store/GridStore";
 import { useTechStore } from "../../store/TechStore";
-import { useShakeStore } from "../../store/ShakeStore"; 
+import { useShakeStore } from "../../store/ShakeStore";
 
 // TODO: Configure jest so this doesn't interfere in the future.
 // import "./GridCell.css";
@@ -61,11 +61,11 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
       const totalSupercharged = grid.cells.flat().filter((cell) => cell.supercharged).length;
       const currentCellSupercharged = grid.cells[rowIndex][columnIndex]?.supercharged;
       if (totalSupercharged >= 4 && !currentCellSupercharged) {
-        setShaking(true); 
+        setShaking(true);
         setTimeout(() => {
           setShaking(false);
         }, 500);
-        return
+        return;
       }
       toggleCellSupercharged(rowIndex, columnIndex);
     }
@@ -103,10 +103,17 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
     event.preventDefault();
   };
 
-  const techColor = getTechColor(cell.tech ?? "");
+  // Calculate initial techColor
+  let techColor = getTechColor(cell.tech ?? ""); // Use 'let' since it might be reassigned
+
+  // If there's no specific tech color AND the cell is supercharged, set techColor to purple
+  if (!techColor && cell.supercharged) {
+    techColor = "purple"; // Override techColor
+  }
+
   const cellClassName = `gridCell gridCell--interactive shadow-sm sm:border-2 border-1 rounded-sm sm:rounded-md
-  ${cell.supercharged ? "gridCell--supercharged shadow-sm" : ""}
-  ${cell.active ? "gridCell--active shadow-md" : "gridCell--inactive shadow-sm"}
+  ${cell.supercharged ? "gridCell--supercharged" : ""}
+  ${cell.active ? "gridCell--active" : "gridCell--inactive"}
   ${cell.adjacency_bonus === 0 && cell.image ? "gridCell--black" : ""}`.trim();
 
   const getUpgradePriority = (label: string | undefined): number => {
@@ -153,6 +160,7 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
       ) : (
         <div
           role="gridCell"
+          data-accent-color={techColor}
           onContextMenu={handleContextMenu}
           onClick={handleClick}
           onTouchStart={handleTouchStart}
