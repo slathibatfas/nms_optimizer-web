@@ -16,6 +16,7 @@ import './components/InfoDialog/InfoDialog.css';
 import './components/MessageSpinner/MessageSpinner.css';
 import './components/TechTreeRow/TechTreeRow.css';
 import './components/TechTree/TechTree.css';
+import './components/ShipSelection/ShipSelection.css';
 
 import App from './App';
 

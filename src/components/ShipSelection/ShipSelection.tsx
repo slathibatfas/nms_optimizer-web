@@ -2,11 +2,7 @@
 import { GearIcon } from "@radix-ui/react-icons";
 import { DropdownMenu, IconButton, Text } from "@radix-ui/themes";
 import React, { Suspense, useRef, useMemo } from "react"; // Import useMemo
-import {
-  useFetchShipTypesSuspense,
-  useShipTypesStore,
-  ShipTypeDetail,
-} from "../../hooks/useShipTypes";
+import { useFetchShipTypesSuspense, useShipTypesStore, ShipTypeDetail } from "../../hooks/useShipTypes";
 import { useGridStore } from "../../store/GridStore";
 
 // --- ShipSelection component remains the same ---
@@ -31,26 +27,19 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <IconButton
-          variant="soft"
-          disabled={solving}
-        >
+        <IconButton size="2" variant="soft" disabled={solving}>
           <GearIcon className="w-6 h-6" />
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content style={{ backgroundColor:  "var(--gray-5)" }}>
+      <DropdownMenu.Content style={{ backgroundColor: "var(--gray-5)" }}>
         <Suspense fallback={<Text>Loading Ship Types...</Text>}>
-          <ShipTypesDropdown
-            selectedShipType={selectedShipType}
-            handleOptionSelect={handleOptionSelect}
-          />
+          <ShipTypesDropdown selectedShipType={selectedShipType} handleOptionSelect={handleOptionSelect} />
         </Suspense>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   );
 };
 // --- End of ShipSelection component ---
-
 
 interface ShipTypesDropdownProps {
   selectedShipType: string;
@@ -70,10 +59,7 @@ interface ShipTypesDropdownProps {
  * @param {function} handleOptionSelect - A function to be called when the user
  *   selects a different ship type key.
  */
-const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({
-  selectedShipType,
-  handleOptionSelect,
-}) => {
+const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({ selectedShipType, handleOptionSelect }) => {
   const shipTypes = useFetchShipTypesSuspense();
 
   // Group ship types by their 'type' property using useMemo for efficiency
@@ -94,10 +80,7 @@ const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({
   }, [shipTypes]); // Recalculate only if shipTypes changes
 
   return (
-    <DropdownMenu.RadioGroup
-      value={selectedShipType}
-      onValueChange={handleOptionSelect}
-    >
+    <DropdownMenu.RadioGroup value={selectedShipType} onValueChange={handleOptionSelect}>
       {/* Iterate over the groups (e.g., 'Starship', 'Multi-Tool') */}
       {Object.entries(groupedShipTypes).map(([type, items], groupIndex) => (
         // Use React.Fragment to group elements for each type without adding extra DOM nodes
@@ -105,7 +88,10 @@ const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({
           {/* Add a separator before each group except the first one */}
           {groupIndex > 0 && <DropdownMenu.Separator />}
           {/* Display the group type as a label */}
-          <DropdownMenu.Label>{type}s</DropdownMenu.Label> {/* Pluralize for display */}
+          <DropdownMenu.Label>
+            <span className="shipSelection__header">{type}s</span>
+          </DropdownMenu.Label>{" "}
+          {/* Pluralize for display */}
           {/* Iterate over the items within the current group */}
           {items.map(({ key, details }) => (
             <DropdownMenu.RadioItem key={key} value={key} className="font-bold">
