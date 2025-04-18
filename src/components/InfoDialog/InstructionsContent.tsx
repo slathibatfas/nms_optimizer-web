@@ -31,30 +31,33 @@ const InstructionsContent: React.FC = () => {
               <strong>Click or tap</strong> a cell to toggle its <em>Supercharged</em> state (max 4).
             </li>
             <li>
-              <strong>Ctrl-click or long press</strong> to enable/disable individual cells.
+              <strong>Ctrl-click (or long press on touch devices)</strong> to enable/disable individual cells.
             </li>
             <li>
               Use the <strong>row activation buttons</strong> on the right to enable/disable entire rows. These buttons are disabled once modules are placed,
-              until you press <strong>Reset Grid</strong>.
+              until you press <strong>Reset Grid</strong>. 
             </li>
           </ul>
 
-          <h2 className="mb-2 text-xl font-bold">Tips for Multi-Tech Layouts</h2>
-          <p className="mb-2">
-            The system is designed to prioritize supercharged slots, which can lead to "greedy" behavior in the layout process. For{" "}
-            <strong>square or L-shaped supercharged layouts</strong> across multiple technology types:
-          </p>
-          <ul className="mb-2 infodialog__list">
-            <li>
-              <strong>Activate only a few supercharged slots</strong> and solve for the first technology.
-            </li>
-            <li>
-              <strong>Activate the remaining supercharged slots</strong> and solve for the next technology.
-            </li>
-          </ul>
-          <p className="mb-4">
-            This approach ensures that each technology benefits from an optimized layout without interfering with the previous tech's solve.
-          </p>
+          <h2 className="mb-2 text-xl font-bold">Usage Tips</h2>
+<p className="mb-2">
+  Supercharged slots offer powerful bonuses, but the solver tends to prioritize them heavily. This can sometimes lead to "greedy" placements that don’t reflect your overall plan. Unless you're deliberately building a 4-square or L-shape layout for a single technology, you’ll get better results by following this approach:
+</p>
+<ul className="mb-2 infodialog__list">
+  <li>
+    <strong>Start with just a few supercharged slots activated</strong>, and solve for your first technology.
+  </li>
+  <li>
+    <strong>Enable additional supercharged slots</strong> as you solve for each new technology to want to boost.
+  </li>
+</ul>
+<p className="mb-2">
+  Think of this tool as a puzzle assistant — it helps you explore layouts, but it doesn’t know your full strategy. The best results come from iterating. After filling your supercharged slots, focus on placing larger technologies like <strong>Hyperdrive</strong> and <strong>Starship Trails</strong> while space is still available.
+</p>
+<p className="mb-4">
+  If you run out of space or aren’t getting the results you want, don’t hesitate to backtrack a few steps and try a different order. Small changes early in the process can lead to better final layouts.
+</p>
+
 
           <h2 className="mb-2 text-xl font-bold">How the Optimizer Works</h2>
           <p className="mb-2">The optimizer figures out the best module layout for your platform by following these steps:</p>
