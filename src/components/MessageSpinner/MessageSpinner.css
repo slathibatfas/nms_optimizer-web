@@ -1,9 +1,15 @@
 .messageSpinner {
-    border-top-color: var(--accent-9);
+    border-top-color: var(--red-9);
 }
 
 .messageSpinner__header {
     font-family: "GeosansLight", sans-serif;
-    filter: drop-shadow(0 0 8px var(--gray-0));
+    filter: drop-shadow(0 0 4px var(--gray-0));
     letter-spacing: 0.2rem;
+}
+
+.messageSpinner__spinner {
+    height: 4rem;
+    width: 4rem;
+    filter: drop-shadow(0 0 4px var(--gray-0));
 }
