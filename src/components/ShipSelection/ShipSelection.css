@@ -1,7 +1,7 @@
 .shipSelection__header {
     font-family: "GeosansLight", sans-serif;
     letter-spacing: 0.2rem;
-    filter: drop-shadow(0 0 4px var(--gray-a2));
+    filter: drop-shadow(0 0 0px var(--gray-a1));
     font-weight: 700;
     font-size: 1rem;
     text-transform: uppercase;
