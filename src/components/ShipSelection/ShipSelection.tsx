@@ -94,7 +94,7 @@ const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({ selectedShipType,
           {/* Pluralize for display */}
           {/* Iterate over the items within the current group */}
           {items.map(({ key, details }) => (
-            <DropdownMenu.RadioItem key={key} value={key} className="font-bold">
+            <DropdownMenu.RadioItem key={key} value={key} className="font-bold last:mb-2">
               {/* Display the specific item's label */}
               {details.label}
             </DropdownMenu.RadioItem>
