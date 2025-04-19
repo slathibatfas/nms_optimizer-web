@@ -1,7 +1,8 @@
 .messageSpinner__header {
     font-family: "GeosansLight", sans-serif;
     filter: drop-shadow(0 0 4px var(--gray-0));
-    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.175rem;
 }
 
 .messageSpinner__spinner {

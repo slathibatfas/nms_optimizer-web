@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 
 interface MessageSpinnerProps {
   isVisible: boolean;
+  isInset?: boolean;
   initialMessage: string;
   showRandomMessages?: boolean;
   color?: string;
@@ -59,7 +60,7 @@ const randomMessages = [
  * MessageSpinner component that displays a loading spinner overlay.
  * Can optionally show random messages after a delay for longer operations.
  */
-const MessageSpinner: React.FC<MessageSpinnerProps> = ({ isVisible, initialMessage, showRandomMessages = false }) => {
+const MessageSpinner: React.FC<MessageSpinnerProps> = ({ isInset = true, isVisible, initialMessage, showRandomMessages = false }) => {
   const [showAdditionalMessage, setShowAdditionalMessage] = useState(false);
   const [currentRandomMessage, setCurrentRandomMessage] = useState<string>("");
 
@@ -94,9 +95,15 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({ isVisible, initialMessa
   // Determine if the random message should be displayed based on state and props
   const displayRandomMessage = showRandomMessages && showAdditionalMessage;
 
+    // Conditionally add classes based on isInset
+    const containerClasses = `
+    z-50 flex flex-col items-center justify-center bg-opacity-50
+    ${isInset ? "absolute inset-0" : ""}
+  `;
+
   return (
     // Restore original container class
-    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-opacity-50">
+    <div className={containerClasses.trim()}>
       <Spinner className="messageSpinner__spinner"/>
       <Text className="pt-4 text-xl font-bold shadow-sm sm:text-2xl messageSpinner__header">{initialMessage}</Text>
       <Text

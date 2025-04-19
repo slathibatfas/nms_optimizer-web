@@ -80,7 +80,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
 
   // Wrap the main content in a Suspense boundary to handle data loading
   return (
-    <Suspense fallback={<MessageSpinner isVisible={true} initialMessage="Loading Data..." />}>
+
       <Box className="p-6 pt-4 border-t-1 lg:p-8 md:p-8 md:pt-4 gridContainer" style={{ borderColor: "var(--gray-a4)" }} ref={gridContainerRef}>
         <Flex className="flex-col items-start gridContainer__layout lg:flex-row">
           {/* Grid Section */}
@@ -127,7 +127,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
                 style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
               >
                 {/* Suspense for TechTree's internal data fetch */}
-                <Suspense fallback={<MessageSpinner isVisible={true} initialMessage="Featching Tech..." />}>
+                <Suspense fallback={<MessageSpinner isInset={true} isVisible={true} initialMessage="Featching Technologies!" />}>
                   <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
                 </Suspense>
               </ScrollArea>
@@ -135,14 +135,14 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
               // Mobile: Tech Tree below GridTable
               <Box className="z-10 items-start flex-grow-0 flex-shrink-0 w-full pt-8">
                 {/* Suspense for TechTree's internal data fetch */}
-                <Suspense fallback={<MessageSpinner isVisible={true} initialMessage="Featching Tech..." />}>
+                <Suspense fallback={<MessageSpinner isInset={false} isVisible={true} initialMessage="Featching Technologies!" />}>
                   <TechTreeComponent handleOptimize={handleOptimizeWrapper} solving={solving} />
                 </Suspense>
               </Box>
             ))}
         </Flex>
       </Box>
-    </Suspense>
+
   );
 };
 

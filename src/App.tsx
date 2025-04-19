@@ -1,6 +1,6 @@
 // src/App.tsx
 import GridContainer from "./components/GridContainer/GridContainer";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import InfoDialog from "./components/InfoDialog/InfoDialog";
 import ChangeLogContent from "./components/InfoDialog/ChangeLogContent";
 import InstructionsContent from "./components/InfoDialog/InstructionsContent";
@@ -11,6 +11,7 @@ import { useOptimizeStore } from "./store/OptimizeStore";
 import ErrorBoundary from "./components/ErrorBoundry/ErrorBoundry";
 import ReactGA from "react-ga4";
 import Buymeacoffee from "./components/BuyMeACoffee/BuyMeACoffee";
+import MessageSpinner from "./components/MessageSpinner/MessageSpinner"; // Import your spinner
 
 /**
  * The main App component.
@@ -53,49 +54,58 @@ const App: React.FC = () => {
     setShowErrorDialog(false);
   };
 
+  // Define a simple loading component or use MessageSpinner
+  const AppLoadingFallback = () => (
+    <div className="flex flex-col items-center justify-center">
+      <MessageSpinner isVisible={true} initialMessage="LOADING!" showRandomMessages={true} />
+    </div>
+  );
+
   return (
     <>
-      {/* The main container of the app */}
-      <div className="flex flex-col items-center justify-center lg:min-h-screen">
-        {/* Container Box */}
-        <div className="relative mx-auto overflow-hidden border rounded-none shadow-lg border-white/5 lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
-          {/* Header */}
-          <div className="pt-3 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-8 bg-black/25" style={{ borderColor: "var(--gray-a1)" }}>
-            <div className="flex items-center">
-              <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
-              <div>
-                <img src={NMSLogo} className="h-5 mb-1 sm:mb-2 sm:h-9 optimizer__header--logo" alt="No Man's Sky Logo" />
-                <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
-                  <span className="font-extrabold" style={{ color: "var(--accent-11)" }}>
-                    Neural{" "}
+      <Suspense fallback={<AppLoadingFallback />}>
+        {/* The main container of the app */}
+        <div className="flex flex-col items-center justify-center lg:min-h-screen">
+          {/* Container Box */}
+          <div className="relative mx-auto overflow-hidden border rounded-none shadow-lg border-white/5 lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
+            {/* Header */}
+            <div className="pt-3 pb-2 pl-6 sm:pl-8 sm:pb-6 sm:pt-8 bg-black/25" style={{ borderColor: "var(--gray-a1)" }}>
+              <div className="flex items-center">
+                <img src={NMSIcon} className="mr-4 h-14 sm:h-20 optimizer__header--icon" alt="No Man's Sky Logo" />
+                <div>
+                  <img src={NMSLogo} className="h-5 mb-1 sm:mb-2 sm:h-9 optimizer__header--logo" alt="No Man's Sky Logo" />
+                  <span className="font-thin sm:font-normal sm:text-2xl optimizer__header--title">
+                    <span className="font-extrabold" style={{ color: "var(--accent-11)" }}>
+                      Neural{" "}
+                    </span>
+                    Technology Optimizer <span className="font-thin">v2.0</span>
                   </span>
-                  Technology Optimizer <span className="font-thin">v2.0</span>
-                </span>
+                </div>
               </div>
+            </div>
+
+            {/* Main Layout */}
+            <div className="flex flex-col lg:flex-row">
+              {/* GridContainer wrapped in ErrorBoundary for error handling */}
+              <ErrorBoundary>
+                <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} />
+              </ErrorBoundary>
             </div>
           </div>
 
-          {/* Main Layout */}
-          <div className="flex flex-col lg:flex-row">
-            {/* GridContainer wrapped in ErrorBoundary for error handling */}
-            <ErrorBoundary>
-              <GridContainer setShowChangeLog={setShowInfoDialog} setShowInstructions={setShowInstructionsDialog} />
-            </ErrorBoundary>
+          {/* Footer Text */}
+          <div className="flex flex-wrap items-center justify-center gap-2 p-4 text-center">
+            <span className="text-sm sm:text-base">
+              Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
+              <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
+                GitHub
+              </a>{" "}
+              • {build}
+            </span>
+            <Buymeacoffee />
           </div>
         </div>
-
-        {/* Footer Text */}
-        <div className="flex flex-wrap items-center justify-center gap-2 p-4 text-center">
-          <span className="text-sm sm:text-base">
-            Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
-            <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>{" "}
-            • {build}
-          </span>
-          <Buymeacoffee />
-        </div>
-      </div>
+      </Suspense>
 
       {/* Info Dialogs */}
       {showInfoDialog && <InfoDialog onClose={() => setShowInfoDialog(false)} content={<ChangeLogContent />} title="Changelog" />}

@@ -15,7 +15,7 @@ const ChangeLogContent: React.FC = () => {
 
       {/* Version 2.0 */}
       <div className="infodialog__item">
-        <h2 className="mb-2 font-bold">Version 2.0 (2025-04-18)</h2>
+        <h2 className="mb-2 font-bold">Version 2.0 (2025-04-19)</h2>
         <ul className="infodialog__list">
         <li className="infodialog__list-item">Renamed tool to Neural Technology Optimizer to reflect its new capabilities.</li>
         <li className="infodialog__list-item">Added support for TensorFlow (AI) based solves resulting in an ~5x performance boost.</li>
