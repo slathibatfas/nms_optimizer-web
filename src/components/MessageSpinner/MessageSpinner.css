@@ -12,4 +12,12 @@
     height: 4rem;
     width: 4rem;
     filter: drop-shadow(0 0 4px var(--gray-0));
-}
+  }
+  
+  /* Override for smaller devices (iPhones) */
+  @media (max-width: 480px) {
+    .messageSpinner__spinner {
+      height: 2rem;
+      width: 2rem;
+    }
+  }
