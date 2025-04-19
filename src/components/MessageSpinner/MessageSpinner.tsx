@@ -105,7 +105,10 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({ isInset = true, isVisib
     // Restore original container class
     <div className={containerClasses.trim()}>
       <Spinner className="messageSpinner__spinner"/>
+      
+      {initialMessage && (
       <Text className="pt-4 text-xl font-bold shadow-sm sm:text-2xl messageSpinner__header">{initialMessage}</Text>
+      )}
       <Text
         className="text-sm font-semibold text-center shadow-sm sm:text-normal messageSpinner__random"
         style={{
