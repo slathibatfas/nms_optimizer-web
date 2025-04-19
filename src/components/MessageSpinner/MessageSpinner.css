@@ -11,10 +11,9 @@
   }
   
   /* Override for smaller devices (iPhones) */
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     .messageSpinner__spinner {
-      height: 2rem;
-      width: 2rem;
+      height: 3rem;
+      width: 3rem;
     }
-    
   }
