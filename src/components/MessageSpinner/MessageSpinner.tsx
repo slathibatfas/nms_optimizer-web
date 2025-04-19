@@ -96,11 +96,11 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({ isVisible, initialMessa
 
   return (
     // Restore original container class
-    <div className="z-50 flex flex-col items-center justify-center pt-8 bg-opacity-75 lg:pt-0 absolute inset-0">
+    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center pt-8 bg-opacity-75 lg:pt-0">
       <Spinner className="messageSpinner__spinner"/>
-      <Text className="pt-4 text-2xl font-bold shadow-sm messageSpinner__header">{initialMessage}</Text>
+      <Text className="pt-4 text-xl font-bold shadow-sm sm:text-2xl messageSpinner__header">{initialMessage}</Text>
       <Text
-        className="font-semibold text-center uppercase shadow-sm messageSpinner__random"
+        className="text-sm font-semibold text-center uppercase shadow-sm sm:text-normal messageSpinner__random"
         style={{
           color: displayRandomMessage ? "#e6c133" : "transparent", // Use transparent color to hide when not ready/enabled
           minHeight: "1.5em", // Maintain minimum height to prevent layout shift (adjust as needed)
