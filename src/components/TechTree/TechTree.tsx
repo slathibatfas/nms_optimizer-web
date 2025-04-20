@@ -5,7 +5,8 @@ import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useFetchTechTreeSuspense } from "../../hooks/useTechTree";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
 import { TechTreeRow } from "../TechTreeRow/TechTreeRow";
-import { useShipTypesStore } from "../../hooks/useShipTypes"; // Import the store
+import { useShipTypesStore } from "../../hooks/useShipTypes"; 
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 // Define interfaces to ensure type safety
 interface TechTreeModule {
@@ -132,13 +133,14 @@ const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(({ handleOp
 
 const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
   const [error, setError] = useState<Error | null>(null);
+  const isLarge = useBreakpoint("1024px");
 
   useEffect(() => {
     setError(null);
   }, [props]);
 
   return (
-    <Suspense fallback={<MessageSpinner isVisible={true} initialMessage="LOADING!" />}>
+    <Suspense fallback={<MessageSpinner isInset={isLarge} isVisible={true} initialMessage="LOADING TECH!" />}>
       {error ? (
         <div className="flex flex-col items-center justify-center h-full">
           <ExclamationTriangleIcon className="w-16 h-16" style={{ color: "#C44A34" }} />
