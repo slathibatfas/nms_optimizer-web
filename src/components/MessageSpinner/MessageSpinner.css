@@ -1,5 +1,6 @@
 .messageSpinner__header {
     font-family: "GeosansLight", sans-serif;
+    color: var(--gray-12);
     filter: drop-shadow(0 0 4px var(--gray-0));
     text-transform: uppercase;
     letter-spacing: 0.175rem;

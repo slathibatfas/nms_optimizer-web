@@ -57,7 +57,7 @@ const App: React.FC = () => {
   // Define a simple loading component or use MessageSpinner
   const AppLoadingFallback = () => (
     <div className="flex flex-col items-center justify-center messageSpinner__spinner--big" style={{ color: "var(--red-a10)" }}>
-      <MessageSpinner isVisible={true} initialMessage="" showRandomMessages={true} />
+      <MessageSpinner isVisible={true} initialMessage="Waking the server!" showRandomMessages={false} />
     </div>
   );
 
