@@ -1,5 +1,7 @@
 .gridContainer__sidebar {   
     width: 336px;
+    background-color: var(--gray-a1);
+    border-color: var(--gray-a3); 
 }
 
 .gridContainer__platform {

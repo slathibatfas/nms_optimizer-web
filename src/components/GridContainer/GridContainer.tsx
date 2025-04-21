@@ -80,7 +80,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
 
   // Wrap the main content in a Suspense boundary to handle data loading
   return (
-    <Box className="p-6 pt-4 border-t-1 lg:p-8 md:p-8 md:pt-4 gridContainer" style={{ borderColor: "var(--gray-a4)" }} ref={gridContainerRef}>
+    <Box className="p-6 pt-4 border-t-1 lg:p-8 md:p-8 md:pt-4 gridContainer" style={{ borderColor: "var(--gray-a3)" }} ref={gridContainerRef}>
       <Flex className="flex-col items-start gridContainer__layout lg:flex-row">
         {/* Grid Section */}
         <Box className="flex-grow w-auto gridContainer__grid lg:flex-shrink-0" ref={gridRef}>
@@ -122,7 +122,7 @@ const GridContainer: React.FC<GridContainerProps> = ({ setShowChangeLog, setShow
           (isLarge ? (
             // Desktop: Scrollable sidebar
             <ScrollArea
-              className={`gridContainer__sidebar p-4 ml-4 border shadow-md rounded-xl backdrop-blur-xl border-white/5`}
+              className={`gridContainer__sidebar p-4 ml-4 border shadow-md rounded-xl backdrop-blur-xl`}
               style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
             >
               {/* Suspense for TechTree's internal data fetch */}
