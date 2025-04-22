@@ -15,6 +15,15 @@ const ChangeLogContent: React.FC = () => {
 
       {/* Version 2.0 */}
       <div className="infodialog__item">
+        <h2 className="mb-2 font-bold">Version 2.1 (2025-04-21</h2>
+        <ul className="infodialog__list">
+        <li className="infodialog__list-item">Refactored the scoring engine yet again. Still need to track down Pulse Engine edge case.</li>
+        <li className="infodialog__list-item">Minor bug fixes for MacOS Safari.</li>
+        </ul>
+      </div>
+
+      {/* Version 2.0 */}
+      <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 2.0 (2025-04-19)</h2>
         <ul className="infodialog__list">
         <li className="infodialog__list-item">Renamed tool to Neural Technology Optimizer to reflect its new capabilities.</li>
