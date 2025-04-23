@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  backend:
+    image: ghcr.io/jpmurray/nms-optimizer-service:${TAG:-latest}
+    container_name: nms-backend
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    environment:
+      - PORT=2016
+    restart: unless-stopped
+
+  web:
+    image: ghcr.io/jpmurray/nms-optimizer-web:${TAG:-latest}
+    container_name: nms-web
+    ports:
+      - "${WEB_PORT}:80"
+    environment:
+      - VITE_API_URL=http://backend:2016
+    depends_on:
+      - backend
+    restart: unless-stopped
