@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   backend:
-    image: ghcr.io/jpmurray/nms-optimizer-service:${TAG:-latest}
+    image: ghcr.io/jbelew/nms-optimizer-service:${TAG:-latest}
     container_name: nms-backend
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
 
   web:
-    image: ghcr.io/jpmurray/nms-optimizer-web:${TAG:-latest}
+    image: ghcr.io/jbelew/nms-optimizer-web:${TAG:-latest}
     container_name: nms-web
     ports:
       - "${WEB_PORT}:80"
