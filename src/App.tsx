@@ -11,7 +11,8 @@ import { useOptimizeStore } from "./store/OptimizeStore";
 import ErrorBoundary from "./components/ErrorBoundry/ErrorBoundry";
 import ReactGA from "react-ga4";
 import Buymeacoffee from "./components/BuyMeACoffee/BuyMeACoffee";
-import MessageSpinner from "./components/MessageSpinner/MessageSpinner"; // Import your spinner
+import MessageSpinner from "./components/MessageSpinner/MessageSpinner"; 
+import { API_URL } from "./constants";
 
 /**
  * The main App component.
@@ -37,6 +38,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     ReactGA.initialize(TRACKING_ID);
+    console.log("API_URL:", API_URL);
   }, []);
 
   // Effect to open the error dialog when an error occurs
