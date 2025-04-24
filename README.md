@@ -52,6 +52,32 @@ To run this project locally, follow these steps:
    npm run dev
    ```
 
+### Docker compose.yml
+
+```
+version: "3.8"
+
+services:
+  backend:
+    image: ghcr.io/jbelew/nms-optimizer-service:${TAG:-latest}
+    container_name: nms-backend
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    environment:
+      - PORT=2016
+    restart: unless-stopped
+
+  web:
+    image: ghcr.io/jbelew/nms-optimizer-web:${TAG:-latest}
+    container_name: nms-web
+    ports:
+      - "${WEB_PORT}:80"
+    environment:
+      - VITE_API_URL=http://backend:2016
+    depends_on:
+      - backend
+    restart: unless-stopped
+```
    The app will be available at `http://localhost:5173` by default.
 
 If you want to also run the service locally, edit `src/constants.ts` and set the endpoints accordingly.
