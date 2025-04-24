@@ -30,17 +30,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Vite project
-        run: npm run build
-
       - name: Install Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
 
@@ -50,8 +39,6 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "nms-optimizer-web"
           heroku_email: "john.belew@gmail.com"
-          usedocker: false
-          procfile: false
 
       - name: Set Heroku Config
         run: heroku config:set VITE_BUILD_VERSION=build-${{ github.run_number }} --app nms-optimizer-web
