@@ -78,7 +78,7 @@ const App: React.FC = () => {
                     <span className="font-extrabold" style={{ color: "var(--accent-11)" }}>
                       Neural{" "}
                     </span>
-                    Technology Optimizer <span className="font-thin">v2.1</span>
+                    Technology Optimizer <span className="font-thin">v2.2</span>
                   </span>
                 </div>
               </div>
@@ -99,6 +99,10 @@ const App: React.FC = () => {
               Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
               <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
                 GitHub
+              </a>{" "}
+              •{" "}
+              <a href="https://discord.com/invite/JM4WyNfH" className="underline" target="_blank" rel="noopener noreferrer">
+                Discord
               </a>{" "}
               • {build}
             </span>
