@@ -14,7 +14,7 @@ COPY . .
 # 4) Run the build now that src/, tsconfig.json, etc. are present
 ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
-RUN npm run build
+RUN npm run build:docker
 
 # Stage 2: serve with nginx
 FROM nginx:stable-alpine
