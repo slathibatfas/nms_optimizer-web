@@ -5,18 +5,22 @@ services:
     image: ghcr.io/jbelew/nms-optimizer-service:${TAG:-latest}
     container_name: nms-backend
     ports:
-      - "${BACKEND_PORT}:${BACKEND_PORT}"
+      - "5016:5000"
     environment:
-      - PORT=2016
+      - PORT=5016
     restart: unless-stopped
 
   web:
     image: ghcr.io/jbelew/nms-optimizer-web:${TAG:-latest}
     container_name: nms-web
+    build:
+      context: .
+      args:
+        VITE_API_URL: http://backend:5016
     ports:
-      - "${WEB_PORT}:80"
+      - "8016:80"
     environment:
-      - VITE_API_URL=http://backend:2016
+      - VITE_API_URL=http://backend:5016
     depends_on:
       - backend
     restart: unless-stopped
