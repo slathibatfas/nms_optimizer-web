@@ -52,6 +52,8 @@ To run this project locally, follow these steps:
    npm run dev
    ```
 
+The app will be available at `http://localhost:5173` by default. The app expects a service endpoint at http://127.0.0.1:5000/. Edit .env.development to set the service endpoint URL if you need to change the default value. 
+
 ---
 
 ### Docker compose.yml
@@ -80,6 +82,4 @@ services:
       - backend
     restart: unless-stopped
 ```
-   The app will be available at `http://localhost:5173` by default.
 
-If you want to also run the service locally, edit `src/constants.ts` and set the endpoints accordingly.
