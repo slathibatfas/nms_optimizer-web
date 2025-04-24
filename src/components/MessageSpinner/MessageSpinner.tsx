@@ -101,8 +101,6 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({ isInset = true, isVisib
     ${isInset ? "absolute inset-0" : ""}
   `;
 
-  console.log("containerClasses:", containerClasses);
-
   return (
     // Restore original container class
     <div className={containerClasses.trim()}>
