@@ -52,7 +52,9 @@ To run this project locally, follow these steps:
    npm run dev
    ```
 
-The app will be available at `http://localhost:5173` by default. The app expects a service endpoint at http://127.0.0.1:5000/. Edit .env.development to set the service endpoint URL if you need to change the default value. 
+The app runs at http://localhost:5173 by default. In development mode, it expects the backend service to be available at http://127.0.0.1:5000/.
+
+To override the default service endpoint, update the VITE_API_URL value in your .env.development file.
 
 ---
 
