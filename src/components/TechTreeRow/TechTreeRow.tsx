@@ -117,7 +117,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
       </div>
 
       <div className="flex flex-col self-start w-full techRow_module">
-        <Text className="pt-1 font-semibold techRow__label >">
+        <Text className="pt-1 font-semibold text-normal techRow__label >">
           {modules.some((module) => module.type === "reward") ? (
             <Accordion.Root
               className="w-full pb-1 border-b-1 AccordionRoot"
@@ -135,7 +135,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
                         className="inline-block pl-1 font-thin optimizationButton__bonus"
                         style={{ color: techMaxBonus > 100 ? "#e6c133" : "var(--gray-11)" }}
                       >
-                        ~{techSolvedBonus.toFixed(0)}x                      </span>
+                        ~{techSolvedBonus.toFixed(0)}x</span>
                     )}
                   </div>
                 </AccordionTrigger>

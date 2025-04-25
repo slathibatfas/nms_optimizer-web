@@ -1,6 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import browserslist from 'browserslist';
+import { browserslistToTargets } from 'lightningcss';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -9,7 +11,10 @@ export default defineConfig({
     port: 5173        // Use the desired port
   },
   css: {
-    transformer: 'lightningcss'
+    transformer: 'lightningcss',
+    lightningcss: {
+      targets: browserslistToTargets(browserslist('>= 0.25%')),
+    }
   },
   build: {
     minify: 'esbuild', // Default option, optimized for speed

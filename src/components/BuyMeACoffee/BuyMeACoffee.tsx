@@ -19,7 +19,7 @@ export default function Buymeacoffee() {
   };
 
   return (
-    <Button size="2" asChild>
+    <Button size="1" asChild className="pb-4 lg:pb-0">
       <a href="https://www.buymeacoffee.com/jbelew" onClick={handleClick}>☕ Buy me a Coffee!</a>
     </Button>
   );

@@ -60,11 +60,11 @@ class ErrorBoundary extends Component<Props, State> {
             -kzzkt- Error! -kzzkt-
           </h1>
           <h2 className="pb-4 font-semibold">Something went wrong.</h2>
-          <pre className="text-left" style={{ whiteSpace: "pre-wrap" }}>
+          <span className="font-mono text-xs text-left lg:text-base" style={{ whiteSpace: "pre-wrap" }}>
             {this.state.error?.toString()}
             <br />
             {this.state.errorInfo?.componentStack}
-          </pre>
+          </span>
         </div>
       );
     }
