@@ -28,14 +28,14 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
   const handleResetGridTech = useGridStore((state) => state.resetGridTech);
   const { max_bonus, clearTechMaxBonus, solved_bonus, clearTechSolvedBonus, checkedModules, setCheckedModules, clearCheckedModules } = useTechStore();
   const techMaxBonus = max_bonus?.[tech] ?? 0;
-  const techSolvedBonus = solved_bonus?.[tech] ?? 0
+  const techSolvedBonus = solved_bonus?.[tech] ?? 0;
   const tooltipLabel = hasTechInGrid ? "Update" : "Solve";
   const IconComponent = hasTechInGrid ? UpdateIcon : DoubleArrowLeftIcon;
   const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
   const { setShaking } = useShakeStore();
 
   useEffect(() => {
-    return () => { 
+    return () => {
       clearCheckedModules(tech);
     };
   }, [tech, clearCheckedModules]);
@@ -44,10 +44,11 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
     handleResetGridTech(tech);
     clearTechMaxBonus(tech);
     clearTechSolvedBonus(tech);
-  }; 
+  };
 
   const handleCheckboxChange = (moduleId: string) => {
-    setCheckedModules(tech, (prevChecked = []) => { // Provide a default empty array
+    setCheckedModules(tech, (prevChecked = []) => {
+      // Provide a default empty array
       // Provide a default empty array
       const isChecked = prevChecked.includes(moduleId);
       return isChecked ? prevChecked.filter((id) => id !== moduleId) : [...prevChecked, moduleId];
@@ -133,9 +134,10 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
                     {techSolvedBonus > 0 && (
                       <span
                         className="inline-block pl-1 font-thin optimizationButton__bonus"
-                        style={{ color: techMaxBonus > 100 ? "var(--amber-11)" : "var(--gray-11)" }}
+                        style={{ color: techMaxBonus > 100 ? "var(--amber-11)" : techMaxBonus === 100 ? "var(--gray-11)" : "var(--red-11)" }}
                       >
-                        ~{(techMaxBonus).toFixed(0)}%</span>
+                        ~{techMaxBonus.toFixed(0)}%
+                      </span>
                     )}
                   </div>
                 </AccordionTrigger>
@@ -162,8 +164,11 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
             <>
               {label}
               {techSolvedBonus > 0 && (
-                <span className="pl-1 font-thin optimizationButton__bonus" style={{ color: techMaxBonus > 100 ? "var(--amber-11)" : "var(--gray-11)" }}>
-                  ~{(techMaxBonus).toFixed(0)}%
+                <span
+                  className="pl-1 font-thin optimizationButton__bonus"
+                  style={{ color: techMaxBonus > 100 ? "var(--amber-11)" : techMaxBonus === 100 ? "var(--gray-11)" : "var(--red-11)" }}
+                >
+                  ~{techMaxBonus.toFixed(0)}%
                 </span>
               )}
             </>
