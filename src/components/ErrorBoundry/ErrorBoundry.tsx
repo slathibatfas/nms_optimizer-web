@@ -52,10 +52,7 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-          <ExclamationTriangleIcon
-            className="w-16 h-16 shadow-lg"
-            style={{ color: "#C44A34" }}
-          />
+          <ExclamationTriangleIcon className="w-16 h-16 shadow-lg" style={{ color: "#C44A34" }} />
           <h1 className="pt-2 text-2xl font-semibold tracking-widest" style={{ color: "#e6c133", fontFamily: "GeosansLight" }}>
             -kzzkt- Error! -kzzkt-
           </h1>
