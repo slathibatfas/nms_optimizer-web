@@ -1,18 +1,23 @@
 import ReactGA from "react-ga4";
 import { Button } from "@radix-ui/themes";
 
-export default function Buymeacoffee() {
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
+/**
+ * A Radix UI Button component that links to the BuyMeACoffee page when clicked.
+ * Sends a Google Analytics event when clicked.
+ * @returns A Radix UI Button component.
+ */
+export default function BuyMeACoffee() {
+  const handleButtonClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
 
-    // Send the GA event
+    // Send the Google Analytics event
     ReactGA.event({
       category: "User Interactions",
-      action: "buyMeACoffeeClick",
+      action: "BuyMeACoffeeClick",
       label: "Buy Me a Coffee Button",
     });
 
-    // Slight delay to allow GA to capture the event
+    // Delay to ensure GA event is captured
     setTimeout(() => {
       window.open("https://www.buymeacoffee.com/jbelew", "_blank", "noopener,noreferrer");
     }, 100);
@@ -20,7 +25,9 @@ export default function Buymeacoffee() {
 
   return (
     <Button size="1" asChild className="pb-4 lg:pb-0">
-      <a href="https://www.buymeacoffee.com/jbelew" onClick={handleClick}>☕ Buy me a Coffee!</a>
+      <a href="https://www.buymeacoffee.com/jbelew" onClick={handleButtonClick}>
+        ☕ Buy me a Coffee!
+      </a>
     </Button>
   );
 }

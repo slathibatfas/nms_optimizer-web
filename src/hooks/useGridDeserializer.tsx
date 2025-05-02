@@ -32,7 +32,7 @@ interface TechTree {
 
 
 // --- Utility Functions (RLE Compress/Decompress) ---
-const compressRLE = (input: string): string => {
+export const compressRLE = (input: string): string => {
   if (!input) return "";
   let compressed = "";
   let count = 1;
@@ -70,7 +70,7 @@ const decompressRLE = (input: string): string => {
 
 
 // --- Grid Serialization/Deserialization Logic ---
-const serialize = (grid: Grid): string => {
+export const serialize = (grid: Grid): string => {
   let gridString = ""; // Raw grid string (0, 1, 2)
   let techString = "";
   let moduleString = "";

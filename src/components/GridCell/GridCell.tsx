@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+
+import React, { useState, useRef, useCallback, memo } from "react"; // Import useCallback and memo
 import { Tooltip } from "@radix-ui/themes";
 import { Grid } from "../../store/GridStore";
 import { useGridStore } from "../../store/GridStore";
@@ -21,31 +22,34 @@ interface GridCellProps {
   };
   grid: Grid;
   isSharedGrid: boolean;
-  // setShaking: React.Dispatch<React.SetStateAction<boolean>>;
+  // setShaking: React.Dispatch<React.SetStateAction<boolean>>; // Removed as it comes from useShakeStore now
 }
 
 /**
- * A component that displays a single cell in the grid.
+ * A memoized component that displays a single cell in the grid.
  *
  * @param rowIndex - The row index of the cell
  * @param columnIndex - The column index of the cell
  * @param cell - The cell object, containing properties like label, supercharged, active, and image
  * @param grid - The grid object, containing all cells and grid properties
  */
-const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, isSharedGrid }) => {
+
+// Use React.memo for performance optimization
+const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, cell, grid, isSharedGrid }) => {
   const toggleCellActive = useGridStore((state) => state.toggleCellActive);
   const toggleCellSupercharged = useGridStore((state) => state.toggleCellSupercharged);
   const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
   const [longPressTriggered, setLongPressTriggered] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
-  const { setShaking } = useShakeStore();
+  const { setShaking } = useShakeStore(); // Get setShaking from the store
 
   /**
    * Handles a click on the cell.
    *
    * @param event - The event object
    */
-  const handleClick = (event: React.MouseEvent) => {
+  // Memoize handleClick
+  const handleClick = useCallback((event: React.MouseEvent) => {
     if (isSharedGrid) {
       return;
     }
@@ -59,49 +63,62 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
       toggleCellActive(rowIndex, columnIndex);
     } else {
       const totalSupercharged = grid.cells.flat().filter((cell) => cell.supercharged).length;
-      const currentCellSupercharged = grid.cells[rowIndex][columnIndex]?.supercharged;
+      // Safer access to potentially undefined cell
+      const currentCellSupercharged = grid.cells[rowIndex]?.[columnIndex]?.supercharged;
       if (totalSupercharged >= 4 && !currentCellSupercharged) {
         setShaking(true);
-        setTimeout(() => {
+        // Use a timer ref for potential cleanup if needed, though unlikely here
+        const shakeTimer = setTimeout(() => {
           setShaking(false);
         }, 500);
-        return;
+        // Cleanup function for the timer (though likely unnecessary as shake is short)
+        return () => clearTimeout(shakeTimer);
       }
       toggleCellSupercharged(rowIndex, columnIndex);
     }
-  };
+  // Dependencies for useCallback: Include all external variables/functions used inside
+  }, [isSharedGrid, longPressTriggered, toggleCellActive, rowIndex, columnIndex, grid, setShaking, toggleCellSupercharged]);
 
   /**
    * Handles a touch start on the cell.
-   *
-   * @param event - The event object
    */
-  const handleTouchStart = (event: React.TouchEvent) => {
-    event.preventDefault(); // Prevents iOS long-press behavior
+  // Memoize handleTouchStart
+  const handleTouchStart = useCallback(() => {
     longPressTimer.current = setTimeout(() => {
       setLongPressTriggered(true);
+      // Ensure interaction is allowed
+      if (isSharedGrid) {
+        // Clear timer if interaction is not allowed but timer started
+        if (longPressTimer.current) clearTimeout(longPressTimer.current);
+        return;
+      }
       toggleCellActive(rowIndex, columnIndex);
-    }, 1000);
-  };
+    }, 500); // Standard long press duration
+  }, [isSharedGrid, toggleCellActive, rowIndex, columnIndex]); // Added dependencies
 
   /**
    * Handles a touch end on the cell.
    */
-  const handleTouchEnd = () => {
+  // Memoize handleTouchEnd
+  const handleTouchEnd = useCallback(() => {
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current);
     }
-    setTimeout(() => setLongPressTriggered(false), 250); // Reset state after touch ends
-  };
+    // Reset state slightly later to avoid race conditions with potential click events
+    // Use a timer ref for potential cleanup
+    const resetTimer = setTimeout(() => setLongPressTriggered(false), 50);
+    return () => clearTimeout(resetTimer);
+  }, []); // No dependencies, so empty array
 
   /**
    * Handles a context menu on the cell.
    *
    * @param event - The event object
    */
-  const handleContextMenu = (event: React.MouseEvent) => {
+  // Memoize handleContextMenu
+  const handleContextMenu = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
-  };
+  }, []); // No dependencies, so empty array
 
   // Calculate initial techColor
   let techColor = getTechColor(cell.tech ?? ""); // Use 'let' since it might be reassigned
@@ -166,7 +183,7 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
           onClick={handleClick}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          onTouchCancel={handleTouchEnd}
+          onTouchCancel={handleTouchEnd} // Use handleTouchEnd for cancel as well
           className={cellClassName}
           style={{
             backgroundImage: cell.image ? `url(/assets/img/${cell.image})` : "none",
@@ -175,6 +192,9 @@ const GridCell: React.FC<GridCellProps> = ({ rowIndex, columnIndex, cell, grid, 
       )}
     </div>
   );
-};
+}); // Close React.memo HOC
+
+// Set display name for better debugging in React DevTools
+GridCell.displayName = "GridCell";
 
 export default GridCell;

@@ -4,6 +4,7 @@ import { DropdownMenu, IconButton, Text } from "@radix-ui/themes";
 import React, { Suspense, useRef, useMemo } from "react"; // Import useMemo
 import { useFetchShipTypesSuspense, useShipTypesStore, ShipTypeDetail } from "../../hooks/useShipTypes";
 import { useGridStore } from "../../store/GridStore";
+import ReactGA from "react-ga4";
 
 // --- ShipSelection component remains the same ---
 interface ShipSelectionProps {
@@ -18,6 +19,13 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
 
   const handleOptionSelect = (option: string) => {
     if (option !== previousSelectionRef.current) {
+
+      ReactGA.event({
+        category: "User Interactions",
+        action: "technologySelection",
+        label: option
+      });
+
       setSelectedShipType(option);
       resetGrid();
     }

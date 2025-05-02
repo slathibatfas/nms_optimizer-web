@@ -15,9 +15,10 @@ const ChangeLogContent: React.FC = () => {
 
       {/* Version 2.21 */}
       <div className="infodialog__item">
-        <h2 className="mb-2 font-bold">Version 2.21 (2025-04-30)</h2>
+        <h2 className="mb-2 font-bold">Version 2.22 (2025-05-02)</h2>
         <ul className="infodialog__list">
-        <li className="infodialog__list-item">Fixed issue where "ghost" modules would persist after SA/Refine fallback solves were applied.</li>
+        <li className="infodialog__list-item">Improved interaction performance on slower devices.</li>
+        <li className="infodialog__list-item">Fixed issue where "ghost" modules would sometimes persist after SA/Refine fallback solves were applied.</li>
         </ul>
       </div>
 

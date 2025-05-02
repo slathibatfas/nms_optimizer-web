@@ -1,13 +1,25 @@
 /** @type {import('jest').Config} */
 const config = {
-  preset: 'ts-jest', // This line is crucial
+  // Use ts-jest's ESM preset
+  preset: 'ts-jest/presets/default-esm', // or 'ts-jest/presets/js-with-ts-esm'
   testEnvironment: 'jsdom',
+  extensionsToTreatAsEsm: ['.ts', '.tsx'], // Treat these as ESM
   moduleNameMapper: {
+    // Handle ESM module resolution for ts-jest
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+    // Your existing alias
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   transform: {
-    '^.+\\.(ts|tsx|js|jsx)$': 'ts-jest',
+    // Use ts-jest's ESM transformer
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        useESM: true,
+        tsconfig: '<rootDir>/tsconfig.json', // Explicitly point to the tsconfig
+      },
+    ],
   },
 };
 

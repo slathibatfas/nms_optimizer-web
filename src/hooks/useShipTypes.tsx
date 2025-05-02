@@ -52,35 +52,48 @@ const cache = new Map<string, Resource<ShipTypes>>();
 
 /**
  * Fetches ship types and stores them in the cache.
- * (Implementation remains the same)
+ *
+ * The function returns a resource that can be used with React Suspense.
+ * If the resource is already in the cache, it will return the cached version.
+ * If not, it will create a promise to fetch the ship types, store the promise in the cache,
+ * and return a resource that will trigger the Suspense boundary when the promise resolves.
  */
 export function fetchShipTypes(): Resource<ShipTypes> {
-  // ... (fetchShipTypes implementation as before)
+  // Cache key for the ship types
   const cacheKey = "shipTypes";
 
   if (!cache.has(cacheKey)) {
+    // Create a promise to fetch the ship types
     const promise = fetch(`${API_URL}/platforms`)
       .then((res) => {
+        // Check for HTTP errors
         if (!res.ok) {
           console.error(`HTTP error fetching ship types: ${res.status} ${res.statusText}`);
           throw new Error(`HTTP error! status: ${res.status}`);
         }
+        // Return the JSON response
         return res.json();
       })
       .then((data: ShipTypes) => {
+        // Log the data to the console
         console.log(`Fetched ship types:`, data);
         return data;
       })
       .catch((error) => {
+        // Log any errors to the console
         console.error("Error fetching ship types:", error);
         if (error instanceof TypeError && error.message === "Failed to fetch") {
           console.error("Likely a network issue or server not running.");
         }
+        // Rethrow the error so it can be handled by the caller
         throw error;
       });
 
+    // Store the promise in the cache
     cache.set(cacheKey, createResource(promise));
   }
+
+  // Return the cached resource
   return cache.get(cacheKey)!;
 }
 

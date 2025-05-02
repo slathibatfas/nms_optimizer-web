@@ -125,7 +125,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
               style={{ borderColor: "var(--gray-a6)" }}
               type="single"
               collapsible
-              defaultValue=""
+              defaultValue="item-1"
             >
               <Accordion.Item className="AccordionItem" value="item-1">
                 <AccordionTrigger>
