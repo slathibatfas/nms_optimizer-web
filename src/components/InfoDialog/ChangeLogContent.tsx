@@ -15,10 +15,11 @@ const ChangeLogContent: React.FC = () => {
 
       {/* Version 2.21 */}
       <div className="infodialog__item">
-        <h2 className="mb-2 font-bold">Version 2.22 (2025-05-02)</h2>
+        <h2 className="mb-2 font-bold">Version 2.22 (2025-05-03)</h2>
         <ul className="infodialog__list">
         <li className="infodialog__list-item">Improved interaction performance on slower devices.</li>
         <li className="infodialog__list-item">Fixed issue where "ghost" modules would sometimes persist after SA/Refine fallback solves were applied.</li>
+        <li className="infodialog__list-item">Additional UI improvements and enhancements.</li>
         </ul>
       </div>
 
@@ -84,7 +85,7 @@ const ChangeLogContent: React.FC = () => {
             if you identify a persistent issue. Be sure to include a <strong>Share Link</strong> to your solve map.
           </li>
           <li className="infodialog__list-item">Calculations now take into account greater and lesser adjacency.</li>
-          <li className="infodialog__list-item">Core Hyperdrive documented as lessers, but actually perform as greater.</li>
+          <li className="infodialog__list-item">Core Hyperdrive documented as lesser, but actually performs as greater.</li>
           <li className="infodialog__list-item">Improved solver opportunity detection.</li>
           <li className="infodialog__list-item">
             Implemented conditional algorithm selection. If a technology has fewer than 6 modules, the solver will use the brute force method; otherwise, it

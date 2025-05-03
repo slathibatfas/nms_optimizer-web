@@ -23,3 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 src/constants.ts
+
+.early.coverage

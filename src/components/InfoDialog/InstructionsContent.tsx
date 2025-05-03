@@ -1,10 +1,11 @@
 import React from "react";
+import { GearIcon } from "@radix-ui/react-icons";
+import { IconButton } from "@radix-ui/themes";
 
 const InstructionsContent: React.FC = () => {
   return (
     <>
       <div className="infodialog__item">
-
         <h2 className="mb-2 text-xl font-bold">About This Tool</h2>
         <p className="mb-2">
           This tool is for <strong>endgame players</strong> optimizing their technology layouts for maximum efficiency. It is most effective if you:
@@ -22,6 +23,15 @@ const InstructionsContent: React.FC = () => {
         <h2 className="mb-2 text-xl font-bold">Basic Usage</h2>
         <ul className="mb-4 infodialog__list">
           <li>
+            <strong>Click or tap</strong> the
+            <span className="pl-1 pr-1">
+              <IconButton size="1" variant="soft">
+                <GearIcon className="w-6 h-6" />
+              </IconButton>
+            </span>
+            button to select you Starship or Multi-tool type.
+          </li>
+          <li>
             <strong>Click or tap</strong> a cell to toggle its <em>Supercharged</em> state (a maximum of 4).
           </li>
           <li>
@@ -30,7 +40,6 @@ const InstructionsContent: React.FC = () => {
           <li>
             Use the <strong>row activation buttons</strong> on the right to enable/disable entire rows. These buttons are disabled once modules are placed,
             until you press <strong>Reset Grid</strong>.
-            
           </li>
           <li>
             Use the <strong>row activation buttons</strong> on the right to enable/disable entire rows. These buttons are disabled once modules are placed,
@@ -83,7 +92,6 @@ const InstructionsContent: React.FC = () => {
           temporarily marking a few cells as <strong>disabled</strong> to help force the solve into the location you think is best. This can help you work
           around grid constraints and focus on placing technologies where you'd see they'd fit better.
         </p>
-
       </div>
     </>
   );

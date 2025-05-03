@@ -61,7 +61,7 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
           <Tooltip content="Activate Row">
             <IconButton
               size={screenSize === "sm" ? "2" : "1"}
-              variant="soft" highContrast
+              variant="soft"
               className="mx-auto shadow-lg"
               style={{ backgroundColor: buttonBackgroundColor }}
               onClick={() => activateRow(rowIndex)}
@@ -77,7 +77,7 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
         <div className="align-left">
           <Tooltip content="Deactivate Row">
             <IconButton
-              variant="soft" highContrast
+              variant="soft"
               size={screenSize === "sm" ? "2" : "1"}
               className="mx-auto shadow-lg"
               style={{ backgroundColor: buttonBackgroundColor }}
