@@ -92,7 +92,42 @@ const InstructionsContent: React.FC = () => {
           temporarily marking a few cells as <strong>disabled</strong> to help force the solve into the location you think is best. This can help you work
           around grid constraints and focus on placing technologies where you'd see they'd fit better.
         </p>
-      </div>
+
+      <h2 className="mb-2 text-xl font-bold">How the Optimizer Works</h2>
+          <p className="mb-2">The optimizer figures out the best module layout for your platform by following these steps:</p>
+          <ol className="mb-2 infodialog__list">
+            <li className="infodialog__list-item">
+              <strong>Starts with proven layouts (best practices):</strong> It checks a library of high-scoring patterns for your selected tech. It tries
+              fitting these patterns onto your grid in different positions and rotations, making sure they work with your supercharged and inactive slots. If
+              one fits well and scores high, it uses that as a strong starting point.
+            </li>
+            <li className="infodialog__list-item">
+              <strong>Makes a smart guess using AI:</strong> Once a pattern is found that works well, the optimizer uses an
+              AI model trained on thousands of examples but best utilize any available supercharged slots. It quickly predicts a promising layout based on the configuration of your grid.
+            </li>
+            <li className="infodialog__list-item">
+              <strong>Refines and polishes the layout:</strong> Whether it started with a known pattern or an AI prediction, it improves the layout through
+              refinement:
+              <ul className="mt-1 infodialog__list">
+                <li className="infodialog__list-item">
+                  <strong>Intelligent swapping & moving:</strong> It tries swapping modules or moving one to an empty active slot.
+                </li>
+                <li className="infodialog__list-item">
+                  <strong>Score checking:</strong> After each change, it recalculates your total bonus score.
+                </li>
+                <li className="infodialog__list-item">
+                  <strong>Keeps what works:</strong> It only keeps changes that improve the score, repeating this until no further improvements are found.
+                </li>
+              </ul>
+            </li>
+            <li className="infodialog__list-item">
+              <strong>Presents the best result:</strong> After all refinements, the optimizer shows the layout that achieved the highest bonus score during the
+              process.
+            </li>
+          </ol>
+
+          </div>
+
     </>
   );
 };
