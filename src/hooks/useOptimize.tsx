@@ -100,13 +100,22 @@ export const useOptimize = (): UseOptimizeReturn => {
         const data: ApiResponse = await response.json();
         setResult(data, tech);
         setGrid(data.grid);
-        console.log("Response from API:", data.grid);
+
+        console.log("Response from API:", data);
+
+        ReactGA.event('optimize_tech', {
+          platform: selectedShipType,
+          tech: tech,
+          solve_method: data.solve_method
+        });
+
       } catch (error) {
         console.error("Error during optimization:", error);
         setResult(null, tech);
         setShowErrorStore(true);
       } finally {
         setSolving(false);
+
       }
     },
     [grid, setGrid, setResult, setShowErrorStore, checkedModules, selectedShipType]

@@ -76,6 +76,7 @@ export type ApiResponse = {
   grid: Grid;
   max_bonus: number;
   solved_bonus: number;
+  solve_method: string;
 };
 
 
@@ -186,13 +187,14 @@ export const useGridStore = create<GridStore>()(
         },
 
         setResult: (result, tech) => {
-          const { setTechMaxBonus, setTechSolvedBonus } = useTechStore.getState();
+          const { setTechMaxBonus, setTechSolvedBonus, setTechSolveMethod } = useTechStore.getState();
           set((state) => {
             state.result = result;
           });
           if (result) {
             setTechMaxBonus(tech, result.max_bonus);
             setTechSolvedBonus(tech, result.solved_bonus);
+            setTechSolveMethod(tech, result.solve_method);
           }
         },
 
