@@ -41,10 +41,6 @@ const InstructionsContent: React.FC = () => {
             Use the <strong>row activation buttons</strong> on the right to enable/disable entire rows. These buttons are disabled once modules are placed,
             until you press <strong>Reset Grid</strong>.
           </li>
-          <li>
-            Use the <strong>row activation buttons</strong> on the right to enable/disable entire rows. These buttons are disabled once modules are placed,
-            until you press <strong>Reset Grid</strong>.
-          </li>
         </ul>
 
         <h2 className="mb-2 text-xl font-bold">Usage Tips</h2>
