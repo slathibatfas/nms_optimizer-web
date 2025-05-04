@@ -99,7 +99,7 @@ const InstructionsContent: React.FC = () => {
             </li>
             <li className="infodialog__list-item">
               <strong>Makes a smart guess using AI:</strong> Once a pattern is found that works well, the optimizer uses an
-              AI model trained on thousands of examples but best utilize any available supercharged slots. It quickly predicts a promising layout based on the configuration of your grid.
+              AI model trained on thousands of examples to best utilize any available supercharged slots. It quickly predicts a promising layout based on the configuration of your grid.
             </li>
             <li className="infodialog__list-item">
               <strong>Refines and polishes the layout:</strong> Whether it started with a known pattern or an AI prediction, it improves the layout through
