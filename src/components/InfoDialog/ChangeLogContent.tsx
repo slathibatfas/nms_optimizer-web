@@ -7,17 +7,39 @@ import React from "react";
 const ChangeLogContent: React.FC = () => {
   return (
     <>
-
       <div className="border-b-1 border-white/5 infodialog__item">
         <h2 className="mb-2 font-bold">Model Status</h2>
-        <p className="mb-2">See this <a className="underline" href="https://github.com/jbelew/nms_optimizer-service/tree/main/training/trained_models" target="_blank" rel="noopener noreferrer">GitHub page</a> for up to date model information.</p>
+        <p className="mb-2">
+          See this{" "}
+          <a
+            className="underline"
+            href="https://github.com/jbelew/nms_optimizer-service/tree/main/training/trained_models"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub page
+          </a>{" "}
+          for up to date model information.
+        </p>
+      </div>
+
+      {/* Version 2.24 */}
+      <div className="infodialog__item">
+        <h2 className="mb-2 font-bold">Version 2.24 (2025-05-03)</h2>
+        <ul className="infodialog__list">
+          <li className="infodialog__list-item">
+            Added messaging to notify user when a sub-optimal solve is generated.
+          </li>
+        </ul>
       </div>
 
       {/* Version 2.22 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 2.23 (2025-05-03)</h2>
         <ul className="infodialog__list">
-        <li className="infodialog__list-item">Updated Starship Trails to provide adjacency to the Tentacled Figurine when more than 5 are available (boosts the hidden speed stat).</li>
+          <li className="infodialog__list-item">
+            Updated Starship Trails to provide adjacency to the Tentacled Figurine when more than 5 are available (boosts the hidden speed stat).
+          </li>
         </ul>
       </div>
 
@@ -25,9 +47,9 @@ const ChangeLogContent: React.FC = () => {
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 2.22 (2025-05-03)</h2>
         <ul className="infodialog__list">
-        <li className="infodialog__list-item">Improved interaction performance on slower devices.</li>
-        <li className="infodialog__list-item">Fixed issue where "ghost" modules would sometimes persist after SA/Refine fallback solves were applied.</li>
-        <li className="infodialog__list-item">Additional UI improvements and enhancements.</li>
+          <li className="infodialog__list-item">Improved interaction performance on slower devices.</li>
+          <li className="infodialog__list-item">Fixed issue where "ghost" modules would sometimes persist after SA/Refine fallback solves were applied.</li>
+          <li className="infodialog__list-item">Additional UI improvements and enhancements.</li>
         </ul>
       </div>
 
@@ -35,10 +57,10 @@ const ChangeLogContent: React.FC = () => {
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 2.2 (2025-04-24)</h2>
         <ul className="infodialog__list">
-        <li className="infodialog__list-item">Refactored opportunity (supercharger) windowing and scoring engine.</li>
-        <li className="infodialog__list-item">All new, faster, AI models based on 16k samples.</li>
-        <li className="infodialog__list-item">Added Staves and Solar Starships.</li>
-        <li className="infodialog__list-item">Now available as a Docker image to run locally.</li>
+          <li className="infodialog__list-item">Refactored opportunity (supercharger) windowing and scoring engine.</li>
+          <li className="infodialog__list-item">All new, faster, AI models based on 16k samples.</li>
+          <li className="infodialog__list-item">Added Staves and Solar Starships.</li>
+          <li className="infodialog__list-item">Now available as a Docker image to run locally.</li>
         </ul>
       </div>
 
@@ -46,8 +68,8 @@ const ChangeLogContent: React.FC = () => {
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 2.1 (2025-04-21)</h2>
         <ul className="infodialog__list">
-        <li className="infodialog__list-item">Added correct Boltcaster / Forbidden Upgrade Module relationship.</li>
-        <li className="infodialog__list-item">Minor bug fixes for MacOS Safari.</li>
+          <li className="infodialog__list-item">Added correct Boltcaster / Forbidden Upgrade Module relationship.</li>
+          <li className="infodialog__list-item">Minor bug fixes for MacOS Safari.</li>
         </ul>
       </div>
 
@@ -55,11 +77,11 @@ const ChangeLogContent: React.FC = () => {
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 2.0 (2025-04-19)</h2>
         <ul className="infodialog__list">
-        <li className="infodialog__list-item">Renamed tool to Neural Technology Optimizer to reflect its new capabilities.</li>
-        <li className="infodialog__list-item">Added support for TensorFlow (AI) based solves resulting in an ~5x performance boost.</li>
-        <li className="infodialog__list-item">Implemented support for Multi-tools.</li>
-        <li className="infodialog__list-item">New, higher quality, grid graphical assets.</li>
-        <li className="infodialog__list-item">Various bug fixes, enhancements, and performance improvements.</li>
+          <li className="infodialog__list-item">Renamed tool to Neural Technology Optimizer to reflect its new capabilities.</li>
+          <li className="infodialog__list-item">Added support for TensorFlow (AI) based solves resulting in an ~5x performance boost.</li>
+          <li className="infodialog__list-item">Implemented support for Multi-tools.</li>
+          <li className="infodialog__list-item">New, higher quality, grid graphical assets.</li>
+          <li className="infodialog__list-item">Various bug fixes, enhancements, and performance improvements.</li>
         </ul>
       </div>
 
@@ -67,8 +89,8 @@ const ChangeLogContent: React.FC = () => {
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 1.1 (2025-04-07)</h2>
         <ul className="infodialog__list">
-        <li className="infodialog__list-item">Improved scoring algorithms to provide more consistant solves.</li>
-        <li className="infodialog__list-item">Minor UI enchancements.</li>
+          <li className="infodialog__list-item">Improved scoring algorithms to provide more consistant solves.</li>
+          <li className="infodialog__list-item">Minor UI enchancements.</li>
         </ul>
       </div>
 
@@ -76,8 +98,8 @@ const ChangeLogContent: React.FC = () => {
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 1.0 (2025-04-05)</h2>
         <ul className="infodialog__list">
-        <li className="infodialog__list-item">Calling it done!</li>
-        <li className="infodialog__list-item">Additional solver improvements.</li>
+          <li className="infodialog__list-item">Calling it done!</li>
+          <li className="infodialog__list-item">Additional solver improvements.</li>
         </ul>
       </div>
 

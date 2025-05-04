@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useGridStore } from "../../store/GridStore";
 import { useTechStore } from "../../store/TechStore";
 import { IconButton, Flex, Text, Tooltip, Checkbox } from "@radix-ui/themes";
-import { UpdateIcon, ResetIcon, ChevronDownIcon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
+import { UpdateIcon, ResetIcon, ChevronDownIcon, DoubleArrowLeftIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Accordion } from "radix-ui";
 import { useShakeStore } from "../../store/ShakeStore";
 
@@ -132,12 +132,14 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
                   <div>
                     {label}
                     {techSolvedBonus > 0 && (
-                      <span
-                        className="inline-block pl-1 font-thin optimizationButton__bonus"
-                        style={{ color: techMaxBonus > 100 ? "var(--amber-11)" : techMaxBonus === 100 ? "var(--gray-11)" : "var(--red-11)" }}
-                      >
-                        ~{techMaxBonus.toFixed(0)}%
-                      </span>
+                      <>
+                        {/* Show warning icon if the solved bonus is less than 100% */}
+                        {techMaxBonus < 100 && (
+                          <Tooltip content="Insufficient space to properly complete the solve!">
+                            <ExclamationTriangleIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--red-9)" }} />
+                          </Tooltip>
+                        )}
+                      </>
                     )}
                   </div>
                 </AccordionTrigger>
@@ -164,12 +166,14 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
             <>
               {label}
               {techSolvedBonus > 0 && (
-                <span
-                  className="pl-1 font-thin optimizationButton__bonus"
-                  style={{ color: techMaxBonus > 100 ? "var(--amber-11)" : techMaxBonus === 100 ? "var(--gray-11)" : "var(--red-11)" }}
-                >
-                  ~{techMaxBonus.toFixed(0)}%
-                </span>
+                <>
+                  {/* Show warning icon if the solved bonus is less than 100% */}
+                  {techMaxBonus < 100 && (
+                    <Tooltip content="Insufficient space to properly complete the solve!">
+                      <ExclamationTriangleIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--red-9)" }} />
+                    </Tooltip>
+                  )}
+                </>
               )}
             </>
           )}
