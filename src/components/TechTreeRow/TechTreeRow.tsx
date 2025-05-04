@@ -140,7 +140,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
                           </Tooltip>
                         )}
                         {techMaxBonus > 100 && (
-                          <Tooltip content="Supercharged solve!!">
+                          <Tooltip content="Boosted solve!!">
                             {/* Using amber color for bonus indication */}
                             <LightningBoltIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--amber-9)" }} />
                           </Tooltip>
@@ -172,21 +172,21 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
             <>
               {label}
               {techSolvedBonus > 0 && (
-                      <>
-                        {/* Show warning icon if the solved bonus is less than 100% */}
-                        {techMaxBonus < 100 && (
-                          <Tooltip content="Insufficient space to properly complete the solve!">
-                            <ExclamationTriangleIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--red-9)" }} />
-                          </Tooltip>
-                        )}
-                        {techMaxBonus > 100 && (
-                          <Tooltip content="Supercharged solve!">
-                            {/* Using amber color for bonus indication */}
-                            <LightningBoltIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--amber-9)" }} />
-                          </Tooltip>
-                        )}
-                      </>
-                    )}
+                <>
+                  {/* Show warning icon if the solved bonus is less than 100% */}
+                  {techMaxBonus < 100 && (
+                    <Tooltip content="Insufficient space to properly complete the solve!">
+                      <ExclamationTriangleIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--red-9)" }} />
+                    </Tooltip>
+                  )}
+                  {techMaxBonus > 100 && (
+                    <Tooltip content="Boosted solve!">
+                      {/* Using amber color for bonus indication */}
+                      <LightningBoltIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--amber-9)" }} />
+                    </Tooltip>
+                  )}
+                </>
+              )}
             </>
           )}
         </Text>
