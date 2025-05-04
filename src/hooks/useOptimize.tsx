@@ -70,10 +70,9 @@ export const useOptimize = (): UseOptimizeReturn => {
           ),
         };
 
-        ReactGA.event({
-          category: 'User Interactions',
-          action: 'optimizeTech',
-          label: selectedShipType + ' ' + tech,
+        ReactGA.event('optimize_tech', {
+          platform_type: selectedShipType,
+          tech: tech,
         });
 
         const response = await fetch(API_URL + "/optimize", {

@@ -26,6 +26,10 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
         label: option
       });
 
+      ReactGA.event('platform_selection', {
+        platform: option
+      });
+
       setSelectedShipType(option);
       resetGrid();
     }
