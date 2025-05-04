@@ -135,12 +135,12 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
                       <>
                         {/* Show warning icon if the solved bonus is less than 100% */}
                         {techMaxBonus < 100 && (
-                          <Tooltip content="Insufficient space to properly complete the solve!">
+                          <Tooltip content="Insufficient space!">
                             <ExclamationTriangleIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--red-9)" }} />
                           </Tooltip>
                         )}
                         {techMaxBonus > 100 && (
-                          <Tooltip content="Boosted solve!!">
+                          <Tooltip content="Boosted!">
                             {/* Using amber color for bonus indication */}
                             <LightningBoltIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--amber-9)" }} />
                           </Tooltip>
@@ -175,12 +175,12 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
                 <>
                   {/* Show warning icon if the solved bonus is less than 100% */}
                   {techMaxBonus < 100 && (
-                    <Tooltip content="Insufficient space to properly complete the solve!">
+                    <Tooltip content="Insufficient space!">
                       <ExclamationTriangleIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--red-9)" }} />
                     </Tooltip>
                   )}
                   {techMaxBonus > 100 && (
-                    <Tooltip content="Boosted solve!">
+                    <Tooltip content="Boosted!">
                       {/* Using amber color for bonus indication */}
                       <LightningBoltIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--amber-9)" }} />
                     </Tooltip>
