@@ -70,8 +70,14 @@ export const useOptimize = (): UseOptimizeReturn => {
           ),
         };
 
+        ReactGA.event({
+          category: 'User Interactions',
+          action: 'optimizeTech',
+          label: selectedShipType + ' ' + tech,
+        });
+
         ReactGA.event('optimize_tech', {
-          platform_type: selectedShipType,
+          platform: selectedShipType,
           tech: tech,
         });
 
