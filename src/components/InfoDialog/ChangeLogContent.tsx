@@ -13,6 +13,14 @@ const ChangeLogContent: React.FC = () => {
         <p className="mb-2">See this <a className="underline" href="https://github.com/jbelew/nms_optimizer-service/tree/main/training/trained_models" target="_blank" rel="noopener noreferrer">GitHub page</a> for up to date model information.</p>
       </div>
 
+      {/* Version 2.22 */}
+      <div className="infodialog__item">
+        <h2 className="mb-2 font-bold">Version 2.23 (2025-05-03)</h2>
+        <ul className="infodialog__list">
+        <li className="infodialog__list-item">Updated Starship Trails to provide adjacency to the Tentacled Figurine when more than 5 are available (boosts the hidden speed stat).</li>
+        </ul>
+      </div>
+
       {/* Version 2.21 */}
       <div className="infodialog__item">
         <h2 className="mb-2 font-bold">Version 2.22 (2025-05-03)</h2>
