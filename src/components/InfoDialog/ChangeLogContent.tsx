@@ -28,7 +28,7 @@ const ChangeLogContent: React.FC = () => {
         <h2 className="mb-2 font-bold">Version 2.24 (2025-05-03)</h2>
         <ul className="infodialog__list">
           <li className="infodialog__list-item">
-            Added messaging to notify user when a sub-optimal solve is generated.
+            Added solve quality visuals to notify user when a sub-optimal solve is generated.
           </li>
         </ul>
       </div>

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useGridStore } from "../../store/GridStore";
 import { useTechStore } from "../../store/TechStore";
 import { IconButton, Flex, Text, Tooltip, Checkbox } from "@radix-ui/themes";
-import { UpdateIcon, ResetIcon, ChevronDownIcon, DoubleArrowLeftIcon, ExclamationTriangleIcon, LightningBoltIcon } from "@radix-ui/react-icons";
+import { UpdateIcon, ResetIcon, ChevronDownIcon, DoubleArrowLeftIcon, ExclamationTriangleIcon, Crosshair2Icon, LightningBoltIcon } from "@radix-ui/react-icons";
 import { Accordion } from "radix-ui";
 import { useShakeStore } from "../../store/ShakeStore";
 
@@ -21,6 +21,10 @@ type ColorMapKey = "purple" | "red" | "green" | "cyan" | "amber" | "iris" | "yel
 
 // Define a type for the valid color strings for IconButton
 type IconButtonColor = ColorMapKey;
+
+function round(value: number, decimals: number) {
+  return Number(Math.round(Number(value + "e" + decimals)) + "e-" + decimals);
+}
 
 export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOptimize, solving, modules, techImage }) => {
   const hasTechInGrid = useGridStore((state) => state.hasTechInGrid(tech));
@@ -134,15 +138,21 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
                     {techSolvedBonus > 0 && (
                       <>
                         {/* Show warning icon if the solved bonus is less than 100% */}
-                        {techMaxBonus < 100 && (
+                        {round(techMaxBonus, 2) < 100 && (
                           <Tooltip content="Insufficient space!">
-                            <ExclamationTriangleIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--red-9)" }} />
+                            <ExclamationTriangleIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--red-a8)" }} />
                           </Tooltip>
                         )}
-                        {techMaxBonus > 100 && (
-                          <Tooltip content="Boosted!">
+                        {round(techMaxBonus, 2) === 100 && (
+                          <Tooltip content="Valid solve!">
                             {/* Using amber color for bonus indication */}
-                            <LightningBoltIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--amber-9)" }} />
+                            <Crosshair2Icon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--gray-a10)" }} />
+                          </Tooltip>
+                        )}
+                        {round(techMaxBonus, 2) > 100 && (
+                          <Tooltip content="Boosted solve!">
+                            {/* Using amber color for bonus indication */}
+                            <LightningBoltIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--amber-a8)" }} />
                           </Tooltip>
                         )}
                       </>
@@ -174,15 +184,21 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
               {techSolvedBonus > 0 && (
                 <>
                   {/* Show warning icon if the solved bonus is less than 100% */}
-                  {techMaxBonus < 100 && (
+                  {round(techMaxBonus, 2) < 100 && (
                     <Tooltip content="Insufficient space!">
-                      <ExclamationTriangleIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--red-9)" }} />
+                      <ExclamationTriangleIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--red-a8)" }} />
                     </Tooltip>
                   )}
-                  {techMaxBonus > 100 && (
-                    <Tooltip content="Boosted!">
+                  {round(techMaxBonus, 2) === 100 && (
+                    <Tooltip content="Valid solve!">
                       {/* Using amber color for bonus indication */}
-                      <LightningBoltIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--amber-9)" }} />
+                      <Crosshair2Icon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--gray-a10)" }} />
+                    </Tooltip>
+                  )}
+                  {round(techMaxBonus, 2) > 100 && (
+                    <Tooltip content="Boosted solve!">
+                      {/* Using amber color for bonus indication */}
+                      <LightningBoltIcon className="inline-block w-5 h-5 ml-1 align-text-bottom" style={{ color: "var(--amber-a8)" }} />
                     </Tooltip>
                   )}
                 </>
