@@ -3,9 +3,14 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    visualizer({ open: true, gzipSize: true, brotliSize: true }) as Plugin, // Added visualizer
+  ],
   server: {
     host: '0.0.0.0',  // Listen on all network interfaces
     port: 5173        // Use the desired port
