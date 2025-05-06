@@ -174,7 +174,7 @@ const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, cell, g
             }}
           >
             <div className="flex items-center justify-center w-full h-full">
-              <span className="mt-1 text-2xl md:text-3xl lg:text-4xl gridCell__label">
+              <span className="mt-1 text-1xl md:text-3xl lg:text-4xl gridCell__label">
                 {upGradePriority > 0 ? upGradePriority : null}
               </span>
             </div>

@@ -21,6 +21,12 @@ const ChangeLogContent: React.FC = () => {
         for up to date model information.
       </p>
 
+      <h2>Version 2.51 (2025-05-06)</h2>
+      <ul>
+        <li>Increased "window" size to support better solves for Living Starships.</li>
+        <li>Additional mobile UI refinements.</li>
+      </ul>
+
       <h2>Version 2.5 (2025-05-05)</h2>
       <ul>
         <li>Significant UI clean-up, optimization, and refactoring.</li>
