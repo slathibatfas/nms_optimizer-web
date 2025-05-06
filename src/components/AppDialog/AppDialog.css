@@ -33,6 +33,7 @@
 /* Element: Title */
 .appDialog__title {
   font-family: "GeosansLight", sans-serif;
+  letter-spacing: 0.2rem;
   filter: drop-shadow(0 0 4px var(--gray-a1));
   margin-right: 1rem;
 }

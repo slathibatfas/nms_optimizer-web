@@ -51,7 +51,7 @@ const AppDialog: React.FC<AppDialogProps> = ({ onClose, content, isOpen, title =
         <Theme appearance="dark">
           <Dialog.Overlay className="appDialog__overlay" />
           <Dialog.Content className="appDialog__content">
-            <Dialog.Title className="flex items-center gap-2 text-xl font-bold tracking-widest uppercase sm:text-2xl appDialog__title">
+            <Dialog.Title className="flex items-center gap-2 text-xl font-bold uppercase sm:text-2xl appDialog__title">
               {/* Conditionally render the GearIcon if the title is "Instructions" */}
               {title === "Instructions" && (
                 <QuestionMarkCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />
