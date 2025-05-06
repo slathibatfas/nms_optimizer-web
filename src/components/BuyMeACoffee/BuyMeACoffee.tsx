@@ -25,9 +25,7 @@ export default function BuyMeACoffee() {
 
   return (
     <Button size="1" asChild className="pb-4 lg:pb-0">
-      <a href="https://www.buymeacoffee.com/jbelew" onClick={handleButtonClick}>
-        ☕ Buy me a Coffee!
-      </a>
+      <a href="https://www.buymeacoffee.com/jbelew" onClick={handleButtonClick}>☕ Buy me a Coffee!</a>
     </Button>
   );
 }
