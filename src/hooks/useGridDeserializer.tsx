@@ -274,8 +274,6 @@ export const useGridDeserializer = () => {
     if (serializedGridParam) {
         console.log("Found 'grid' URL parameter, attempting deserialization.");
         deserializeGrid(serializedGridParam);
-    } else {
-        console.log("No 'grid' URL parameter found.");
     }
   }, [deserializeGrid]); // Dependency array is correct
 
