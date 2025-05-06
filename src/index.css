@@ -13,6 +13,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Acumin";
+  src: url("/src/assets/fonts/AcuminProCond-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
 @import "@radix-ui/themes/styles.css";
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);

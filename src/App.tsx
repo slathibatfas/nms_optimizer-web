@@ -153,6 +153,7 @@ const App: React.FC = () => {
 
   // Define a simple loading component or use MessageSpinner
   const AppLoadingFallback = () => (
+    console.log("AppLoadingFallback rendering!"), // Add this line
     <div className="flex flex-col items-center justify-center messageSpinner__spinner" style={{ color: "var(--red-a10)" }}>
       <MessageSpinner isVisible={true} initialMessage="Waking the server!" showRandomMessages={false} />
     </div>
@@ -168,9 +169,11 @@ const App: React.FC = () => {
             <AppHeader />
 
             {/* Main Layout */}
-            <section className="p-6 pt-4 lg:p-8 md:p-8 md:pt-4 gridContainer" ref={gridContainerRef}>
-              <div className="flex flex-col items-start gridContainer__layout lg:flex-row">
-                <div className="flex-grow w-auto gridContainer__grid lg:flex-shrink-0" ref={gridRef}>
+            <section
+              className="flex flex-col items-start p-6 pt-4 gridContainer lg:p-8 md:p-8 md:pt-4 lg:flex-row"
+              ref={gridContainerRef}
+            >
+                <div className="flex-grow w-auto gridContainer__container lg:flex-shrink-0" ref={gridRef}>
                   <header className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
                     {/* Show ShipSelection only if not a shared grid */}
                     {!isSharedGrid && (
@@ -216,7 +219,7 @@ const App: React.FC = () => {
                   (isLarge ? (
                     // Desktop: Scrollable sidebar
                     <ScrollArea
-                      className={`gridContainer__sidebar p-4 ml-4 border shadow-md rounded-xl backdrop-blur-xl`}
+                      className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
                       style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
                     >
                       <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
@@ -227,7 +230,6 @@ const App: React.FC = () => {
                       <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
                     </aside>
                   ))}
-              </div>
             </section>
           </section>
 

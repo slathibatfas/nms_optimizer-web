@@ -55,7 +55,7 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
   const buttonBackgroundColor = hasModulesInGrid ? "var(--gray-a2)" : "var(--accent-a5)";
 
   return (
-    <div style={{ gridColumn: 11, gridRow: rowIndex + 1, width: "40px" }} className="flex items-center justify-center">
+    <div style={{ gridColumn: 11, gridRow: rowIndex + 1 }} className="flex items-center justify-center">
       {isFirstInactiveRow && (
         <div className="align-middle">
           <Tooltip content="Activate Row">
