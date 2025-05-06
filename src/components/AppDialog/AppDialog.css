@@ -1,12 +1,12 @@
-/* src/components/InfoDialog/InfoDialog.css */
+/* src/components/AppDialog/AppDialog.css */
 
 /* Element: Overlay */
 .appDialog__overlay {
   background-color: black;
   position: fixed;
   inset: 0;
-  /* Start at full opacity and animate to 25% */
-  opacity: .5;
+  /* Start transparent, animation will bring it to 0.5 opacity */
+  opacity: 0;
   animation: appDialog__overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Add forwards */
 }
 
@@ -32,8 +32,8 @@
 
 /* Element: Title */
 .appDialog__title {
-  font-family: "GeosansLight", sans-serif;
-  letter-spacing: 0.2rem;
+  font-family: var(--font-family-geosans);
+  letter-spacing: var(--letter-spacing-wide);
   filter: drop-shadow(0 0 4px var(--gray-a1));
   margin-right: 1rem;
 }
@@ -54,16 +54,15 @@
 /* Element: Item */
 .appDialog__article {
   font-size: var(--text-base);
-  margin-right: 1rem;
-  font-size: 1rem;
+  margin-right: 1rem; /* Assuming var(--text-base) is the desired font-size, removed redundant 1rem */
 }
 
 .appDialog__article h2 {
   filter: drop-shadow(0 0 2px var(--gray-a1));
   color: var(--accent-11);
   margin-right: 1rem;
-  font-weight: 700;
-  font-size: var(--text-xl)
+  font-weight: var(--font-weight-bold);
+  font-size: var(--text-xl); /* Added missing semicolon */
 }
 
 @media (max-width: 640px) {
@@ -91,7 +90,7 @@
 
 /* Element: List Item */
 .appDialog__list li {
-  margin-bottom: calc(var(--spacing) * 1)
+  margin-bottom: calc(var(--spacing) * 1);
 }
 
 /* Animation: Overlay Show */
@@ -114,4 +113,20 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
+}
+
+/* Styles for ErrorContent component */
+.errorContent__icon {
+  /* Tailwind w-16 h-16 is 4rem. Radix icons are usually 1em by default. */
+  /* The w-16 h-16 classes on the element will define size. This is for color. */
+  color: #C44A34; /* Consider making this a CSS variable e.g., var(--error-icon-color) */
+}
+
+.errorContent__title {
+  color: #e6c133; /* Consider making this a CSS variable e.g., var(--error-title-color) */
+  font-family: var(--font-family-geosans);
+}
+
+.errorContent__text {
+  color: var(--gray-12);
 }

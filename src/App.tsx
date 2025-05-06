@@ -34,7 +34,7 @@ import { useOptimizeStore } from "./store/OptimizeStore";
 /**
  * Defines the possible types of dialogs that can be active.
  */
-type ActiveDialog = "changelog" | "instructions" | "error" | null;
+type ActiveDialog = "changelog" | "instructions" | null;
 
 /**
  * The main App component.
@@ -93,22 +93,16 @@ const App: React.FC = () => {
     }
   }, [isFirstVisit]);
 
-  // Effect to sync the error state from the store with the local activeDialog state
-  useEffect(() => {
-    if (showError) {
-      setActiveDialog("error");
-    }
-  }, [showError]);
-
   /**
    * Closes any active dialog and resets the error state in the store if it was an error dialog.
    */
   const handleCloseDialog = useCallback(() => {
-    if (activeDialog === "error") {
-      setShowError(false); // Reset error state in the store
-    }
+    // This function now only handles non-error dialogs.
+    // The error dialog's visibility is directly controlled by useOptimizeStore's showError state
+    // and its onClose prop.
     setActiveDialog(null); // Close any dialog
-  }, [activeDialog, setShowError]);
+  }, []); // No longer needs activeDialog or setShowError as dependencies
+
 
   /**
    * Handles showing the instructions dialog and turns off the first visit glow if active.
@@ -245,7 +239,12 @@ const App: React.FC = () => {
       {/* Info Dialogs */}
       <InfoDialog isOpen={activeDialog === "changelog"} onClose={handleCloseDialog} content={<ChangeLogContent />} title="Changelog" />
       <InfoDialog isOpen={activeDialog === "instructions"} onClose={handleCloseDialog} content={<InstructionsContent />} title="Instructions" />
-      <InfoDialog isOpen={activeDialog === "error"} onClose={handleCloseDialog} content={<ErrorContent />} title="Error!" />
+      <InfoDialog
+        isOpen={showError} // Directly use showError from the store
+        onClose={() => setShowError(false)} // Directly set showError to false on close
+        content={<ErrorContent />}
+        title="Error!"
+      />
     </>
   );
 };

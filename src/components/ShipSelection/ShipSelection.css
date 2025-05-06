@@ -1,8 +1,8 @@
 .shipSelection__header {
-    font-family: "GeosansLight", sans-serif;
-    letter-spacing: 0.2rem;
-    filter: drop-shadow(0 0 2px var(--gray-a1));
-    font-weight: 700;
-    font-size: 1rem;
-    text-transform: uppercase;
-  }
+  font-family: var(--font-family-geosans);
+  letter-spacing: var(--letter-spacing-wide);
+  filter: drop-shadow(0 0 2px var(--gray-a1));
+  font-weight: var(--font-weight-bold);
+  font-size: var(--text-base); /* Consider using a variable if --text-base is 1rem */
+  text-transform: uppercase;
+}

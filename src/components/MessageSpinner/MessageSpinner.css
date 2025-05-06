@@ -1,27 +1,41 @@
 .messageSpinner__header {
-    font-family: "GeosansLight", sans-serif;
-    color: var(--gray-12);
-    filter: drop-shadow(0 0 4px var(--gray-0));
-    text-transform: uppercase;
-    letter-spacing: 0.2rem;
+  font-family: var(--font-family-geosans);
+  color: var(--gray-12);
+  filter: drop-shadow(0 0 4px var(--gray-0));
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
 }
 
 .messageSpinner__spinner {
-    height: 4rem;
-    width: 4rem;
-    filter: drop-shadow(0 0 4px var(--gray-0));
-  }
+  height: 4rem;
+  width: 4rem;
+  filter: drop-shadow(0 0 4px var(--gray-0));
+}
 
-  .messageSpinner__spinner--big {
-    height: 8rem;
-    width: 8rem;
-    filter: drop-shadow(0 0 4px var(--gray-0));
+.messageSpinner__spinner--big {
+  height: 8rem;
+  width: 8rem;
+  /* filter is inherited from .messageSpinner__spinner */
+}
+
+.messageSpinner__random {
+  min-height: 1.5em; /* Maintain minimum height to prevent layout shift */
+  user-select: none; /* Prevent selecting the placeholder space */
+  transition: color 0.25s ease-in-out; /* Smooth color transition */
+}
+
+.messageSpinner__random--visible {
+  color: #e6c133; /* Or a CSS variable e.g., var(--warning-text-color) */
+}
+
+.messageSpinner__random--hidden {
+  color: transparent;
+}
+
+/* Override for smaller devices (iPhones) */
+@media (max-width: 640px) {
+  .messageSpinner__spinner {
+    height: 3rem;
+    width: 3rem;
   }
-  
-  /* Override for smaller devices (iPhones) */
-  @media (max-width: 640px) {
-    .messageSpinner__spinner {
-      height: 3rem;
-      width: 3rem;
-    }
-  }
+}
