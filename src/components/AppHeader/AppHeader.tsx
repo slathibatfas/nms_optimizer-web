@@ -14,9 +14,9 @@ const AppHeader: React.FC = () => {
         <img src={NMSIcon} className="mr-4 h-14 sm:mr-4 header__icon sm:h-22" alt="No Man's Sky Icon" />
         <div>
           <img src={NMSLogo} className="h-5 mb-1 sm:mb-2 sm:h-9 header__logo" alt="No Man's Sky Logo" />
-          <span className="sm:text-2xl header__title">
-            <strong>Neural</strong> Technology Optimizer <span className="font-thin">{APP_VERSION}</span>
-          </span>
+          <h1 className="sm:text-2xl header__title">
+            NMS <strong>Neural</strong> Technology Optimizer <span className="font-thin">{APP_VERSION}</span>
+          </h1>
         </div>
         <div className="flex items-end ml-auto"> {/* Added ml-auto */}
           <img src={NMSShip} className="hidden opacity-25 md:h-14 lg:h-18 md:inline fade-horizontal" />

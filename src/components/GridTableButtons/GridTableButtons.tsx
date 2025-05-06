@@ -27,8 +27,9 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
   isFirstVisit, 
 }) => {
   return (
-    <footer className="flex items-start gap-4 pt-4 sm:pt-6 gridTable__footer__left">
-      <div className="z-10 flex-1 flex-nowrap gridTable__footer__left">
+    // Add 'relative' to establish a positioning context for the absolutely positioned reset button.
+    <footer className="relative flex items-start gap-4 pt-4 sm:pt-6 gridTable__footer">
+      <div className="flex-1 flex-nowrap"> {/* This div will contain the left-aligned buttons */}
         <Button
           variant="soft"
           className={`gridTable__button gridTable__button--instructions shadow-lg !mr-2 p-0 sm:!px-2 ${
@@ -66,7 +67,11 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
           </Button>
         )}
       </div>
-      <div className="z-10 gridTable__footer__right" style={{ paddingRight: columnWidth }}>
+      {/* This div will contain the Reset Grid button and be absolutely positioned. */}
+      <div 
+        className="absolute z-10" // Use 'absolute' positioning and a z-index if needed.
+        style={{ right: columnWidth }}
+      >
         <Button className={`gridTable__button gridTable__button--reset shadow-sm`} variant="solid" onClick={onReset} disabled={solving}>
           <ResetIcon />
           <span className="font-bold">Reset Grid</span>

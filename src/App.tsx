@@ -72,7 +72,9 @@ const App: React.FC = () => {
   const selectedShipTypeLabel = selectedShipTypeDetails?.label || `Unknown (${selectedShipType})`;
 
   // --- Use the custom layout hook ---
-  const { gridRef, gridHeight, columnWidth, isLarge } = useAppLayout();
+  // containerRef is for div.gridContainer__container (for height)
+  // gridTableRef is for GridTable element (for columnWidth)
+  const { containerRef: appLayoutContainerRef, gridTableRef: appLayoutGridTableRef, gridHeight, columnWidth, isLarge } = useAppLayout();
 
   // --- Get URL update functions from the sync hook ---
   const { updateUrlForShare, updateUrlForReset } = useUrlSync();
@@ -89,7 +91,7 @@ const App: React.FC = () => {
     if (isFirstVisit) {
       localStorage.setItem('hasVisitedNMSOptimizer', 'true');
     }
-  }, []);
+  }, [isFirstVisit]);
 
   // Effect to sync the error state from the store with the local activeDialog state
   useEffect(() => {
@@ -153,7 +155,6 @@ const App: React.FC = () => {
 
   // Define a simple loading component or use MessageSpinner
   const AppLoadingFallback = () => (
-    console.log("AppLoadingFallback rendering!"), // Add this line
     <div className="flex flex-col items-center justify-center messageSpinner__spinner" style={{ color: "var(--red-a10)" }}>
       <MessageSpinner isVisible={true} initialMessage="Waking the server!" showRandomMessages={false} />
     </div>
@@ -173,7 +174,7 @@ const App: React.FC = () => {
               className="flex flex-col items-start p-6 pt-4 gridContainer lg:p-8 md:p-8 md:pt-4 lg:flex-row"
               ref={gridContainerRef}
             >
-                <div className="flex-grow w-auto gridContainer__container lg:flex-shrink-0" ref={gridRef}>
+                <div className="flex-grow w-auto gridContainer__container lg:flex-shrink-0" ref={appLayoutContainerRef}>
                   <header className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
                     {/* Show ShipSelection only if not a shared grid */}
                     {!isSharedGrid && (
@@ -198,6 +199,7 @@ const App: React.FC = () => {
                     shared={isSharedGrid}
                     activateRow={activateRow}
                     deActivateRow={deActivateRow}
+                    ref={appLayoutGridTableRef} // Pass the ref for GridTable
                     resetGrid={resetGrid}
                   />
 

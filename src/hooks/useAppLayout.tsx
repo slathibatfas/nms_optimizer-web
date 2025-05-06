@@ -4,26 +4,28 @@ import { useBreakpoint } from "./useBreakpoint";
 import { useGridStore } from "../store/GridStore"; // Import Grid type if needed for grid dependency
 
 interface AppLayout {
-  gridRef: React.RefObject<HTMLDivElement | null>;
-  gridHeight: number | null;
+  // Ref for the container whose height is measured (e.g., div.gridContainer__container)
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  // Ref for the actual GridTable element, used for column width calculations
+  gridTableRef: React.RefObject<HTMLDivElement | null>;
+  gridHeight: number | null; // Height of the containerRef element
   columnWidth: string;
   isLarge: boolean;
 }
 
 export const useAppLayout = (): AppLayout => {
-  // Ensure the generic type argument <HTMLDivElement> is passed to useRef
-  // This explicitly tells useRef the intended type of the .current property (besides null)
-  const gridRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null); // For height of div.gridContainer__container
+  const gridTableRef = useRef<HTMLDivElement>(null); // For width calculations on GridTable
   const [gridHeight, setGridHeight] = useState<number | null>(null);
-  const [columnWidth, setColumnWidth] = useState("40px");
+  const [columnWidth, setColumnWidth] = useState("40px"); // Default fallback
   const isLarge = useBreakpoint("1024px");
   const { grid, isSharedGrid } = useGridStore(); // Get grid state if needed for effects
 
   // Effect for gridHeight
   useEffect(() => {
     const updateGridHeight = () => {
-      if (isLarge && !isSharedGrid && gridRef.current) {
-        setGridHeight(gridRef.current.getBoundingClientRect().height);
+      if (isLarge && !isSharedGrid && containerRef.current) {
+        setGridHeight(containerRef.current.getBoundingClientRect().height);
       } else {
         setGridHeight(null); // Reset height if not large or is shared
       }
@@ -37,24 +39,58 @@ export const useAppLayout = (): AppLayout => {
       clearTimeout(timerId);
       window.removeEventListener("resize", updateGridHeight);
     };
-    // Depend on isLarge, isSharedGrid, and potentially grid content if height depends on it
-  }, [isLarge, isSharedGrid, grid]);
+  }, [isLarge, isSharedGrid, grid, containerRef]);
 
-  // Effect for columnWidth
+  // Effect for columnWidth (uses gridTableRef)
   useEffect(() => {
     const updateColumnWidth = () => {
-      if (!gridRef.current) return;
-      const computedStyle = window.getComputedStyle(gridRef.current);
-      const gridTemplate = computedStyle.getPropertyValue("grid-template-columns").split(" ");
-      const parseSize = (value: string, fallback: number) => parseFloat(value) || fallback;
-      const eleventhColumn = parseSize(gridTemplate[10] ?? "40px", 40);
-      const gap = parseSize(computedStyle.getPropertyValue("gap") ?? "8px", 8);
-      setColumnWidth(`${eleventhColumn + gap}px`);
-    };
-    updateColumnWidth(); // Run initially
-    window.addEventListener("resize", updateColumnWidth);
-    return () => window.removeEventListener("resize", updateColumnWidth);
-  }, [grid]); // Depend on grid if its structure affects columns
+      if (!gridTableRef.current) {
+        // Silently return if the ref is not yet available.
+        // The effect will re-run when the ref is populated.
+        return;
+      }
 
-  return { gridRef, gridHeight, columnWidth, isLarge };
+      // Find one of the rendered GridControlButtons containers
+      const controlButtonElement = gridTableRef.current.querySelector<HTMLDivElement>('[data-is-grid-control-column="true"]');
+
+      if (!controlButtonElement) {
+        // If no control button is found (e.g., empty grid or shared grid without controls),
+        // fall back to a default width.
+        setColumnWidth("40px"); // Fallback if no control button is found (e.g., empty grid)
+        return;
+      }
+
+      const controlCellActualWidth = controlButtonElement.offsetWidth;
+
+      // Get the computed gap from the grid container itself
+      const gridContainerStyle = window.getComputedStyle(gridTableRef.current);
+      // Try 'grid-column-gap' first, then 'gap' as it might be a shorthand
+      let gapString = gridContainerStyle.getPropertyValue("grid-column-gap").trim();
+      if (gapString === "normal" || !gapString) {
+        // 'normal' is a possible value if not explicitly set, or it might be empty
+        gapString = gridContainerStyle.getPropertyValue("gap").trim().split(" ")[0]; // Take the first value if 'gap' is shorthand (row-gap column-gap)
+      }
+
+      const gapActualWidth = parseFloat(gapString);
+
+      if (isNaN(gapActualWidth)) {
+        // If gap parsing fails, log an error internally or handle gracefully.
+        // For now, we'll use the cell width or a fixed fallback.
+        // If gap parsing fails, use cell width only or a fixed fallback
+        setColumnWidth(`${controlCellActualWidth}px`); // Or "40px" if preferred
+        return;
+      }
+
+      const calculatedWidth = controlCellActualWidth + gapActualWidth;
+      setColumnWidth(`${calculatedWidth}px`);
+    };
+    const timerId = setTimeout(updateColumnWidth, 150); // Increased delay for GridTable ref and styles
+    window.addEventListener("resize", updateColumnWidth);
+    return () => {
+      clearTimeout(timerId);
+      window.removeEventListener("resize", updateColumnWidth);
+    };
+  }, [isSharedGrid, grid, gridTableRef]); // Depend on gridTableRef
+
+  return { containerRef, gridTableRef, gridHeight, columnWidth, isLarge };
 };

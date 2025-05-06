@@ -1,6 +1,6 @@
 // src/components/GridTable/GridTable.tsx
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "../../store/GridStore";
 import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
@@ -29,9 +29,13 @@ interface GridTableProps {
  *   or null if no calculation has been done.
  * @param {function} resetGrid - A function to reset the grid
  */
-const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow, resetGrid, solving }) => {
-  // const [shaking, setShaking] = React.useState(false);
-  const gridRef = useRef<HTMLDivElement>(null);
+const GridTable = React.forwardRef<HTMLDivElement, GridTableProps>(({
+ grid,
+  activateRow,
+  deActivateRow,
+  resetGrid, // resetGrid prop is passed but not used directly in this component's JSX
+  solving,
+}, ref) => {
   const [isSharedGrid, setIsSharedGrid] = useState(false);
   const { shaking } = useShakeStore();
 
@@ -47,7 +51,7 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
     <>
       <ShakingWrapper shaking={shaking} duration={500}>
         <MessageSpinner isVisible={solving} showRandomMessages={true} initialMessage={"OPTIMIZING!"} />
-        <div ref={gridRef} className={`gridTable ${solving ? "opacity-50" : ""}`}>
+        <div ref={ref} className={`gridTable ${solving ? "opacity-50" : ""}`}> {/* Attach forwarded ref */}
           {grid.cells.map((row, rowIndex) => (
             <React.Fragment key={rowIndex}>
               {row.map((cell, columnIndex) => (
@@ -86,6 +90,6 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
       </ShakingWrapper>
     </>
   );
-};
+});
 
 export default GridTable;
