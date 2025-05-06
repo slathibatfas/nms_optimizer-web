@@ -18,25 +18,22 @@
 }
 
 .gridCell--interactive {
-  /* Styles for grid cells interaction*/
   cursor: pointer;
 }
 
 .gridCell--inactive {
-  border-color: var(--gray-8);
-  background-color: var(--gray-a3);
-  transition: background-color 0.125s ease;
+  border-color: var(--gray-a7);
+  background-color: var(--gray-a2);
 }
 
 .gridCell--inactive:hover {
   background-color: var(--gray-a4);
-  transition: background-color 0.125s ease;
+  transition: background-color 0.25s ease;
 }
 
 .gridCell--active {
   border-color: var(--accent-track);
   background-color: var(--accent-a3);
-  transition: border-color 0.25s ease;
 }
 
 .gridCell--active:hover {
@@ -48,7 +45,6 @@
   /* Styles for supercharged grid cells */
   border-color: var(--accent-track);
   background-color: var(--purple-a3) !important;
-  transition: background-color 0.25s ease;
 }
 
 .gridCell--supercharged:hover {
@@ -59,7 +55,6 @@
 .gridCell--black {
   border-color: var(--gray-6);
   background-color: var(--gray-a3);
-  transition: border-color 0.25s ease;
 }
 
 .gridCell--black:hover {
