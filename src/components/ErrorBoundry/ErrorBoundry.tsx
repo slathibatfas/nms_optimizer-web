@@ -51,18 +51,22 @@ class ErrorBoundary extends Component<Props, State> {
     // If there is an error, render the error fallback UI
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-          <ExclamationTriangleIcon className="w-16 h-16 shadow-lg" style={{ color: "#C44A34" }} />
-          <h1 className="pt-2 text-2xl font-semibold tracking-widest" style={{ color: "#e6c133", fontFamily: "GeosansLight" }}>
-            -kzzkt- Error! -kzzkt-
-          </h1>
-          <h2 className="pb-4 font-semibold">Something went wrong.</h2>
-          <span className="font-mono text-xs text-left lg:text-base" style={{ whiteSpace: "pre-wrap" }}>
-            {this.state.error?.toString()}
-            <br />
-            {this.state.errorInfo?.componentStack}
-          </span>
-        </div>
+        <main className="flex flex-col items-center justify-center lg:min-h-screen">
+          <section className="relative mx-auto border rounded-none shadow-lg app lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
+            <div className="flex flex-col items-center justify-center h-full p-8 text-center text-gray-50">
+              <ExclamationTriangleIcon className="w-16 h-16 shadow-lg" style={{ color: "#C44A34" }} />
+              <h1 className="pt-2 text-2xl font-semibold tracking-widest" style={{ color: "#e6c133", fontFamily: "GeosansLight" }}>
+                -kzzkt- Error! -kzzkt-
+              </h1>
+              <h2 className="pb-4 font-semibold">Something went wrong.</h2>
+              <span className="font-mono text-xs text-left lg:text-base" style={{ whiteSpace: "pre-wrap" }}>
+                {this.state.error?.toString()}
+                <br />
+                {this.state.errorInfo?.componentStack}
+              </span>
+            </div>
+          </section>
+        </main>
       );
     }
 

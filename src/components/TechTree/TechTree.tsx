@@ -32,10 +32,14 @@ type TypeImageMap = {
 };
 
 const typeImageMap: TypeImageMap = {
-  Weaponry: "weaponry.png",
-  "Defensive Systems": "defensive.png",
-  Hyperdrive: "hyperdrive.png",
-  Utilities: "utilities.png",
+  Weaponry: "weaponry.webp",
+  "Defensive Systems": "defensive.webp",
+  Hyperdrive: "hyperdrive.webp",
+  Mining: "mining.webp",
+  "Secondary Weapons": "secondary.webp",
+  Scanners: "scanners.webp",
+  Utilities: "utilities.webp",
+
 };
 
 interface TechTreeComponentProps {
@@ -71,7 +75,7 @@ const TechTreeSection: React.FC<{
     <div className="mb-6 lg:mb-6 last:mb-0 sidebar__section">
       <div className="flex items-center">
         {/* Conditionally render the image if imagePath is available */}
-        {imagePath && <img src={imagePath} alt={type} className="w-8 h-8 mr-2 opacity-25" />}
+        {imagePath && <img src={imagePath} alt={type} className="mr-3 opacity-25 w-7" />}
         <h2 className="text-xl font-semibold tracking-widest sm:text-2xl sidebar__title">{type.toUpperCase()}</h2>
       </div>
 

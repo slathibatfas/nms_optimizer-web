@@ -165,7 +165,12 @@ const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, cell, g
             onTouchCancel={handleTouchEnd}
             className={cellClassName}
             style={{
-              backgroundImage: cell.image ? `url(/assets/img/${cell.image})` : "none",
+              backgroundImage: cell.image
+                ? `image-set(
+                    url(/assets/img/${cell.image}) 1x,
+                    url(/assets/img/${cell.image.replace(/\.webp$/, "@2x.webp")}) 2x
+                  )`
+                : "none",
             }}
           >
             <div className="flex items-center justify-center w-full h-full">
@@ -186,7 +191,12 @@ const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, cell, g
           onTouchCancel={handleTouchEnd} // Use handleTouchEnd for cancel as well
           className={cellClassName}
           style={{
-            backgroundImage: cell.image ? `url(/assets/img/${cell.image})` : "none",
+            backgroundImage: cell.image
+              ? `image-set(
+                  url(/assets/img/${cell.image}) 1x,
+                  url(/assets/img/${cell.image.replace(/\.webp$/, "@2x.webp")}) 2x
+                )`
+              : "none",
           }}
         />
       )}

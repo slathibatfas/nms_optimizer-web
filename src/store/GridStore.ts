@@ -124,6 +124,7 @@ export type GridStore = {
   setCellActive: (rowIndex: number, columnIndex: number, active: boolean) => void;
   setCellSupercharged: (rowIndex: number, columnIndex: number, supercharged: boolean) => void;
   setIsSharedGrid: (isShared: boolean) => void;
+  
 };
 
 
@@ -318,6 +319,4 @@ export const useGridStore = create<GridStore>()(
     }
   )
 );
-
-// Remember to install immer: npm install immer or yarn add immer
 

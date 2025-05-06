@@ -130,7 +130,9 @@ describe("GridCell Component", () => {
         <GridCell rowIndex={0} columnIndex={0} cell={mockCellWithImage} grid={mockGrid} isSharedGrid={false}/>
       </TooltipProvider>
     );
-    expect(screen.getByRole("gridCell")).toHaveStyle({ backgroundImage: `url(/assets/img/test.jpg)` });
+    expect(screen.getByRole("gridCell")).toHaveStyle({
+      backgroundImage: `image-set(url(/assets/img/test.jpg) 1x, url(/assets/img/test@2x.jpg) 2x)`
+    });
   });
 });
 

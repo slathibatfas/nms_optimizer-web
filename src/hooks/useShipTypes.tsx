@@ -46,7 +46,6 @@ const createResource = <T,>(promise: Promise<T>): Resource<T> => {
   };
 };
 
-
 // Store successful fetches - Note: The type parameter for Resource is now the updated ShipTypes
 const cache = new Map<string, Resource<ShipTypes>>();
 
@@ -109,7 +108,7 @@ export function useFetchShipTypesSuspense(): ShipTypes {
 export interface ShipTypesState {
   shipTypes: ShipTypes | null;
   selectedShipType: string;
-  setSelectedShipType: (shipType: string) => void;
+  setSelectedShipType: (shipType: string, updateUrl?: boolean) => void; // Add optional flag
 }
 
 const LOCAL_STORAGE_KEY = 'selectedPlatform';

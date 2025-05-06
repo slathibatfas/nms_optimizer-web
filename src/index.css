@@ -1,15 +1,14 @@
 @font-face {
   font-family: "GeosansLight";
-  src: url("/src/assets/fonts/geonms-webfont.ttf") format("truetype"),
-       url("/src/assets/fonts/geonms-webfont.woff") format("woff");
+  src: url("/src/assets/fonts/geonms-webfont.ttf") format("truetype"), url("/src/assets/fonts/geonms-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: auto;
 }
 
 @font-face {
-  font-family: 'Raleway';
-  src: url('/src/assets/fonts/Raleway-VariableFont_wght.ttf') format('truetype');
+  font-family: "Raleway";
+  src: url("/src/assets/fonts/Raleway-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
 }
@@ -22,11 +21,10 @@
 /* Apply custom font styles using Tailwind's @layer directive */
 
 .radix-themes {
-  --default-font-family: Raleway, Helvetica, Arial, sans-serif
+  --default-font-family: Raleway, Helvetica, Arial, sans-serif;
 }
 
-
-/* Vaiablies for our grid CLAMP calculations */
+/* Variables for our grid CLAMP calculations */
 :root {
   --grid-min-size: 26px;
   --grid-max-size: 64px;
@@ -58,14 +56,74 @@ body::before {
   z-index: -1;
 }
 
-.sidebar__title{
+.sidebar__title {
   letter-spacing: 0.2rem;
 }
 
-.optimizer__header--logo  {
-    filter: invert(90%) drop-shadow(0 0 4px var(--accent-12));
+.app {
+  border: 1px solid var(--gray-a3);
 }
 
-.optimizer__header--icon, .optimizer__header--title {
-  filter: drop-shadow(0 0 12px var(--accent-11));
+.header {
+  border-bottom: 1px solid var(--gray-a1);
+  background-color: color-mix(in oklab, var(--color-black) 25%, transparent);
+}
+
+.header__icon {
+  filter: drop-shadow(0 0 12px var(--gray-a7));
+}
+
+.header__logo {
+  filter: invert(90%) drop-shadow(0 0 4px var(--gray-11));
+}
+
+.header__title {
+  filter: drop-shadow(0 0 8px var(--gray-11));
+}
+
+.header__title strong {
+  font-weight: 800;
+  color: var(--accent-11);
+}
+
+.fade-horizontal {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 40%, black 60%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 0%, black 0%, transparent);
+  filter: saturate(50%);
+}
+
+.container {
+  border-top: 1px solid var(--gray-a3);
+}
+
+.gridContainer__sidebar {
+  width: 368px;
+  background-color: var(--gray-a1);
+  border-color: var(--gray-a3);
+}
+
+.gridContainer__platform {
+  font-family: "GeosansLight-NMS", sans-serif;
+  filter: drop-shadow(0 0 4px var(--gray-6));
+}
+
+.messageSpinner__header {
+  font-family: "GeosansLight", sans-serif;
+  color: var(--gray-12);
+  filter: drop-shadow(0 0 4px var(--gray-0));
+  text-transform: uppercase;
+  letter-spacing: 0.175rem;
+}
+
+.button--glow {
+  animation: pulseGlow 1s infinite alternate ease-in-out;
+}
+
+@keyframes pulseGlow {
+  from {
+    box-shadow: 0 0 4px 0px var(--accent-a4);
+  }
+  to {
+    box-shadow: 0 0 4px 4px var(--accent-a11);
+  }
 }

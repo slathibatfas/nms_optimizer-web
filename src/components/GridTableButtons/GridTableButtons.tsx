@@ -1,0 +1,79 @@
+import React from "react";
+import { Button } from "@radix-ui/themes";
+import { QuestionMarkCircledIcon, CounterClockwiseClockIcon, ResetIcon, Share1Icon } from "@radix-ui/react-icons";
+import ReactGA from "react-ga4";
+
+interface GridTableButtonsProps {
+  onShowInstructions: () => void;
+  onShowChangeLog: () => void;
+  onShare: () => void;
+  onReset: () => void;
+  isSharedGrid: boolean;
+  hasModulesInGrid: boolean;
+  solving: boolean;
+  columnWidth: string;
+  isFirstVisit: boolean; // Add prop for first visit
+}
+
+const GridTableButtons: React.FC<GridTableButtonsProps> = ({
+  onShowInstructions,
+  onShowChangeLog,
+  onShare,
+  onReset,
+  isSharedGrid,
+  hasModulesInGrid,
+  solving,
+  columnWidth,
+  isFirstVisit, 
+}) => {
+  return (
+    <footer className="flex items-start gap-4 pt-4 sm:pt-6 gridTable__footer__left">
+      <div className="z-10 flex-1 flex-nowrap gridTable__footer__left">
+        <Button
+          variant="soft"
+          className={`gridTable__button gridTable__button--instructions shadow-lg !mr-2 p-0 sm:!px-2 ${
+            isFirstVisit ? 'button--glow' : ''
+          }`}
+          onClick={() => {
+            ReactGA.event({
+              category: "User Interactions",
+              action: "showInstructions",
+            });
+            onShowInstructions();
+          }}
+        >
+          <QuestionMarkCircledIcon />
+          <span className="hidden sm:inline">Instructions</span>
+        </Button>
+        <Button
+          variant="soft"
+          className={`gridTable__button gridTable__button--changelog shadow-lg !mr-2 sm:!px-2`}
+          onClick={() => {
+            ReactGA.event({
+              category: "User Interactions",
+              action: "showChangeLog",
+            });
+            onShowChangeLog();
+          }}
+        >
+          <CounterClockwiseClockIcon />
+          <span className="hidden sm:inline">Change Log</span>
+        </Button>
+        {!isSharedGrid && (
+          <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-sm sm:!px-2`} onClick={onShare} disabled={isSharedGrid || !hasModulesInGrid}>
+            <Share1Icon />
+            <span className="hidden sm:inline">Share Link</span>
+          </Button>
+        )}
+      </div>
+      <div className="z-10 gridTable__footer__right" style={{ paddingRight: columnWidth }}>
+        <Button className={`gridTable__button gridTable__button--reset shadow-sm`} variant="solid" onClick={onReset} disabled={solving}>
+          <ResetIcon />
+          <span className="font-bold">Reset Grid</span>
+        </Button>
+      </div>
+    </footer>
+  );
+};
+
+export default GridTableButtons;

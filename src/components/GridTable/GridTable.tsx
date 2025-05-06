@@ -1,26 +1,20 @@
 // src/components/GridTable/GridTable.tsx
-import { CounterClockwiseClockIcon, QuestionMarkCircledIcon, ResetIcon, Share1Icon } from "@radix-ui/react-icons";
-import { Button } from "@radix-ui/themes";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { ApiResponse, Grid } from "../../store/GridStore";
+
+import React, { useEffect, useRef, useState } from "react";
+import { Grid } from "../../store/GridStore";
 import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
 import ShakingWrapper from "../GridShake/GridShake";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
-import { useGridDeserializer } from "../../hooks/useGridDeserializer";
 import { useShakeStore } from "../../store/ShakeStore";
-import ReactGA from "react-ga4";
 
 interface GridTableProps {
   grid: Grid;
   resetGrid: () => void;
-  result: ApiResponse | null;
   activateRow: (rowIndex: number) => void;
   deActivateRow: (rowIndex: number) => void;
   solving: boolean;
   shared: boolean;
-  setShowChangeLog: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowInstructions: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /**
@@ -35,11 +29,9 @@ interface GridTableProps {
  *   or null if no calculation has been done.
  * @param {function} resetGrid - A function to reset the grid
  */
-const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow, resetGrid, solving, setShowChangeLog, setShowInstructions }) => {
+const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow, resetGrid, solving }) => {
   // const [shaking, setShaking] = React.useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
-  const [columnWidth, setColumnWidth] = useState("40px");
-  const { serializeGrid, deserializeGrid } = useGridDeserializer();
   const [isSharedGrid, setIsSharedGrid] = useState(false);
   const { shaking } = useShakeStore();
 
@@ -47,56 +39,6 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
     const url = new URL(window.location.href);
     setIsSharedGrid(url.searchParams.has("grid"));
   }, [resetGrid]);
-
-  const handleShareClick = useCallback(() => {
-    const serializedGrid = serializeGrid();
-    const url = new URL(window.location.href);
-    url.searchParams.set("grid", serializedGrid);
-    const newWindow = window.open(url.toString(), "_blank", "noopener,noreferrer");
-
-    ReactGA.event({
-      category: "User Interactions",
-      action: "shareLink",
-    });
-
-    if (newWindow) {
-      // Deserialize the grid from the URL
-      deserializeGrid(serializedGrid);
-      newWindow.focus();
-    }
-  }, [serializeGrid, deserializeGrid]);
-
-  const handleResetGrid = useCallback(() => {
-    ReactGA.event({
-      category: "User Interactions",
-      action: "resetGrid",
-    });
-    resetGrid(); // Call the original resetGrid function
-    const url = new URL(window.location.href);
-    url.searchParams.delete("grid"); // Remove the 'grid' query parameter
-    window.history.pushState({}, "", url); // Update the URL without reloading
-    setIsSharedGrid(false);
-  }, [resetGrid]);
-
-  useEffect(() => {
-    const updateColumnWidth = () => {
-      if (!gridRef.current) return;
-
-      const computedStyle = window.getComputedStyle(gridRef.current);
-      const gridTemplate = computedStyle.getPropertyValue("grid-template-columns").split(" ");
-
-      const parseSize = (value: string, fallback: number) => parseFloat(value) || fallback;
-
-      const eleventhColumn = parseSize(gridTemplate[10] ?? "40px", 40);
-      const gap = parseSize(computedStyle.getPropertyValue("gap") ?? "8px", 8);
-
-      setColumnWidth(`${eleventhColumn + gap}px`);
-    };
-
-    updateColumnWidth();
-    window.addEventListener("resize", updateColumnWidth);
-    return () => window.removeEventListener("resize", updateColumnWidth);
-  }, [grid]);
 
   // Whether there are any modules in the grid
   const hasModulesInGrid = grid.cells.flat().some((cell) => cell.module !== null);
@@ -142,55 +84,6 @@ const GridTable: React.FC<GridTableProps> = ({ grid, activateRow, deActivateRow,
           ))}
         </div>
       </ShakingWrapper>
-      <div className="flex items-start gap-4 pt-4 sm:pt-6 gridTable__footer__left">
-        <div className="z-10 flex-1 flex-nowrap gridTable__footer__left">
-          <Button
-            variant="soft"
-            className={`gridTable__button gridTable__button--instructions shadow-lg !mr-2 p-0 sm:!px-2`}
-            onClick={() => {
-              ReactGA.event({
-                category: "User Interactions",
-                action: "showInstructions",
-              });
-              setShowInstructions(true)
-            }}
-          >
-            <QuestionMarkCircledIcon />
-            <span className="hidden sm:inline">Instructions</span>
-          </Button>
-          <Button
-            variant="soft"
-            className={`gridTable__button gridTable__button--changelog shadow-lg !mr-2 sm:!px-2`}
-            onClick={() => {
-              ReactGA.event({
-                category: "User Interactions",
-                action: "showChangeLog",
-              });
-              setShowChangeLog(true);
-            }}
-          >
-            <CounterClockwiseClockIcon />
-            <span className="hidden sm:inline">Change Log</span>
-          </Button>
-          {!isSharedGrid && (
-            <Button
-              variant="soft"
-              className={`gridTable__button gridTable__button--changelog shadow-sm sm:!px-2`}
-              onClick={handleShareClick}
-              disabled={isSharedGrid || !hasModulesInGrid}
-            >
-              <Share1Icon />
-              <span className="hidden sm:inline">Share Link</span>
-            </Button>
-          )}
-        </div>
-        <div className="z-10 gridTable__footer__right" style={{ paddingRight: columnWidth }}>
-          <Button className={`gridTable__button gridTable__button--reset shadow-sm`} variant="solid" onClick={handleResetGrid} disabled={solving}>
-            <ResetIcon />
-            <span className="font-bold">Reset Grid</span>
-          </Button>
-        </div>
-      </div>
     </>
   );
 };
