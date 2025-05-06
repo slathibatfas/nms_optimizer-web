@@ -4,7 +4,7 @@
        url("/src/assets/fonts/geonms-webfont.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display: auto;
 }
 
 @font-face {
@@ -12,7 +12,7 @@
   src: url("/src/assets/fonts/Raleway-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
-  font-display: swap;
+  font-display: auto;
 }
 
 @font-face {
