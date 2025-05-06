@@ -26,7 +26,7 @@
 
 /* Variables for our grid CLAMP calculations */
 :root {
-  --grid-min-size: 36px;
+  --grid-min-size: 32px;
   --grid-max-size: 64px;
   --grid-gap-min-size: 2px;
   --grid-gap-max-size: 8px;
