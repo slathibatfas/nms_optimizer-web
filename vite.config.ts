@@ -10,6 +10,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     visualizer({ open: true, gzipSize: true, brotliSize: true }) as Plugin, // Added visualizer
+    
   ],
   server: {
     host: '0.0.0.0',  // Listen on all network interfaces
