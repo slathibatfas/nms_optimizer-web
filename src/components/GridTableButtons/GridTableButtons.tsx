@@ -68,15 +68,20 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
         )}
       </div>
       {/* This div will contain the Reset Grid button and be absolutely positioned. */}
-      <div 
-        className="absolute z-10" // Use 'absolute' positioning and a z-index if needed.
-        style={{ right: columnWidth }}
-      >
-        <Button className={`gridTable__button gridTable__button--reset shadow-sm`} variant="solid" onClick={onReset} disabled={solving}>
-          <ResetIcon />
-          <span className="font-bold">Reset Grid</span>
-        </Button>
-      </div>
+      {/* Conditionally render the reset button container to avoid layout shift.
+          Render if it's a shared grid (columnWidth will be "0px" correctly)
+          OR if columnWidth is no longer its initial "0px" (meaning it's measured or a fallback for non-shared). */}
+      {( columnWidth !== "0px") && (
+        <div
+          className="absolute z-10" // Use 'absolute' positioning and a z-index if needed.
+          style={{ right: columnWidth }}
+        >
+          <Button className={`gridTable__button gridTable__button--reset shadow-sm`} variant="solid" onClick={onReset} disabled={solving}>
+            <ResetIcon />
+            <span className="font-bold">Reset Grid</span>
+          </Button>
+        </div>
+      )}
     </footer>
   );
 };

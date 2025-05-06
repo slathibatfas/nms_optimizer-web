@@ -17,7 +17,7 @@ export const useAppLayout = (): AppLayout => {
   const containerRef = useRef<HTMLDivElement>(null); // For height of div.gridContainer__container
   const gridTableRef = useRef<HTMLDivElement>(null); // For width calculations on GridTable
   const [gridHeight, setGridHeight] = useState<number | null>(null);
-  const [columnWidth, setColumnWidth] = useState("40px"); // Default fallback
+  const [columnWidth, setColumnWidth] = useState("0px"); // Default fallback
   const isLarge = useBreakpoint("1024px");
   const { grid, isSharedGrid } = useGridStore(); // Get grid state if needed for effects
 
