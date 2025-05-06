@@ -95,6 +95,14 @@ body::before {
   filter: drop-shadow(0 0 8px var(--gray-11));
 }
 
+.header h1 {
+  font-family: var(--font-family-geosans);
+  letter-spacing: var(--letter-spacing-wide);
+  font-weight: var(--font-weight-bold);
+  filter: drop-shadow(0 0 8px var(--gray-11));
+  text-transform: uppercase;
+}
+
 .header__title strong {
   font-weight: 800;
   color: var(--accent-11);
