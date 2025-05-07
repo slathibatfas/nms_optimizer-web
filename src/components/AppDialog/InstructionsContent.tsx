@@ -51,7 +51,7 @@ const InstructionsContent: React.FC = () => {
         <ul>
           <li>
             <strong>Start by choosing one technology that aligns well with two or three of your supercharged slots</strong>, such as the <em>Pulse Engine</em>,{" "}
-            <em>Infra-Knife Accelerator</em>, <em>Pulse Splitter</em>, or <em>Neutron Cannon</em> —{" "}
+            <em>Infra-Knife Accelerator</em>, <em>Pulse Spitter</em>, or <em>Neutron Cannon</em> —{" "}
             <strong>click on those cells to mark them as supercharged</strong>, then solve for that technology first.
           </li>
           <li>
