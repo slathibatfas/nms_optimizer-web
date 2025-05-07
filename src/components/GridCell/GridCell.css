@@ -12,7 +12,7 @@
 }
 
 .gridCell__label {
-  filter: drop-shadow(0px 0px 4px black);
+  filter: drop-shadow(0px 0px 2px black);
   color: var(--gray-a12);
   font-family: "Acumin"; 
 }

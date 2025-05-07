@@ -130,15 +130,15 @@ body::before {
 }
 
 .button--glow {
-  animation: pulseGlow 1s infinite alternate ease-in-out;
+  animation: buttonGlow 1s infinite alternate ease-in-out;
 }
 
-@keyframes pulseGlow {
+@keyframes buttonGlow {
   from {
     box-shadow: 0 0 4px 0px var(--accent-a4);
   }
   to {
-    box-shadow: 0 0 4px 4px var(--accent-a11);
+    box-shadow: 0 0 4px 4px var(--accent-a8);
   }
 }
 

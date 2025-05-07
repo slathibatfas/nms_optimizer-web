@@ -31,7 +31,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
     <footer className="relative flex items-start gap-4 pt-4 sm:pt-6 gridTable__footer">
       <div className="flex-1 flex-nowrap"> {/* This div will contain the left-aligned buttons */}
         <Button
-          variant="soft"
+          variant={isFirstVisit ? "solid" : "soft"}
           className={`gridTable__button gridTable__button--instructions shadow-lg !mr-2 p-0 sm:!px-2 ${
             isFirstVisit ? 'button--glow' : ''
           }`}
