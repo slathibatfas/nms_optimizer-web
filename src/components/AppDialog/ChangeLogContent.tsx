@@ -23,7 +23,7 @@ const ChangeLogContent: React.FC = () => {
 
       <h2>Version 2.6 (2025-05-07)</h2>
       <ul>
-        <li>Added warning for when no solves fits. Seeing too many users trying to force things.</li>
+        <li>Added warning for when no solves fit within the grid. Seeing too many users trying to force things and getting sub-optimal results.</li>
       </ul>
 
       <h2>Version 2.51 (2025-05-06)</h2>
