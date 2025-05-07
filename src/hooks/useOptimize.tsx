@@ -103,7 +103,7 @@ export const useOptimize = (): UseOptimizeReturn => {
         if (data.solve_method === "Pattern No Fit" && data.grid === null && !forced) {
           setPatternNoFitTech(tech);
           console.log(`Pattern No Fit for ${tech}. User can force SA.`);
-          ReactGA.event('optimize_pattern_no_fit_prompt', {
+          ReactGA.event('optimize_no_fit', {
             platform: selectedShipType,
             tech: tech,
           });
