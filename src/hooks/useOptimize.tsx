@@ -10,17 +10,21 @@ import ReactGA from 'react-ga4'
 
 interface UseOptimizeReturn {
   solving: boolean;
-  handleOptimize: (tech: string) => Promise<void>;
+  handleOptimize: (tech: string, forced?: boolean) => Promise<void>;
   gridContainerRef: React.MutableRefObject<HTMLDivElement | null>;
   showError: boolean;
   setShowError: React.Dispatch<React.SetStateAction<boolean>>;
+  patternNoFitTech: string | null;
+  clearPatternNoFitTech: () => void; // To allow UI to clear the PNF state (e.g., on dialog cancel)
+  // New handler for the dialog's "Force Optimize" action
+  handleForceCurrentPnfOptimize: () => Promise<void>;
 }
 
 export const useOptimize = (): UseOptimizeReturn => {
   const { setGrid, setResult, grid } = useGridStore();
   const [solving, setSolving] = useState<boolean>(false);
   const gridContainerRef = useRef<HTMLDivElement>(null);
-  const { showError, setShowError: setShowErrorStore } = useOptimizeStore();
+  const { showError, setShowError: setShowErrorStore, patternNoFitTech, setPatternNoFitTech } = useOptimizeStore();
   const { checkedModules } = useTechStore();
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
   const isLarge = useBreakpoint("1024px");
@@ -43,8 +47,15 @@ export const useOptimize = (): UseOptimizeReturn => {
 
   // --- Optimization Request Logic ---
   const handleOptimize = useCallback(
-    async (tech: string) => {
+    async (tech: string, forced: boolean = false) => {
       setSolving(true);
+      setShowErrorStore(false); // Clear previous errors
+
+      // If forcing or re-optimizing a tech that previously hit PNF, clear its PNF status.
+      if (forced || patternNoFitTech === tech) {
+        setPatternNoFitTech(null);
+      }
+
       try {
         const updatedGrid: Grid = {
           ...grid,
@@ -78,6 +89,7 @@ export const useOptimize = (): UseOptimizeReturn => {
             tech,
             player_owned_rewards: checkedModules[tech] || [],
             grid: updatedGrid,
+            forced, // Send the forced flag
           }),
         });
 
@@ -87,28 +99,50 @@ export const useOptimize = (): UseOptimizeReturn => {
         }
 
         const data: ApiResponse = await response.json();
-        setResult(data, tech);
-        setGrid(data.grid);
 
-        console.log("Response from API:", data);
+        if (data.solve_method === "Pattern No Fit" && data.grid === null && !forced) {
+          setPatternNoFitTech(tech);
+          console.log(`Pattern No Fit for ${tech}. User can force SA.`);
+          ReactGA.event('optimize_pattern_no_fit_prompt', {
+            platform: selectedShipType,
+            tech: tech,
+          });
+          // Do not set grid or result yet, wait for user to force
+        } else {
+          // This block handles:
+          // 1. Successful solve (not "Pattern No Fit")
+          // 2. Successful FORCED solve
+          // 3. API returning "Pattern No Fit" but with a grid (unexpected, but handled)
+          if (patternNoFitTech === tech) { // Clear PNF if it was for the current tech
+            setPatternNoFitTech(null);
+          }
+          setResult(data, tech);
+          if (data.grid) {
+            setGrid(data.grid);
+          } else {
+            console.warn("API response did not contain a grid for a successful or forced solve. Grid not updated.", data);
+          }
 
-        ReactGA.event('optimize_tech', {
-          platform: selectedShipType,
-          tech: tech,
-          solve_method: data.solve_method
-        });
+          console.log("Response from API:", data);
+          ReactGA.event('optimize_tech', {
+            platform: selectedShipType,
+            tech: tech,
+            solve_method: data.solve_method,
+            forced: forced, // Track if the solve was forced
+          });
+        }
 
       } catch (error) {
         console.error("Error during optimization:", error);
-        setResult(null, tech);
+        setResult(null, tech); // Clear any previous results for this tech on error
         setShowErrorStore(true);
       } finally {
         setSolving(false);
-
       }
     },
-    [grid, setGrid, setResult, setShowErrorStore, checkedModules, selectedShipType]
+    [grid, setGrid, setResult, setShowErrorStore, checkedModules, selectedShipType, patternNoFitTech, setPatternNoFitTech]
   );
+
 
   const setShowError: React.Dispatch<React.SetStateAction<boolean>> = (value) => {
     if (typeof value === "function") {
@@ -118,5 +152,26 @@ export const useOptimize = (): UseOptimizeReturn => {
     }
   };
 
-  return { solving, handleOptimize, gridContainerRef, showError, setShowError };
+  const clearPatternNoFitTech = useCallback(() => {
+    setPatternNoFitTech(null);
+  }, [setPatternNoFitTech]);
+
+  // New callback specifically for the PNF dialog's "Force" action
+  const handleForceCurrentPnfOptimize = useCallback(async () => {
+    // patternNoFitTech is from the useOptimizeStore()
+    if (patternNoFitTech) {
+      await handleOptimize(patternNoFitTech, true);
+      // handleOptimize will internally call setPatternNoFitTech(null) when forced
+    }
+  }, [patternNoFitTech, handleOptimize]);
+
+  return {
+    solving,
+    handleOptimize,
+    gridContainerRef,
+    showError, setShowError,
+    patternNoFitTech, clearPatternNoFitTech,
+    handleForceCurrentPnfOptimize,
+  };
+
 };

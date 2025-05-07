@@ -28,6 +28,7 @@
           "react-ga4": "^2.1.0",
           "require": "^2.4.20",
           "rollup-plugin-visualizer": "^5.14.0",
+          "vite-preload": "^1.0.4",
           "zustand": "^5.0.3"
      },
      "devDependencies": {

@@ -73,7 +73,7 @@ export type Grid = {
 };
 
 export type ApiResponse = {
-  grid: Grid;
+  grid: Grid | null; // Grid can be null if "Pattern No Fit"
   max_bonus: number;
   solved_bonus: number;
   solve_method: string;

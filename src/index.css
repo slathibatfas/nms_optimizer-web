@@ -141,3 +141,10 @@ body::before {
     box-shadow: 0 0 4px 4px var(--accent-a11);
   }
 }
+
+.warningDialog__title {
+  font-family: var(--font-family-geosans); /* Use variable */
+  filter: drop-shadow(0 0 4px var(--gray-6));
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}

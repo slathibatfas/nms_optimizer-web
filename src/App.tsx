@@ -2,7 +2,9 @@
 
 // --- React & External Libraries ---
 import { Suspense, useEffect, useState, useCallback } from "react";
-import { Tooltip, ScrollArea } from "@radix-ui/themes";
+import { Tooltip, ScrollArea, Button, Dialog, Flex } from "@radix-ui/themes";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+// import { Dialog } from "radix-ui";
 import ReactGA from "react-ga4";
 
 // --- Components ---
@@ -49,12 +51,13 @@ const App: React.FC = () => {
   // Initialize state directly from localStorage to avoid flicker.
   // The function ensures localStorage is read only once on mount.
   // Need the setter function to turn off the glow on click.
-  const [isFirstVisit, setIsFirstVisit] = useState(() => !localStorage.getItem('hasVisitedNMSOptimizer'));
+  const [isFirstVisit, setIsFirstVisit] = useState(() => !localStorage.getItem("hasVisitedNMSOptimizer"));
 
   const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } = useGridStore();
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
 
-  const { solving, handleOptimize, gridContainerRef } = useOptimize();
+  const { solving, handleOptimize, gridContainerRef, patternNoFitTech, clearPatternNoFitTech, handleForceCurrentPnfOptimize } = useOptimize();
+
   useUrlSync(); // Initialize URL synchronization
 
   // Retrieve error state from the optimize store
@@ -89,7 +92,7 @@ const App: React.FC = () => {
     // If it was determined to be the first visit during initialization,
     // set the flag in localStorage now so subsequent loads/refreshes know.
     if (isFirstVisit) {
-      localStorage.setItem('hasVisitedNMSOptimizer', 'true');
+      localStorage.setItem("hasVisitedNMSOptimizer", "true");
     }
   }, [isFirstVisit]);
 
@@ -102,7 +105,6 @@ const App: React.FC = () => {
     // and its onClose prop.
     setActiveDialog(null); // Close any dialog
   }, []); // No longer needs activeDialog or setShowError as dependencies
-
 
   /**
    * Handles showing the instructions dialog and turns off the first visit glow if active.
@@ -164,74 +166,79 @@ const App: React.FC = () => {
             <AppHeader />
 
             {/* Main Layout */}
-            <section
-              className="flex flex-col items-start p-6 pt-4 gridContainer lg:p-8 md:p-8 md:pt-4 lg:flex-row"
-              ref={gridContainerRef}
-            >
-                <div className="flex-grow w-auto gridContainer__container lg:flex-shrink-0" ref={appLayoutContainerRef}>
-                  <header className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
-                    {/* Show ShipSelection only if not a shared grid */}
-                    {!isSharedGrid && (
-                      <Tooltip content="Select Technology Platform" delayDuration={500}>
-                        <span className="flex-shrink-0">
-                          {/* ShipSelection uses the same fetched shipTypes, no extra Suspense needed here */}
-                          <ShipSelection solving={solving} />
-                        </span>
-                      </Tooltip>
-                    )}
-                    {/* Platform Label */}
-                    <span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>
-                      PLATFORM:
-                    </span>
-                    {/* Display the derived label (now correctly loaded) */}
-                    <span className="flex-1 min-w-0">{selectedShipTypeLabel}</span>
-                  </header>
+            <section className="flex flex-col items-start p-6 pt-4 gridContainer lg:p-8 md:p-8 md:pt-4 lg:flex-row" ref={gridContainerRef}>
+              <div className="flex-grow w-auto gridContainer__container lg:flex-shrink-0" ref={appLayoutContainerRef}>
+                <header className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
+                  {/* Show ShipSelection only if not a shared grid */}
+                  {!isSharedGrid && (
+                    <Tooltip content="Select Technology Platform" delayDuration={500}>
+                      <span className="flex-shrink-0">
+                        {/* ShipSelection uses the same fetched shipTypes, no extra Suspense needed here */}
+                        <ShipSelection solving={solving} />
+                      </span>
+                    </Tooltip>
+                  )}
+                  {/* Platform Label */}
+                  <span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>
+                    PLATFORM:
+                  </span>
+                  {/* Display the derived label (now correctly loaded) */}
+                  <span className="flex-1 min-w-0">{selectedShipTypeLabel}</span>
+                </header>
 
-                  <GridTable
-                    grid={grid}
-                    solving={solving}
-                    shared={isSharedGrid}
-                    activateRow={activateRow}
-                    deActivateRow={deActivateRow}
-                    ref={appLayoutGridTableRef} // Pass the ref for GridTable
-                    resetGrid={resetGrid}
-                  />
+                <GridTable
+                  grid={grid}
+                  solving={solving}
+                  shared={isSharedGrid}
+                  activateRow={activateRow}
+                  deActivateRow={deActivateRow}
+                  ref={appLayoutGridTableRef} // Pass the ref for GridTable
+                  resetGrid={resetGrid}
+                />
 
-                  <GridTableButtons
-                    onShowInstructions={handleShowInstructions} // Use the new handler
-                    onShowChangeLog={() => setActiveDialog("changelog")}
-                    onShare={handleShareClick}
-                    onReset={handleResetGrid}
-                    isSharedGrid={isSharedGrid}
-                    hasModulesInGrid={hasModulesInGrid}
-                    solving={solving}
-                    columnWidth={columnWidth}
-                    isFirstVisit={isFirstVisit} // Pass down the first visit state
-                  />
-                </div>
+                <GridTableButtons
+                  onShowInstructions={handleShowInstructions} // Use the new handler
+                  onShowChangeLog={() => setActiveDialog("changelog")}
+                  onShare={handleShareClick}
+                  onReset={handleResetGrid}
+                  isSharedGrid={isSharedGrid}
+                  hasModulesInGrid={hasModulesInGrid}
+                  solving={solving}
+                  columnWidth={columnWidth}
+                  isFirstVisit={isFirstVisit} // Pass down the first visit state
+                />
+              </div>
 
-                {/* Tech Tree Section (Conditionally Rendered) */}
-                {!isSharedGrid &&
-                  (isLarge ? (
-                    // Desktop: Scrollable sidebar
-                    <ScrollArea
-                      className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
-                      style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
-                    >
-                      <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
-                    </ScrollArea>
-                  ) : (
-                    // Mobile: Tech Tree below GridTable
-                    <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
-                      <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
-                    </aside>
-                  ))}
+              {/* Tech Tree Section (Conditionally Rendered) */}
+              {!isSharedGrid &&
+                (isLarge ? (
+                  // Desktop: Scrollable sidebar
+                  <ScrollArea
+                    className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
+                    style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
+                  >
+                    <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
+                  </ScrollArea>
+                ) : (
+                  // Mobile: Tech Tree below GridTable
+                  <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
+                    <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
+                  </aside>
+                ))}
             </section>
           </section>
 
           {/* Footer Text */}
           <footer className="flex flex-wrap items-center justify-center gap-1 pt-4 pb-4 text-xs text-center lg:pb-0 sm:text-sm lg:text-base">
-            Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) • <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">GitHub</a>•<a href="https://discord.com/invite/JM4WyNfH" className="underline" target="_blank" rel="noopener noreferrer">Discord</a> • {build} • <Buymeacoffee />
+            Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
+            <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+            •
+            <a href="https://discord.com/invite/JM4WyNfH" className="underline" target="_blank" rel="noopener noreferrer">
+              Discord
+            </a>{" "}
+            • {build} • <Buymeacoffee />
           </footer>
         </main>
       </Suspense>
@@ -245,6 +252,55 @@ const App: React.FC = () => {
         content={<ErrorContent />}
         title="Error!"
       />
+
+      <Dialog.Root
+        open={!!patternNoFitTech}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) {
+            clearPatternNoFitTech(); // Clear PNF state if dialog is closed (e.g., by Escape key or overlay click)
+          }
+        }}
+      >
+        {/* No explicit Dialog.Trigger needed if open is controlled programmatically */}
+        <Dialog.Content maxWidth="500px" style={{ backgroundColor: "var(--gray-4)" }}>
+          <Dialog.Title className="warningDialog__title">
+            <ExclamationTriangleIcon className="inline w-6 h-6" style={{ color: "var(--amber-9)" }} /> Optimization Alert!
+          </Dialog.Title>
+          <Dialog.Description size="2" mb="4">
+            <p className="mb-2">
+              There isn't enough space to effectively place all modules for the technology{" "}
+              <span className="font-bold uppercase" style={{ color: "var(--accent-11)" }}>
+                {patternNoFitTech}
+              </span>
+              . This usually happens when too many technologies are selected for your platform.
+            </p>
+            <p>
+              You can try <strong>"Force Optimize"</strong> for a more intensive solve, but it may still fail to find an optimal layout. Consider reordering
+              your technologies or selecting fewer to improve the result.
+            </p>
+          </Dialog.Description>
+
+          <Flex gap="3" mt="4" justify="end">
+            <Dialog.Close>
+              <Button variant="soft" color="gray" onClick={clearPatternNoFitTech}>
+                Cancel
+              </Button>
+            </Dialog.Close>
+            <Dialog.Close>
+              <Button
+                onClick={async () => {
+                  await handleForceCurrentPnfOptimize();
+                  // The dialog will close automatically because patternNoFitTech will be set to null
+                  // by handleOptimize (called by handleForceCurrentPnfOptimize)
+                }}
+              >
+                Force Optimize
+              </Button>
+            </Dialog.Close>
+          </Flex>
+          {/* Themed Dialog.Content usually includes its own close button (X icon) */}
+        </Dialog.Content>
+      </Dialog.Root>
     </>
   );
 };
