@@ -7,6 +7,19 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
+// Redirect traffic from Heroku to your custom domain
+app.use((req, res, next) => {
+  const host = req.headers.host;
+  const targetHost = "nms-optimizer.app";
+
+  // Only redirect if on the Heroku domain
+  if (host && host !== targetHost) {
+    return res.redirect(301, `https://${targetHost}${req.originalUrl}`);
+  }
+
+  next();
+});
+
 // Serve static files from the dist directory
 app.use(express.static(path.join(__dirname, "dist")));
 
