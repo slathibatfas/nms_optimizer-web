@@ -275,7 +275,7 @@ const App: React.FC = () => {
               . This usually happens when too many technologies are selected for your platform.
             </p>
             <p>
-              You can try <strong>"Force Optimize"</strong> for a more intensive solve, but it may still fail to find an optimal layout. Consider reordering
+              You can try <strong>"Force Optimize"</strong> for a more intensive solve, but it will probably fail to find an optimal layout. Consider reordering
               your technologies or selecting fewer to improve the result.
             </p>
           </Dialog.Description>
