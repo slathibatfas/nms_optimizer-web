@@ -1,6 +1,5 @@
 // src/components/GridTable/GridTable.tsx
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Grid } from "../../store/GridStore";
 import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
@@ -29,48 +28,44 @@ interface GridTableProps {
  *   or null if no calculation has been done.
  * @param {function} resetGrid - A function to reset the grid
  */
-const GridTable = React.forwardRef<HTMLDivElement, GridTableProps>(({
- grid,
-  activateRow,
-  deActivateRow,
-  resetGrid, // resetGrid prop is passed but not used directly in this component's JSX
-  solving,
-}, ref) => {
-  const [isSharedGrid, setIsSharedGrid] = useState(false);
-  const { shaking } = useShakeStore();
+const GridTable = React.forwardRef<HTMLDivElement, GridTableProps>(
+  (
+    {
+      grid,
+      activateRow,
+      deActivateRow,
+      solving,
+      shared, // Use the shared prop passed from App.tsx
+    },
+    ref
+  ) => {
+    const { shaking } = useShakeStore();
 
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    setIsSharedGrid(url.searchParams.has("grid"));
-  }, [resetGrid]);
+    // Whether there are any modules in the grid
+    const hasModulesInGrid = grid.cells.flat().some((cell) => cell.module !== null);
 
-  // Whether there are any modules in the grid
-  const hasModulesInGrid = grid.cells.flat().some((cell) => cell.module !== null);
-
-  return (
-    <>
+    return (
       <ShakingWrapper shaking={shaking} duration={500}>
         <MessageSpinner isVisible={solving} showRandomMessages={true} initialMessage={"OPTIMIZING!"} />
-        <div ref={ref} className={`gridTable ${solving ? "opacity-50" : ""}`}> {/* Attach forwarded ref */}
+        <div ref={ref} className={`gridTable ${solving ? "opacity-50" : ""}`}>
           {grid.cells.map((row, rowIndex) => (
             <React.Fragment key={rowIndex}>
-              {row.map((cell, columnIndex) => (
-                <GridCell
-                  key={columnIndex}
-                  rowIndex={rowIndex}
-                  columnIndex={columnIndex}
-                  cell={{
-                    label: cell.label,
-                    supercharged: cell.supercharged,
-                    active: cell.active,
-                    tech: cell.tech ?? "",
-                    adjacency_bonus: cell.adjacency_bonus,
-                    image: cell.image || undefined,
-                  }}
-                  grid={grid}
-                  // setShaking={setShaking}
-                  isSharedGrid={isSharedGrid}
-                />
+              {row.map((cell, columnIndex) => ( // Removed the explicit 'return' here
+                  <GridCell
+                    key={columnIndex}
+                    rowIndex={rowIndex}
+                    columnIndex={columnIndex}
+                    cell={{
+                      label: cell.label,
+                      supercharged: cell.supercharged,
+                      active: cell.active,
+                      tech: cell.tech ?? "",
+                      adjacency_bonus: cell.adjacency_bonus,
+                      image: cell.image || undefined,
+                    }}
+                    grid={grid}
+                    isSharedGrid={shared} // Use the prop here
+                  />
               ))}
               <GridControlButtons
                 rowIndex={rowIndex}
@@ -88,8 +83,8 @@ const GridTable = React.forwardRef<HTMLDivElement, GridTableProps>(({
           ))}
         </div>
       </ShakingWrapper>
-    </>
-  );
-});
+    );
+  }
+);
 
 export default GridTable;

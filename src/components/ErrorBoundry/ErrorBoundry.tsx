@@ -41,6 +41,15 @@ class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // You can log the error to an error reporting service here
     console.error("Uncaught error:", error, errorInfo);
+
+    // Clear localStorage if an error is caught by the main boundary
+    try {
+      localStorage.clear();
+      console.log("ErrorBoundary: localStorage cleared due to an unhandled error.");
+    } catch (e) {
+      console.error("ErrorBoundary: Failed to clear localStorage.", e);
+    }
+
     ReactGA.event({
       category: "Error",
       action: "ErrorBoundary Catch",
@@ -65,7 +74,7 @@ class ErrorBoundary extends Component<Props, State> {
               <h1 className="pt-2 text-2xl font-semibold tracking-widest" style={{ color: "#e6c133", fontFamily: "GeosansLight" }}>
                 -kzzkt- Error! -kzzkt-
               </h1>
-              <h2 className="pb-4 font-semibold">Something went wrong.</h2>
+              <h2 className="pb-4 font-semibold">Something went wrong. Try reloading the page again.</h2>
               <div className="w-full font-mono text-xs text-left lg:text-base" style={{ whiteSpace: "pre-wrap", overflowWrap: "break-word" }}>
                 {this.state.error?.message && (
                   <p><strong>Error:</strong> {this.state.error.message}</p>
