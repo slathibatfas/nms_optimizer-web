@@ -33,7 +33,7 @@ class ErrorBoundary extends Component<Props, State> {
 
   /**
    * React lifecycle method that gets called after a component has thrown an error.
-   * This method can be used to log the error to an error reporting service.
+   * This method can be used to log the error to an error reporting service.  
    *
    * @param error - The error that was thrown
    * @param errorInfo - An object with componentStack property containing information about which component threw the error
