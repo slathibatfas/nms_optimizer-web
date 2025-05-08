@@ -1,5 +1,6 @@
 // src/components/ErrorBoundary/ErrorBoundary.tsx
 import { Component, ErrorInfo, ReactNode } from "react";
+import ReactGA from "react-ga4";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 interface Props {
@@ -40,6 +41,12 @@ class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // You can log the error to an error reporting service here
     console.error("Uncaught error:", error, errorInfo);
+    ReactGA.event({
+      category: "Error",
+      action: "ErrorBoundary Catch",
+      label: `${error.name}: ${error.message} - ComponentStack: ${errorInfo.componentStack?.split('\n')[1]?.trim() || 'N/A'}`, // Send error name, message, and the first component in stack
+      nonInteraction: true, // Important for error tracking
+    });
     this.setState({ errorInfo });
   }
 
@@ -59,11 +66,23 @@ class ErrorBoundary extends Component<Props, State> {
                 -kzzkt- Error! -kzzkt-
               </h1>
               <h2 className="pb-4 font-semibold">Something went wrong.</h2>
-              <span className="font-mono text-xs text-left lg:text-base" style={{ whiteSpace: "pre-wrap" }}>
-                {this.state.error?.toString()}
-                <br />
-                {this.state.errorInfo?.componentStack}
-              </span>
+              <div className="w-full font-mono text-xs text-left lg:text-base" style={{ whiteSpace: "pre-wrap", overflowWrap: "break-word" }}>
+                {this.state.error?.message && (
+                  <p><strong>Error:</strong> {this.state.error.message}</p>
+                )}
+                {this.state.error?.stack && (
+                  <>
+                    <p className="mt-2"><strong>Stack Trace:</strong></p>
+                    <pre>{this.state.error.stack}</pre>
+                  </>
+                )}
+                {this.state.errorInfo?.componentStack && (
+                  <>
+                    <p className="mt-2"><strong>Component Stack:</strong></p>
+                    <pre>{this.state.errorInfo.componentStack}</pre>
+                  </>
+                )}
+              </div>
             </div>
           </section>
         </main>

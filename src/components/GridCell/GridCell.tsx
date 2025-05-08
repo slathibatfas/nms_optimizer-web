@@ -6,8 +6,6 @@ import { useGridStore } from "../../store/GridStore";
 import { useTechStore } from "../../store/TechStore";
 import { useShakeStore } from "../../store/ShakeStore";
 
-// TODO: Configure jest so this doesn't interfere in the future.
-// import "./GridCell.css";
 
 interface GridCellProps {
   rowIndex: number;

@@ -24,6 +24,7 @@ const config: UserConfigExport = defineConfig({
   build: {
     minify: "esbuild",
     cssCodeSplit: true,
+    sourcemap: true,
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
