@@ -268,18 +268,18 @@ const App: React.FC = () => {
             <ExclamationTriangleIcon className="inline w-6 h-6" style={{ color: "var(--amber-9)" }} /> Optimization Alert!
           </Dialog.Title>
           <Dialog.Description size="2" mb="4">
-            <h2 className="pb-2 text-xl font-semibold tracking-widest text-center errorContent__title">-kzzkt- Failure! -kzzkt-</h2>
-            <p className="mb-2">
+            <span className="block pb-2 text-xl font-semibold tracking-widest text-center errorContent__title">-kzzkt- Failure! -kzzkt-</span>
+            <span className="block mb-2">
               There isn't enough space to effectively place all modules for the technology{" "}
               <span className="font-bold uppercase" style={{ color: "var(--accent-11)" }}>
                 {patternNoFitTech}
               </span>
               . This usually happens when too many technologies are selected for your platform.
-            </p>
-            <p>
+            </span>
+            <span className="block">
               You can try <strong>"Force Optimize"</strong> for a more intensive solve, but it will probably fail to find an optimal layout. Consider reordering
               your technologies or selecting fewer to improve the result.
-            </p>
+            </span>
           </Dialog.Description>
 
           <Flex gap="3" mt="4" justify="end">
