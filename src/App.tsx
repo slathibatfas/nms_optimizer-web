@@ -83,7 +83,8 @@ const App: React.FC = () => {
   const { updateUrlForShare, updateUrlForReset } = useUrlSync();
 
   // Whether there are any modules in the grid
-  const hasModulesInGrid = grid.cells.flat().some((cell) => cell.module !== null);
+  // Defensively check if grid and grid.cells exist before trying to access them.
+  const hasModulesInGrid = grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
 
   useEffect(() => {
     ReactGA.initialize(TRACKING_ID);
@@ -187,7 +188,7 @@ const App: React.FC = () => {
                 </header>
 
                 <GridTable
-                  grid={grid}
+                  grid={grid} // GridTable should also ideally handle a potentially null grid if the store can produce it.
                   solving={solving}
                   shared={isSharedGrid}
                   activateRow={activateRow}

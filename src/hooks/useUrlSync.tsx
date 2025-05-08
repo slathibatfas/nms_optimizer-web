@@ -10,33 +10,38 @@ import { useGridDeserializer } from "./useGridDeserializer";
  */
 export const useUrlSync = () => {
   const { setIsSharedGrid, isSharedGrid } = useGridStore();
-  const { selectedShipType, setSelectedShipType } = useShipTypesStore();
+  const selectedShipTypeFromStore = useShipTypesStore((state) => state.selectedShipType);
+  const setSelectedShipTypeInStore = useShipTypesStore((state) => state.setSelectedShipType);
   const { serializeGrid, deserializeGrid } = useGridDeserializer();
 
   // Effect to handle initial URL state and popstate events
   useEffect(() => {
     const handlePopState = () => {
+      console.log("useUrlSync: handlePopState triggered or initial load.");
       const urlParams = new URLSearchParams(window.location.search);
       const platformFromUrl = urlParams.get("platform");
       const gridFromUrl = urlParams.get("grid");
 
-      // Update shared state based on grid param presence
-      setIsSharedGrid(!!gridFromUrl);
-
-      // Update selected platform if it differs from URL
-      if (platformFromUrl && platformFromUrl !== selectedShipType) {
-        // Note: This might trigger a grid reset via the store's logic
-        setSelectedShipType(platformFromUrl, false); // Pass false to prevent URL update loop
+      // Sync platform from URL to store
+      // Pass `false` to setSelectedShipTypeInStore to prevent it from pushing a new history state,
+      // as this function is reacting to an existing URL state (either initial or from popstate).
+      if (platformFromUrl && platformFromUrl !== selectedShipTypeFromStore) {
+        console.log(`useUrlSync: Platform in URL ('${platformFromUrl}') differs from store ('${selectedShipTypeFromStore}'). Updating store.`);
+        setSelectedShipTypeInStore(platformFromUrl, false);
       }
 
-      // If grid param exists and we're not already considered shared (or state changed), deserialize
-      // Avoid re-deserializing if only the platform changed via popstate
-      if (gridFromUrl && !isSharedGrid) {
-         deserializeGrid(gridFromUrl);
-      } else if (!gridFromUrl && isSharedGrid) {
-         // If grid param removed via back/forward, reflect this
-         setIsSharedGrid(false);
-         // Optionally reset grid here if desired when navigating away from shared link
+      // Sync grid from URL to store
+      if (gridFromUrl) {
+        console.log("useUrlSync: Grid data found in URL. Deserializing.");
+        deserializeGrid(gridFromUrl); // This will call setIsSharedGrid(true) internally if successful
+      } else {
+        // No grid data in URL
+        if (isSharedGrid) { // If store thought it was shared, but URL no longer has grid
+          console.log("useUrlSync: No grid data in URL, but store was shared. Setting isSharedGrid to false.");
+          setIsSharedGrid(false);
+          // Consider if gridStore.resetGrid() should be called here if navigating away from a shared link.
+          // For now, just updating the flag. App.tsx can react to isSharedGrid changes.
+        }
       }
     };
 
@@ -45,8 +50,7 @@ export const useUrlSync = () => {
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-    // Dependencies: Include functions/state used inside handlePopState and its callees
-  }, [setIsSharedGrid, selectedShipType, setSelectedShipType, deserializeGrid, isSharedGrid]);
+  }, [selectedShipTypeFromStore, setSelectedShipTypeInStore, deserializeGrid, setIsSharedGrid, isSharedGrid]);
 
   // Function to update URL when sharing
   const updateUrlForShare = useCallback(() => {
@@ -54,9 +58,9 @@ export const useUrlSync = () => {
     const url = new URL(window.location.href);
     url.searchParams.set("grid", serializedGrid);
     // Ensure platform is also in the shared URL
-    url.searchParams.set("platform", selectedShipType);
+    url.searchParams.set("platform", selectedShipTypeFromStore);
     return url.toString();
-  }, [serializeGrid, selectedShipType]);
+  }, [serializeGrid, selectedShipTypeFromStore]);
 
   // Function to update URL on reset (removes grid param)
   const updateUrlForReset = useCallback(() => {

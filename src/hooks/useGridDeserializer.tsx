@@ -1,5 +1,5 @@
 // src/hooks/useGridDeserializer.tsx
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useGridStore, Grid, createGrid } from "../store/GridStore"; // Import Cell type
 import { API_URL } from "../constants";
 import { useShipTypesStore } from "./useShipTypes";
@@ -267,15 +267,6 @@ export const useGridDeserializer = () => {
     }
     // --- End Change ---
   }, [setGrid, selectedShipType, setIsSharedGrid, setTechColors]); // <-- Add setTechColors dependency
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const serializedGridParam = urlParams.get("grid");
-    if (serializedGridParam) {
-        console.log("Found 'grid' URL parameter, attempting deserialization.");
-        deserializeGrid(serializedGridParam);
-    }
-  }, [deserializeGrid]); // Dependency array is correct
 
   return { serializeGrid, deserializeGrid };
 };

@@ -165,18 +165,21 @@ export const useShipTypesStore = create<ShipTypesState>((set) => {
   return {
     shipTypes: null, // Initialize as null
     selectedShipType: initialShipType, // Use the determined initial type
-    setSelectedShipType: (shipType) => {
+    setSelectedShipType: (shipType, updateUrl = true) => { // Default updateUrl to true
       set({ selectedShipType: shipType });
 
       // Update localStorage
       localStorage.setItem(LOCAL_STORAGE_KEY, shipType);
       console.log(`useShipTypesStore: Set selectedShipType to '${shipType}' and updated localStorage.`);
 
-      // Update URL
-      const url = new URL(window.location.href);
-      url.searchParams.set("platform", shipType);
-      // Use pushState for user-driven changes to add to history
-      window.history.pushState({}, "", url);
+      if (updateUrl) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("platform", shipType);
+        // Use pushState for user-driven changes to add to history
+        // if the change wasn't from a popstate event itself.
+        window.history.pushState({}, "", url.toString());
+        console.log(`useShipTypesStore: Updated URL for '${shipType}'.`);
+      }
     },
   };
 });

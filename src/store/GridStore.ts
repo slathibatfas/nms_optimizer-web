@@ -54,8 +54,8 @@ export type Cell = {
   active: boolean;
   adjacency: boolean;
   adjacency_bonus: number;
-  bonus: number;
-  image: string | null | undefined;
+  bonus: number; // TODO: review this type
+  image: string | null;
   module: string | null;
   label: string;
   sc_eligible: boolean;
@@ -298,9 +298,9 @@ export const useGridStore = create<GridStore>()(
             state.grid.cells.forEach((row: Cell[]) => {
               row.forEach((cell: Cell) => {
                 if (cell.tech === tech) {
-                  const { active, supercharged } = cell;
-                  Object.assign(cell, createEmptyCell(supercharged, active));
-                  cell.tech = null;
+                  // Preserve active and supercharged status from the original cell
+                  // createEmptyCell will handle resetting other fields, including setting tech to null.
+                  Object.assign(cell, createEmptyCell(cell.supercharged, cell.active));
                 }
               });
             });
@@ -319,4 +319,3 @@ export const useGridStore = create<GridStore>()(
     }
   )
 );
-
