@@ -2,7 +2,7 @@ import { serialize } from './useGridDeserializer';
 import { Grid, Cell } from '../store/GridStore'; // Import Cell type
 
 // --- Mock constants.ts ---
-jest.mock('../constants', () => ({
+vi.mock('../constants', () => ({
   API_URL: 'http://mock-api-url.com', // Provide a mock URL for testing
 }));
 

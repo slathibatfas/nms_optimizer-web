@@ -1,3 +1,4 @@
 {
-  "testStructureVariant": "siblingFolder"
+  "testStructureVariant": "siblingFolder",
+  "testFramework": "vitest"
 }

@@ -3,23 +3,23 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 // Mocking the IconButton, Tooltip, PlusIcon, and MinusIcon components
-jest.mock("@radix-ui/themes", () => {
-  const actual = jest.requireActual("@radix-ui/themes");
+vi.mock("@radix-ui/themes", () => {
+  const actual = vi.importActual("@radix-ui/themes");
   return {
     ...actual,
-    IconButton: jest.fn(({ children, ...props }) => (
+    IconButton: vi.fn(({ children, ...props }) => (
       <button {...props}>{children}</button>
     )),
-    Tooltip: jest.fn(({ children }) => <div>{children}</div>),
+    Tooltip: vi.fn(({ children }) => <div>{children}</div>),
   };
 });
 
-jest.mock("@radix-ui/react-icons", () => {
-  const actual = jest.requireActual("@radix-ui/react-icons");
+vi.mock("@radix-ui/react-icons", () => {
+  const actual = vi.importActual("@radix-ui/react-icons");
   return {
     ...actual,
-    PlusIcon: jest.fn(() => <svg>PlusIcon</svg>),
-    MinusIcon: jest.fn(() => <svg>MinusIcon</svg>),
+    PlusIcon: vi.fn(() => <svg>PlusIcon</svg>),
+    MinusIcon: vi.fn(() => <svg>MinusIcon</svg>),
   };
 });
 
@@ -30,8 +30,8 @@ describe("GridControlButtons() GridControlButtons method", () => {
       render(
         <GridControlButtons
           rowIndex={0}
-          activateRow={jest.fn()}
-          deActivateRow={jest.fn()}
+          activateRow={vi.fn()}
+          deActivateRow={vi.fn()}
           hasModulesInGrid={false}
           isFirstInactiveRow={true}
           isLastActiveRow={false}
@@ -46,8 +46,8 @@ describe("GridControlButtons() GridControlButtons method", () => {
       render(
         <GridControlButtons
           rowIndex={0}
-          activateRow={jest.fn()}
-          deActivateRow={jest.fn()}
+          activateRow={vi.fn()}
+          deActivateRow={vi.fn()}
           hasModulesInGrid={false}
           isFirstInactiveRow={false}
           isLastActiveRow={true}
@@ -59,12 +59,12 @@ describe("GridControlButtons() GridControlButtons method", () => {
     });
 
     it("calls activateRow function when activate button is clicked", () => {
-      const activateRowMock = jest.fn();
+      const activateRowMock = vi.fn();
       render(
         <GridControlButtons
           rowIndex={0}
           activateRow={activateRowMock}
-          deActivateRow={jest.fn()}
+          deActivateRow={vi.fn()}
           hasModulesInGrid={false}
           isFirstInactiveRow={true}
           isLastActiveRow={false}
@@ -76,11 +76,11 @@ describe("GridControlButtons() GridControlButtons method", () => {
     });
 
     it("calls deActivateRow function when deactivate button is clicked", () => {
-      const deActivateRowMock = jest.fn();
+      const deActivateRowMock = vi.fn();
       render(
         <GridControlButtons
           rowIndex={0}
-          activateRow={jest.fn()}
+          activateRow={vi.fn()}
           deActivateRow={deActivateRowMock}
           hasModulesInGrid={false}
           isFirstInactiveRow={false}
@@ -99,8 +99,8 @@ describe("GridControlButtons() GridControlButtons method", () => {
       render(
         <GridControlButtons
           rowIndex={0}
-          activateRow={jest.fn()}
-          deActivateRow={jest.fn()}
+          activateRow={vi.fn()}
+          deActivateRow={vi.fn()}
           hasModulesInGrid={false}
           isFirstInactiveRow={false}
           isLastActiveRow={false}
@@ -114,8 +114,8 @@ describe("GridControlButtons() GridControlButtons method", () => {
       render(
         <GridControlButtons
           rowIndex={0}
-          activateRow={jest.fn()}
-          deActivateRow={jest.fn()}
+          activateRow={vi.fn()}
+          deActivateRow={vi.fn()}
           hasModulesInGrid={true}
           isFirstInactiveRow={true}
           isLastActiveRow={true}
