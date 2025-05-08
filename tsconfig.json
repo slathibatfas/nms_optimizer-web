@@ -22,7 +22,7 @@
     "useDefineForClassFields": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "types": ["vitest"],
+    "types": ["vite/client", "vitest/globals"],
   },
   "include": ["src"],
   "exclude": ["node_modules"]
