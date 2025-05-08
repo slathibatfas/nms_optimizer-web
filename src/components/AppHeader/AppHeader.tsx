@@ -16,7 +16,7 @@ const AppHeader: React.FC = () => {
           <img src={NMSLogo} className="h-5 mb-1 sm:mb-2 sm:h-8 header__logo" alt="No Man's Sky Logo" />
           {/* <h1 className="text-2xl sm:text-4xl">No Man's Sky</h1> */}
           <h2 className="text-base sm:text-2xl header__title">
-            <strong>Neural</strong> Technology Optimizer <span className="font-thin">{APP_VERSION}</span>
+            <strong>AI</strong> Technology Optimizer <span className="font-thin">{APP_VERSION}</span>
           </h2>
         </div>
         <div className="flex items-end ml-auto"> {/* Added ml-auto */}

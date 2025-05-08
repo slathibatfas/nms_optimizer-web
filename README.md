@@ -1,5 +1,5 @@
 
-# No Man's Sky Neural Technology Optimizer (Web UI)
+# No Man's Sky AI Technology Optimizer (Web UI)
 
 ## CI/CD Status
 
