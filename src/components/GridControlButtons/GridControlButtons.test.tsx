@@ -1,6 +1,7 @@
 import GridControlButtons from "./GridControlButtons";
 import { fireEvent, render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import { describe, expect, it, vi } from "vitest";
+import "@testing-library/jest-dom/vitest";
 
 // Mocking the IconButton, Tooltip, PlusIcon, and MinusIcon components
 vi.mock("@radix-ui/themes", () => {
