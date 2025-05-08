@@ -107,7 +107,15 @@ const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(({ handleOp
   const processedTechTree = useMemo(() => {
     const result: TechTree = {};
     Object.entries(techTree).forEach(([category, technologies]) => {
-      result[category] = technologies.map((tech: TechTreeItem) => ({
+      // Ensure 'technologies' is an array before attempting to map over it.
+      // If it's not an array (e.g., undefined, null, or some other type from the API),
+      // default to an empty array to prevent the .map error.
+      const safeTechnologies = Array.isArray(technologies) ? technologies : [];
+      if (!Array.isArray(technologies)) {
+        console.warn(`TechTree: Expected 'technologies' to be an array for category '${category}', but received:`, technologies);
+      }
+
+      result[category] = safeTechnologies.map((tech: TechTreeItem) => ({
         ...tech,
         modules: tech.modules || [], // Handle cases where modules might be missing
         image: tech.image || null, // Handle cases where image might be missing
@@ -147,8 +155,8 @@ const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
     <Suspense fallback={<MessageSpinner isInset={isLarge} isVisible={true} initialMessage="LOADING TECH!" />}>
       {error ? (
         <div className="flex flex-col items-center justify-center h-full">
-          <ExclamationTriangleIcon className="w-16 h-16" style={{ color: "#C44A34" }} />
-          <h2 className="pt-4 text-2xl text-center" style={{ color: "#e6c133" }}>
+          <ExclamationTriangleIcon className="w-16 h-16 shadow-lg errorContent__icon" />
+          <h2 className="pb-2 text-xl font-semibold tracking-widest text-center errorContent__title">
             -kzzkt- Error! -kzzkt-
           </h2>
           <p className="text-center sidebar__error">
