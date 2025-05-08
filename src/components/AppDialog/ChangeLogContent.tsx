@@ -21,6 +21,11 @@ const ChangeLogContent: React.FC = () => {
         for up to date model information.
       </p>
 
+      <h2>Version 2.61 (2025-05-08)</h2>
+      <ul>
+        <li>Improved error handling.</li>
+      </ul>
+
       <h2>Version 2.6 (2025-05-07)</h2>
       <ul>
         <li>Added warning for when no solves fit within the grid. Seeing too many users trying to force things and getting sub-optimal results.</li>
