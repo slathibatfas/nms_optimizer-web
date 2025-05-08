@@ -97,25 +97,25 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
         <IconButton
           onClick={handleOptimizeClick}
           disabled={solving}
-          variant="surface"
+          variant="soft"
           color={techColor as IconButtonColor}
-          className="z-10 techRow__optimizeButton"
+          className="techRow__optimizeButton"
           style={{ backgroundImage: `url(${imagePath})` }}
         >
-          <div className="relative group">
+          <div className="relative shadow-md group">
             <img
               src={imagePath}
               alt={label}
-              className="object-cover w-full h-full transition border-2 rounded-sm duration-250 techRow__optimizeButton--image"
+              className="w-full h-full transition border-2 rounded-sm shadow-md opacity-100 duration-250 techRow__optimizeButton--image"
             />
             <IconComponent className="absolute top-0 right-0 w-8 h-8 p-1 transition-opacity opacity-0 group-hover:opacity-100" />
           </div>
         </IconButton>
       </Tooltip>
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center shadow-md">
         <Tooltip delayDuration={1000} content="Reset">
-          <IconButton onClick={handleReset} disabled={!hasTechInGrid || solving} className="techRow__resetButton">
+          <IconButton radius="medium" onClick={handleReset} disabled={!hasTechInGrid || solving} className="techRow__resetButton">
             <ResetIcon />
           </IconButton>
         </Tooltip>

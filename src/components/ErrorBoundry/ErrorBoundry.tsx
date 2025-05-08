@@ -17,6 +17,7 @@ class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
+    console.log("ErrorBoundary Constructor: Initial state set:", this.state);
   }
 
   /**
@@ -27,6 +28,7 @@ class ErrorBoundary extends Component<Props, State> {
    * @param error - The error that was thrown
    */
   static getDerivedStateFromError(error: Error) {
+    console.log("ErrorBoundary getDerivedStateFromError: Error caught. Returning { hasError: true, error }");
     // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
@@ -39,7 +41,6 @@ class ErrorBoundary extends Component<Props, State> {
    * @param errorInfo - An object with componentStack property containing information about which component threw the error
    */
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // You can log the error to an error reporting service here
     console.error("Uncaught error:", error, errorInfo);
 
     // Clear localStorage if an error is caught by the main boundary
@@ -53,10 +54,10 @@ class ErrorBoundary extends Component<Props, State> {
     ReactGA.event({
       category: "Error",
       action: "ErrorBoundary Catch",
-      label: `${error.name}: ${error.message} - ComponentStack: ${errorInfo.componentStack?.split('\n')[1]?.trim() || 'N/A'}`, // Send error name, message, and the first component in stack
-      nonInteraction: true, // Important for error tracking
+      label: `${error.name}: ${error.message} - ComponentStack: ${errorInfo.componentStack?.split('\n')[1]?.trim() || 'N/A'}`,
+      nonInteraction: true,
     });
-    this.setState({ errorInfo });
+    this.setState({ errorInfo }); // Store errorInfo for display
   }
 
   /**
@@ -64,8 +65,9 @@ class ErrorBoundary extends Component<Props, State> {
    * renders the error fallback UI. Otherwise, it renders the children.
    */
   render() {
-    // If there is an error, render the error fallback UI
+    // console.log("ErrorBoundary render. State:", JSON.parse(JSON.stringify(this.state)));
     if (this.state.hasError) {
+      console.log("ErrorBoundary render: hasError is true. Rendering fallback UI.");
       return (
         <main className="flex flex-col items-center justify-center lg:min-h-screen">
           <section className="relative mx-auto border rounded-none shadow-lg app lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
@@ -74,7 +76,7 @@ class ErrorBoundary extends Component<Props, State> {
               <h1 className="pt-2 text-2xl font-semibold tracking-widest" style={{ color: "#e6c133", fontFamily: "GeosansLight" }}>
                 -kzzkt- Error! -kzzkt-
               </h1>
-              <h2 className="pb-4 font-semibold">Something went wrong. Try reloading the page again.</h2>
+              <h2 className="pb-4 font-semibold">Something went wrong. Please try reloading the page.</h2>
               <div className="w-full font-mono text-xs text-left lg:text-base" style={{ whiteSpace: "pre-wrap", overflowWrap: "break-word" }}>
                 {this.state.error?.message && (
                   <p><strong>Error:</strong> {this.state.error.message}</p>
@@ -99,6 +101,7 @@ class ErrorBoundary extends Component<Props, State> {
     }
 
     // Render the children if there is no error
+    // console.log("ErrorBoundary render: No error. Rendering children.");
     return this.props.children;
   }
 }

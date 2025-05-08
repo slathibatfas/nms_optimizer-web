@@ -61,12 +61,12 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
       data-is-grid-control-column="true" // Added data attribute for selection
     >
       {isFirstInactiveRow && (
-        <div className="align-middle">
+        <div className="align-middle shadow-md">
           <Tooltip content="Activate Row">
             <IconButton
               size={screenSize === "sm" ? "2" : "1"}
               variant="soft"
-              className="mx-auto shadow-lg"
+              className="mx-auto"
               style={{ backgroundColor: buttonBackgroundColor }}
               onClick={() => activateRow(rowIndex)}
               disabled={hasModulesInGrid}
@@ -78,12 +78,12 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
       )}
 
       {isLastActiveRow && (
-        <div className="align-left">
+        <div className="shadow-md align-left">
           <Tooltip content="Deactivate Row">
             <IconButton
               variant="soft"
               size={screenSize === "sm" ? "2" : "1"}
-              className="mx-auto shadow-lg"
+              className="mx-auto "
               style={{ backgroundColor: buttonBackgroundColor }}
               onClick={() => deActivateRow(rowIndex)}
               disabled={hasModulesInGrid}

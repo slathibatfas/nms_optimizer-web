@@ -155,13 +155,14 @@ const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
     <Suspense fallback={<MessageSpinner isInset={isLarge} isVisible={true} initialMessage="LOADING TECH!" />}>
       {error ? (
         <div className="flex flex-col items-center justify-center h-full">
-          <ExclamationTriangleIcon className="w-16 h-16 shadow-lg errorContent__icon" />
-          <h2 className="pb-2 text-xl font-semibold tracking-widest text-center errorContent__title">
+          <ExclamationTriangleIcon className="w-16 h-16 shadow-md errorContent__icon" />
+          <h2 className="pb-2 text-2xl font-semibold tracking-widest text-center errorContent__title">
             -kzzkt- Error! -kzzkt-
           </h2>
-          <p className="text-center sidebar__error">
-            Problem connecting to the server!
-            <br />
+          <p className="font-semibold text-center sidebar__error">
+            Problem fetching the Tech Tree!
+          </p>
+          <p>
             {error.message}
           </p>
         </div>

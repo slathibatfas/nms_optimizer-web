@@ -32,7 +32,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
       <div className="flex-1 flex-nowrap"> {/* This div will contain the left-aligned buttons */}
         <Button
           variant={isFirstVisit ? "solid" : "soft"}
-          className={`gridTable__button gridTable__button--instructions shadow-lg !mr-2 p-0 sm:!px-2 ${
+          className={`gridTable__button gridTable__button--instructions shadow-md !mr-2 p-0 sm:!px-2 ${
             isFirstVisit ? 'button--glow' : ''
           }`}
           onClick={() => {
@@ -48,7 +48,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
         </Button>
         <Button
           variant="soft"
-          className={`gridTable__button gridTable__button--changelog shadow-lg !mr-2 sm:!px-2`}
+          className={`gridTable__button gridTable__button--changelog shadow-md !mr-2 sm:!px-2`}
           onClick={() => {
             ReactGA.event({
               category: "User Interactions",
@@ -61,7 +61,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
           <span className="hidden sm:inline">Change Log</span>
         </Button>
         {!isSharedGrid && (
-          <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-sm sm:!px-2`} onClick={onShare} disabled={isSharedGrid || !hasModulesInGrid}>
+          <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-md sm:!px-2`} onClick={onShare} disabled={isSharedGrid || !hasModulesInGrid}>
             <Share1Icon />
             <span className="hidden sm:inline">Share Link</span>
           </Button>
@@ -76,7 +76,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
           className="absolute z-10" // Use 'absolute' positioning and a z-index if needed.
           style={{ right: columnWidth }}
         >
-          <Button className={`gridTable__button gridTable__button--reset shadow-sm`} variant="solid" onClick={onReset} disabled={solving}>
+          <Button className={`gridTable__button gridTable__button--reset shadow-md`} variant="solid" onClick={onReset} disabled={solving}>
             <ResetIcon />
             <span className="font-bold">Reset Grid</span>
           </Button>

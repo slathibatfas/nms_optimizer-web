@@ -126,7 +126,7 @@ const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, cell, g
     techColor = "purple"; // Override techColor
   }
 
-  const cellClassName = `gridCell gridCell--interactive shadow-sm sm:border-2 border-1 rounded-sm sm:rounded-md
+  const cellClassName = `gridCell gridCell--interactive shadow-md sm:border-2 border-1 rounded-sm sm:rounded-md
   ${cell.supercharged ? "gridCell--supercharged" : ""}
   ${cell.active ? "gridCell--active" : "gridCell--inactive"}
   ${cell.adjacency_bonus === 0 && cell.image ? "gridCell--black" : ""}
