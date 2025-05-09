@@ -1,5 +1,5 @@
 // src/components/GridTable/GridTable.tsx
-import React from "react";
+import React, { useMemo } from "react";
 import { Grid } from "../../store/GridStore";
 import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
@@ -28,7 +28,7 @@ interface GridTableProps {
  *   or null if no calculation has been done.
  * @param {function} resetGrid - A function to reset the grid
  */
-const GridTable = React.forwardRef<HTMLDivElement, GridTableProps>(
+const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
   (
     {
       grid,
@@ -42,7 +42,19 @@ const GridTable = React.forwardRef<HTMLDivElement, GridTableProps>(
     const { shaking } = useShakeStore();
 
     // Whether there are any modules in the grid
-    const hasModulesInGrid = grid.cells.flat().some((cell) => cell.module !== null);
+    const hasModulesInGrid = useMemo(() => {
+      return grid.cells.flat().some((cell) => cell.module !== null);
+    }, [grid.cells]);
+
+    // Calculate these indices once
+    const firstInactiveRowIndex = useMemo(() => {
+      return grid.cells.findIndex((r) => r.every((cell) => !cell.active));
+    }, [grid.cells]);
+
+    const lastActiveRowIndex = useMemo(() => {
+      const activeRowBooleans = grid.cells.map((r) => r.some((cell) => cell.active));
+      return activeRowBooleans.lastIndexOf(true);
+    }, [grid.cells]);
 
     return (
       <ShakingWrapper shaking={shaking} duration={500}>
@@ -50,33 +62,29 @@ const GridTable = React.forwardRef<HTMLDivElement, GridTableProps>(
         <div ref={ref} className={`gridTable ${solving ? "opacity-50" : ""}`}>
           {grid.cells.map((row, rowIndex) => (
             <React.Fragment key={rowIndex}>
-              {row.map((cell, columnIndex) => ( // Removed the explicit 'return' here
-                  <GridCell
-                    key={columnIndex}
-                    rowIndex={rowIndex}
-                    columnIndex={columnIndex}
-                    cell={{
-                      label: cell.label,
-                      supercharged: cell.supercharged,
-                      active: cell.active,
-                      tech: cell.tech ?? "",
-                      adjacency_bonus: cell.adjacency_bonus,
-                      image: cell.image || undefined,
-                    }}
-                    grid={grid}
-                    isSharedGrid={shared} // Use the prop here
-                  />
+              {row.map((cellData, columnIndex) => (
+                <GridCell
+                  key={`${rowIndex}-${columnIndex}`} // More robust key
+                  rowIndex={rowIndex}
+                  columnIndex={columnIndex}
+                  // Pass the cellData directly as the 'cell' prop
+                  // and the entire 'grid' object as the 'grid' prop
+                  cell={cellData}
+                  grid={grid} // GridCell expects the full grid object
+                  isSharedGrid={shared}
+                />
               ))}
               <GridControlButtons
                 rowIndex={rowIndex}
                 activateRow={activateRow}
                 deActivateRow={deActivateRow}
                 hasModulesInGrid={hasModulesInGrid}
-                isFirstInactiveRow={row.every((cell) => !cell.active) && rowIndex === grid.cells.findIndex((r) => r.every((cell) => !cell.active))}
+                // Use pre-calculated indices for these checks
+                isFirstInactiveRow={row.every((cell) => !cell.active) && rowIndex === firstInactiveRowIndex}
                 isLastActiveRow={
-                  rowIndex >= grid.cells.length - 3 &&
                   row.some((cell) => cell.active) &&
-                  rowIndex === grid.cells.map((r) => r.some((cell) => cell.active)).lastIndexOf(true)
+                  rowIndex === lastActiveRowIndex &&
+                  rowIndex >= grid.cells.length - 3 // Keep this specific condition if it's intended
                 }
               />
             </React.Fragment>
@@ -86,5 +94,7 @@ const GridTable = React.forwardRef<HTMLDivElement, GridTableProps>(
     );
   }
 );
+
+export const GridTable = React.memo(GridTableInternal);
 
 export default GridTable;

@@ -78,7 +78,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
   const techColor = getTechColor(tech ?? "gray");
 
   // Construct the image path dynamically
-  const imagePath = techImage ? `/assets/img/icons/${techImage}` : "/assets/img/infra-upgrade.png";
+  const imagePath = techImage ? `/assets/img/buttons/${techImage}` : "/assets/img/infra-upgrade.png";
 
   const AccordionTrigger = React.forwardRef(
     ({ children, className, ...props }: { children: React.ReactNode; className?: string }, forwardedRef: React.Ref<HTMLButtonElement>) => (

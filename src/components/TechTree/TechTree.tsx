@@ -37,6 +37,7 @@ const typeImageMap: TypeImageMap = {
   Hyperdrive: "hyperdrive.webp",
   Mining: "mining.webp",
   "Secondary Weapons": "secondary.webp",
+  "Fleet Upgrades": "secondary.webp",
   Scanners: "scanners.webp",
   Utilities: "utilities.webp",
 
@@ -69,7 +70,7 @@ const TechTreeSection: React.FC<{
   selectedShipType: string; // Add this prop
 }> = ({ type, technologies, handleOptimize, solving }) => {
   // Determine the image path from the typeImageMap
-  const imagePath = typeImageMap[type] ? `/assets/img/icons/${typeImageMap[type]}` : null;
+  const imagePath = typeImageMap[type] ? `/assets/img/sidebar/${typeImageMap[type]}` : null;
 
   return (
     <div className="mb-6 lg:mb-6 last:mb-0 sidebar__section">

@@ -3,7 +3,7 @@ import { GearIcon } from "@radix-ui/react-icons";
 import { DropdownMenu, IconButton, Text } from "@radix-ui/themes";
 import React, { Suspense, useRef, useMemo } from "react"; // Import useMemo
 import { useFetchShipTypesSuspense, useShipTypesStore, ShipTypeDetail } from "../../hooks/useShipTypes";
-import { useGridStore } from "../../store/GridStore";
+import { useGridStore, createGrid, Grid } from "../../store/GridStore"; // Import createGrid and Grid type
 import ReactGA from "react-ga4";
 
 // --- ShipSelection component remains the same ---
@@ -14,7 +14,8 @@ interface ShipSelectionProps {
 const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
   const setSelectedShipType = useShipTypesStore((state) => state.setSelectedShipType);
-  const resetGrid = useGridStore((state) => state.resetGrid);
+  // Get the new action from the store
+  const setGridAndResetAuxiliaryState = useGridStore((state) => state.setGridAndResetAuxiliaryState);
   const previousSelectionRef = useRef<string | null>(null);
 
   const handleOptionSelect = (option: string) => {
@@ -31,7 +32,32 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
       });
 
       setSelectedShipType(option);
-      resetGrid();
+
+      // --- Determine the new grid state ---
+      // createGrid(10, 6) creates a 6x10 grid with all cells active and not supercharged.
+      const initialGrid = createGrid(10, 6);
+      let newCells = initialGrid.cells; // Start with the default active cells
+
+      // If the selected ship type is a freighter, deactivate rows 4 and 5
+      if (option.toLowerCase().includes("freighter")) {
+        newCells = initialGrid.cells.map((row, rIndex) => {
+          // Target rows 4 and 5 (0-indexed)
+          if (rIndex === 4 || rIndex === 5) {
+            // For the target rows, map each cell to be inactive and not supercharged
+            return row.map(cell => ({ ...cell, active: false, supercharged: false }));
+          }
+          // For other rows, return the original row from createGrid (it's already a new object)
+          return row;
+        });
+      }
+
+      // Prepare the payload for the GridStore action
+      const finalGridPayload: Grid = {
+        cells: newCells,
+        width: initialGrid.width,
+        height: initialGrid.height,
+      };
+      setGridAndResetAuxiliaryState(finalGridPayload);
     }
     previousSelectionRef.current = option;
   };

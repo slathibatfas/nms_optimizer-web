@@ -72,7 +72,7 @@ class ErrorBoundary extends Component<Props, State> {
         <main className="flex flex-col items-center justify-center lg:min-h-screen">
           <section className="relative mx-auto border rounded-none shadow-lg app lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
             <div className="flex flex-col items-center justify-center h-full p-8 text-center text-gray-50">
-              <ExclamationTriangleIcon className="w-16 h-16 shadow-lg" style={{ color: "#C44A34" }} />
+              <ExclamationTriangleIcon className="w-16 h-16 shadow-md" style={{ color: "#C44A34" }} />
               <h1 className="pt-2 text-2xl font-semibold tracking-widest" style={{ color: "#e6c133", fontFamily: "GeosansLight" }}>
                 -kzzkt- Error! -kzzkt-
               </h1>

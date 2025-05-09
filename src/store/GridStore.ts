@@ -113,6 +113,7 @@ export type GridStore = {
   isSharedGrid: boolean;
   setGrid: (grid: Grid) => void;
   resetGrid: () => void;
+  setGridAndResetAuxiliaryState: (newGrid: Grid) => void; // New action
   setResult: (result: ApiResponse | null, tech: string) => void;
   activateRow: (rowIndex: number) => void;
   deActivateRow: (rowIndex: number) => void;
@@ -185,6 +186,15 @@ export const useGridStore = create<GridStore>()(
             state.isSharedGrid = false;
           });
           useTechStore.getState().clearResult();
+        },
+
+        setGridAndResetAuxiliaryState: (newGrid) => {
+          set((state) => {
+            state.grid = newGrid; // Set the fully prepared grid
+            state.result = null;
+            state.isSharedGrid = false; // A new grid selection means it's not a shared link being viewed
+          });
+          useTechStore.getState().clearResult(); // Clear associated tech results
         },
 
         setResult: (result, tech) => {
@@ -286,11 +296,20 @@ export const useGridStore = create<GridStore>()(
 
         isGridFull: (): boolean => {
           const grid = get().grid;
-          const activeCells = grid.cells.flat().filter((cell) => cell.active);
-          if (activeCells.length === 0) {
-             return false;
+          let hasActiveCells = false;
+          for (const row of grid.cells) {
+            for (const cell of row) {
+              if (cell.active) {
+                hasActiveCells = true;
+                if (cell.module === null) {
+                  return false; // Found an active cell without a module, so not full
+                }
+              }
+            }
           }
-          return activeCells.every((cell) => cell.module !== null);
+          // If loop completes: all active cells had modules OR no active cells were found.
+          // Returns true if there were active cells and all were full, false otherwise.
+          return hasActiveCells;
         },
 
         resetGridTech: (tech: string) => {
