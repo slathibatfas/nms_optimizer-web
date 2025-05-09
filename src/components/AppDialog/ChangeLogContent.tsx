@@ -23,7 +23,7 @@ const ChangeLogContent: React.FC = () => {
 
       <h2 className="pt-2">Version 2.65 (2025-05-09)</h2>
       <ul>
-        <li>Added basic, preliminary support for Freighters. No models yet and I need to figure out a way to do shared adjacency for all of the fleet technology types.</li>
+        <li>Added preliminary support for Freighters. Models are still pending. Need to implement shared adjacency logic for fleet technology types.</li>
       </ul>
 
       <h2>Version 2.61 (2025-05-08)</h2>
