@@ -21,6 +21,11 @@ const ChangeLogContent: React.FC = () => {
         for up to date model information.
       </p>
 
+      <h2 className="pt-2">Version 2.66 (2025-05-10)</h2>
+      <ul>
+        <li>Implemented a small, 4k sample model for Freighter Hyperdrive that works well on blank grids. Need more data to ensure consistency in other cases.</li>
+      </ul>
+
       <h2 className="pt-2">Version 2.65 (2025-05-09)</h2>
       <ul>
         <li>Added preliminary support for Freighters. Models are still pending. Need to implement shared adjacency logic for fleet technology types.</li>
