@@ -63,7 +63,7 @@ export function fetchShipTypes(): Resource<ShipTypes> {
 
   if (!cache.has(cacheKey)) {
     // Create a promise to fetch the ship types
-    const promise = fetch(`${API_URL}/platforms`)
+    const promise = fetch(`${API_URL}platforms`)
       .then((res) => {
         // Check for HTTP errors
         if (!res.ok) {

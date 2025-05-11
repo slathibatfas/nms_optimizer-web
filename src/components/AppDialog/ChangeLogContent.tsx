@@ -21,9 +21,17 @@ const ChangeLogContent: React.FC = () => {
         for up to date model information.
       </p>
 
+      <h2 className="pt-2">Version 2.67 (2025-05-10)</h2>
+      <ul>
+        <li>Implemented a larger, 8k sample model for Freighter Hyperdrive for higher accuracy.</li>
+        <li>More code clean-up and UI optimizations.</li>
+      </ul>
+
       <h2 className="pt-2">Version 2.66 (2025-05-10)</h2>
       <ul>
-        <li>Implemented a small, 4k sample model for Freighter Hyperdrive that works well on blank grids. Need more data to ensure consistency in other cases.</li>
+        <li>
+          Implemented a small, 4k sample model for Freighter Hyperdrive that works well on blank grids. Need more data to ensure consistency in other cases.
+        </li>
       </ul>
 
       <h2 className="pt-2">Version 2.65 (2025-05-09)</h2>
@@ -39,7 +47,9 @@ const ChangeLogContent: React.FC = () => {
       <h2>Version 2.6 (2025-05-07)</h2>
       <ul>
         <li>Added warning for when no solves fit within the grid. Seeing too many users trying to force things and getting sub-optimal results.</li>
-        <li>I give in. No one knows what a CNN model is. Marketing wins and we're calling it <strong>AI Technology Optimizer</strong>.</li>
+        <li>
+          I give in. No one knows what a CNN model is. Marketing wins and we're calling it <strong>AI Technology Optimizer</strong>.
+        </li>
       </ul>
 
       <h2>Version 2.51 (2025-05-06)</h2>

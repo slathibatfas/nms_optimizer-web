@@ -8,7 +8,7 @@ import MessageSpinner from "../MessageSpinner/MessageSpinner";
 import { useShakeStore } from "../../store/ShakeStore";
 
 interface GridTableProps {
-  grid: Grid;
+  grid: Grid | null | undefined; // Allow grid to be null or undefined
   resetGrid: () => void;
   activateRow: (rowIndex: number) => void;
   deActivateRow: (rowIndex: number) => void;
@@ -19,14 +19,14 @@ interface GridTableProps {
 /**
  * A table component that displays a grid of cells, where each cell can be in
  * one of three states: normal, active, or supercharged. The component also
- * renders a set of buttons to activate or deactivate entire rows at once.
+ * renders control buttons for rows.
  *
- * @param {Grid} grid - The grid to display
- * @param {function} activateRow - A function to activate an entire row
- * @param {function} deActivateRow - A function to deactivate an entire row
- * @param {ApiResponse | null} result - The result of an optimization calculation,
- *   or null if no calculation has been done.
- * @param {function} resetGrid - A function to reset the grid
+ * @param {GridTableProps} props - The props for the component.
+ * @param {Grid | null | undefined} props.grid - The grid data to display.
+ * @param {(rowIndex: number) => void} props.activateRow - Function to activate an entire row.
+ * @param {(rowIndex: number) => void} props.deActivateRow - Function to deactivate an entire row.
+ * @param {boolean} props.solving - Indicates if an optimization calculation is in progress.
+ * @param {boolean} props.shared - Indicates if the grid is in a shared/read-only state.
  */
 const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
   (
@@ -35,26 +35,34 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
       activateRow,
       deActivateRow,
       solving,
-      shared, // Use the shared prop passed from App.tsx
+      shared,
     },
     ref
   ) => {
     const { shaking } = useShakeStore();
+    
+    // Calculate derived values from the grid.
+    // This hook is now called unconditionally before any early returns.
+    const { hasModulesInGrid, firstInactiveRowIndex, lastActiveRowIndex } = useMemo(
+      () => {
+        if (!grid || !grid.cells) {
+          // Return default values if grid is not available
+          return { hasModulesInGrid: false, firstInactiveRowIndex: -1, lastActiveRowIndex: -1 };
+        }
+        return {
+          hasModulesInGrid: grid.cells.flat().some((cell) => cell.module !== null),
+          firstInactiveRowIndex: grid.cells.findIndex((r) => r.every((cell) => !cell.active)),
+          lastActiveRowIndex: grid.cells.map((r) => r.some((cell) => cell.active)).lastIndexOf(true),
+        };
+      },
+      [grid] // Depend on the whole grid object for safety
+    );
 
-    // Whether there are any modules in the grid
-    const hasModulesInGrid = useMemo(() => {
-      return grid.cells.flat().some((cell) => cell.module !== null);
-    }, [grid.cells]);
-
-    // Calculate these indices once
-    const firstInactiveRowIndex = useMemo(() => {
-      return grid.cells.findIndex((r) => r.every((cell) => !cell.active));
-    }, [grid.cells]);
-
-    const lastActiveRowIndex = useMemo(() => {
-      const activeRowBooleans = grid.cells.map((r) => r.some((cell) => cell.active));
-      return activeRowBooleans.lastIndexOf(true);
-    }, [grid.cells]);
+    // Early return if grid is not available. This is now safe as hooks are called above.
+    if (!grid || !grid.cells) {
+      // Render a minimal div if ref is strictly needed for layout, or a loading message.
+      return <div ref={ref} className="gridTable-empty"></div>;
+    }
 
     return (
       <ShakingWrapper shaking={shaking} duration={500}>
@@ -67,10 +75,8 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
                   key={`${rowIndex}-${columnIndex}`} // More robust key
                   rowIndex={rowIndex}
                   columnIndex={columnIndex}
-                  // Pass the cellData directly as the 'cell' prop
-                  // and the entire 'grid' object as the 'grid' prop
                   cell={cellData}
-                  grid={grid} // GridCell expects the full grid object
+                  grid={grid} // GridCell might need the full grid object for context
                   isSharedGrid={shared}
                 />
               ))}

@@ -7,7 +7,7 @@ import { APP_VERSION } from "../../constants";
 
 // Consider getting version from env vars if desired
 
-const AppHeader: React.FC = () => {
+const AppHeaderInternal: React.FC = () => {
   return (
     <header className="flex flex-col pt-3 pb-1 pl-6 sm:pr-8 header sm:pb-4 sm:pt-6">
       <div className="flex items-center w-full"> {/* Changed items-start to items-center */}
@@ -26,5 +26,8 @@ const AppHeader: React.FC = () => {
     </header>
   );
 };
+
+// Memoize the component as it has no props and its content is static.
+const AppHeader = React.memo(AppHeaderInternal);
 
 export default AppHeader;

@@ -1,10 +1,8 @@
 // src/App.tsx
 
 // --- React & External Libraries ---
-import { Suspense, useEffect, useState, useCallback } from "react";
-import { Tooltip, ScrollArea, Button, Dialog, Flex } from "@radix-ui/themes";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-// import { Dialog } from "radix-ui";
+import { Suspense, useEffect, useState, useCallback, useMemo, FC } from "react";
+import { Tooltip, ScrollArea } from "@radix-ui/themes";
 import ReactGA from "react-ga4";
 
 // --- Components ---
@@ -15,9 +13,10 @@ import TechTreeComponent from "./components/TechTree/TechTree";
 import ChangeLogContent from "./components/AppDialog/ChangeLogContent";
 import ErrorContent from "./components/AppDialog/ErrorContent";
 import InfoDialog from "./components/AppDialog/AppDialog";
-import AppHeader from "./components/AppHeader/AppHeader"; // Import the new header
+import AppHeader from "./components/AppHeader/AppHeader";
 import InstructionsContent from "./components/AppDialog/InstructionsContent";
 import MessageSpinner from "./components/MessageSpinner/MessageSpinner";
+import OptimizationAlertDialog from "./components/AppDialog/OptimizationAlertDialog";
 import ShipSelection from "./components/ShipSelection/ShipSelection";
 
 // --- Constants ---
@@ -39,73 +38,83 @@ import { useOptimizeStore } from "./store/OptimizeStore";
 type ActiveDialog = "changelog" | "instructions" | null;
 
 /**
+ * Loading fallback component for Suspense.
+ * Defined outside App to prevent re-definition on App's re-render.
+ */
+const AppLoadingFallback = () => (
+  <div className="flex flex-col items-center justify-center messageSpinner__spinner" style={{ color: "var(--red-a10)" }}>
+    <MessageSpinner isVisible={true} initialMessage="Waking the server!" showRandomMessages={false} />
+  </div>
+);
+/**
  * The main App component.
  *
  * This component contains the main layout of the app, including the header,
  * main layout, and footer. It also contains three dialogs: the instructions
  * dialog, the change log dialog, and the error dialog.
  */
-const App: React.FC = () => {
-  // State to control the visibility of dialogs
+const App: FC = () => {
+  // --- State Hooks ---
   const [activeDialog, setActiveDialog] = useState<ActiveDialog>(null);
   // Initialize state directly from localStorage to avoid flicker.
-  // The function ensures localStorage is read only once on mount.
   // Need the setter function to turn off the glow on click.
   const [isFirstVisit, setIsFirstVisit] = useState(() => !localStorage.getItem("hasVisitedNMSOptimizer"));
 
+  // --- Store Hooks ---
   const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } = useGridStore();
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
-
-  const { solving, handleOptimize, gridContainerRef, patternNoFitTech, clearPatternNoFitTech, handleForceCurrentPnfOptimize } = useOptimize();
-
-  useUrlSync(); // Initialize URL synchronization
-
-  // Retrieve error state from the optimize store
   const { showError, setShowError } = useOptimizeStore();
 
-  // Retrieve build version from environment variables
-  const build = import.meta.env.VITE_BUILD_VERSION;
-
-  // Fetch ship types data using the suspense hook
-  // This will suspend rendering until the data is loaded
+  // --- Custom Hooks & Data Fetching ---
+  // Initialize URL synchronization (must be called early, but its return values are used later)
+  useUrlSync(); 
+  
+  // Fetch ship types data using the suspense hook. This will suspend rendering until the data is loaded.
   const shipTypes = useFetchShipTypesSuspense();
-
-  // Derive details and label *after* shipTypes data is available
-  const selectedShipTypeDetails: ShipTypeDetail | undefined = shipTypes ? shipTypes[selectedShipType] : undefined;
-  const selectedShipTypeLabel = selectedShipTypeDetails?.label || `Unknown (${selectedShipType})`;
-
-  // --- Use the custom layout hook ---
+  const { solving, handleOptimize, gridContainerRef, patternNoFitTech, clearPatternNoFitTech, handleForceCurrentPnfOptimize } = useOptimize();
+  
   // containerRef is for div.gridContainer__container (for height)
   // gridTableRef is for GridTable element (for columnWidth)
   const { containerRef: appLayoutContainerRef, gridTableRef: appLayoutGridTableRef, gridHeight, columnWidth, isLarge } = useAppLayout();
+  const { updateUrlForShare, updateUrlForReset } = useUrlSync(); // Get specific functions after initialization
 
-  // --- Get URL update functions from the sync hook ---
-  const { updateUrlForShare, updateUrlForReset } = useUrlSync();
+  // --- Environment Variables ---
+  const build = import.meta.env.VITE_BUILD_VERSION;
 
-  // Whether there are any modules in the grid
-  // Defensively check if grid and grid.cells exist before trying to access them.
-  const hasModulesInGrid = grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
+  // --- Memoized Derived Values ---
+  const selectedShipTypeDetails = useMemo<ShipTypeDetail | undefined>(() => {
+    // shipTypes is guaranteed by Suspense to be populated here.
+    return shipTypes[selectedShipType];
+  }, [shipTypes, selectedShipType]);
+  const selectedShipTypeLabel = useMemo<string>(() => {
+    return selectedShipTypeDetails?.label || `Unknown (${selectedShipType})`;
+  }, [selectedShipTypeDetails, selectedShipType]);
+  // Memoize hasModulesInGrid calculation as it depends on `grid` which might be large.
+  const hasModulesInGrid = useMemo(() => {
+    return grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
+  }, [grid]);
 
+  // --- Callback Hooks ---
+  /**
+   * Closes any active dialog and resets the error state in the store if it was an error dialog.
+   */
   useEffect(() => {
     ReactGA.initialize(TRACKING_ID);
     console.log("API_URL:", API_URL);
 
-    // If it was determined to be the first visit during initialization,
-    // set the flag in localStorage now so subsequent loads/refreshes know.
-    if (isFirstVisit) {
+    // Set localStorage item only once on initial mount if it hasn't been set.
+    // The `isFirstVisit` state is used for UI purposes (e.g., glow effect).
+    if (!localStorage.getItem("hasVisitedNMSOptimizer")) {
       localStorage.setItem("hasVisitedNMSOptimizer", "true");
     }
-  }, [isFirstVisit]);
-
-  /**
-   * Closes any active dialog and resets the error state in the store if it was an error dialog.
-   */
+    // Empty dependency array ensures this effect runs only once on mount.
+  }, []);
+  
   const handleCloseDialog = useCallback(() => {
     // This function now only handles non-error dialogs.
-    // The error dialog's visibility is directly controlled by useOptimizeStore's showError state
-    // and its onClose prop.
-    setActiveDialog(null); // Close any dialog
-  }, []); // No longer needs activeDialog or setShowError as dependencies
+    // The error dialog's visibility is directly controlled by useOptimizeStore's showError state and its onClose prop.
+    setActiveDialog(null);
+  }, []);
 
   /**
    * Handles showing the instructions dialog and turns off the first visit glow if active.
@@ -113,10 +122,10 @@ const App: React.FC = () => {
   const handleShowInstructions = useCallback(() => {
     setActiveDialog("instructions");
     if (isFirstVisit) {
-      setIsFirstVisit(false); // Turn off the glow
+      setIsFirstVisit(false);
     }
     // localStorage is already set in the initial useEffect, no need to set it again here.
-  }, [isFirstVisit, setIsFirstVisit]); // Add setIsFirstVisit dependency
+  }, [isFirstVisit, setIsFirstVisit]);
 
   /**
    * Handles the click event of the share button.
@@ -143,62 +152,51 @@ const App: React.FC = () => {
       category: "User Interactions",
       action: "resetGrid",
     });
-    resetGrid(); // Call the original resetGrid function
-    updateUrlForReset(); // Update the URL using the hook's function
+    resetGrid();
+    updateUrlForReset();
     setIsSharedGrid(false);
-  }, [resetGrid, setIsSharedGrid, updateUrlForReset]); // Depend on the hook's function
+  }, [resetGrid, setIsSharedGrid, updateUrlForReset]);
 
-  // Removed the useEffect for popstate handling as it's now in useUrlSync
-
-  // Define a simple loading component or use MessageSpinner
-  const AppLoadingFallback = () => (
-    <div className="flex flex-col items-center justify-center messageSpinner__spinner" style={{ color: "var(--red-a10)" }}>
-      <MessageSpinner isVisible={true} initialMessage="Waking the server!" showRandomMessages={false} />
-    </div>
-  );
-
+  // --- Memoized Component Instances for Dialog Content ---
+  const changeLogDialogContent = useMemo(() => <ChangeLogContent />, []);
+  const instructionsDialogContent = useMemo(() => <InstructionsContent />, []);
+  const errorDialogContent = useMemo(() => <ErrorContent />, []);
+  
   return (
     <>
       <Suspense fallback={<AppLoadingFallback />}>
-        {/* The main container of the app */}
         <main className="flex flex-col items-center justify-center lg:min-h-screen">
-          {/* Container Box */}
           <section className="relative mx-auto border rounded-none shadow-lg app lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
             <AppHeader />
 
-            {/* Main Layout */}
             <section className="flex flex-col items-start p-6 pt-4 gridContainer lg:p-8 md:p-8 md:pt-4 lg:flex-row" ref={gridContainerRef}>
               <div className="flex-grow w-auto gridContainer__container lg:flex-shrink-0" ref={appLayoutContainerRef}>
                 <header className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
-                  {/* Show ShipSelection only if not a shared grid */}
                   {!isSharedGrid && (
                     <Tooltip content="Select Technology Platform" delayDuration={500}>
                       <span className="flex-shrink-0">
-                        {/* ShipSelection uses the same fetched shipTypes, no extra Suspense needed here */}
                         <ShipSelection solving={solving} />
                       </span>
                     </Tooltip>
                   )}
-                  {/* Platform Label */}
                   <span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>
                     PLATFORM:
                   </span>
-                  {/* Display the derived label (now correctly loaded) */}
                   <span className="flex-1 min-w-0">{selectedShipTypeLabel}</span>
                 </header>
 
                 <GridTable
-                  grid={grid} // GridTable should also ideally handle a potentially null grid if the store can produce it.
+                  grid={grid} // TODO: GridTable should ideally handle a potentially null grid if the store can produce it.
                   solving={solving}
                   shared={isSharedGrid}
                   activateRow={activateRow}
                   deActivateRow={deActivateRow}
-                  ref={appLayoutGridTableRef} // Pass the ref for GridTable
+                  ref={appLayoutGridTableRef}
                   resetGrid={resetGrid}
                 />
 
                 <GridTableButtons
-                  onShowInstructions={handleShowInstructions} // Use the new handler
+                  onShowInstructions={handleShowInstructions}
                   onShowChangeLog={() => setActiveDialog("changelog")}
                   onShare={handleShareClick}
                   onReset={handleResetGrid}
@@ -206,14 +204,12 @@ const App: React.FC = () => {
                   hasModulesInGrid={hasModulesInGrid}
                   solving={solving}
                   columnWidth={columnWidth}
-                  isFirstVisit={isFirstVisit} // Pass down the first visit state
+                  isFirstVisit={isFirstVisit}
                 />
               </div>
 
-              {/* Tech Tree Section (Conditionally Rendered) */}
               {!isSharedGrid &&
                 (isLarge ? (
-                  // Desktop: Scrollable sidebar
                   <ScrollArea
                     className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
                     style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
@@ -221,15 +217,12 @@ const App: React.FC = () => {
                     <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
                   </ScrollArea>
                 ) : (
-                  // Mobile: Tech Tree below GridTable
                   <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
                     <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
                   </aside>
                 ))}
             </section>
           </section>
-
-          {/* Footer Text */}
           <footer className="flex flex-wrap items-center justify-center gap-1 pt-4 pb-4 text-xs text-center lg:pb-0 sm:text-sm lg:text-base">
             Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
             <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
@@ -243,66 +236,31 @@ const App: React.FC = () => {
           </footer>
         </main>
       </Suspense>
-
-      {/* Info Dialogs */}
-      <InfoDialog isOpen={activeDialog === "changelog"} onClose={handleCloseDialog} content={<ChangeLogContent />} title="Changelog" />
-      <InfoDialog isOpen={activeDialog === "instructions"} onClose={handleCloseDialog} content={<InstructionsContent />} title="Instructions" />
       <InfoDialog
-        isOpen={showError} // Directly use showError from the store
-        onClose={() => setShowError(false)} // Directly set showError to false on close
-        content={<ErrorContent />}
+        isOpen={activeDialog === "changelog"}
+        onClose={handleCloseDialog}
+        content={changeLogDialogContent}
+        title="Changelog"
+      />
+      <InfoDialog
+        isOpen={activeDialog === "instructions"}
+        onClose={handleCloseDialog}
+        content={instructionsDialogContent}
+        title="Instructions"
+      />
+      <InfoDialog
+        isOpen={showError}
+        onClose={() => setShowError(false)}
+        content={errorDialogContent}
         title="Error!"
       />
 
-      <Dialog.Root
-        open={!!patternNoFitTech}
-        onOpenChange={(isOpen) => {
-          if (!isOpen) {
-            clearPatternNoFitTech(); // Clear PNF state if dialog is closed (e.g., by Escape key or overlay click)
-          }
-        }}
-      >
-        {/* No explicit Dialog.Trigger needed if open is controlled programmatically */}
-        <Dialog.Content maxWidth="500px" style={{ backgroundColor: "var(--gray-4)" }}>
-          <Dialog.Title className="warningDialog__title">
-            <ExclamationTriangleIcon className="inline w-6 h-6" style={{ color: "var(--amber-9)" }} /> Optimization Alert!
-          </Dialog.Title>
-          <Dialog.Description size="2" mb="4">
-            <span className="block pb-2 text-xl font-semibold tracking-widest text-center errorContent__title">-kzzkt- Failure! -kzzkt-</span>
-            <span className="block mb-2">
-              There isn't enough space to effectively place all modules for the technology{" "}
-              <span className="font-bold uppercase" style={{ color: "var(--accent-11)" }}>
-                {patternNoFitTech}
-              </span>
-              . This usually happens when too many technologies are selected for your platform.
-            </span>
-            <span className="block">
-              You can try <strong>"Force Optimize"</strong> for a more intensive solve, but it will probably fail to find an optimal layout. Consider reordering
-              your technologies or selecting fewer to improve the result.
-            </span>
-          </Dialog.Description>
-
-          <Flex gap="3" mt="4" justify="end">
-            <Dialog.Close>
-              <Button variant="soft" color="gray" onClick={clearPatternNoFitTech}>
-                Cancel
-              </Button>
-            </Dialog.Close>
-            <Dialog.Close>
-              <Button
-                onClick={async () => {
-                  await handleForceCurrentPnfOptimize();
-                  // The dialog will close automatically because patternNoFitTech will be set to null
-                  // by handleOptimize (called by handleForceCurrentPnfOptimize)
-                }}
-              >
-                Force Optimize
-              </Button>
-            </Dialog.Close>
-          </Flex>
-          {/* Themed Dialog.Content usually includes its own close button (X icon) */}
-        </Dialog.Content>
-      </Dialog.Root>
+      <OptimizationAlertDialog
+        isOpen={!!patternNoFitTech}
+        technologyName={patternNoFitTech}
+        onClose={clearPatternNoFitTech}
+        onForceOptimize={handleForceCurrentPnfOptimize}
+      />
     </>
   );
 };

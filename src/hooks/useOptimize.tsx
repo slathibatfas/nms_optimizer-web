@@ -81,7 +81,7 @@ export const useOptimize = (): UseOptimizeReturn => {
           ),
         };
 
-        const response = await fetch(API_URL + "/optimize", {
+        const response = await fetch(API_URL + "optimize", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
