@@ -21,6 +21,12 @@ const ChangeLogContent: React.FC = () => {
         for up to date model information.
       </p>
 
+      <h2 className="pt-2">Version 2.68 (2025-05-10)</h2>
+      <ul>
+        <li>More model updates for Freighter Hyperdrive.</li>
+        <li>Added Photonix Core as an option for Solar Starhips. Models for this change still need to be updated so solving will be slow for now.</li>
+      </ul>
+
       <h2 className="pt-2">Version 2.67 (2025-05-10)</h2>
       <ul>
         <li>Implemented a larger, 8k sample model for Freighter Hyperdrive for higher accuracy.</li>
