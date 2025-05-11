@@ -21,12 +21,6 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
   const handleOptionSelect = (option: string) => {
     if (option !== previousSelectionRef.current) {
 
-      ReactGA.event({
-        category: "User Interactions",
-        action: "technologySelection",
-        label: option
-      });
-
       ReactGA.event('platform_selection', {
         platform: option
       });
