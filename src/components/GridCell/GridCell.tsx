@@ -51,7 +51,6 @@ interface GridCellProps {
 const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, cell, grid, isSharedGrid }) => {
   const toggleCellActive = useGridStore((state) => state.toggleCellActive);
   const toggleCellSupercharged = useGridStore((state) => state.toggleCellSupercharged);
-  const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
   const [longPressTriggered, setLongPressTriggered] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const { setShaking } = useShakeStore(); // Get setShaking from the store
@@ -136,15 +135,16 @@ const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, cell, g
     event.preventDefault();
   }, []); // No dependencies, so empty array
 
+  // Directly select the color for the current cell's tech from the store.
+  // This makes the component reactive to changes in the tech color mapping for this specific tech.
+  const currentTechColorFromStore = useTechStore((state) => state.getTechColor(cell.tech ?? ""));
+
   // Memoize techColor calculation
   const techColor = useMemo(() => {
-    let color = getTechColor(cell.tech ?? "");
-    // If there's no specific tech color AND the cell is supercharged, set techColor to purple
-    if (!color && cell.supercharged) {
-      color = "purple"; // Override techColor
-    }
-    return color;
-  }, [getTechColor, cell.tech, cell.supercharged]);
+    // If there's no specific tech color from the store (it's falsy) AND the cell is supercharged,
+    // override to "purple". Otherwise, use the color from the store.
+    return !currentTechColorFromStore && cell.supercharged ? "purple" : currentTechColorFromStore;
+  }, [currentTechColorFromStore, cell.supercharged]);
 
   // Memoize cellClassName construction
   const cellClassName = useMemo(() => {
