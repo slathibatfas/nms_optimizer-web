@@ -89,7 +89,7 @@ export const useOptimize = (): UseOptimizeReturn => {
             tech,
             player_owned_rewards: checkedModules[tech] || [],
             grid: updatedGrid,
-            forced, // Send the forced flag
+            forced,
           }),
         });
 
@@ -128,7 +128,6 @@ export const useOptimize = (): UseOptimizeReturn => {
             platform: selectedShipType,
             tech: tech,
             solve_method: data.solve_method,
-            forced: forced, // Track if the solve was forced
           });
         }
 
