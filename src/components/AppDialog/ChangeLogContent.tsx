@@ -21,6 +21,11 @@ const ChangeLogContent: React.FC = () => {
         for up to date model information.
       </p>
 
+      <h2 className="pt-2">Version 2.69 (2025-05-13)</h2>
+      <ul>
+        <li>Added updated models for Solar Starhip Pulse engines. Should dramatically improve solving times and accuracy.</li>
+      </ul>
+
       <h2 className="pt-2">Version 2.68 (2025-05-10)</h2>
       <ul>
         <li>More model updates for Freighter Hyperdrive.</li>
