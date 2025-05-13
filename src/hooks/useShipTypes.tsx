@@ -143,7 +143,7 @@ export const useShipTypesStore = create<ShipTypesState>((set) => {
     initialShipType = "standard";
     updateUrlNeeded = true; // Update URL with the default
     updateStorageNeeded = true; // Store the default
-    console.log(`useShipTypesStore: No URL param or localStorage found. Defaulting to '${initialShipType}', will update URL and localStorage.`);
+    // console.log(`useShipTypesStore: No URL param or localStorage found. Defaulting to '${initialShipType}', will update URL and localStorage.`);
   }
 
   // Update the URL *after* determining the initial state, only if needed
@@ -152,13 +152,13 @@ export const useShipTypesStore = create<ShipTypesState>((set) => {
     url.searchParams.set("platform", initialShipType);
     // Use replaceState so navigating back doesn't go to the URL without the param
     window.history.replaceState({}, '', url.toString());
-    console.log("useShipTypesStore: Updated URL.");
+    // console.log("useShipTypesStore: Updated URL.");
   }
 
   // Update localStorage if needed (only when defaulting)
   if (updateStorageNeeded) {
     localStorage.setItem(LOCAL_STORAGE_KEY, initialShipType);
-    console.log("useShipTypesStore: Updated localStorage with default.");
+    // console.log("useShipTypesStore: Updated localStorage with default.");
   }
   // --- End of initial state logic ---
 

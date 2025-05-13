@@ -17,7 +17,7 @@ export const useUrlSync = () => {
   // Effect to handle initial URL state and popstate events
   useEffect(() => {
     const handlePopState = () => {
-      console.log("useUrlSync: handlePopState triggered or initial load.");
+      // console.log("useUrlSync: handlePopState triggered or initial load.");
       const urlParams = new URLSearchParams(window.location.search);
       const platformFromUrl = urlParams.get("platform");
       const gridFromUrl = urlParams.get("grid");
