@@ -1,7 +1,7 @@
 @font-face {
   font-family: "GeosansLight";
-  src: url("/src/assets/fonts/geonms-webfont.woff") format("woff"),
-       url("/src/assets/fonts/geonms-webfont.ttf") format("truetype");
+  src: url("/assets/fonts/geonms-webfont.woff") format("woff"),
+       url("/assets/fonts/geonms-webfont.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: auto;
@@ -9,7 +9,7 @@
 
 @font-face {
   font-family: "Raleway";
-  src: url("/src/assets/fonts/Raleway-VariableFont_wght.ttf") format("truetype");
+  src: url("/assets/fonts/Raleway-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
   font-display: auto;
@@ -17,7 +17,7 @@
 
 @font-face {
   font-family: "Acumin";
-  src: url("/src/assets/fonts/AcuminProCond-Semibold.ttf") format("truetype");
+  src: url("/assets/fonts/AcuminProCond-Semibold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
   font-display: auto;

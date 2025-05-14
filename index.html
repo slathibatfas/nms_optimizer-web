@@ -1,35 +1,71 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>No Man's Sky AI Technology Optimizer</title>
+		<title>No Man's Sky AI Technology Optimizer</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/webp" href="./assets/img/nms_so-icon.webp" />
+		<!-- Favicon -->
+		<link rel="icon" type="image/webp" href="./assets/img/nms_so-icon.webp" />
 
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Optimize your technology layouts in No Man's Sky with this powerful web-based tool. Improve adjacency bonuses, maximize supercharged slots, and build the perfect configuration." />
-  <meta name="keywords" content="No Man's Sky, NMS, starship optimizer, NMS optimizer, ship layout, adjacency bonuses, supercharged slots, tech layout tool" />
-  <link rel="canonical" href="https://nms-optimizer.app/" />
+		<!-- GeosansLight (WOFF + TTF) -->
+		<link
+			rel="preload"
+			href="/assets/fonts/geonms-webfont.woff"
+			as="font"
+			type="font/woff"
+			crossorigin="anonymous" />
+		<link
+			rel="preload"
+			href="/assets/fonts/geonms-webfont.ttf"
+			as="font"
+			type="font/ttf"
+			crossorigin="anonymous" />
 
-  <!-- Open Graph Meta Tags (Facebook, Discord, etc.) -->
-  <meta property="og:title" content="No Man's Sky AI Technology Optimizer" />
-  <meta property="og:description" content="A web-based tool for optimizing technology layouts in No Man's Sky. Use known patterns and smart algorithms to get the most out of your upgrades." />
-  <meta property="og:image" content="https://nms-optimizer.app/assets/img/screenshot.png" />
-  <meta property="og:url" content="https://nms-optimizer.app/" />
-  <meta property="og:type" content="website" />
+		<!-- Raleway Variable (TTF) -->
+		<link
+			rel="preload"
+			href="/assets/fonts/Raleway-VariableFont_wght.ttf"
+			as="font"
+			type="font/ttf"
+			crossorigin="anonymous" />
 
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="No Man's Sky AI Technology Optimizer" />
-  <meta name="twitter:description" content="Optimize your technology layouts in No Man’s Sky. Maximize adjacency bonuses and supercharged modules with this powerful web tool." />
-  <meta name="twitter:image" content="https://nms-optimizer.app/assets/img/screenshot.png" />
+		<!-- Acumin (TTF) -->
+		<link
+			rel="preload"
+			href="/assets/fonts/AcuminProCond-Semibold.ttf"
+			as="font"
+			type="font/ttf"
+			crossorigin="anonymous" />
 
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
+		<!-- SEO Meta Tags -->
+		<meta name="description"
+			content="Optimize your technology layouts in No Man's Sky with this powerful web-based tool. Improve adjacency bonuses, maximize supercharged slots, and build the perfect configuration." />
+		<meta name="keywords"
+			content="No Man's Sky, NMS, starship optimizer, NMS optimizer, ship layout, adjacency bonuses, supercharged slots, tech layout tool" />
+		<link rel="canonical" href="https://nms-optimizer.app/" />
+
+		<!-- Open Graph Meta Tags (Facebook, Discord, etc.) -->
+		<meta property="og:title" content="No Man's Sky AI Technology Optimizer" />
+		<meta property="og:description"
+			content="A web-based tool for optimizing technology layouts in No Man's Sky. Use known patterns and smart algorithms to get the most out of your upgrades." />
+		<meta property="og:image"
+			content="https://nms-optimizer.app/assets/img/screenshot.png" />
+		<meta property="og:url" content="https://nms-optimizer.app/" />
+		<meta property="og:type" content="website" />
+
+		<!-- Twitter Card Meta Tags -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="No Man's Sky AI Technology Optimizer" />
+		<meta name="twitter:description"
+			content="Optimize your technology layouts in No Man’s Sky. Maximize adjacency bonuses and supercharged modules with this powerful web tool." />
+		<meta name="twitter:image"
+			content="https://nms-optimizer.app/assets/img/screenshot.png" />
+
+		<!-- Structured Data (JSON-LD) -->
+		<script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
@@ -47,19 +83,20 @@
     }
   </script>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P5VBZQ69Q9"></script>
-  <script>
+		<!-- Google Analytics -->
+		<script async
+			src="https://www.googletagmanager.com/gtag/js?id=G-P5VBZQ69Q9"></script>
+		<script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-P5VBZQ69Q9');
   </script>
-</head>
+	</head>
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
+	<body>
+		<div id="root"></div>
+		<script type="module" src="/src/main.tsx"></script>
+	</body>
 
 </html>
