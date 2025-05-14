@@ -7,6 +7,7 @@ import React from "react";
 const ChangeLogContent: React.FC = () => {
   return (
     <article className="appDialog__body">
+      
       <h2 className="appDialog__subheading">Model Status</h2>
       <p className="pb-4 appDialog__text border-b-1 border-white/25">
         See this{" "}
