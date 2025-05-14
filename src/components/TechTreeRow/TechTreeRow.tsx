@@ -115,14 +115,14 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
           radius="medium"
           variant="solid"
           color={techColor as IconButtonColor}
-          className="!cursor-pointer techRow__optimizeButton"
+          className="!cursor-pointer techRow__optimizeButton shadow-md"
         >
           <div className="relative shadow-md group">
             <img
               src={imagePath}
               srcSet={imageSrcSet || undefined} // Use undefined if imageSrcSet is empty to avoid an empty attribute
               alt={label}
-              className="w-full h-full transition shadow-md opacity-100 duration-250 techRow__optimizeButton--image"
+              className="w-full h-full techRow__optimizeButton--image"
             />
             <IconComponent className="absolute top-0 right-0 p-1 transition-opacity opacity-0 w-7 h-7 group-hover:opacity-100" />
           </div>

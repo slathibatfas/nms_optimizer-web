@@ -9,6 +9,8 @@
 
 		<!-- Favicon -->
 		<link rel="icon" type="image/webp" href="./assets/img/nms_so-icon.webp" />
+
+		<!-- PWA Manifest -->
 		<link rel="manifest" href="/manifest.json" />
 
 		<!-- GeosansLight (WOFF + TTF) -->
@@ -40,6 +42,10 @@
 			as="font"
 			type="font/ttf"
 			crossorigin="anonymous" />
+
+		<!-- NMS Optimizer Service -->
+		<link rel="preconnect"
+			href="https://nms-optimizer-service-afebcfd47e2a.herokuapp.com" crossorigin>
 
 		<!-- SEO Meta Tags -->
 		<meta name="description"
@@ -85,8 +91,9 @@
   </script>
 
 		<!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P5VBZQ69Q9"></script>
-  <script>
+		<script async
+			src="https://www.googletagmanager.com/gtag/js?id=G-P5VBZQ69Q9"></script>
+		<script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());

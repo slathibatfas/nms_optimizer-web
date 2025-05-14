@@ -16,10 +16,16 @@ const ChangeLogContent: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          GitHub page
+        GitHub page
         </a>
-        for up to date model information.
+        {" "}for up to date model information.
       </p>
+
+      <h2 className="pt-2 appDialog__subheading">Version 2.70 (2025-05-14)</h2>
+      <ul className="appDialog__list">
+        <li className="appDialog__listItem">Updated Solor Starships and Freighters models to full 16k samples.</li>
+        <li className="appDialog__listItem">Numerous performance and SEO enhancements.</li>
+      </ul>
 
       <h2 className="pt-2 appDialog__subheading">Version 2.69 (2025-05-13)</h2>
       <ul className="appDialog__list">
@@ -59,7 +65,7 @@ const ChangeLogContent: React.FC = () => {
       <ul className="appDialog__list">
         <li className="appDialog__listItem">Added warning for when no solves fit within the grid. Seeing too many users trying to force things and getting sub-optimal results.</li>
         <li className="appDialog__listItem">
-          I give in. No one knows what a CNN model is. Marketing wins and we're calling it <strong>AI Technology Optimizer</strong>.
+          I give in. No one knows what a Convolutional Neural Network is. Marketing wins and we're calling it <strong>AI Technology Optimizer</strong>.
         </li>
       </ul>
 

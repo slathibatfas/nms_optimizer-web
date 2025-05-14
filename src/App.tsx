@@ -3,7 +3,7 @@
 // --- React & External Libraries ---
 import { Suspense, useEffect, useState, useCallback, useMemo, FC } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import { Tooltip, ScrollArea } from "@radix-ui/themes";
+import { ScrollArea } from "@radix-ui/themes";
 import ReactGA from "react-ga4";
 
 // --- Components ---
@@ -175,11 +175,11 @@ const App: FC = () => {
               <div className="flex-grow w-auto gridContainer__container lg:flex-shrink-0" ref={appLayoutContainerRef}>
                 <header className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
                   {!isSharedGrid && (
-                    <Tooltip content="Select Technology Platform" delayDuration={500}>
+
                       <span className="flex-shrink-0">
                         <ShipSelection solving={solving} />
                       </span>
-                    </Tooltip>
+
                   )}
                   <span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>
                     PLATFORM:

@@ -23,33 +23,33 @@ export const useUrlSync = () => {
       const gridFromUrl = urlParams.get("grid");
 
       // Sync platform from URL to store
-      // Pass `false` to setSelectedShipTypeInStore to prevent it from pushing a new history state,
-      // as this function is reacting to an existing URL state (either initial or from popstate).
       if (platformFromUrl && platformFromUrl !== selectedShipTypeFromStore) {
-        console.log(`useUrlSync: Platform in URL ('${platformFromUrl}') differs from store ('${selectedShipTypeFromStore}'). Updating store.`);
+        // console.log(`useUrlSync: Platform in URL ('${platformFromUrl}') differs from store ('${selectedShipTypeFromStore}'). Updating store.`);
         setSelectedShipTypeInStore(platformFromUrl, false);
       }
 
       // Sync grid from URL to store
       if (gridFromUrl) {
-        console.log("useUrlSync: Grid data found in URL. Deserializing.");
-        deserializeGrid(gridFromUrl); // This will call setIsSharedGrid(true) internally if successful
+        // console.log("useUrlSync: Grid data found in URL. Deserializing.");
+        deserializeGrid(gridFromUrl); 
       } else {
-        // No grid data in URL
-        if (isSharedGrid) { // If store thought it was shared, but URL no longer has grid
-          console.log("useUrlSync: No grid data in URL, but store was shared. Setting isSharedGrid to false.");
+        if (isSharedGrid) { 
+          // console.log("useUrlSync: No grid data in URL, but store was shared. Setting isSharedGrid to false.");
           setIsSharedGrid(false);
-          // Consider if gridStore.resetGrid() should be called here if navigating away from a shared link.
-          // For now, just updating the flag. App.tsx can react to isSharedGrid changes.
         }
       }
     };
-
-    // Initial check on mount
-    handlePopState();
+    
+    // Initial check on mount, delayed slightly to allow router to initialize
+    const timerId = setTimeout(() => {
+      handlePopState();
+    }, 0);
 
     window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
+    return () => {
+      clearTimeout(timerId); // Ensure the timeout is cleared on unmount
+      window.removeEventListener("popstate", handlePopState);
+    };
   }, [selectedShipTypeFromStore, setSelectedShipTypeInStore, deserializeGrid, setIsSharedGrid, isSharedGrid]);
 
   // Function to update URL when sharing
@@ -57,7 +57,6 @@ export const useUrlSync = () => {
     const serializedGrid = serializeGrid();
     const url = new URL(window.location.href);
     url.searchParams.set("grid", serializedGrid);
-    // Ensure platform is also in the shared URL
     url.searchParams.set("platform", selectedShipTypeFromStore);
     return url.toString();
   }, [serializeGrid, selectedShipTypeFromStore]);
@@ -66,10 +65,8 @@ export const useUrlSync = () => {
   const updateUrlForReset = useCallback(() => {
     const url = new URL(window.location.href);
     url.searchParams.delete("grid");
-    window.history.pushState({}, "", url.toString()); // Use pushState to allow going back
+    window.history.pushState({}, "", url.toString()); 
   }, []);
 
-  // No explicit return needed if the hook only manages side effects,
-  // but could return update functions if preferred over direct calls in App.tsx
   return { updateUrlForShare, updateUrlForReset };
 };
