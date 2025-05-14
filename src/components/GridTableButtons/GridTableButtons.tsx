@@ -1,12 +1,13 @@
 import React from "react";
 import { Button } from "@radix-ui/themes";
-import { QuestionMarkCircledIcon, CounterClockwiseClockIcon, ResetIcon, Share1Icon } from "@radix-ui/react-icons";
+import { QuestionMarkCircledIcon, CounterClockwiseClockIcon, ResetIcon, Share2Icon } from "@radix-ui/react-icons";
+import { Link } from "react-router-dom"; // Import Link
 import ReactGA from "react-ga4";
 
 interface GridTableButtonsProps {
   onShowInstructions: () => void;
-  onShowChangeLog: () => void;
-  onShare: () => void;
+  // onShowChangeLog: () => void; // Removed
+  onShare: () => void; // Added onShare to props interface
   onReset: () => void;
   isSharedGrid: boolean;
   hasModulesInGrid: boolean;
@@ -17,7 +18,6 @@ interface GridTableButtonsProps {
 
 const GridTableButtons: React.FC<GridTableButtonsProps> = ({
   onShowInstructions,
-  onShowChangeLog,
   onShare,
   onReset,
   isSharedGrid,
@@ -47,23 +47,27 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
           <span className="hidden sm:inline">Instructions</span>
         </Button>
         <Button
-          variant="soft"
-          className={`gridTable__button gridTable__button--changelog shadow-md !mr-2 sm:!px-2`}
-          onClick={() => {
-            ReactGA.event({
-              category: "User Interactions",
-              action: "showChangeLog",
-            });
-            onShowChangeLog();
-          }}
+          // The Changelog button is now a Link
+          // We wrap the Button component inside the Link
+          // The onClick handler is moved to the Button for GA tracking
+          variant="soft" // Keep Radix variant
+          className={`gridTable__button gridTable__button--changelog shadow-md !mr-2 sm:!px-2`} // Keep styling classes
+          asChild // Tell Radix Button to render as its child (the Link)
         >
-          <CounterClockwiseClockIcon />
-          <span className="hidden sm:inline">Change Log</span>
+          <Link to="/changelog" onClick={() => {
+              ReactGA.event({
+                category: "User Interactions",
+                action: "showChangeLog",
+              });
+            }}>
+            <CounterClockwiseClockIcon />
+            <span className="hidden sm:inline">Change Log</span>
+          </Link>
         </Button>
         {!isSharedGrid && (
           <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-md sm:!px-2`} onClick={onShare} disabled={isSharedGrid || !hasModulesInGrid}>
-            <Share1Icon />
-            <span className="hidden sm:inline">Share Link</span>
+            <Share2Icon />
+            <span className="hidden sm:inline">Share</span>
           </Button>
         )}
       </div>

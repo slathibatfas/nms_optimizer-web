@@ -2,6 +2,8 @@
 import { Text, Spinner } from "@radix-ui/themes";
 import React, { useState, useEffect } from "react";
 
+import './MessageSpinner.css';
+
 interface MessageSpinnerProps {
   isVisible: boolean;
   isInset?: boolean;
@@ -27,7 +29,7 @@ const randomMessages = [
   "-{{ Optimizing the optimization! }}-",
   "-{{ Harmonizing upgrade stack interactions! }}-",
   "-{{ If you think you can fit more than two weapons in here, you're high on NipNip! }}-",
-  "-{{ I'm a highly trained Neural Network, not a miracle worker! }}-",
+  "-{{ I'm a highly trained Convolutional Neural Network, not a miracle worker! }}-",
 ];
 // --- End of random messages ---
 

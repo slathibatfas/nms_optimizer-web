@@ -7,6 +7,8 @@ import ShakingWrapper from "../GridShake/GridShake";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
 import { useShakeStore } from "../../store/ShakeStore";
 
+import './GridTable.css';
+
 interface GridTableProps {
   grid: Grid | null | undefined; // Allow grid to be null or undefined
   resetGrid: () => void;

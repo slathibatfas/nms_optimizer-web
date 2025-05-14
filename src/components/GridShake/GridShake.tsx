@@ -1,6 +1,8 @@
 // ShakingWrapper.tsx
 import React, { useEffect } from "react";
 
+import './GridShake.css';
+
 interface ShakingWrapperProps {
   shaking: boolean;
   children: React.ReactNode;

@@ -3,7 +3,9 @@ import React, { useEffect, ReactNode, useCallback } from "react";
 import * as Dialog from "@radix-ui/react-dialog"; // Assuming GearIcon is used elsewhere or you want to keep it consistent
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Button, Theme } from "@radix-ui/themes";
-import { QuestionMarkCircledIcon, CounterClockwiseClockIcon } from "@radix-ui/react-icons";
+import { QuestionMarkCircledIcon, CounterClockwiseClockIcon, InfoCircledIcon } from "@radix-ui/react-icons";
+
+import "./AppDialog.css";
 
 interface AppDialogProps {
   onClose: () => void;
@@ -43,22 +45,19 @@ const AppDialog: React.FC<AppDialogProps> = ({ onClose, content, isOpen, title =
 
   return (
     <Dialog.Root
-    open={isOpen} // Control open state
-    onOpenChange={(open) => !open && onClose()} // Call onClose when Radix tries to close it
-    modal={true} // Keep it modal
-  >
+      open={isOpen} // Control open state
+      onOpenChange={(open) => !open && onClose()} // Call onClose when Radix tries to close it
+      modal={true} // Keep it modal
+    >
       <Dialog.Portal>
         <Theme appearance="dark">
           <Dialog.Overlay className="appDialog__overlay" />
           <Dialog.Content className="appDialog__content">
-            <Dialog.Title className="flex items-center gap-2 text-xl font-bold uppercase sm:text-2xl appDialog__title">
+            <Dialog.Title className="flex items-center gap-2 appDialog__title">
               {/* Conditionally render the GearIcon if the title is "Instructions" */}
-              {title === "Instructions" && (
-                <QuestionMarkCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />
-              )}
-              {title === "Changelog" && (
-                <CounterClockwiseClockIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }}/>
-              )}
+              {title === "Instructions" && <QuestionMarkCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />}
+              {title === "Changelog" && <CounterClockwiseClockIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />}
+              {title === "About" && <InfoCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />}
               {title}
             </Dialog.Title>
             <Dialog.Description className="hidden appDialog__description">This dialog contains information.</Dialog.Description>

@@ -5,9 +5,7 @@
   background-color: black;
   position: fixed;
   inset: 0;
-  /* Start transparent, animation will bring it to 0.5 opacity */
-  opacity: 0;
-  animation: appDialog__overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Add forwards */
+  /* opacity is handled by animations */
 }
 
 /* Element: Content */
@@ -24,18 +22,21 @@
   max-width: 512px;
   max-height: 80vh;
   padding: 16px;
-  animation: appDialog__content-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   gap: 8px;
+  /* opacity and transform are handled by animations */
 }
 
 /* Element: Title */
 .appDialog__title {
   font-family: var(--font-family-geosans);
+  font-size: 1.5rem; /* Kept as is, assuming this specific size is intentional for the main title */
+  font-weight: var(--font-weight-bold); /* Use variable for consistency */
   letter-spacing: var(--letter-spacing-wide);
   filter: drop-shadow(0 0 4px var(--gray-a1));
-  margin-right: 1rem;
+  text-transform: uppercase;
+  margin-right: 1rem; /* Kept for alignment, as title is likely outside the scrollable container */
 }
 
 /* Element: Close Button */
@@ -51,54 +52,76 @@
   flex-grow: 1;
 }
 
-/* Element: Item */
-.appDialog__article {
+/* Element: Body (was appDialog__article) - Main content area within the dialog */
+.appDialog__body {
   font-size: var(--text-base);
-  margin-right: 1rem; /* Assuming var(--text-base) is the desired font-size, removed redundant 1rem */
+  padding-right: 1rem; /* Use padding for scrollbar compensation within the scrollable content's body */
 }
 
-.appDialog__article h2 {
+/* Element: Subheading (replaces styling for h2 within appDialog__body) */
+.appDialog__subheading {
   filter: drop-shadow(0 0 2px var(--gray-a1));
-  margin-bottom: calc(var(--spacing) * 1);
+  margin-bottom: calc(var(--spacing) * .5);
   color: var(--accent-11);
-  margin-right: 1rem;
+  /* margin-right: 1rem; Removed as parent .appDialog__body now handles scrollbar padding */
   font-weight: var(--font-weight-bold);
-  font-size: var(--text-base);
+  font-size: calc(var(--text-base) * 1.125);
 }
 
-.appDialog__article h2:not(:first-of-type) {
+/* Modifier or specific rule for non-first subheading */
+.appDialog__subheading:not(:first-of-type) {
   margin-top: calc(var(--spacing) * 2);
 }
 
-.appDialog__article p {
+/* Element: Text/Paragraph (replaces styling for p within appDialog__body) */
+.appDialog__text {
   margin-top: 0rem;
   margin-bottom: calc(var(--spacing) * 2);
 }
 
-/* Element: List */
-.appDialog__article ul {
+/* Element: List (replaces styling for ul within appDialog__body) */
+.appDialog__list {
   list-style-type: disc;
   padding-left: 2rem;
-  
   margin-bottom: calc(var(--spacing) * 2);
 }
 
-/* Element: List Item */
-.appDialog__list li {
+/* Element: List Item (replaces styling for li within appDialog__list) */
+.appDialog__listItem {
   margin-bottom: calc(var(--spacing) * 1);
 }
 
-/* Animation: Overlay Show */
+/* --- Animations --- */
+
+/* Overlay Animations */
+.appDialog__overlay[data-state="open"] {
+  animation: appDialog__overlay-show 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.appDialog__overlay[data-state="closed"] {
+  animation: appDialog__overlay-hide 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Content Animations */
+.appDialog__content[data-state="open"] {
+  animation: appDialog__content-show 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.appDialog__content[data-state="closed"] {
+  animation: appDialog__content-hide 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- Keyframes --- */
+
+/* Keyframes: Overlay Show */
 @keyframes appDialog__overlay-show {
   from {
-    opacity: 0; /* Start at full opacity */
+    opacity: 0;
   }
   to {
-    opacity: 0.50; /* Animate to 25% opacity */
+    opacity: 0.50;
   }
 }
 
-/* Animation: Content Show */
+/* Keyframes: Content Show */
 @keyframes appDialog__content-show {
   from {
     opacity: 0;
@@ -110,15 +133,37 @@
   }
 }
 
+/* Keyframes: Overlay Hide */
+@keyframes appDialog__overlay-hide {
+  from {
+    opacity: 0.50;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Keyframes: Content Hide */
+@keyframes appDialog__content-hide {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96); /* Reverse of show animation */
+  }
+}
+
 /* Styles for ErrorContent component */
 .errorContent__icon {
   /* Tailwind w-16 h-16 is 4rem. Radix icons are usually 1em by default. */
   /* The w-16 h-16 classes on the element will define size. This is for color. */
-  color: #C44A34; /* Consider making this a CSS variable e.g., var(--error-icon-color) */
+  color: var(--red-9); /* Consider making this a CSS variable e.g., var(--error-icon-color) */
 }
 
 .errorContent__title {
-  color: #e6c133; /* Consider making this a CSS variable e.g., var(--error-title-color) */
+  color: var(--amber-9);
   font-family: var(--font-family-geosans);
 }
 

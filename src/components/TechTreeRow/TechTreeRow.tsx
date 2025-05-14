@@ -7,6 +7,8 @@ import { UpdateIcon, ResetIcon, ChevronDownIcon, DoubleArrowLeftIcon, Exclamatio
 import { Accordion } from "radix-ui";
 import { useShakeStore } from "../../store/ShakeStore";
 
+import './TechTreeRow.css';
+
 interface TechTreeRowProps {
   label: string;
   tech: string;
@@ -77,8 +79,21 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
   const currentCheckedModules = checkedModules[tech] || [];
   const techColor = getTechColor(tech ?? "gray");
 
-  // Construct the image path dynamically
-  const imagePath = techImage ? `/assets/img/buttons/${techImage}` : "/assets/img/infra-upgrade.png";
+  // --- Image Path and SrcSet Construction ---
+  const baseImagePath = "/assets/img/buttons/";
+  const fallbackImage = `${baseImagePath}infra.webp`; // Fallback for browsers not supporting srcSet or if techImage is null
+
+  let imagePath = fallbackImage;
+  let imageSrcSet = "";
+
+  if (techImage) {
+    const imageNameWithoutExtension = techImage.substring(0, techImage.lastIndexOf('.'));
+    const extension = techImage.substring(techImage.lastIndexOf('.'));
+
+    imagePath = `${baseImagePath}${techImage}`; // Default src
+    // Example srcSet, adjust sizes and paths as per your available images
+    imageSrcSet = `${baseImagePath}${imageNameWithoutExtension}${extension} 1x, ${baseImagePath}${imageNameWithoutExtension}@x2${extension} 2x`;
+  }
 
   const AccordionTrigger = React.forwardRef(
     ({ children, className, ...props }: { children: React.ReactNode; className?: string }, forwardedRef: React.Ref<HTMLButtonElement>) => (
@@ -97,25 +112,31 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
         <IconButton
           onClick={handleOptimizeClick}
           disabled={solving}
-          variant="soft"
+          radius="medium"
+          variant="solid"
           color={techColor as IconButtonColor}
-          className="techRow__optimizeButton"
-          style={{ backgroundImage: `url(${imagePath})` }}
+          className="!cursor-pointer techRow__optimizeButton"
         >
           <div className="relative shadow-md group">
             <img
               src={imagePath}
+              srcSet={imageSrcSet || undefined} // Use undefined if imageSrcSet is empty to avoid an empty attribute
               alt={label}
-              className="w-full h-full transition border-2 rounded-sm shadow-md opacity-100 duration-250 techRow__optimizeButton--image"
+              className="w-full h-full transition shadow-md opacity-100 duration-250 techRow__optimizeButton--image"
             />
-            <IconComponent className="absolute top-0 right-0 w-8 h-8 p-1 transition-opacity opacity-0 group-hover:opacity-100" />
+            <IconComponent className="absolute top-0 right-0 p-1 transition-opacity opacity-0 w-7 h-7 group-hover:opacity-100" />
           </div>
         </IconButton>
       </Tooltip>
 
       <div className="flex flex-col items-center shadow-md">
         <Tooltip delayDuration={1000} content="Reset">
-          <IconButton radius="medium" onClick={handleReset} disabled={!hasTechInGrid || solving} className="techRow__resetButton">
+          <IconButton
+            radius="medium"
+            onClick={handleReset}
+            disabled={!hasTechInGrid || solving}
+            className={`techRow__resetButton ${(!(!hasTechInGrid || solving)) ? '!cursor-pointer' : ''}`}
+          >
             <ResetIcon />
           </IconButton>
         </Tooltip>

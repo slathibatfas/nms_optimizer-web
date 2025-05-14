@@ -6,6 +6,8 @@ import { useGridStore } from "../../store/GridStore";
 import { useTechStore } from "../../store/TechStore";
 import { useShakeStore } from "../../store/ShakeStore";
 
+import './GridCell.css';
+
 // Moved outside the component to prevent re-creation on each render
 // This function is pure and only depends on its input.
 const getUpgradePriority = (label: string | undefined): number => {
@@ -21,7 +23,6 @@ const getUpgradePriority = (label: string | undefined): number => {
       return 0;
   }
 };
-
 interface GridCellProps {
   rowIndex: number;
   columnIndex: number;

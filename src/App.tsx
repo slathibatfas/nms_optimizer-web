@@ -2,6 +2,7 @@
 
 // --- React & External Libraries ---
 import { Suspense, useEffect, useState, useCallback, useMemo, FC } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { Tooltip, ScrollArea } from "@radix-ui/themes";
 import ReactGA from "react-ga4";
 
@@ -10,17 +11,15 @@ import Buymeacoffee from "./components/BuyMeACoffee/BuyMeACoffee";
 import GridTable from "./components/GridTable/GridTable";
 import GridTableButtons from "./components/GridTableButtons/GridTableButtons";
 import TechTreeComponent from "./components/TechTree/TechTree";
-import ChangeLogContent from "./components/AppDialog/ChangeLogContent";
 import ErrorContent from "./components/AppDialog/ErrorContent";
-import InfoDialog from "./components/AppDialog/AppDialog";
+import InfoDialog from "./components/AppDialog/AppDialog"; // Still used for ErrorDialog
 import AppHeader from "./components/AppHeader/AppHeader";
-import InstructionsContent from "./components/AppDialog/InstructionsContent";
 import MessageSpinner from "./components/MessageSpinner/MessageSpinner";
 import OptimizationAlertDialog from "./components/AppDialog/OptimizationAlertDialog";
 import ShipSelection from "./components/ShipSelection/ShipSelection";
 
 // --- Constants ---
-import { API_URL, TRACKING_ID } from "./constants";
+import { API_URL, TRACKING_ID, APP_NAME } from "./constants";
 
 // --- Hooks ---
 import { useAppLayout } from "./hooks/useAppLayout";
@@ -32,10 +31,10 @@ import { ShipTypeDetail, useFetchShipTypesSuspense, useShipTypesStore } from "./
 import { useGridStore } from "./store/GridStore";
 import { useOptimizeStore } from "./store/OptimizeStore";
 
-/**
- * Defines the possible types of dialogs that can be active.
- */
-type ActiveDialog = "changelog" | "instructions" | null;
+// --- Page Components ---
+import ChangelogPage from "./pages/ChangeLogPage";
+import InstructionsPage from "./pages/InstructionsPage";
+import AboutPage from "./pages/AboutPage";
 
 /**
  * Loading fallback component for Suspense.
@@ -54,8 +53,9 @@ const AppLoadingFallback = () => (
  * dialog, the change log dialog, and the error dialog.
  */
 const App: FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   // --- State Hooks ---
-  const [activeDialog, setActiveDialog] = useState<ActiveDialog>(null);
   // Initialize state directly from localStorage to avoid flicker.
   // Need the setter function to turn off the glow on click.
   const [isFirstVisit, setIsFirstVisit] = useState(() => !localStorage.getItem("hasVisitedNMSOptimizer"));
@@ -67,12 +67,12 @@ const App: FC = () => {
 
   // --- Custom Hooks & Data Fetching ---
   // Initialize URL synchronization (must be called early, but its return values are used later)
-  useUrlSync(); 
-  
+  useUrlSync();
+
   // Fetch ship types data using the suspense hook. This will suspend rendering until the data is loaded.
   const shipTypes = useFetchShipTypesSuspense();
   const { solving, handleOptimize, gridContainerRef, patternNoFitTech, clearPatternNoFitTech, handleForceCurrentPnfOptimize } = useOptimize();
-  
+
   // containerRef is for div.gridContainer__container (for height)
   // gridTableRef is for GridTable element (for columnWidth)
   const { containerRef: appLayoutContainerRef, gridTableRef: appLayoutGridTableRef, gridHeight, columnWidth, isLarge } = useAppLayout();
@@ -109,27 +109,31 @@ const App: FC = () => {
     }
     // Empty dependency array ensures this effect runs only once on mount.
   }, []);
-  
-  const handleCloseDialog = useCallback(() => {
-    // This function now only handles non-error dialogs.
-    // The error dialog's visibility is directly controlled by useOptimizeStore's showError state and its onClose prop.
-    setActiveDialog(null);
-  }, []);
+
+  useEffect(() => {
+    // Set title for the main page when no specific page route is active
+    if (location.pathname === '/') {
+      document.title = APP_NAME;
+    }
+  }, [location.pathname]);
 
   /**
    * Handles showing the instructions dialog and turns off the first visit glow if active.
    */
   const handleShowInstructions = useCallback(() => {
-    setActiveDialog("instructions");
+    navigate("/instructions");
+    // The isFirstVisit logic will be handled by the InstructionsPage via onOpen prop
+  }, [navigate]);
+
+  /**
+   * Callback for when the instructions page is opened, to turn off the first visit glow.
+   */
+  const handleFirstVisitInstructionsOpened = useCallback(() => {
     if (isFirstVisit) {
       setIsFirstVisit(false);
     }
-    // localStorage is already set in the initial useEffect, no need to set it again here.
   }, [isFirstVisit, setIsFirstVisit]);
 
-  /**
-   * Handles the click event of the share button.
-   */
   const handleShareClick = useCallback(() => {
     const shareUrl = updateUrlForShare();
     const newWindow = window.open(shareUrl, "_blank", "noopener,noreferrer");
@@ -158,10 +162,8 @@ const App: FC = () => {
   }, [resetGrid, setIsSharedGrid, updateUrlForReset]);
 
   // --- Memoized Component Instances for Dialog Content ---
-  const changeLogDialogContent = useMemo(() => <ChangeLogContent />, []);
-  const instructionsDialogContent = useMemo(() => <InstructionsContent />, []);
   const errorDialogContent = useMemo(() => <ErrorContent />, []);
-  
+
   return (
     <>
       <Suspense fallback={<AppLoadingFallback />}>
@@ -197,7 +199,7 @@ const App: FC = () => {
 
                 <GridTableButtons
                   onShowInstructions={handleShowInstructions}
-                  onShowChangeLog={() => setActiveDialog("changelog")}
+                  // onShowChangeLog is removed; Link will be used in GridTableButtons
                   onShare={handleShareClick}
                   onReset={handleResetGrid}
                   isSharedGrid={isSharedGrid}
@@ -221,8 +223,10 @@ const App: FC = () => {
                     <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
                   </aside>
                 ))}
+
             </section>
           </section>
+		  
           <footer className="flex flex-wrap items-center justify-center gap-1 pt-4 pb-4 text-xs text-center lg:pb-0 sm:text-sm lg:text-base">
             Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
             <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
@@ -236,20 +240,17 @@ const App: FC = () => {
           </footer>
         </main>
       </Suspense>
+
+      {/* Routed Dialogs/Pages */}
+      <Routes>
+        <Route path="/changelog" element={<ChangelogPage />} />
+        <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} />} />
+        <Route path="/about" element={<AboutPage />} />
+      </Routes>
+
+      {/* Non-routed Dialogs */}
       <InfoDialog
-        isOpen={activeDialog === "changelog"}
-        onClose={handleCloseDialog}
-        content={changeLogDialogContent}
-        title="Changelog"
-      />
-      <InfoDialog
-        isOpen={activeDialog === "instructions"}
-        onClose={handleCloseDialog}
-        content={instructionsDialogContent}
-        title="Instructions"
-      />
-      <InfoDialog
-        isOpen={showError}
+        isOpen={showError} // This remains as is
         onClose={() => setShowError(false)}
         content={errorDialogContent}
         title="Error!"

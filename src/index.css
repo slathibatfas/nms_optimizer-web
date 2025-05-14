@@ -51,9 +51,12 @@
 
 /* Background styles */
 body {
-  /* Combine background properties */
-  background: url("/src/assets/img/nms_background.webp") center/cover fixed;
-  font-family: var(--default-font-family, Raleway, Helvetica, Arial, sans-serif); /* Added base font */
+  background: 
+    image-set(
+      url("/src/assets/img/background.webp") 1x,
+      url("/src/assets/img/background@2x.webp") 2x
+    ) center/cover fixed;
+  font-family: var(--default-font-family, Raleway, Helvetica, Arial, sans-serif);
   min-height: 100vh;
   overflow-x: hidden;
 }

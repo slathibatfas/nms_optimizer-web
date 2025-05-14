@@ -27,6 +27,7 @@
           "react": "^19.0.0",
           "react-dom": "^19.0.0",
           "react-ga4": "^2.1.0",
+          "react-router-dom": "^7.6.0",
           "require": "^2.4.20",
           "rollup-plugin-visualizer": "^5.14.0",
           "vite-preload": "^1.0.4",

@@ -6,6 +6,8 @@ import { useFetchShipTypesSuspense, useShipTypesStore, ShipTypeDetail } from "..
 import { useGridStore, createGrid, Grid } from "../../store/GridStore"; // Import createGrid and Grid type
 import ReactGA from "react-ga4";
 
+import './ShipSelection.css';
+
 // --- ShipSelection component remains the same ---
 interface ShipSelectionProps {
   solving: boolean;

@@ -22,9 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-src/constants.ts
 
-.early.coverage
 coverage/base.css
 coverage/block-navigation.js
 coverage/clover.xml
@@ -85,3 +83,4 @@ coverage/nms_optimizer-web/src/store/index.html
 coverage/nms_optimizer-web/src/store/OptimizeStore.ts.html
 coverage/nms_optimizer-web/src/store/ShakeStore.ts.html
 coverage/nms_optimizer-web/src/store/TechStore.ts.html
+stats.html

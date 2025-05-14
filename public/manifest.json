@@ -1,0 +1,50 @@
+{
+  "name": "No Man's Sky AI Technology Optimizer",
+  "short_name": "NMS Optimizer",
+  "description": "Optimize your No Man's Sky technology layouts for starships and multi-tools.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#313b4e",
+  "theme_color": "#0052CC",
+  "orientation": "landscape-primary",
+  "icons": [
+    {
+      "src": "/assets/svg/nms_so-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/assets/img/manifest/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/manifest/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+"screenshots": [
+  {
+    "src": "/assets/img/screenshot-desktop.png",
+    "sizes": "1280x824",
+    "type": "image/png",
+    "platform": "desktop",
+    "label": "Main application view showing the technology grid on desktop."
+  },
+  {
+    "src": "/assets/img/screenshot-tablet.png",
+    "sizes": "800x1280",
+    "type": "image/png",
+    "platform": "tablet",
+    "label": "Main application view on tablet."
+  },
+  {
+    "src": "/assets/img/screenshot-mobile.png",
+    "sizes": "375x667",
+    "type": "image/png",
+    "platform": "mobile",
+    "label": "Main application view on mobile."
+  }
+]
+}

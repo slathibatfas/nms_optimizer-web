@@ -8,6 +8,8 @@ import { TechTreeRow } from "../TechTreeRow/TechTreeRow";
 import { useShipTypesStore } from "../../hooks/useShipTypes"; 
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 
+import './TechTree.css';
+
 // Define interfaces to ensure type safety
 interface TechTreeModule {
   label: string;

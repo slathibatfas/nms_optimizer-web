@@ -25,7 +25,7 @@
 }
 
 .messageSpinner__random--visible {
-  color: #e6c133; /* Or a CSS variable e.g., var(--warning-text-color) */
+  color: var(--amber-9)  ; /* Or a CSS variable e.g., var(--warning-text-color) */
 }
 
 .messageSpinner__random--hidden {
