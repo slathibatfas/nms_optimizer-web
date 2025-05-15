@@ -113,20 +113,18 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
           onClick={handleOptimizeClick}
           disabled={solving}
           radius="small"
-          variant="surface"
-          {...(techColor === "white"
+          variant="solid"
+          {...(techColor === "white" && !solving
             ? {
                 "data-accent-color": "white",
-                style: { border: "1px solid var(--gray-12)", backgroundColor: "var(--gray-track)", color: "var(--gray-a12)" }, // Manual styles for a white button with black text/icon
+                style: { border: "2px solid var(--gray-a11)", backgroundColor: "var(--gray-a3)", color: "var(--gray-12)" }, // Manual styles for a white button with black text/icon
               }
             : techColor === "gray"
             ? {
                 "data-accent-color": "gray",
-                style: { border: "1px solid var(--gray-6)", backgroundColor: "var(--gray-a4)", color: "var(--gray-a12)" },   
               }
             : {
                 "data-accent-color": techColor,
-                style: { border: `1px solid var(--accent-track)`, color: "var(--accent-12)"  }, // Set data-accent-color for other techs too (optional, if you plan to style them)
               })}
           className="!cursor-pointer techRow__optimizeButton shadow-md"
         >
