@@ -1,7 +1,6 @@
 // src/components/AppHeader/AppHeader.tsx
 import React from "react";
 import NMSIcon from "../../assets/img/nms_icon.webp";
-import NMSLogo from "../../assets/svg/nms_logo.svg";
 import NMSShip from "../../assets/img/ship.webp";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { APP_VERSION } from "../../constants";
@@ -16,9 +15,9 @@ const AppHeaderInternal: React.FC = () => {
       <div className="flex items-center w-full">
         {" "}
         {/* Changed items-start to items-center */}
-        <img src={NMSIcon} className="mr-4 h-14 sm:mr-4 header__icon sm:h-22" alt="No Man's Sky Icon" />
+        <img src={NMSIcon} className="mr-4 h-[56] w-[32] sm:mr-4 header__icon sm:h-[88] sm:w-[50]" alt="No Man's Sky Icon" />
         <div>
-          <img src={NMSLogo} className="h-5 mb-1 sm:mb-2 sm:h-8 header__logo" alt="No Man's Sky Logo" />
+          <img src="/assets/svg/nms_logo.svg" className="h-[20] w-[234] mb-1 sm:mb-2 sm:h-[32] sm:w-[374] header__logo" alt="No Man's Sky Logo" />
           {/* <h1 className="text-2xl sm:text-4xl">No Man's Sky</h1> */}
           <h2 className="text-base sm:text-2xl header__title">
             <strong>AI</strong> Technology Optimizer <span className="font-thin">{APP_VERSION}</span>
