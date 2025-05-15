@@ -33,17 +33,6 @@ const config: UserConfigExport = defineConfig({
           }
           return "assets/[name]-[hash].[ext]";
         },
-        manualChunks(id) {
-          // Chunk vendor libraries
-          if (id.includes('node_modules')) {
-            if (id.includes('react')) return 'vendor-react';
-            if (id.includes('zustand')) return 'vendor-zustand';
-            return 'vendor';
-          }
-
-          // Example: split out layout-related modules
-          if (id.includes('src/pages')) return 'pages';
-        },
       },
     },
     cssMinify: "lightningcss",
