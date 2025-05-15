@@ -65,18 +65,15 @@ const App: FC = () => {
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
   const { showError, setShowError } = useOptimizeStore();
 
-  // --- Custom Hooks & Data Fetching ---
-  // Initialize URL synchronization (must be called early, but its return values are used later)
-  useUrlSync();
-
+  // --- Custom Hooks & Data Fetching ---  
   // Fetch ship types data using the suspense hook. This will suspend rendering until the data is loaded.
   const shipTypes = useFetchShipTypesSuspense();
   const { solving, handleOptimize, gridContainerRef, patternNoFitTech, clearPatternNoFitTech, handleForceCurrentPnfOptimize } = useOptimize();
-
+  // Call useUrlSync once and destructure its return values
+  const { updateUrlForShare, updateUrlForReset } = useUrlSync(); 
   // containerRef is for div.gridContainer__container (for height)
   // gridTableRef is for GridTable element (for columnWidth)
   const { containerRef: appLayoutContainerRef, gridTableRef: appLayoutGridTableRef, gridHeight, columnWidth, isLarge } = useAppLayout();
-  const { updateUrlForShare, updateUrlForReset } = useUrlSync(); // Get specific functions after initialization
 
   // --- Environment Variables ---
   const build = import.meta.env.VITE_BUILD_VERSION;
@@ -243,6 +240,9 @@ const App: FC = () => {
 
       {/* Routed Dialogs/Pages */}
       <Routes>
+        {/* Add a route for the root path to satisfy this Routes block and prevent the warning. 
+            It renders nothing as App.tsx handles the main content for the root path. */}
+        <Route path="/" element={null} /> 
         <Route path="/changelog" element={<ChangelogPage />} />
         <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} />} />
         <Route path="/about" element={<AboutPage />} />
