@@ -29,7 +29,8 @@ const ChangeLogContent: React.FC = () => {
         <li className="appDialog__listItem">Added a dedicated "About" page.</li>
         <li className="appDialog__listItem">Implemented named routes for content dialogs to improve SEO.</li>
         <li className="appDialog__listItem">Resized and optimized sidebar button images.</li>
-        <li className="appDialog__listItem">Numerous additional UI improvements and performance enhancements based on Lighthouse reporting.</li>
+        <li className="appDialog__listItem">Reduced DOM complexity significantly.</li>
+        <li className="appDialog__listItem">Numerous additional UI improvements and performance enhancements based on Lighthouse reporting (98/100!).</li>
       </ul>
 
       <h2 className="pt-2 appDialog__subheading">Version 2.69 (2025-05-13)</h2>

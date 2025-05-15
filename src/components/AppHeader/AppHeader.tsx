@@ -13,8 +13,6 @@ const AppHeaderInternal: React.FC = () => {
   return (
     <header className="flex flex-col pt-3 pb-1 pl-6 sm:pr-8 header sm:pb-4 sm:pt-6">
       <div className="flex items-center w-full">
-        {" "}
-        {/* Changed items-start to items-center */}
         <img src={NMSIcon} className="mr-4 h-[56] w-[32] sm:mr-4 header__icon sm:h-[88] sm:w-[50]" alt="No Man's Sky Icon" />
         <div>
           <img src="/assets/svg/nms_logo.svg" className="h-[20] w-[234] mb-1 sm:mb-2 sm:h-[32] sm:w-[374] header__logo" alt="No Man's Sky Logo" />
