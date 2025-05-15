@@ -126,7 +126,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
             : {
                 "data-accent-color": techColor,
               })}
-          className="!cursor-pointer techRow__optimizeButton shadow-md"
+          className={`techRow__optimizeButton shadow-md ${!solving ? '!cursor-pointer' : '!cursor-not-allowed'}`.trim()}
         >
           <div className="relative shadow-md group">
             <img
