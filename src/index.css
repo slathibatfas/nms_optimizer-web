@@ -4,7 +4,7 @@
        url("/assets/fonts/geonms-webfont.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-  font-display: auto;
+  font-display: swap;
 }
 
 @font-face {
@@ -12,7 +12,7 @@
   src: url("/assets/fonts/Raleway-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
-  font-display: auto;
+  font-display: swap;
 }
 
 @font-face {
@@ -20,7 +20,7 @@
   src: url("/assets/fonts/AcuminProCond-Semibold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
-  font-display: auto;
+  font-display: swap;
 }
 
 @import "@radix-ui/themes/styles.css";
@@ -48,6 +48,9 @@
 }
 
 /* App.tsx level styling */
+.dark, .dark-theme, :is(.dark, .dark-theme) :where(.radix-themes:not(.light, .light-theme)) {
+  --color-background: #15152e;
+}
 
 /* Background styles */
 body {

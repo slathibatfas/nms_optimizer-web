@@ -24,8 +24,12 @@ const ChangeLogContent: React.FC = () => {
 
       <h2 className="pt-2 appDialog__subheading">Version 2.70 (2025-05-14)</h2>
       <ul className="appDialog__list">
-        <li className="appDialog__listItem">Updated Solor Starships and Freighters models to full 16k samples.</li>
-        <li className="appDialog__listItem">Numerous performance and SEO enhancements.</li>
+        <li className="appDialog__listItem">Updated Solar Starships and Freighters with full 16k-sample models.</li>
+        <li className="appDialog__listItem">Enabled compression on the service endpoint to reduce payload size and boost performance.</li>
+        <li className="appDialog__listItem">Added a dedicated "About" page.</li>
+        <li className="appDialog__listItem">Implemented named routes for content dialogs to improve SEO.</li>
+        <li className="appDialog__listItem">Resized and optimized sidebar button images.</li>
+        <li className="appDialog__listItem">Numerous additional UI improvements and performance enhancements based on Lighthouse reporting.</li>
       </ul>
 
       <h2 className="pt-2 appDialog__subheading">Version 2.69 (2025-05-13)</h2>

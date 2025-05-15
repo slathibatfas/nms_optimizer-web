@@ -14,7 +14,7 @@ const AboutContent: React.FC = () => {
 
         <h2 className="pb-2 appDialog__subheading">How It Works</h2>
         <Blockquote>How do you solve a problem with 479 million possible permutations in under 5 seconds?</Blockquote> 
-        <p className="pt-2 appDialog__text">
+        <p className="pt-4 appDialog__text">
           The optimization process blends deterministic patterns with adaptive algorithms for No Man's Sky technology module grids:
         </p>
 
@@ -52,11 +52,11 @@ const AboutContent: React.FC = () => {
 
         <h2 className="appDialog__subheading">Tech Stack</h2>
         <p className="appDialog__text">
-          <strong>Frontend:</strong> React, Zustand, Vite, Tailwind CSS, Radix UI.
+          <strong>Frontend:</strong> TypeScript, React, Zustand, Vite, Tailwind CSS, Radix UI.
+          <br />
+          <strong>Backend Solver:</strong> Python, Flask, TensorFlow, NumPy, custom simulated annealing implementation, and heuristic scoring.
           <br />
           <strong>Testing:</strong> Vitest, Python Unittest.
-          <br />
-          <strong>Backend Solver:</strong> Python, Flask, TensorFlow, NumPy, Simulated Annealing, Heuristic Scoring.
           <br />
           <strong>Deployment:</strong> Heroku (Hosting) and Cloudflare (DNS and CDN).
           <br />
