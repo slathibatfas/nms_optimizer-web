@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 // Main App CSS
 import './index.css';
 
-import ErrorBoundary from './components/ErrorBoundry/ErrorBoundry'; // Import your ErrorBoundary
+import ErrorBoundary from './components/ErrorBoundry/ErrorBoundry';
 import App from './App';
 
 createRoot(document.getElementById('root')!).render(
