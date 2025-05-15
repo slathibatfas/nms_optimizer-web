@@ -112,7 +112,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
         <IconButton
           onClick={handleOptimizeClick}
           disabled={solving}
-          radius="medium"
+          radius="small"
           variant="solid"
           color={techColor as IconButtonColor}
           className="!cursor-pointer techRow__optimizeButton shadow-md"
@@ -132,7 +132,8 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
       <div className="flex flex-col items-center shadow-md">
         <Tooltip delayDuration={1000} content="Reset">
           <IconButton
-            radius="medium"
+            radius="small"
+            variant="solid"
             onClick={handleReset}
             disabled={!hasTechInGrid || solving}
             className={`techRow__resetButton ${(!(!hasTechInGrid || solving)) ? '!cursor-pointer' : ''}`}

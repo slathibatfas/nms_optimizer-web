@@ -174,14 +174,16 @@ const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, cell, g
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             onTouchCancel={handleTouchEnd}
-            className={cellClassName}
+            // Apply flex properties directly to this div if a label is present
+            // to center the label span, eliminating an inner div.
+            className={`${cellClassName} flex items-center justify-center w-full h-full`}
             style={{ backgroundImage: backgroundImageStyle }}
           >
-            <div className="flex items-center justify-center w-full h-full">
+            {/* The inner div for centering is removed. 
+                The span is now a direct child of the flex-enabled main cell div. */}
               <span className="mt-1 text-1xl md:text-3xl lg:text-4xl gridCell__label">
                 {upGradePriority > 0 ? upGradePriority : null}
               </span>
-            </div>
           </div>
         </Tooltip>
       ) : (
