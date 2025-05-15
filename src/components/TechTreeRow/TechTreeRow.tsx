@@ -19,10 +19,10 @@ interface TechTreeRowProps {
 }
 
 // Define a type for the keys of the colorMap
-type ColorMapKey = "purple" | "red" | "green" | "cyan" | "amber" | "iris" | "yellow" | "sky" | "jade" | "orange" | "gray";
+// type ColorMapKey = "purple" | "red" | "green" | "cyan" | "amber" | "iris" | "yellow" | "sky" | "jade" | "orange" | "gray";
 
 // Define a type for the valid color strings for IconButton
-type IconButtonColor = ColorMapKey;
+// type IconButtonColor = ColorMapKey;
 
 function round(value: number, decimals: number) {
   return Number(Math.round(Number(value + "e" + decimals)) + "e-" + decimals);
@@ -113,9 +113,21 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
           onClick={handleOptimizeClick}
           disabled={solving}
           radius="small"
-          variant="solid"
-          color={techColor as IconButtonColor}
-          // data-accent-color={techColor as IconButtonColor}
+          variant="surface"
+          {...(techColor === "white"
+            ? {
+                "data-accent-color": "white",
+                style: { border: "1px solid var(--gray-12)", backgroundColor: "var(--gray-track)", color: "var(--gray-a12)" }, // Manual styles for a white button with black text/icon
+              }
+            : techColor === "gray"
+            ? {
+                "data-accent-color": "gray",
+                style: { border: "1px solid var(--gray-6)", backgroundColor: "var(--gray-a4)", color: "var(--gray-a12)" },   
+              }
+            : {
+                "data-accent-color": techColor,
+                style: { border: `1px solid var(--accent-track)`, color: "var(--accent-12)"  }, // Set data-accent-color for other techs too (optional, if you plan to style them)
+              })}
           className="!cursor-pointer techRow__optimizeButton shadow-md"
         >
           <div className="relative shadow-md group">
