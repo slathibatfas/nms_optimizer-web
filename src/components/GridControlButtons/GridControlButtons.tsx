@@ -52,8 +52,6 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const buttonBackgroundColor = hasModulesInGrid ? "var(--gray-a2)" : "var(--accent-a5)";
-
   return (
     <div
       style={{ gridColumn: 11, gridRow: rowIndex + 1 }}
@@ -67,7 +65,6 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
               size={screenSize === "sm" ? "2" : "1"}
               variant="soft"
               className="mx-auto"
-              style={{ backgroundColor: buttonBackgroundColor }}
               onClick={() => activateRow(rowIndex)}
               disabled={hasModulesInGrid}
             >
@@ -84,7 +81,6 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
               variant="soft"
               size={screenSize === "sm" ? "2" : "1"}
               className="mx-auto "
-              style={{ backgroundColor: buttonBackgroundColor }}
               onClick={() => deActivateRow(rowIndex)}
               disabled={hasModulesInGrid}
             >

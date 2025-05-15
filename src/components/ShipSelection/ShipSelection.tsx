@@ -65,7 +65,7 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
           <GearIcon className="w-6 h-6" />
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content style={{ backgroundColor: "var(--gray-5)" }}>
+      <DropdownMenu.Content style={{ backgroundColor: "var(--accent-3)" }}>
         <Suspense fallback={<Text>Loading Ship Types...</Text>}>
           <ShipTypesDropdown selectedShipType={selectedShipType} handleOptionSelect={handleOptionSelect} />
         </Suspense>

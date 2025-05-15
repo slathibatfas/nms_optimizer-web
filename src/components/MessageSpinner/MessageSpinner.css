@@ -1,7 +1,6 @@
 .messageSpinner__header {
   font-family: var(--font-family-geosans);
-  color: var(--gray-12);
-  filter: drop-shadow(0 0 4px var(--gray-0));
+  filter: drop-shadow(0 0 4px var(--accent-a2));
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wide);
 }
@@ -9,7 +8,7 @@
 .messageSpinner__spinner {
   height: 4rem;
   width: 4rem;
-  filter: drop-shadow(0 0 4px var(--gray-0));
+  filter: drop-shadow(0 0 4px var(--accent-a2));
 }
 
 .messageSpinner__spinner--big {
