@@ -162,44 +162,44 @@ const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, cell, g
     ? `image-set(url(/assets/img/${cell.image}) 1x, url(/assets/img/${cell.image.replace(/\.webp$/, "@2x.webp")}) 2x)`
     : "none"), [cell.image]);
 
-  return (
-    <div className="gridCell__container" style={{ gridColumn: columnIndex + 1, gridRow: rowIndex + 1 }}>
-      {cell.label ? (
-        <Tooltip content={cell.label} delayDuration={500}>
-          <div
-            role="gridCell"
-            data-accent-color={techColor}
-            onContextMenu={handleContextMenu}
-            onClick={handleClick}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            onTouchCancel={handleTouchEnd}
-            // Apply flex properties directly to this div if a label is present
-            // to center the label span, eliminating an inner div.
-            className={`${cellClassName} flex items-center justify-center w-full h-full`}
-            style={{ backgroundImage: backgroundImageStyle }}
-          >
-            {/* The inner div for centering is removed. 
-                The span is now a direct child of the flex-enabled main cell div. */}
-              <span className="mt-1 text-1xl md:text-3xl lg:text-4xl gridCell__label">
-                {upGradePriority > 0 ? upGradePriority : null}
-              </span>
-          </div>
-        </Tooltip>
-      ) : (
-        <div
-          role="gridCell"
-          data-accent-color={techColor}
-          onContextMenu={handleContextMenu}
-          onClick={handleClick}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onTouchCancel={handleTouchEnd} // Use handleTouchEnd for cancel as well
-          className={cellClassName}
-          style={{ backgroundImage: backgroundImageStyle }}
-        />
+  // Dynamically construct the className for the cell div
+  // Flex properties are added only if a label is present, for centering.
+  const labelSpecificClasses = cell.label ? "flex items-center justify-center w-full h-full" : "";
+  const finalCellClassName = `${cellClassName} ${labelSpecificClasses}`.trim();
+
+  // Combine backgroundImageStyle with grid positioning styles
+  const cellElementStyle = useMemo(() => ({
+    backgroundImage: backgroundImageStyle,
+  }), [backgroundImageStyle]);
+
+  const cellElement = (
+    <div
+      role="gridCell"
+      data-accent-color={techColor}
+      onContextMenu={handleContextMenu}
+      onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
+      className={finalCellClassName}
+      style={cellElementStyle} // Apply combined styles here
+    >
+      {cell.label && ( // Conditionally render the label span
+        <span className="mt-1 text-1xl md:text-3xl lg:text-4xl gridCell__label">
+          {upGradePriority > 0 ? upGradePriority : null}
+        </span>
       )}
     </div>
+  );
+
+  return (
+    cell.label ? (
+      <Tooltip content={cell.label} delayDuration={500}>
+        {cellElement}
+      </Tooltip>
+    ) : (
+      cellElement // Render cellElement directly, now with grid positioning styles
+    )
   );
 }); // Close React.memo HOC
 

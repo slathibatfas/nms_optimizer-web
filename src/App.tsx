@@ -8,7 +8,7 @@ import ReactGA from "react-ga4";
 
 // --- Components ---
 import Buymeacoffee from "./components/BuyMeACoffee/BuyMeACoffee";
-import GridTable from "./components/GridTable/GridTable";
+import { GridTable } from "./components/GridTable/GridTable";
 import GridTableButtons from "./components/GridTableButtons/GridTableButtons";
 import TechTreeComponent from "./components/TechTree/TechTree";
 import ErrorContent from "./components/AppDialog/ErrorContent";

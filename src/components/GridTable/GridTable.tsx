@@ -105,4 +105,3 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
 
 export const GridTable = React.memo(GridTableInternal);
 
-export default GridTable;
