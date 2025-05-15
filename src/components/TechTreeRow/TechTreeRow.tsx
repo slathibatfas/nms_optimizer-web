@@ -77,7 +77,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
 
   // Get the checked modules for the current tech, or an empty array if undefined
   const currentCheckedModules = checkedModules[tech] || [];
-  const techColor = getTechColor(tech ?? "gray");
+  const techColor = getTechColor(tech ?? "white");
 
   // --- Image Path and SrcSet Construction ---
   const baseImagePath = "/assets/img/buttons/";
@@ -115,6 +115,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
           radius="small"
           variant="solid"
           color={techColor as IconButtonColor}
+          // data-accent-color={techColor as IconButtonColor}
           className="!cursor-pointer techRow__optimizeButton shadow-md"
         >
           <div className="relative shadow-md group">

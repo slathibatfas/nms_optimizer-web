@@ -36,7 +36,6 @@ interface GridCellProps {
   };
   grid: Grid;
   isSharedGrid: boolean;
-  // setShaking: React.Dispatch<React.SetStateAction<boolean>>; // Removed as it comes from useShakeStore now
 }
 
 /**

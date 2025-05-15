@@ -46,6 +46,22 @@ text-shadow:
   transition: background-color 0.25s ease;
 }
 
+.gridCell--active[data-accent-color="white"] {
+  background-color: var(--gray-a3);
+  border-color: var(--gray-12);
+  border-width: 1px;
+}
+
+@media (min-width: 640px) { /* Tailwind's sm breakpoint */
+  .gridCell--active[data-accent-color="white"] {
+    border-width: 2px;
+  }
+}
+
+.gridCell--active[data-accent-color="white"]:hover {
+  background-color: var(--gray-a4);
+}
+
 .gridCell--supercharged {
   /* Styles for supercharged grid cells */
   border-color: var(--accent-track);
