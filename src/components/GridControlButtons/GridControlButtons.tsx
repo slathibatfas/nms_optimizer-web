@@ -1,8 +1,8 @@
 // RowControlButton.tsx
 import React from "react";
-import { useState, useEffect } from "react";
 import { IconButton, Tooltip } from "@radix-ui/themes";
 import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 interface RowControlButtonProps {
   rowIndex: number;
@@ -34,62 +34,42 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
   isFirstInactiveRow,
   isLastActiveRow,
 }) => {
-
-  const [screenSize, setScreenSize] = useState("sm");
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 640) {
-        setScreenSize("sm");
-      } else {
-        setScreenSize("xs");
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const isMediumOrLarger = useBreakpoint("640px"); // true if screen width >= 640px
+  const iconButtonSize = isMediumOrLarger ? "2" : "1";
 
   return (
     <div
-      style={{ gridColumn: 11, gridRow: rowIndex + 1 }}
-      className="flex items-center justify-center" // Added a class for potential styling
+      className="flex items-center justify-center h-full" // Ensure full height and center content
       data-is-grid-control-column="true" // Added data attribute for selection
     >
       {isFirstInactiveRow && (
-        <div className="align-middle shadow-md">
-          <Tooltip content="Activate Row">
-            <IconButton
-              size={screenSize === "sm" ? "2" : "1"}
-              variant="soft"
-              className="mx-auto"
-              onClick={() => activateRow(rowIndex)}
-              disabled={hasModulesInGrid}
-              aria-label="Activate row"
-            >
-              <PlusIcon />
-            </IconButton>
-          </Tooltip>
-        </div>
+        <Tooltip content="Activate Row">
+          <IconButton
+            size={iconButtonSize}
+            variant="soft"
+            className="shadow-md" // Centering handled by parent
+            onClick={() => activateRow(rowIndex)}
+            disabled={hasModulesInGrid}
+            aria-label="Activate row"
+          >
+            <PlusIcon />
+          </IconButton>
+        </Tooltip>
       )}
 
       {isLastActiveRow && (
-        <div className="shadow-md align-left">
-          <Tooltip content="Deactivate Row">
-            <IconButton
-              variant="soft"
-              size={screenSize === "sm" ? "2" : "1"}
-              className="mx-auto "
-              onClick={() => deActivateRow(rowIndex)}
-              disabled={hasModulesInGrid}
-              aria-label="Deactivate row"
-            >
-              <MinusIcon />
-            </IconButton>
-          </Tooltip>
-        </div>
+        <Tooltip content="Deactivate Row">
+          <IconButton
+            variant="soft"
+            size={iconButtonSize}
+            className="shadow-md" // Centering handled by parent
+            onClick={() => deActivateRow(rowIndex)}
+            disabled={hasModulesInGrid}
+            aria-label="Deactivate row"
+          >
+            <MinusIcon />
+          </IconButton>
+        </Tooltip>
       )}
     </div>
   );

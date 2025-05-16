@@ -1,7 +1,7 @@
 // src/hooks/useAppLayout.tsx
 import { useState, useEffect, useRef } from "react";
 import { useBreakpoint } from "./useBreakpoint";
-import { useGridStore } from "../store/GridStore"; // Import Grid type if needed for grid dependency
+import { useGridStore } from "../store/GridStore";
 
 interface AppLayout {
   // Ref for the container whose height is measured (e.g., div.gridContainer__container)
@@ -13,84 +13,108 @@ interface AppLayout {
   isLarge: boolean;
 }
 
+// Constants for delays and default values
+const INITIAL_HEIGHT_UPDATE_DELAY = 50;
+const INITIAL_WIDTH_UPDATE_DELAY = 100;
+const DEFAULT_CONTROL_COLUMN_WIDTH = "40px";
+const SHARED_GRID_CONTROL_COLUMN_WIDTH = "0px";
+
 export const useAppLayout = (): AppLayout => {
-  const containerRef = useRef<HTMLDivElement>(null); // For height of div.gridContainer__container
-  const gridTableRef = useRef<HTMLDivElement>(null); // For width calculations on GridTable
+  const containerRef = useRef<HTMLDivElement>(null);
+  const gridTableRef = useRef<HTMLDivElement>(null);
   const [gridHeight, setGridHeight] = useState<number | null>(null);
-  const [columnWidth, setColumnWidth] = useState("0px"); // Default fallback
+  const [columnWidth, setColumnWidth] = useState("0px"); // Initial default
   const isLarge = useBreakpoint("1024px");
-  const { grid, isSharedGrid } = useGridStore(); // Get grid state if needed for effects
+  const { grid, isSharedGrid } = useGridStore();
 
   // Effect for gridHeight
   useEffect(() => {
-    const updateGridHeight = () => {
-      if (isLarge && !isSharedGrid && containerRef.current) {
-        setGridHeight(containerRef.current.getBoundingClientRect().height);
+    const elementToObserve = containerRef.current; // Capture the element for this effect run
+
+    const updateHeight = () => {
+      if (isLarge && !isSharedGrid && elementToObserve) {
+        setGridHeight(elementToObserve.getBoundingClientRect().height);
       } else {
         setGridHeight(null); // Reset height if not large or is shared
       }
     };
 
-    // Run initially and on relevant changes
-    const timerId = setTimeout(updateGridHeight, 100); // Delay slightly for render
-    window.addEventListener("resize", updateGridHeight);
+    if (!elementToObserve) {
+      updateHeight(); // Ensure state is correctly set (e.g., nullified) if no element
+      return;
+    }
+
+    // Perform initial update with a slight delay to allow for rendering and styling.
+    const initialUpdateTimerId = setTimeout(updateHeight, INITIAL_HEIGHT_UPDATE_DELAY);
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(elementToObserve);
 
     return () => {
-      clearTimeout(timerId);
-      window.removeEventListener("resize", updateGridHeight);
+      clearTimeout(initialUpdateTimerId);
+      observer.unobserve(elementToObserve);
+      observer.disconnect();
     };
-  }, [isLarge, isSharedGrid, grid, containerRef]);
+    // containerRef.current is included to re-run the effect if the actual DOM node changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLarge, isSharedGrid, containerRef.current]);
 
   // Effect for columnWidth (uses gridTableRef)
   useEffect(() => {
-    const updateColumnWidth = () => {
-      if (!gridTableRef.current) {
-        // Silently return if the ref is not yet available.
-        // The effect will re-run when the ref is populated.
+    const tableElementToObserve = gridTableRef.current; // Capture the element for this effect run
+
+    const getDefaultColumnWidth = () => 
+      isSharedGrid ? SHARED_GRID_CONTROL_COLUMN_WIDTH : DEFAULT_CONTROL_COLUMN_WIDTH;
+
+    const updateColumnWidth = () => { //NOSONAR
+      if (!tableElementToObserve) {
+        setColumnWidth(getDefaultColumnWidth());
         return;
       }
 
-      // Find one of the rendered GridControlButtons containers
-      const controlButtonElement = gridTableRef.current.querySelector<HTMLDivElement>('[data-is-grid-control-column="true"]');
-
+      const controlButtonElement = tableElementToObserve.querySelector<HTMLDivElement>('[data-is-grid-control-column="true"]');
       if (!controlButtonElement) {
-        // If no control button is found (e.g., empty grid or shared grid without controls),
-        // fall back to a default width.
-        setColumnWidth("40px"); // Fallback if no control button is found (e.g., empty grid)
+        setColumnWidth(getDefaultColumnWidth());
         return;
       }
 
       const controlCellActualWidth = controlButtonElement.offsetWidth;
-
-      // Get the computed gap from the grid container itself
-      const gridContainerStyle = window.getComputedStyle(gridTableRef.current);
-      // Try 'grid-column-gap' first, then 'gap' as it might be a shorthand
+      const gridContainerStyle = window.getComputedStyle(tableElementToObserve);
       let gapString = gridContainerStyle.getPropertyValue("grid-column-gap").trim();
       if (gapString === "normal" || !gapString) {
-        // 'normal' is a possible value if not explicitly set, or it might be empty
         gapString = gridContainerStyle.getPropertyValue("gap").trim().split(" ")[0]; // Take the first value if 'gap' is shorthand (row-gap column-gap)
       }
-
       const gapActualWidth = parseFloat(gapString);
 
-      if (isNaN(gapActualWidth)) {
-        // If gap parsing fails, log an error internally or handle gracefully.
-        // For now, we'll use the cell width or a fixed fallback.
-        // If gap parsing fails, use cell width only or a fixed fallback
-        setColumnWidth(`${controlCellActualWidth}px`); // Or "40px" if preferred
+      if (isNaN(gapActualWidth) || gapActualWidth < 0) { // Ensure gap is a valid positive number
+        setColumnWidth(`${controlCellActualWidth}px`);
         return;
       }
 
       const calculatedWidth = controlCellActualWidth + gapActualWidth;
       setColumnWidth(`${calculatedWidth}px`);
     };
-    const timerId = setTimeout(updateColumnWidth, 150); // Increased delay for GridTable ref and styles
-    window.addEventListener("resize", updateColumnWidth);
+
+    if (!tableElementToObserve) {
+      updateColumnWidth(); // Ensure state is correctly set if no element
+      return;
+    }
+
+    // Perform initial update with a delay.
+    const initialUpdateTimerId = setTimeout(updateColumnWidth, INITIAL_WIDTH_UPDATE_DELAY);
+
+    const observer = new ResizeObserver(updateColumnWidth);
+    observer.observe(tableElementToObserve);
+
     return () => {
-      clearTimeout(timerId);
-      window.removeEventListener("resize", updateColumnWidth);
+      clearTimeout(initialUpdateTimerId);
+      observer.unobserve(tableElementToObserve);
+      observer.disconnect();
     };
-  }, [isSharedGrid, grid, gridTableRef]); // Depend on gridTableRef
+    // gridTableRef.current is included to re-run the effect if the actual DOM node changes.
+    // `grid` data is included as it can affect the presence/size of `controlButtonElement`.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSharedGrid, grid, gridTableRef.current]);
 
   return { containerRef, gridTableRef, gridHeight, columnWidth, isLarge };
 };

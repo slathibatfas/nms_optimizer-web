@@ -9,11 +9,6 @@
   "orientation": "landscape-primary",
   "icons": [
     {
-      "src": "/assets/svg/nms_so-icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
-    },
-    {
       "src": "/assets/img/manifest/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"

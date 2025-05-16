@@ -65,12 +65,12 @@ const App: FC = () => {
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
   const { showError, setShowError } = useOptimizeStore();
 
-  // --- Custom Hooks & Data Fetching ---  
+  // --- Custom Hooks & Data Fetching ---
   // Fetch ship types data using the suspense hook. This will suspend rendering until the data is loaded.
   const shipTypes = useFetchShipTypesSuspense();
   const { solving, handleOptimize, gridContainerRef, patternNoFitTech, clearPatternNoFitTech, handleForceCurrentPnfOptimize } = useOptimize();
   // Call useUrlSync once and destructure its return values
-  const { updateUrlForShare, updateUrlForReset } = useUrlSync(); 
+  const { updateUrlForShare, updateUrlForReset } = useUrlSync();
   // containerRef is for div.gridContainer__container (for height)
   // gridTableRef is for GridTable element (for columnWidth)
   const { containerRef: appLayoutContainerRef, gridTableRef: appLayoutGridTableRef, gridHeight, columnWidth, isLarge } = useAppLayout();
@@ -109,7 +109,7 @@ const App: FC = () => {
 
   useEffect(() => {
     // Set title for the main page when no specific page route is active
-    if (location.pathname === '/') {
+    if (location.pathname === "/") {
       document.title = APP_NAME;
     }
   }, [location.pathname]);
@@ -172,11 +172,9 @@ const App: FC = () => {
               <div className="flex-grow w-auto gridContainer__container lg:flex-shrink-0" ref={appLayoutContainerRef}>
                 <header className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
                   {!isSharedGrid && (
-
-                      <span className="flex-shrink-0">
-                        <ShipSelection solving={solving} />
-                      </span>
-
+                    <span className="flex-shrink-0">
+                      <ShipSelection solving={solving} />
+                    </span>
                   )}
                   <span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>
                     PLATFORM:
@@ -220,10 +218,9 @@ const App: FC = () => {
                     <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
                   </aside>
                 ))}
-
             </section>
           </section>
-		  
+
           <footer className="flex flex-wrap items-center justify-center gap-1 pt-4 pb-4 text-xs text-center lg:pb-0 sm:text-sm lg:text-base">
             Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
             <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
@@ -242,7 +239,7 @@ const App: FC = () => {
       <Routes>
         {/* Add a route for the root path to satisfy this Routes block and prevent the warning. 
             It renders nothing as App.tsx handles the main content for the root path. */}
-        <Route path="/" element={null} /> 
+        <Route path="/" element={null} />
         <Route path="/changelog" element={<ChangelogPage />} />
         <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} />} />
         <Route path="/about" element={<AboutPage />} />
