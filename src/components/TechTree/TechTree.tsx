@@ -78,7 +78,7 @@ const TechTreeSection: React.FC<{
     <div className="mb-6 lg:mb-6 last:mb-0 sidebar__section">
       <div className="flex items-center">
         {/* Conditionally render the image if imagePath is available */}
-        {imagePath && <img src={imagePath} alt={type} className="mr-3 opacity-25 w-7" />}
+        {imagePath && <img src={imagePath} alt={type} className="h-6 mr-3 opacity-25" />}
         <h2 className="text-xl font-semibold tracking-widest sm:text-2xl sidebar__title">{type.toUpperCase()}</h2>
       </div>
 

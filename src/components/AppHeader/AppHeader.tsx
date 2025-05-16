@@ -36,7 +36,7 @@ const AppHeaderInternal: React.FC = () => {
         <div className="flex items-end ml-auto">
           {" "}
           {/* Added ml-auto */}
-          <img src={NMSShip} className="hidden opacity-25 md:h-14 lg:h-18 md:inline fade-horizontal" alt="Starship Image" />
+          <img src={NMSShip} className="hidden opacity-25 md:h-[56] md:w-[198] lg:w-[254] lg:h-[72] md:inline fade-horizontal" alt="Starship Image" />
         </div>
       </div>
     </header>

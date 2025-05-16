@@ -37,22 +37,23 @@ import InstructionsPage from "./pages/InstructionsPage";
 import AboutPage from "./pages/AboutPage";
 
 /**
- * Suspense fallback for initial app load.
+ * Fallback UI shown during initial application load or when main content suspends.
  */
 const AppLoadingFallback = () => (
   <main className="flex flex-col items-center justify-center lg:min-h-screen">
-    <MessageSpinner isVisible={true} isInset={true} initialMessage="Activating interface!" showRandomMessages={false} />
+    <MessageSpinner isVisible={true} isInset={true} initialMessage="Activating Uplink!" showRandomMessages={false} />
   </main>
 );
 
 /**
- * Renders the primary application UI, including data-dependent components.
- * Suspends if initial data (e.g., ship types) is not yet available.
+ * Renders the main application content.
+ * This component will suspend if `useFetchShipTypesSuspense` is fetching initial data.
  */
 const MainAppContent: FC<{
   isFirstVisit: boolean;
 }> = ({ isFirstVisit }) => {
   const navigate = useNavigate();
+  const location = useLocation(); // Get current location for URL-based decisions
 
   // --- Store Hooks ---
   const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } = useGridStore();
@@ -80,7 +81,12 @@ const MainAppContent: FC<{
     return grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
   }, [grid]);
 
-  // --- Callback Hooks ---
+  // Determine if the current URL suggests a shared grid.
+  // This check is synchronous and reactive to URL changes.
+  const isCurrentlySharedBasedOnUrl = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.has("grid");
+  }, [location.search]);
   useEffect(() => {
     if (!localStorage.getItem("hasVisitedNMSOptimizer")) {
       localStorage.setItem("hasVisitedNMSOptimizer", "true");
@@ -143,19 +149,34 @@ const MainAppContent: FC<{
                 isFirstVisit={isFirstVisit}
               />
             </div>
-            {!isSharedGrid &&
-              (isLarge ? (
-                <ScrollArea
-                  className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
-                  style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
-                >
-                  <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
-                </ScrollArea>
-              ) : (
-                <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
-                  <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
-                </aside>
-              ))}
+            {(() => {
+              // Define the TechTreeComponent element.
+              const techTreeElement = (
+                <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
+              );
+
+              // The TechTreeComponent should only be rendered if it's NOT a shared grid
+              // based on the current URL. This prevents flashing.
+              if (!isCurrentlySharedBasedOnUrl) {
+                if (isLarge) { // isLarge comes from useAppLayout
+                  return (
+                    <ScrollArea
+                      className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
+                      style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
+                    >
+                      {techTreeElement}
+                    </ScrollArea>
+                  );
+                } else {
+                  return (
+                    <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
+                      {techTreeElement}
+                    </aside>
+                  );
+                }
+              }
+              return null; // If URL indicates shared, render nothing for this section.
+            })()}
           </section>
         </section>
         <footer className="flex flex-wrap items-center justify-center gap-1 pt-4 pb-4 text-xs text-center lg:pb-0 sm:text-sm lg:text-base">
@@ -183,8 +204,8 @@ const MainAppContent: FC<{
 };
 
 /**
- * Top-level application component. Manages global layout, routing,
- * Suspense for initial content, and global dialogs.
+ * Root application component.
+ * Sets up routing, Suspense for data loading, and global dialogs.
  */
 const App: FC = () => {
   const location = useLocation();
@@ -225,7 +246,7 @@ const App: FC = () => {
       </Routes>
 
       {/* Non-routed Dialogs managed by App */}
-      <InfoDialog isOpen={showError} onClose={() => setShowError(false)} content={errorDialogContent} title="Error!" />
+      <InfoDialog isOpen={showError} onClose={() => setShowError(false)} content={errorDialogContent} title="Server Error Encountered!" />
     </>
   );
 };
