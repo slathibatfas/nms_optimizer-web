@@ -133,6 +133,18 @@ const debouncedStorage = {
 
   getItem: (name: string): StorageValue<Partial<GridStore>> | null => {
     try {
+      // Check if the current URL indicates a shared grid.
+      // We look for the presence of 'grid' and 'platform' parameters.
+      const currentUrlParams = new URLSearchParams(window.location.search);
+      const isUrlLikelyShared = currentUrlParams.has('grid');
+
+      if (isUrlLikelyShared && name === 'grid-storage') {
+        // If it's a shared grid URL, ignore localStorage for initial hydration
+        // by returning null. This forces the store to use its default initial state.
+        // The useUrlSync hook will then populate the grid from the URL.
+        return null;
+      }
+
       const str = localStorage.getItem(name);
       if (!str) {
         return null;

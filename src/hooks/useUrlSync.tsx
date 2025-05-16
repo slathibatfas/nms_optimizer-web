@@ -30,25 +30,11 @@ export const useUrlSync = () => {
 
       // Sync grid from URL to store
       if (gridFromUrl) {
-        // If a grid is present in the URL, we are trying to load a shared grid.
-        // Step 1: Ensure the application knows this is a shared grid context.
-        // `isSharedGrid` here is from the store, potentially hydrated from localStorage.
-        if (!isSharedGrid) { // If the store currently thinks it's NOT a shared grid
-          setIsSharedGrid(true); // Tell the store it IS a shared grid context NOW.
-          // By returning here, we allow this useEffect to re-run because `isSharedGrid` is a dependency.
-          // On the next run, `isSharedGrid` (from the store) will be true.
-          return;
-        }
-        // Step 2: `isSharedGrid` is now true (or was already true). Proceed to deserialize.
-        // `deserializeGrid` itself will call `setGrid` and `setIsSharedGrid(true)` again,
-        // ensuring the state is correctly updated with the grid from the URL.
-        deserializeGrid(gridFromUrl);
+        // console.log("useUrlSync: Grid data found in URL. Deserializing.");
+        deserializeGrid(gridFromUrl); 
       } else {
-        // No grid in URL.
-        // If the store currently thinks it's a shared grid (e.g., from a previous shared link
-        // or persisted state), set `isSharedGrid` to false, as the current URL
-        // doesn't represent a shared grid.
         if (isSharedGrid) { 
+          // console.log("useUrlSync: No grid data in URL, but store was shared. Setting isSharedGrid to false.");
           setIsSharedGrid(false);
         }
       }
