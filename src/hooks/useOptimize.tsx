@@ -142,13 +142,14 @@ export const useOptimize = (): UseOptimizeReturn => {
   );
 
 
-  const setShowError: React.Dispatch<React.SetStateAction<boolean>> = (value) => {
-    if (typeof value === "function") {
-      setShowErrorStore(value(showError));
-    } else {
-      setShowErrorStore(value);
-    }
-  };
+  // Memoize setShowError to stabilize its reference for child components
+  const setShowError = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((value) => {
+    // The `showError` in `value(showError)` refers to the `showError` state from the hook's closure at the time of memoization.
+    // This is correct as this callback will be re-memoized if `showError` (from the store) changes.
+    setShowErrorStore(typeof value === "function" ? value(showError) : value);
+  }, [setShowErrorStore, showError]);
+
+
 
   const clearPatternNoFitTech = useCallback(() => {
     setPatternNoFitTech(null);

@@ -17,24 +17,20 @@ export const useUrlSync = () => {
   // Effect to handle initial URL state and popstate events
   useEffect(() => {
     const handlePopState = () => {
-      // console.log("useUrlSync: handlePopState triggered or initial load.");
       const urlParams = new URLSearchParams(window.location.search);
       const platformFromUrl = urlParams.get("platform");
       const gridFromUrl = urlParams.get("grid");
 
       // Sync platform from URL to store
       if (platformFromUrl && platformFromUrl !== selectedShipTypeFromStore) {
-        // console.log(`useUrlSync: Platform in URL ('${platformFromUrl}') differs from store ('${selectedShipTypeFromStore}'). Updating store.`);
         setSelectedShipTypeInStore(platformFromUrl, false);
       }
 
       // Sync grid from URL to store
       if (gridFromUrl) {
-        // console.log("useUrlSync: Grid data found in URL. Deserializing.");
         deserializeGrid(gridFromUrl); 
       } else {
         if (isSharedGrid) { 
-          // console.log("useUrlSync: No grid data in URL, but store was shared. Setting isSharedGrid to false.");
           setIsSharedGrid(false);
         }
       }

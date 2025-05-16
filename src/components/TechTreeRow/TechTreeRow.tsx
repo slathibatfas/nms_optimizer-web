@@ -28,7 +28,20 @@ function round(value: number, decimals: number) {
   return Number(Math.round(Number(value + "e" + decimals)) + "e-" + decimals);
 }
 
-export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOptimize, solving, modules, techImage }) => {
+// Define AccordionTrigger outside TechTreeRow to prevent re-creation on every render
+const AccordionTrigger = React.forwardRef(
+  ({ children, className, ...props }: { children: React.ReactNode; className?: string }, forwardedRef: React.Ref<HTMLButtonElement>) => (
+    <Accordion.Header className="AccordionHeader">
+      <Accordion.Trigger className={`AccordionTrigger ${className || ""}`} {...props} ref={forwardedRef}>
+        {children}
+        <ChevronDownIcon className="AccordionChevron" aria-hidden />
+      </Accordion.Trigger>
+    </Accordion.Header>
+  )
+);
+AccordionTrigger.displayName = "AccordionTrigger"; // Optional: for better debugging
+
+const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({ label, tech, handleOptimize, solving, modules, techImage }) => {
   const hasTechInGrid = useGridStore((state) => state.hasTechInGrid(tech));
   const isGridFull = useGridStore((state) => state.isGridFull);
   const handleResetGridTech = useGridStore((state) => state.resetGridTech);
@@ -94,17 +107,6 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
     // Example srcSet, adjust sizes and paths as per your available images
     imageSrcSet = `${baseImagePath}${imageNameWithoutExtension}${extension} 1x, ${baseImagePath}${imageNameWithoutExtension}@x2${extension} 2x`;
   }
-
-  const AccordionTrigger = React.forwardRef(
-    ({ children, className, ...props }: { children: React.ReactNode; className?: string }, forwardedRef: React.Ref<HTMLButtonElement>) => (
-      <Accordion.Header className="AccordionHeader">
-        <Accordion.Trigger className={`AccordionTrigger ${className || ""}`} {...props} ref={forwardedRef}>
-          {children}
-          <ChevronDownIcon className="AccordionChevron" aria-hidden />
-        </Accordion.Trigger>
-      </Accordion.Header>
-    )
-  );
 
   return (
     <Flex className="flex gap-2 mt-2 mb-2 items-top optimizationButton">
@@ -245,3 +247,6 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
     </Flex>
   );
 };
+
+// Memoize the component
+export const TechTreeRow = React.memo(TechTreeRowComponent);
