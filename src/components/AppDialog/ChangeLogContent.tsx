@@ -23,6 +23,7 @@ const ChangeLogContent: React.FC = () => {
 
       <h2 className="pt-2 appDialog__subheading">Version 2.75 (2025-05-16)</h2>
       <ul className="appDialog__list">
+        <li className="appDialog__listItem">Fixed issue where the canonical URL setting was interfering with "Share" functionality. </li>
         <li className="appDialog__listItem">Enabled compression on the service endpoint to reduce payload size and improve performance.</li>
         <li className="appDialog__listItem">Repositioned content dialog buttons to more logical locations.</li>
         <li className="appDialog__listItem">Resized and optimized sidebar button images.</li>
