@@ -56,7 +56,7 @@ The app runs at http://localhost:5173 by default. In development mode, it expect
 
 To override the default service endpoint, update the VITE_API_URL value in your .env.development file.
 
----
+<!-- ---
 
 ### Docker compose.yml
 
@@ -83,5 +83,5 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-```
+``` -->
 

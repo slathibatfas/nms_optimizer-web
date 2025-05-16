@@ -2,7 +2,7 @@
 import React from "react";
 import NMSIcon from "../../assets/img/nms_icon.webp";
 import NMSShip from "../../assets/img/ship.webp";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { CounterClockwiseClockIcon } from "@radix-ui/react-icons";
 import { APP_VERSION } from "../../constants";
 import { Link } from "react-router-dom";
 import ReactGA from "react-ga4";
@@ -20,16 +20,16 @@ const AppHeaderInternal: React.FC = () => {
           <h2 className="text-base sm:text-2xl header__title">
             <strong>AI</strong> Technology Optimizer <span className="font-thin">{APP_VERSION}</span>
             <Link
-              to="/about"
+              to="/changelog"
               onClick={() => {
                 ReactGA.event({
                   category: "User Interactions",
-                  action: "showAbout",
+                  action: "showChangelog",
                 });
               }}
-              aria-label="About this application"
+              aria-label="Changelog"
             >
-              <InfoCircledIcon className="inline ml-1 sm:w-5 sm:h-5" style={{ color: "var(--accent-11)" }} />
+              <CounterClockwiseClockIcon className="inline ml-1 sm:w-5 sm:h-5" style={{ color: "var(--accent-11)" }} />
             </Link>
           </h2>
         </div>

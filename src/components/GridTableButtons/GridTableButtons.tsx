@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@radix-ui/themes";
-import { QuestionMarkCircledIcon, CounterClockwiseClockIcon, ResetIcon, Share2Icon } from "@radix-ui/react-icons";
+import { QuestionMarkCircledIcon, InfoCircledIcon, ResetIcon, Share2Icon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom"; // Import Link
 import ReactGA from "react-ga4";
 
@@ -52,16 +52,16 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
           // The onClick handler is moved to the Button for GA tracking
           variant="soft" // Keep Radix variant
           className={`gridTable__button gridTable__button--changelog shadow-md !mr-2 sm:!px-2`} // Keep styling classes
-          asChild // Tell Radix Button to render as its child (the Link)
+          asChild 
         >
-          <Link to="/changelog" onClick={() => {
+          <Link to="/about" onClick={() => {
               ReactGA.event({
                 category: "User Interactions",
-                action: "showChangeLog",
+                action: "showAbout",
               });
             }}>
-            <CounterClockwiseClockIcon />
-            <span className="hidden sm:inline">Change Log</span>
+            <InfoCircledIcon />
+            <span className="hidden sm:inline">About</span>
           </Link>
         </Button>
         {!isSharedGrid && (

@@ -7,7 +7,6 @@ import React from "react";
 const ChangeLogContent: React.FC = () => {
   return (
     <article className="appDialog__body">
-      
       <h2 className="appDialog__subheading">Model Status</h2>
       <p className="pb-4 appDialog__text border-b-1 border-white/25">
         See this{" "}
@@ -17,31 +16,38 @@ const ChangeLogContent: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-        GitHub page
-        </a>
-        {" "}for up to date model information.
+          GitHub page
+        </a>{" "}
+        for up to date model information.
       </p>
+
+      <h2 className="pt-2 appDialog__subheading">Version 2.75 (2025-05-16)</h2>
+      <ul className="appDialog__list">
+        <li className="appDialog__listItem">Enabled compression on the service endpoint to reduce payload size and improve performance.</li>
+        <li className="appDialog__listItem">Repositioned content dialog buttons to more logical locations.</li>
+        <li className="appDialog__listItem">Resized and optimized sidebar button images.</li>
+        <li className="appDialog__listItem">Significantly reduced DOM complexity.</li>
+        <li className="appDialog__listItem">
+          Numerous UI enhancements, performance improvements, and accessibility fixes based on Lighthouse audits (scored 98/100!).
+        </li>
+      </ul>
 
       <h2 className="pt-2 appDialog__subheading">Version 2.70 (2025-05-14)</h2>
       <ul className="appDialog__list">
         <li className="appDialog__listItem">Updated Solar Starships and Freighters with full 16k-sample models.</li>
-        <li className="appDialog__listItem">Enabled compression on the service endpoint to reduce payload size and boost performance.</li>
-        <li className="appDialog__listItem">Added a dedicated "About" page.</li>
-        <li className="appDialog__listItem">Implemented named routes for content dialogs to improve SEO.</li>
-        <li className="appDialog__listItem">Resized and optimized sidebar button images.</li>
-        <li className="appDialog__listItem">Reduced DOM complexity significantly.</li>
-        <li className="appDialog__listItem">Numerous additional UI improvements and performance enhancements based on Lighthouse reporting (98/100!).</li>
+        <li className="appDialog__listItem">Added a dedicated “About” page.</li>
+        <li className="appDialog__listItem">Introduced named routes for content dialogs to improve SEO.</li>
       </ul>
 
       <h2 className="pt-2 appDialog__subheading">Version 2.69 (2025-05-13)</h2>
       <ul className="appDialog__list">
-        <li className="appDialog__listItem">Added updated models for Solar Starhip Pulse engines. Should dramatically improve solving times and accuracy.</li>
+        <li className="appDialog__listItem">Added updated models for Solar Starship Pulse Engines, significantly improving solving speed and accuracy.</li>
       </ul>
 
       <h2 className="pt-2 appDialog__subheading">Version 2.68 (2025-05-10)</h2>
       <ul className="appDialog__list">
-        <li className="appDialog__listItem">More model updates for Freighter Hyperdrive.</li>
-        <li className="appDialog__listItem">Added Photonix Core as an option for Solar Starhips. Models for this change still need to be updated so solving will be slow for now.</li>
+        <li className="appDialog__listItem">Further model updates for Freighter Hyperdrive.</li>
+        <li className="appDialog__listItem">Added Photonix Core as an option for Solar Starships. (Note: Solving may be slower until models are updated.)</li>
       </ul>
 
       <h2 className="pt-2 appDialog__subheading">Version 2.67 (2025-05-10)</h2>
@@ -59,7 +65,9 @@ const ChangeLogContent: React.FC = () => {
 
       <h2 className="pt-2 appDialog__subheading">Version 2.65 (2025-05-09)</h2>
       <ul className="appDialog__list">
-        <li className="appDialog__listItem">Added preliminary support for Freighters. Models are still pending. Need to implement shared adjacency logic for fleet technology types.</li>
+        <li className="appDialog__listItem">
+          Added preliminary support for Freighters. Models are still pending. Need to implement shared adjacency logic for fleet technology types.
+        </li>
       </ul>
 
       <h2 className="appDialog__subheading">Version 2.61 (2025-05-08)</h2>
@@ -69,7 +77,9 @@ const ChangeLogContent: React.FC = () => {
 
       <h2 className="appDialog__subheading">Version 2.6 (2025-05-07)</h2>
       <ul className="appDialog__list">
-        <li className="appDialog__listItem">Added warning for when no solves fit within the grid. Seeing too many users trying to force things and getting sub-optimal results.</li>
+        <li className="appDialog__listItem">
+          Added warning for when no solves fit within the grid. Seeing too many users trying to force things and getting sub-optimal results.
+        </li>
         <li className="appDialog__listItem">
           I give in. No one knows what a Convolutional Neural Network is. Marketing wins and we're calling it <strong>AI Technology Optimizer</strong>.
         </li>
@@ -93,7 +103,9 @@ const ChangeLogContent: React.FC = () => {
 
       <h2 className="appDialog__subheading">Version 2.23 (2025-05-03)</h2>
       <ul className="appDialog__list">
-        <li className="appDialog__listItem">Updated Starship Trails to provide adjacency to the Tentacled Figurine when more than 5 are available (boosts the hidden speed stat).</li>
+        <li className="appDialog__listItem">
+          Updated Starship Trails to provide adjacency to the Tentacled Figurine when more than 5 are available (boosts the hidden speed stat).
+        </li>
       </ul>
 
       <h2 className="appDialog__subheading">Version 2.22 (2025-05-03)</h2>
