@@ -54,7 +54,6 @@ const AppDialog: React.FC<AppDialogProps> = ({ onClose, content, isOpen, title =
           <Dialog.Overlay className="appDialog__overlay" />
           <Dialog.Content className="appDialog__content">
             <Dialog.Title className="flex items-center gap-2 appDialog__title">
-              {/* Conditionally render the GearIcon if the title is "Instructions" */}
               {title === "Instructions" && <QuestionMarkCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />}
               {title === "Changelog" && <CounterClockwiseClockIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />}
               {title === "About" && <InfoCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />}
@@ -63,7 +62,7 @@ const AppDialog: React.FC<AppDialogProps> = ({ onClose, content, isOpen, title =
             <Dialog.Description className="hidden appDialog__description">This dialog contains information.</Dialog.Description>
             <div className="text-sm appDialog__container">{content}</div>
             <Dialog.Close asChild>
-              <Button variant="soft" color="gray" className="appDialog__close">
+              <Button variant="soft" color="gray" className="appDialog__close" aria-label="Close dialog">
                 <Cross2Icon />
               </Button>
             </Dialog.Close>

@@ -67,6 +67,7 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
               className="mx-auto"
               onClick={() => activateRow(rowIndex)}
               disabled={hasModulesInGrid}
+              aria-label="Activate row"
             >
               <PlusIcon />
             </IconButton>
@@ -83,6 +84,7 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
               className="mx-auto "
               onClick={() => deActivateRow(rowIndex)}
               disabled={hasModulesInGrid}
+              aria-label="Deactivate row"
             >
               <MinusIcon />
             </IconButton>

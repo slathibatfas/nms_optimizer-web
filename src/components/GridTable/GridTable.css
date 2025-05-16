@@ -4,3 +4,7 @@
   grid-template-rows: repeat(6, var(--grid-cell-size));
   gap: var(--grid-gap);
 }
+
+[role="row"] {
+  display: contents; /* This allows children to be direct grid items */
+}

@@ -174,6 +174,7 @@ const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, cell, g
   const cellElement = (
     <div
       role="gridCell"
+      aria-colindex={columnIndex + 1}
       data-accent-color={techColor}
       onContextMenu={handleContextMenu}
       onClick={handleClick}

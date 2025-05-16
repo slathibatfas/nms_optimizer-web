@@ -117,7 +117,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
           {...(techColor === "white" && !solving
             ? {
                 "data-accent-color": "white",
-                style: { border: "2px solid var(--gray-a11)", backgroundColor: "var(--gray-a3)", color: "var(--gray-12)" }, // Manual styles for a white button with black text/icon
+                style: { border: "2px solid var(--gray-a11)", backgroundColor: "var(--gray-a4)", color: "var(--gray-12)" }, // Manual styles for a white button with black text/icon
               }
             : techColor === "gray"
             ? {
@@ -126,6 +126,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
             : {
                 "data-accent-color": techColor,
               })}
+          aria-label={`${tooltipLabel} ${label}`}
           className={`techRow__optimizeButton shadow-md ${!solving ? '!cursor-pointer' : '!cursor-not-allowed'}`.trim()}
         >
           <div className="relative shadow-md group">
@@ -147,6 +148,7 @@ export const TechTreeRow: React.FC<TechTreeRowProps> = ({ label, tech, handleOpt
             variant="solid"
             onClick={handleReset}
             disabled={!hasTechInGrid || solving}
+            aria-label={`Reset ${label}`}
             className={`techRow__resetButton ${(!(!hasTechInGrid || solving)) ? '!cursor-pointer' : ''}`}
           >
             <ResetIcon />

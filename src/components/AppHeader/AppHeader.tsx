@@ -27,6 +27,7 @@ const AppHeaderInternal: React.FC = () => {
                   action: "showAbout",
                 });
               }}
+              aria-label="About this application"
             >
               <InfoCircledIcon className="inline ml-1 sm:w-5 sm:h-5" style={{ color: "var(--accent-11)" }} />
             </Link>
