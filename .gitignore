@@ -84,3 +84,9 @@ coverage/nms_optimizer-web/src/store/OptimizeStore.ts.html
 coverage/nms_optimizer-web/src/store/ShakeStore.ts.html
 coverage/nms_optimizer-web/src/store/TechStore.ts.html
 stats.html
+coverage/nms_optimizer-web/src/components/AppDialog/AboutContent.tsx.html
+coverage/nms_optimizer-web/src/components/AppDialog/OptimizationAlertDialog.tsx.html
+coverage/nms_optimizer-web/src/pages/AboutPage.tsx.html
+coverage/nms_optimizer-web/src/pages/ChangeLogPage.tsx.html
+coverage/nms_optimizer-web/src/pages/index.html
+coverage/nms_optimizer-web/src/pages/InstructionsPage.tsx.html
