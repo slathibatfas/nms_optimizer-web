@@ -2,7 +2,7 @@
 
 // --- React & External Libraries ---
 import { Suspense, useEffect, useState, useCallback, useMemo, FC } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { ScrollArea } from "@radix-ui/themes";
 import ReactGA from "react-ga4";
 
@@ -12,7 +12,7 @@ import { GridTable } from "./components/GridTable/GridTable";
 import GridTableButtons from "./components/GridTableButtons/GridTableButtons";
 import TechTreeComponent from "./components/TechTree/TechTree";
 import ErrorContent from "./components/AppDialog/ErrorContent";
-import InfoDialog from "./components/AppDialog/AppDialog"; // Still used for ErrorDialog
+import AppDialog from "./components/AppDialog/AppDialog"; // Renamed import for clarity, used for Error and About
 import AppHeader from "./components/AppHeader/AppHeader";
 import MessageSpinner from "./components/MessageSpinner/MessageSpinner";
 import OptimizationAlertDialog from "./components/AppDialog/OptimizationAlertDialog";
@@ -36,6 +36,11 @@ import ChangelogPage from "./pages/ChangeLogPage";
 import InstructionsPage from "./pages/InstructionsPage";
 import AboutPage from "./pages/AboutPage";
 
+// --- Page Content ---
+import InstructionsContent from "./components/AppDialog/InstructionsContent";
+import AboutContent from "./components/AppDialog/AboutContent";
+import ChangelogContent from "./components/AppDialog/ChangeLogContent"; // Assuming you'll create/use this for dialog
+
 /**
  * Fallback UI shown during initial application load or when main content suspends.
  */
@@ -52,7 +57,6 @@ const AppLoadingFallback = () => (
 const MainAppContent: FC<{
   isFirstVisit: boolean;
 }> = ({ isFirstVisit }) => {
-  const navigate = useNavigate();
 
   // --- Store Hooks ---
   const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } = useGridStore();
@@ -64,7 +68,7 @@ const MainAppContent: FC<{
   const { updateUrlForShare, updateUrlForReset } = useUrlSync();
   const { containerRef: appLayoutContainerRef, gridTableRef: appLayoutGridTableRef, gridHeight, columnWidth, isLarge } = useAppLayout();
 
-  // --- Environment Variables ---
+  // --- State for Modals/Dialogs ---
   const build = import.meta.env.VITE_BUILD_VERSION;
 
   // --- Memoized Derived Values ---
@@ -84,11 +88,42 @@ const MainAppContent: FC<{
     if (!localStorage.getItem("hasVisitedNMSOptimizer")) {
       localStorage.setItem("hasVisitedNMSOptimizer", "true");
     }
+  }, []); // Ensure this runs only once on mount
+
+  // State and handler for the "Instructions" dialog
+  const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
+  const handleShowInstructions = useCallback(() => {
+    // For button click, show dialog instead of navigating
+    setShowInstructionsDialog(true);
+    // The `isFirstVisit` prop is primarily for the GridTableButtons visual cue
+    // and the direct /instructions route handling.
+    // No specific action needed here regarding isFirstVisit when opening dialog.
+  }, []); // Removed isFirstVisit from dependencies as it's not used in the callback body
+
+  const [showAboutPage, setShowAboutPage] = useState(false);
+  const handleShowAboutPage = useCallback(() => {
+    setShowAboutPage(true);
   }, []);
 
-  const handleShowInstructions = useCallback(() => {
-    navigate("/instructions");
-  }, [navigate]);
+  // State and handler for the "Changelog" dialog
+  const [showChangelogDialog, setShowChangelogDialog] = useState(false);
+  const handleShowChangelog = useCallback(() => {
+    setShowChangelogDialog(true);
+  }, []);
+  // Handler to close the Instructions dialog
+  const handleCloseInstructionsDialog = useCallback(() => {
+    setShowInstructionsDialog(false);
+  }, []);
+  
+  // Handler to close the About dialog
+  const handleCloseAboutDialog = useCallback(() => {
+    setShowAboutPage(false);
+  }, []);
+
+  // Handler to close the Changelog dialog
+  const handleCloseChangelogDialog = useCallback(() => {
+    setShowChangelogDialog(false);
+  }, []);
 
   const handleShareClick = useCallback(() => {
     const shareUrl = updateUrlForShare();
@@ -96,6 +131,7 @@ const MainAppContent: FC<{
     ReactGA.event({ category: "User Interactions", action: "shareLink" });
     if (newWindow) newWindow.focus();
   }, [updateUrlForShare]);
+  
 
   const handleResetGrid = useCallback(() => {
     ReactGA.event({ category: "User Interactions", action: "resetGrid" });
@@ -108,7 +144,7 @@ const MainAppContent: FC<{
     <>
       <main className="flex flex-col items-center justify-center lg:min-h-screen">
         <section className="relative mx-auto border rounded-none shadow-lg app lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
-          <AppHeader />
+          <AppHeader onShowChangelog={handleShowChangelog} />
           <section className="flex flex-col items-start p-6 pt-4 gridContainer lg:p-8 md:p-8 md:pt-4 lg:flex-row" ref={gridContainerRef}>
             <div className="flex-grow w-auto gridContainer__container lg:flex-shrink-0" ref={appLayoutContainerRef}>
               <header className="flex flex-wrap items-center gap-2 mb-4 text-xl font-semibold uppercase sm:text-2xl sidebar__title">
@@ -133,6 +169,7 @@ const MainAppContent: FC<{
               />
               <GridTableButtons
                 onShowInstructions={handleShowInstructions}
+                onShowAbout={handleShowAboutPage} // Pass the new handler
                 onShare={handleShareClick}
                 onReset={handleResetGrid}
                 isSharedGrid={isSharedGrid}
@@ -142,33 +179,21 @@ const MainAppContent: FC<{
                 isFirstVisit={isFirstVisit}
               />
             </div>
-            {(() => {
-              // Define the TechTreeComponent element.
-              const techTreeElement = (
-                <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
-              );
-
-              // The TechTreeComponent should only be rendered if it's NOT a shared grid.
-              if (!isSharedGrid) { // Rely directly on the store's isSharedGrid
-                if (isLarge) { // isLarge comes from useAppLayout
-                  return (
-                    <ScrollArea
-                      className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
-                      style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
-                    >
-                      {techTreeElement}
-                    </ScrollArea>
-                  );
-                } else {
-                  return (
-                    <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
-                      {techTreeElement}
-                    </aside>
-                  );
-                }
-              }
-              return null; // If it is a shared grid, render nothing for this section.
-            })()}
+            {/* TechTreeComponent rendering logic */}
+            {!isSharedGrid && (
+              isLarge ? (
+                <ScrollArea
+                  className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
+                  style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
+                >
+                  <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
+                </ScrollArea>
+              ) : (
+                <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
+                  <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
+                </aside>
+              )
+            )}
           </section>
         </section>
         <footer className="flex flex-wrap items-center justify-center gap-1 pt-4 pb-4 text-xs text-center lg:pb-0 sm:text-sm lg:text-base">
@@ -191,6 +216,27 @@ const MainAppContent: FC<{
         onClose={clearPatternNoFitTech}
         onForceOptimize={handleForceCurrentPnfOptimize}
       />
+      {/* Dialog for "About" information */}
+      <AppDialog
+        isOpen={showAboutPage}
+        onClose={handleCloseAboutDialog} // Use specific handler
+        title="About"
+        content={<AboutContent />}
+      />
+      {/* Dialog for "Instructions" information */}
+      <AppDialog
+        isOpen={showInstructionsDialog}
+        onClose={handleCloseInstructionsDialog} // Use specific handler
+        title="Instructions"
+        content={<InstructionsContent />}
+      />
+      {/* Dialog for "Changelog" information */}
+      <AppDialog
+        isOpen={showChangelogDialog}
+        onClose={handleCloseChangelogDialog}
+        title="Changelog"
+        content={<ChangelogContent />} // Or use <ChangelogPage rootPathSearch="" /> if it's suitable for dialog
+      />
     </>
   );
 };
@@ -210,8 +256,22 @@ const App: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (location.pathname === "/") {
-      document.title = APP_NAME;
+    // Set document title based on the current path
+    switch (location.pathname) {
+      case "/":
+        document.title = APP_NAME;
+        break;
+      case "/instructions":
+        document.title = `Instructions - ${APP_NAME}`;
+        break;
+      case "/about":
+        document.title = `About - ${APP_NAME}`;
+        break;
+      case "/changelog":
+        document.title = `Changelog - ${APP_NAME}`;
+        break;
+      default:
+        document.title = APP_NAME; // Default title
     }
   }, [location.pathname]);
 
@@ -234,11 +294,11 @@ const App: FC = () => {
         <Route path="/" element={null} /> {/* Main content is handled by MainAppContent */}
         <Route path="/changelog" element={<ChangelogPage rootPathSearch="" />} />
         <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} rootPathSearch="" />} />
-        <Route path="/about" element={<AboutPage rootPathSearch=""  />} />
+        <Route path="/about" element={<AboutPage rootPathSearch="" />} /> {/* Keep route for SEO / direct access */}
       </Routes>
       
       {/* Non-routed Dialogs managed by App */}
-      <InfoDialog isOpen={showError} onClose={() => setShowError(false)} content={errorDialogContent} title="Server Error Encountered!" />
+      <AppDialog isOpen={showError} onClose={() => setShowError(false)} content={errorDialogContent} title="Server Error Encountered!" />
     </>
   );
 };

@@ -46,7 +46,7 @@ const AppDialog: React.FC<AppDialogProps> = ({ onClose, content, isOpen, title =
   return (
     <Dialog.Root
       open={isOpen} // Control open state
-      onOpenChange={(open) => !open && onClose()} // Call onClose when Radix tries to close it
+      onOpenChange={(open) => !open && onClose()}
       modal={true} // Keep it modal
     >
       <Dialog.Portal>

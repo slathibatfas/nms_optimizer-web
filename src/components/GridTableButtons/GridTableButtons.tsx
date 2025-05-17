@@ -1,12 +1,11 @@
 import React from "react";
 import { Button } from "@radix-ui/themes";
 import { QuestionMarkCircledIcon, InfoCircledIcon, ResetIcon, Share2Icon } from "@radix-ui/react-icons";
-import { Link } from "react-router-dom"; // Import Link
 import ReactGA from "react-ga4";
 
 interface GridTableButtonsProps {
   onShowInstructions: () => void;
-  // onShowChangeLog: () => void; // Removed
+  onShowAbout: () => void; // Changed from onShowChangeLog, assuming this is for the "About" section
   onShare: () => void; // Added onShare to props interface
   onReset: () => void;
   isSharedGrid: boolean;
@@ -18,7 +17,8 @@ interface GridTableButtonsProps {
 
 const GridTableButtons: React.FC<GridTableButtonsProps> = ({
   onShowInstructions,
-  onShare,
+  onShowAbout, // Use the new prop
+  onShare, // Keep onShare
   onReset,
   isSharedGrid,
   hasModulesInGrid,
@@ -47,22 +47,18 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
           <span className="hidden sm:inline">Instructions</span>
         </Button>
         <Button
-          // The Changelog button is now a Link
-          // We wrap the Button component inside the Link
-          // The onClick handler is moved to the Button for GA tracking
-          variant="soft" // Keep Radix variant
-          className={`gridTable__button gridTable__button--changelog shadow-md !mr-2 sm:!px-2`} // Keep styling classes
-          asChild 
-        >
-          <Link to="/about" onClick={() => {
+          variant="soft"
+          className={`gridTable__button gridTable__button--about shadow-md !mr-2 sm:!px-2`} // Renamed class for clarity
+          onClick={() => {
               ReactGA.event({
                 category: "User Interactions",
                 action: "showAbout",
               });
-            }}>
+            onShowAbout();
+          }}
+        >
             <InfoCircledIcon />
             <span className="hidden sm:inline">About</span>
-          </Link>
         </Button>
         {!isSharedGrid && (
           <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-md sm:!px-2`} onClick={onShare} disabled={isSharedGrid || !hasModulesInGrid}>

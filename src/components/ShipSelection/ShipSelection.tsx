@@ -61,7 +61,7 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <IconButton size="2" variant="soft" disabled={solving} aria-label="Select ship type">
+        <IconButton size="2" variant="soft" disabled={solving} aria-label="Select ship type" className="!cursor-pointer">
           <GearIcon className="w-6 h-6" />
         </IconButton>
       </DropdownMenu.Trigger>
