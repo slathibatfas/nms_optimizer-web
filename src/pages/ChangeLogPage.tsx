@@ -15,7 +15,7 @@ const ChangelogPage: FC = () => {
   return (
     <InfoDialog
       isOpen={true}
-      onClose={() => navigate(-1)} // Navigate back
+      onClose={() => navigate("/")} // Navigate back
       content={changeLogDialogContent}
       title="Changelog"
     />

@@ -53,7 +53,6 @@ const MainAppContent: FC<{
   isFirstVisit: boolean;
 }> = ({ isFirstVisit }) => {
   const navigate = useNavigate();
-  const location = useLocation(); // Get current location for URL-based decisions
 
   // --- Store Hooks ---
   const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } = useGridStore();
@@ -81,12 +80,6 @@ const MainAppContent: FC<{
     return grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
   }, [grid]);
 
-  // Determine if the current URL suggests a shared grid.
-  // This check is synchronous and reactive to URL changes.
-  const isCurrentlySharedBasedOnUrl = useMemo(() => {
-    const params = new URLSearchParams(location.search);
-    return params.has("grid");
-  }, [location.search]);
   useEffect(() => {
     if (!localStorage.getItem("hasVisitedNMSOptimizer")) {
       localStorage.setItem("hasVisitedNMSOptimizer", "true");
@@ -155,9 +148,8 @@ const MainAppContent: FC<{
                 <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
               );
 
-              // The TechTreeComponent should only be rendered if it's NOT a shared grid
-              // based on the current URL. This prevents flashing.
-              if (!isCurrentlySharedBasedOnUrl) {
+              // The TechTreeComponent should only be rendered if it's NOT a shared grid.
+              if (!isSharedGrid) { // Rely directly on the store's isSharedGrid
                 if (isLarge) { // isLarge comes from useAppLayout
                   return (
                     <ScrollArea
@@ -175,7 +167,7 @@ const MainAppContent: FC<{
                   );
                 }
               }
-              return null; // If URL indicates shared, render nothing for this section.
+              return null; // If it is a shared grid, render nothing for this section.
             })()}
           </section>
         </section>

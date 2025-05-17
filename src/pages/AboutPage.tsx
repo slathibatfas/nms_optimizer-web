@@ -15,7 +15,7 @@ const AboutPage: FC = () => {
   return (
     <InfoDialog
       isOpen={true}
-      onClose={() => navigate(-1)} // Navigate back
+      onClose={() => navigate("/")} // Navigate back
       content={AboutDialogContent}
       title="About"
     />

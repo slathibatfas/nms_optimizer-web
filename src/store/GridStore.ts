@@ -161,6 +161,14 @@ const debouncedStorage = {
   },
 };
 
+// Helper to safely access window.location.search, returns "" if window is undefined (e.g., during SSR if applicable)
+const getWindowSearch = (): string => {
+  if (typeof window !== 'undefined' && window.location) {
+    return window.location.search;
+  }
+  return "";
+};
+
 // --- Create the store using persist and immer middleware ---
 export const useGridStore = create<GridStore>()(
   persist(
@@ -168,7 +176,7 @@ export const useGridStore = create<GridStore>()(
       // --- State properties ---
       grid: createGrid(10, 6),
       result: null,
-      isSharedGrid: false,
+      isSharedGrid: new URLSearchParams(getWindowSearch()).has('grid'), // Initialize based on current URL
 
       setIsSharedGrid: (isShared) => set({ isSharedGrid: isShared }),
 
@@ -327,7 +335,22 @@ export const useGridStore = create<GridStore>()(
       partialize: (state) => ({
         grid: state.grid,
         isSharedGrid: state.isSharedGrid,
+        // Note: 'result' is not persisted, which is often intended for transient API responses.
       }),
+      /**
+       * Custom merge function to ensure `isSharedGrid` is always
+       * determined by the URL at the time of hydration, overriding any
+       * persisted value for this specific flag.
+       */
+      merge: (persistedState, currentState) => {
+        const stateFromStorage = persistedState as Partial<GridStore>; // Cast persistedState
+        const currentUrlHasGrid = new URLSearchParams(getWindowSearch()).has('grid');
+        return {
+          ...currentState,    // Default state from create()
+          ...stateFromStorage, // State from localStorage (if getItem didn't return null)
+          isSharedGrid: currentUrlHasGrid, // Always prioritize URL for this flag
+        };
+      },
     }
   )
 );
