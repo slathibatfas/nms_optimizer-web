@@ -161,14 +161,24 @@ const debouncedStorage = {
   },
 };
 
+// Helper to safely access window.location.search, returns "" if window is undefined (e.g., during SSR if applicable)
+const getInitialSearchQuery = (): string => {
+  if (typeof window !== 'undefined' && window.location) {
+    return window.location.search;
+  }
+  return "";
+};
+
+// Determine the initial state of isSharedGrid based on the URL at the time of store creation
+const initialIsSharedGrid = new URLSearchParams(getInitialSearchQuery()).has('grid');
+
 // --- Create the store using persist and immer middleware ---
 export const useGridStore = create<GridStore>()(
   persist(
     immer((set, get) => ({
       // --- State properties ---
       grid: createGrid(10, 6),
-      result: null,
-      isSharedGrid: false,
+      result: null,      isSharedGrid: initialIsSharedGrid, // Initialize based on the current URL
 
       setIsSharedGrid: (isShared) => set({ isSharedGrid: isShared }),
 

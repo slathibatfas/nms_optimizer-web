@@ -6,9 +6,10 @@ import { APP_NAME } from "../constants";
 
 interface InstructionsPageProps {
   onOpen?: () => void;
+  rootPathSearch: string;
 }
 
-const InstructionsPage: FC<InstructionsPageProps> = ({ onOpen }) => {
+const InstructionsPage: FC<InstructionsPageProps> = ({ onOpen, rootPathSearch }) => {
   const navigate = useNavigate();
   const instructionsDialogContent = useMemo(() => <InstructionsContent />, []);
 
@@ -23,7 +24,7 @@ const InstructionsPage: FC<InstructionsPageProps> = ({ onOpen }) => {
   return (
     <InfoDialog
       isOpen={true}
-      onClose={() => navigate(-1)} // Navigate back
+      onClose={() => navigate(`/${rootPathSearch}`)}
       content={instructionsDialogContent}
       title="Instructions"
     />

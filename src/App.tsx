@@ -53,7 +53,6 @@ const MainAppContent: FC<{
   isFirstVisit: boolean;
 }> = ({ isFirstVisit }) => {
   const navigate = useNavigate();
-  const location = useLocation(); // Get current location for URL-based decisions
 
   // --- Store Hooks ---
   const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } = useGridStore();
@@ -81,12 +80,6 @@ const MainAppContent: FC<{
     return grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
   }, [grid]);
 
-  // Determine if the current URL suggests a shared grid.
-  // This check is synchronous and reactive to URL changes.
-  const isCurrentlySharedBasedOnUrl = useMemo(() => {
-    const params = new URLSearchParams(location.search);
-    return params.has("grid");
-  }, [location.search]);
   useEffect(() => {
     if (!localStorage.getItem("hasVisitedNMSOptimizer")) {
       localStorage.setItem("hasVisitedNMSOptimizer", "true");
@@ -151,14 +144,13 @@ const MainAppContent: FC<{
             </div>
             {(() => {
               // Define the TechTreeComponent element.
-              const techTreeElement = (
-                <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
-              );
+              const techTreeElement = <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />;
 
               // The TechTreeComponent should only be rendered if it's NOT a shared grid
               // based on the current URL. This prevents flashing.
-              if (!isCurrentlySharedBasedOnUrl) {
-                if (isLarge) { // isLarge comes from useAppLayout
+              if (!isSharedGrid) {
+                if (isLarge) {
+                  // isLarge comes from useAppLayout
                   return (
                     <ScrollArea
                       className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
@@ -168,11 +160,7 @@ const MainAppContent: FC<{
                     </ScrollArea>
                   );
                 } else {
-                  return (
-                    <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
-                      {techTreeElement}
-                    </aside>
-                  );
+                  return <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">{techTreeElement}</aside>;
                 }
               }
               return null; // If URL indicates shared, render nothing for this section.
@@ -211,6 +199,17 @@ const App: FC = () => {
   const location = useLocation();
   const [isFirstVisit, setIsFirstVisit] = useState(() => !localStorage.getItem("hasVisitedNMSOptimizer"));
   const { showError, setShowError } = useOptimizeStore(); // For the global ErrorDialog
+  const [rootPathSearch, setRootPathSearch] = useState<string>("");
+
+  useEffect(() => {
+    // If the current path is the root path, update our stored search string.
+    // This ensures rootPathSearch always holds the latest query params from the root path.
+    if (location.pathname === "/") {
+      setRootPathSearch(location.search);
+    }
+    // When navigating away from the root (e.g., to /about), rootPathSearch will retain
+    // the last search string from when the path was "/".
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     ReactGA.initialize(TRACKING_ID);
@@ -240,9 +239,9 @@ const App: FC = () => {
       {/* Routed Dialogs/Pages */}
       <Routes>
         <Route path="/" element={null} /> {/* Main content is handled by MainAppContent */}
-        <Route path="/changelog" element={<ChangelogPage />} />
-        <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} />} />
-        <Route path="/about" element={<AboutPage />} />
+        <Route path="/changelog" element={<ChangelogPage rootPathSearch={rootPathSearch} />} />
+        <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} rootPathSearch={rootPathSearch} />} />
+        <Route path="/about" element={<AboutPage rootPathSearch={rootPathSearch} />} />
       </Routes>
 
       {/* Non-routed Dialogs managed by App */}
