@@ -142,31 +142,24 @@ const MainAppContent: FC<{
                 isFirstVisit={isFirstVisit}
               />
             </div>
-            {(() => {
-              // Define the TechTreeComponent element.
-              const techTreeElement = <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />;
-
-              // The TechTreeComponent should only be rendered if it's NOT a shared grid
-              // based on the current URL. This prevents flashing.
-              if (!isSharedGrid) {
-                if (isLarge) {
-                  // isLarge comes from useAppLayout
-                  return (
-                    <ScrollArea
-                      className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
-                      style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
-                    >
-                      {techTreeElement}
-                    </ScrollArea>
-                  );
-                } else {
-                  return <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">{techTreeElement}</aside>;
-                }
-              }
-              return null; // If URL indicates shared, render nothing for this section.
-            })()}
+            {/* TechTree Section - Rendered if not a shared grid */}
+            {!isSharedGrid && (
+              isLarge ? (
+                <ScrollArea
+                  className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
+                  style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
+                >
+                  <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
+                </ScrollArea>
+              ) : (
+                <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
+                  <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
+                </aside>
+              )
+            )}
           </section>
         </section>
+        
         <footer className="flex flex-wrap items-center justify-center gap-1 pt-4 pb-4 text-xs text-center lg:pb-0 sm:text-sm lg:text-base">
           Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •{" "}
           <a href="https://github.com/jbelew/nms_optimizer-web" className="underline" target="_blank" rel="noopener noreferrer">
@@ -213,7 +206,6 @@ const App: FC = () => {
 
   useEffect(() => {
     ReactGA.initialize(TRACKING_ID);
-    // This effect runs once on App mount for GA initialization.
   }, []);
 
   useEffect(() => {
