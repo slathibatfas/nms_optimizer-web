@@ -6,9 +6,10 @@ import { APP_NAME } from "../constants";
 
 interface InstructionsPageProps {
   onOpen?: () => void;
+  rootPathSearch: string;
 }
 
-const InstructionsPage: FC<InstructionsPageProps> = ({ onOpen }) => {
+const InstructionsPage: FC<InstructionsPageProps> = ({ onOpen, rootPathSearch }) => {
   const navigate = useNavigate();
   const instructionsDialogContent = useMemo(() => <InstructionsContent />, []);
 

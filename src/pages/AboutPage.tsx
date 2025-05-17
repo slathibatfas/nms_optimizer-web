@@ -4,7 +4,11 @@ import AboutContent from "../components/AppDialog/AboutContent";
 import InfoDialog from "../components/AppDialog/AppDialog";
 import { APP_NAME } from "../constants";
 
-const AboutPage: FC = () => {
+interface AboutPageProps {
+  rootPathSearch: string;
+}
+
+const AboutPage: FC<AboutPageProps> = ({ rootPathSearch }) => {
   const navigate = useNavigate();
   const AboutDialogContent = useMemo(() => <AboutContent />, []);
 

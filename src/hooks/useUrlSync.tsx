@@ -1,5 +1,6 @@
 // src/hooks/useUrlSync.tsx
 import { useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useGridStore } from "../store/GridStore";
 import { useShipTypesStore } from "./useShipTypes";
 import { useGridDeserializer } from "./useGridDeserializer";
@@ -9,6 +10,7 @@ import { useGridDeserializer } from "./useGridDeserializer";
  * with the browser URL query parameters.
  */
 export const useUrlSync = () => {
+  const navigate = useNavigate();
   const { setIsSharedGrid, isSharedGrid } = useGridStore();
   const selectedShipTypeFromStore = useShipTypesStore((state) => state.selectedShipType);
   const setSelectedShipTypeInStore = useShipTypesStore((state) => state.setSelectedShipType);
@@ -61,8 +63,9 @@ export const useUrlSync = () => {
   const updateUrlForReset = useCallback(() => {
     const url = new URL(window.location.href);
     url.searchParams.delete("grid");
-    window.history.pushState({}, "", url.toString()); 
-  }, []);
+    // Use navigate to ensure React Router is aware of the URL change
+    navigate(url.pathname + url.search, { replace: true });
+  }, [navigate]);
 
   return { updateUrlForShare, updateUrlForReset };
 };
