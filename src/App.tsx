@@ -232,11 +232,11 @@ const App: FC = () => {
       {/* Routed Dialogs/Pages */}
       <Routes>
         <Route path="/" element={null} /> {/* Main content is handled by MainAppContent */}
-        <Route path="/changelog" element={<ChangelogPage />} />
-        <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} />} />
-        <Route path="/about" element={<AboutPage />} />
+        <Route path="/changelog" element={<ChangelogPage rootPathSearch="" />} />
+        <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} rootPathSearch="" />} />
+        <Route path="/about" element={<AboutPage rootPathSearch=""  />} />
       </Routes>
-
+      
       {/* Non-routed Dialogs managed by App */}
       <InfoDialog isOpen={showError} onClose={() => setShowError(false)} content={errorDialogContent} title="Server Error Encountered!" />
     </>
