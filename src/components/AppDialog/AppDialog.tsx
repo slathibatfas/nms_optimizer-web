@@ -62,7 +62,7 @@ const AppDialog: React.FC<AppDialogProps> = ({ onClose, content, isOpen, title =
             <Dialog.Description className="hidden appDialog__description">This dialog contains information.</Dialog.Description>
             <div className="text-sm appDialog__container">{content}</div>
             <Dialog.Close asChild>
-              <Button variant="soft" color="gray" className="appDialog__close" aria-label="Close dialog">
+              <Button variant="soft" color="cyan" className="appDialog__close" aria-label="Close dialog">
                 <Cross2Icon />
               </Button>
             </Dialog.Close>
