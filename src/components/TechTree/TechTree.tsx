@@ -40,7 +40,7 @@ const typeImageMap: TypeImageMap = {
   Mining: "mining.webp",
   "Secondary Weapons": "secondary.webp",
   "Fleet Upgrades": "upgrade.webp",
-  Scanners: "scanners.webp",
+  Scanner: "scanners.webp",
   Utilities: "utilities.webp",
 
 };
