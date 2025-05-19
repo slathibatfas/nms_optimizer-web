@@ -1,26 +1,14 @@
 version: "3.8"
 
 services:
-  backend:
-    image: ghcr.io/jbelew/nms-optimizer-service:${TAG:-latest}
-    container_name: nms-backend
-    ports:
-      - "5016:5000"
-    environment:
-      - PORT=5016
-    restart: unless-stopped
-
-  web:
-    image: ghcr.io/jbelew/nms-optimizer-web:${TAG:-latest}
-    container_name: nms-web
+  app: 
+    image: ghcr.io/jbelew/nms-optimizer-app:${TAG:-latest}
+    container_name: nms_optimizer_app
     build:
       context: .
       args:
-        VITE_API_URL: http://backend:5016
+        VITE_API_URL: /api/
     ports:
-      - "8016:80"
-    environment:
-      - VITE_API_URL=http://backend:5016
-    depends_on:
-      - backend
+      - "8016:80" # Maps host port 8016 to Nginx's port 80 in the container
+      - VITE_API_URL=/api/
     restart: unless-stopped
