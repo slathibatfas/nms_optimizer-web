@@ -56,7 +56,7 @@ The app runs at http://localhost:5173 by default. In development mode, it expect
 
 To override the default service endpoint, update the VITE_API_URL value in your .env.development file.
 
-<!-- ---
+---
 
 ### Docker compose.yml
 
@@ -64,24 +64,16 @@ To override the default service endpoint, update the VITE_API_URL value in your 
 version: "3.8"
 
 services:
-  backend:
-    image: ghcr.io/jbelew/nms-optimizer-service:${TAG:-latest}
-    container_name: nms-backend
+  app: 
+    image: ghcr.io/jbelew/nms-optimizer-app:${TAG:-latest}
+    container_name: nms_optimizer_app
+    build:
+      context: .
+      args:
+        VITE_API_URL: /api/
     ports:
-      - "${BACKEND_PORT}:${BACKEND_PORT}"
-    environment:
-      - PORT=2016
+      - "8016:80" # Maps host port 8016 to Nginx's port 80 in the container
+      - VITE_API_URL=/api/
     restart: unless-stopped
-
-  web:
-    image: ghcr.io/jbelew/nms-optimizer-web:${TAG:-latest}
-    container_name: nms-web
-    ports:
-      - "${WEB_PORT}:80"
-    environment:
-      - VITE_API_URL=http://backend:2016
-    depends_on:
-      - backend
-    restart: unless-stopped
-``` -->
+```
 
