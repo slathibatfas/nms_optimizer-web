@@ -31,7 +31,7 @@ ARG BACKEND_REPO_BRANCH=main # Or a specific commit/tag
 RUN git clone --branch ${BACKEND_REPO_BRANCH} --depth 1 ${BACKEND_REPO_URL} .
 
 # Install Python dependencies from the cloned repo's requirements.txt
-RUN pip install --no-cache-dir -r requirements.txtdocke
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Stage 3: Final Image with Nginx, Frontend, and Backend Service
 FROM python:3.11-slim
