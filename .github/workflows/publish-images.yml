@@ -1,16 +1,11 @@
-name: Build & Publish Docker Images
+name: Build & Publish Application Docker Image
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "v*.*.*"
-  pull_request:
-    branches:
-      - main
 
-jobs:
+jobs: # Renamed job for clarity
   publish:
     runs-on: ubuntu-latest
     permissions:
@@ -36,13 +31,28 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build & push web
-        uses: docker/build-push-action@v4
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/nms-optimizer-app # Updated image name
+          tags: |
+            type=schedule,pattern={{date 'YYYYMMDD'}}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5 # Updated to v5
         with:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name == 'push' }}
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/nms-optimizer-web:latest
-            ghcr.io/${{ github.repository_owner }}/nms-optimizer-web:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BACKEND_REPO_URL=https://github.com/jbelew/nms_optimizer-service.git
+            BACKEND_REPO_BRANCH=main
