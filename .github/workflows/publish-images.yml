@@ -1,14 +1,11 @@
 name: Build & Publish Application Docker Image
 
 on:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
     tags:
       - "v*.*.*"
-  pull_request:
-    branches:
-      - main
       
 jobs: # Renamed job for clarity
   publish:
