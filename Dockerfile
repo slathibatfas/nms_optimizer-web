@@ -18,24 +18,47 @@ RUN npm run build:docker # Assumes output to /app/frontend/dist
 FROM python:3.11-slim AS backend-builder
 WORKDIR /app/backend
 
-# Install git and any build dependencies for python packages
+# Install git, build dependencies for python packages, and wheel for building wheels
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     build-essential \
     # Add other build dependencies if your requirements.txt needs them (e.g., libpq-dev for psycopg2)
+    && pip install --no-cache-dir wheel \
     && rm -rf /var/lib/apt/lists/*
 
 # Clone the backend repository
 ARG BACKEND_REPO_URL=https://github.com/jbelew/nms_optimizer-service.git
 ARG BACKEND_REPO_BRANCH=main # Or a specific commit/tag
-RUN git clone --branch ${BACKEND_REPO_BRANCH} --depth 1 ${BACKEND_REPO_URL} .
+RUN echo "Attempting to clone backend repository..." && \
+    git clone --branch ${BACKEND_REPO_BRANCH} --depth 1 ${BACKEND_REPO_URL} . && \
+    echo "--- Contents of /app/backend after clone: ---" && \
+    ls -la /app/backend/ && \
+    echo "--- Contents of /app/backend/requirements.txt: ---" && \
+    cat /app/backend/requirements.txt || echo "Failed to cat requirements.txt"
+ 
+# Build wheels for Python dependencies from the cloned repo's requirements.txt
+RUN echo "--- Attempting to build wheels from /app/backend/requirements.txt ---" && \
+    mkdir /app/wheels && \
+    pip wheel --no-cache-dir -r requirements.txt -w /app/wheels && \
+    echo "--- Successfully built wheels. Contents of /app/wheels: ---" && \
+    ls -la /app/wheels/ || \
+    (echo "!!! Pip wheel command failed. Check errors above. !!!" && exit 1)
 
-# Install Python dependencies from the cloned repo's requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Stage 2.5: Install backend dependencies into a clean environment
+FROM python:3.11-slim AS backend-deps-installer
+WORKDIR /deps
 
-# Stage 3: Final Image with Nginx, Frontend, and Backend Service
+# Copy wheels and requirements.txt from the backend-builder stage
+COPY --from=backend-builder /app/wheels /tmp/wheels
+COPY --from=backend-builder /app/backend/requirements.txt .
+
+# Install dependencies from local wheels
+RUN pip install --no-cache-dir --no-index --find-links=/tmp/wheels -r requirements.txt && \
+    rm -rf /tmp/wheels
+# At this point, /usr/local/lib/python3.11/site-packages contains the installed dependencies
+
+# Stage 3: Final Image with Nginx, Frontend, and Backend Service (was Stage 3)
 FROM python:3.11-slim
-
 LABEL maintainer="jbelew.dev@gmail.com"
 LABEL description="NMS Optimizer Web UI and Python Backend Service"
 
@@ -72,13 +95,19 @@ WORKDIR /opt/app
 # Copy built frontend from frontend-builder stage
 COPY --from=frontend-builder --chown=${APP_USER}:${APP_GROUP} /app/frontend/dist /opt/app/frontend_dist
 
-# Copy backend application from backend-builder stage
-COPY --from=backend-builder --chown=${APP_USER}:${APP_GROUP} /app/backend /opt/app/backend_app
+# Copy backend application source code from backend-builder stage
+# IMPORTANT: Be specific here to avoid copying .git or other unnecessary files/folders.
+# Copy requirements.txt first (though it's not strictly needed if site-packages are copied, it's good for reference)
+COPY --from=backend-builder --chown=${APP_USER}:${APP_GROUP} /app/backend/requirements.txt /opt/app/backend_app/requirements.txt
 
-# Install Python dependencies for the backend application in the final stage
-WORKDIR /opt/app/backend_app
-RUN pip install --no-cache-dir -r requirements.txt
-WORKDIR /opt/app # Reset WORKDIR to the main app directory
+# Copy all .py files from the root of the backend repository and the debugging_utils directory
+COPY --from=backend-builder --chown=${APP_USER}:${APP_GROUP} /app/backend/*.py /opt/app/backend_app/
+COPY --from=backend-builder --chown=${APP_USER}:${APP_GROUP} /app/backend/training/*.* /opt/app/backend_app/training/
+
+# Copy installed Python dependencies (site-packages) from the backend-deps-installer stage
+COPY --from=backend-deps-installer /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+# Copy any executables installed by pip (e.g., if gunicorn was in requirements.txt)
+COPY --from=backend-deps-installer /usr/local/bin /usr/local/bin
 
 # Copy Nginx site configuration (assumes docker_configs directory is at the root of the build context)
 COPY docker_configs/app.nginx.conf /etc/nginx/conf.d/default.conf

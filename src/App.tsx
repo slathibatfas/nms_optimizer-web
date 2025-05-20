@@ -55,8 +55,10 @@ const AppLoadingFallback = () => (
  * This component will suspend if `useFetchShipTypesSuspense` is fetching initial data.
  */
 const MainAppContent: FC<{
-  isFirstVisit: boolean;
-}> = ({ isFirstVisit }) => {
+  isFirstVisit: boolean; // Prop to indicate if it's the user's first visit session
+  onFirstVisitInstructionsDialogOpened: () => void; // Callback when instructions dialog is opened for the first time
+}> = ({ isFirstVisit, onFirstVisitInstructionsDialogOpened }) => {
+
 
   // --- Store Hooks ---
   const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } = useGridStore();
@@ -84,21 +86,14 @@ const MainAppContent: FC<{
     return grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
   }, [grid]);
 
-  useEffect(() => {
-    if (!localStorage.getItem("hasVisitedNMSOptimizer")) {
-      localStorage.setItem("hasVisitedNMSOptimizer", "true");
-    }
-  }, []); // Ensure this runs only once on mount
-
   // State and handler for the "Instructions" dialog
   const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
   const handleShowInstructions = useCallback(() => {
-    // For button click, show dialog instead of navigating
     setShowInstructionsDialog(true);
-    // The `isFirstVisit` prop is primarily for the GridTableButtons visual cue
-    // and the direct /instructions route handling.
-    // No specific action needed here regarding isFirstVisit when opening dialog.
-  }, []); // Removed isFirstVisit from dependencies as it's not used in the callback body
+    if (isFirstVisit) {
+      onFirstVisitInstructionsDialogOpened(); // Notify parent (App) that instructions were shown
+    }
+  }, [isFirstVisit, onFirstVisitInstructionsDialogOpened]);
 
   const [showAboutPage, setShowAboutPage] = useState(false);
   const handleShowAboutPage = useCallback(() => {
@@ -110,6 +105,7 @@ const MainAppContent: FC<{
   const handleShowChangelog = useCallback(() => {
     setShowChangelogDialog(true);
   }, []);
+  
   // Handler to close the Instructions dialog
   const handleCloseInstructionsDialog = useCallback(() => {
     setShowInstructionsDialog(false);
@@ -275,25 +271,35 @@ const App: FC = () => {
     }
   }, [location.pathname]);
 
+  // This callback now handles setting both React state and localStorage
   const handleFirstVisitInstructionsOpened = useCallback(() => {
     if (isFirstVisit) {
       setIsFirstVisit(false);
+      localStorage.setItem("hasVisitedNMSOptimizer", "true");
     }
-  }, [isFirstVisit, setIsFirstVisit]);
+  }, [isFirstVisit]); // setIsFirstVisit is stable, so not strictly needed if only isFirstVisit changes
 
   const errorDialogContent = useMemo(() => <ErrorContent />, []);
 
   return (
     <>
       <Suspense fallback={<AppLoadingFallback />}>
-        <MainAppContent isFirstVisit={isFirstVisit} />
+        <MainAppContent
+          isFirstVisit={isFirstVisit}
+          onFirstVisitInstructionsDialogOpened={handleFirstVisitInstructionsOpened}
+        />
       </Suspense>
 
       {/* Routed Dialogs/Pages */}
       <Routes>
         <Route path="/" element={null} /> {/* Main content is handled by MainAppContent */}
         <Route path="/changelog" element={<ChangelogPage rootPathSearch="" />} />
-        <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} rootPathSearch="" />} />
+        <Route
+          path="/instructions"
+          element={
+            <InstructionsPage onOpen={handleFirstVisitInstructionsOpened} rootPathSearch="" />
+          }
+        />
         <Route path="/about" element={<AboutPage rootPathSearch="" />} /> {/* Keep route for SEO / direct access */}
       </Routes>
       
