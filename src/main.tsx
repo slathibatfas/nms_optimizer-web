@@ -12,7 +12,7 @@ import App from './App';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <ErrorBoundary> {/* Wrap App with ErrorBoundary */}
+      <ErrorBoundary>
         <Theme appearance="dark" accentColor="cyan" className="!bg-transparent">
           <App />
         </Theme>

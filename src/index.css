@@ -47,6 +47,18 @@
   --grid-gap: clamp(var(--grid-gap-min-size), 1vw, var(--grid-gap-max-size));
 }
 
+html {
+  width: 100%;
+  /* overflow-x: hidden is critical for preventing horizontal scroll,
+     especially when vw units are used elsewhere or sub-pixel issues arise. */
+  overflow-x: hidden;
+  /* Ensure box-sizing is consistent, Tailwind's preflight typically handles this. */
+  box-sizing: border-box;
+}
+*, *::before, *::after { /* Ensures box-sizing propagates if not already handled by preflight. */
+  box-sizing: inherit;
+}
+
 /* App.tsx level styling */
 .dark, .dark-theme, :is(.dark, .dark-theme) :where(.radix-themes:not(.light, .light-theme)) {
   --color-background: #0e0024;
@@ -54,15 +66,15 @@
 
 /* Background styles */
 body {
-  background: 
+  background:
     image-set(
       url("/src/assets/img/background.webp") 1x,
       url("/src/assets/img/background@2x.webp") 2x
     ) center/cover fixed;
   font-family: var(--default-font-family, Raleway, Helvetica, Arial, sans-serif);
   min-height: 100vh;
-  min-width: 100vw;
-  overflow-x: hidden;
+  width: 100%; /* Use 100% instead of 100vw to avoid issues with scrollbar width. */
+  /* overflow-x: hidden; /* Typically, html's overflow-x:hidden is sufficient. */
 }
 
 /* Background overlay */
@@ -71,10 +83,18 @@ body::before {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%; /* Changed from 100vw. Since html is 100% width and overflow-x hidden,
+                  this will correctly fill the viewport without extending beyond it
+                  due to scrollbar considerations that 100vw has. */
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: -1;
+}
+
+/* Ensure the React root element also attempts to fill the space */
+#root {
+  width: 100%;
+  min-height: 100vh; /* Or height: 100% if body and html are also height: 100% */
 }
 
 .sidebar__title {
