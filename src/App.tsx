@@ -58,8 +58,6 @@ const MainAppContent: FC<{
   isFirstVisit: boolean; // Prop to indicate if it's the user's first visit session
   onFirstVisitInstructionsDialogOpened: () => void; // Callback when instructions dialog is opened for the first time
 }> = ({ isFirstVisit, onFirstVisitInstructionsDialogOpened }) => {
-
-
   // --- Store Hooks ---
   const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } = useGridStore();
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
@@ -105,12 +103,12 @@ const MainAppContent: FC<{
   const handleShowChangelog = useCallback(() => {
     setShowChangelogDialog(true);
   }, []);
-  
+
   // Handler to close the Instructions dialog
   const handleCloseInstructionsDialog = useCallback(() => {
     setShowInstructionsDialog(false);
   }, []);
-  
+
   // Handler to close the About dialog
   const handleCloseAboutDialog = useCallback(() => {
     setShowAboutPage(false);
@@ -127,7 +125,6 @@ const MainAppContent: FC<{
     ReactGA.event({ category: "User Interactions", action: "shareLink" });
     if (newWindow) newWindow.focus();
   }, [updateUrlForShare]);
-  
 
   const handleResetGrid = useCallback(() => {
     ReactGA.event({ category: "User Interactions", action: "resetGrid" });
@@ -176,8 +173,8 @@ const MainAppContent: FC<{
               />
             </div>
             {/* TechTreeComponent rendering logic */}
-            {!isSharedGrid && (
-              isLarge ? (
+            {!isSharedGrid &&
+              (isLarge ? (
                 <ScrollArea
                   className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
                   style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
@@ -188,8 +185,7 @@ const MainAppContent: FC<{
                 <aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
                   <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
                 </aside>
-              )
-            )}
+              ))}
           </section>
         </section>
         <footer className="flex flex-wrap items-center justify-center gap-1 pt-4 pb-4 text-xs text-center lg:pb-0 sm:text-sm lg:text-base">
@@ -284,25 +280,17 @@ const App: FC = () => {
   return (
     <>
       <Suspense fallback={<AppLoadingFallback />}>
-        <MainAppContent
-          isFirstVisit={isFirstVisit}
-          onFirstVisitInstructionsDialogOpened={handleFirstVisitInstructionsOpened}
-        />
+        <MainAppContent isFirstVisit={isFirstVisit} onFirstVisitInstructionsDialogOpened={handleFirstVisitInstructionsOpened} />
       </Suspense>
 
       {/* Routed Dialogs/Pages */}
       <Routes>
         <Route path="/" element={null} /> {/* Main content is handled by MainAppContent */}
         <Route path="/changelog" element={<ChangelogPage rootPathSearch="" />} />
-        <Route
-          path="/instructions"
-          element={
-            <InstructionsPage onOpen={handleFirstVisitInstructionsOpened} rootPathSearch="" />
-          }
-        />
+        <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} rootPathSearch="" />} />
         <Route path="/about" element={<AboutPage rootPathSearch="" />} /> {/* Keep route for SEO / direct access */}
       </Routes>
-      
+
       {/* Non-routed Dialogs managed by App */}
       <AppDialog isOpen={showError} onClose={() => setShowError(false)} content={errorDialogContent} title="Server Error Encountered!" />
     </>

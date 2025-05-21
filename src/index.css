@@ -61,7 +61,7 @@ body {
     ) center/cover fixed;
   font-family: var(--default-font-family, Raleway, Helvetica, Arial, sans-serif);
   min-height: 100vh;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */ /* Temporarily commented out for debugging */
 }
 
 /* Background overlay */
