@@ -1,9 +1,9 @@
 name: Build & Publish Application Docker Image
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
     tags:
       - "v*.*.*"
       

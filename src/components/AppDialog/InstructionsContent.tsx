@@ -6,7 +6,7 @@ const InstructionsContent: React.FC = () => {
   return (
     <>
       <article className="appDialog__body">
-        <h2 className="appDialog__subheading">About This Tool</h2>
+        <h2 className="appDialog__subheading">Before You Begin</h2>
         <p className="appDialog__text">
           This tool is for <strong>endgame players</strong> optimizing their technology layouts for maximum efficiency. It is most effective if you:
         </p>

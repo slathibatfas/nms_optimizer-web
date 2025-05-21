@@ -28,6 +28,7 @@ const ChangeLogContent: React.FC = () => {
         <li className="appDialog__listItem">Enabled compression on the service endpoint to reduce payload size and improve performance.</li>
         <li className="appDialog__listItem">Repositioned content dialog buttons to more logical locations.</li>
         <li className="appDialog__listItem">Resized and optimized sidebar button images.</li>
+        <li className="appDialog__listItem">Finally fixed automated Docker builds! See <a href="https://github.com/jbelew/nms_optimizer-web/pkgs/container/nms-optimizer-app" target="_blank" rel="noopener noreferrer" className="underline">the artifact page</a> for additional info.</li>
         <li className="appDialog__listItem">Significantly reduced DOM complexity.</li>
         <li className="appDialog__listItem">
           Numerous UI enhancements, performance improvements, and accessibility fixes based on Lighthouse audits (scored 98/100!).
