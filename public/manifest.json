@@ -4,8 +4,8 @@
   "description": "Optimize your No Man's Sky technology layouts for starships and multi-tools.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#313b4e",
-  "theme_color": "#0052CC",
+  "background_color": "#274860",
+  "theme_color": "#00a2c7",
   "orientation": "landscape-primary",
   "icons": [
     {
