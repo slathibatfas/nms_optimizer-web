@@ -18,7 +18,7 @@ const AppHeaderInternal: React.FC<AppHeaderInternalProps> = ({ onShowChangelog }
         <div>
           <img src="/assets/svg/nms_logo.svg" className="h-[20] w-[234] mb-1 sm:mb-2 sm:h-[32] sm:w-[374] header__logo" alt="No Man's Sky Logo" />
           <h2 className="text-base sm:text-2xl header__title">
-            <strong>AI</strong> Technology Optimizer <span className="font-thin">{APP_VERSION}</span>
+            <strong>AI</strong> Build Optimizer <span className="font-thin">{APP_VERSION}</span>
             {/* Reverted to a span for a less button-like appearance, while maintaining click functionality */}
             <span
               role="button"
