@@ -86,6 +86,7 @@ const MainAppContent: FC<{
 
   // State and handler for the "Instructions" dialog
   const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
+  
   const handleShowInstructions = useCallback(() => {
     setShowInstructionsDialog(true);
     if (isFirstVisit) {
@@ -162,7 +163,7 @@ const MainAppContent: FC<{
               />
               <GridTableButtons
                 onShowInstructions={handleShowInstructions}
-                onShowAbout={handleShowAboutPage} // Pass the new handler
+                onShowAbout={handleShowAboutPage}
                 onShare={handleShareClick}
                 onReset={handleResetGrid}
                 isSharedGrid={isSharedGrid}
