@@ -96,50 +96,47 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({ label, tech, handleO
   const baseImagePath = "/assets/img/buttons/";
   const fallbackImage = `${baseImagePath}infra.webp`; // Fallback for browsers not supporting srcSet or if techImage is null
 
-  let imagePath = fallbackImage;
-  let imageSrcSet = "";
+  const imagePath = techImage ? `${baseImagePath}${techImage}` : fallbackImage;
 
-  if (techImage) {
-    const imageNameWithoutExtension = techImage.substring(0, techImage.lastIndexOf('.'));
-    const extension = techImage.substring(techImage.lastIndexOf('.'));
+  // Prepare base styles for the IconButton
+  const iconButtonBaseStyles: React.CSSProperties = {
+    backgroundImage: `url('${imagePath}')`,
+    backgroundSize: "fit", // Or "contain" depending on desired effect
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  };
 
-    imagePath = `${baseImagePath}${techImage}`; // Default src
-    // Example srcSet, adjust sizes and paths as per your available images
-    imageSrcSet = `${baseImagePath}${imageNameWithoutExtension}${extension} 1x, ${baseImagePath}${imageNameWithoutExtension}@x2${extension} 2x`;
+  // Determine dynamic styles based on techColor and solving state
+  let dynamicIconButtonStyles: React.CSSProperties = {};
+  let dataAccentColorProps: Record<string, string> = {};
+
+  if (techColor === "white" && !solving) {
+    dynamicIconButtonStyles = {
+      border: "2px solid var(--gray-a10)",
+      backgroundColor: "var(--gray-a6)", // Radix white often needs explicit background
+      color: "var(--gray-12)", // Ensure icon/text is visible
+    };
+    // dataAccentColorProps = { "data-accent-color": "white" };
+  } else if (techColor === "gray") {
+    dataAccentColorProps = { "data-accent-color": "gray" };
+  } else {
+    dataAccentColorProps = { "data-accent-color": techColor || "gray" }; // Provide "gray" as a fallback
   }
 
   return (
     <Flex className="flex gap-2 mt-2 mb-2 items-top optimizationButton">
       <Tooltip delayDuration={1000} content={tooltipLabel}>
         <IconButton
+          className={`techRow__optimizeButton shadow-md group ${!solving ? '!cursor-pointer' : '!cursor-not-allowed'}`.trim()}
           onClick={handleOptimizeClick}
           disabled={solving}
           radius="small"
           variant="solid"
-          {...(techColor === "white" && !solving
-            ? {
-                "data-accent-color": "white",
-                style: { border: "2px solid var(--gray-a11)", backgroundColor: "var(--gray-a4)", color: "var(--gray-12)" }, // Manual styles for a white button with black text/icon
-              }
-            : techColor === "gray"
-            ? {
-                "data-accent-color": "gray",
-              }
-            : {
-                "data-accent-color": techColor,
-              })}
+          style={{ ...iconButtonBaseStyles, ...dynamicIconButtonStyles }}
+          {...dataAccentColorProps}
           aria-label={`${tooltipLabel} ${label}`}
-          className={`techRow__optimizeButton shadow-md ${!solving ? '!cursor-pointer' : '!cursor-not-allowed'}`.trim()}
         >
-          <div className="relative shadow-md group">
-            <img
-              src={imagePath}
-              srcSet={imageSrcSet || undefined} // Use undefined if imageSrcSet is empty to avoid an empty attribute
-              alt={label}
-              className="w-full h-full techRow__optimizeButton--image"
-            />
-            <IconComponent className="absolute top-0 right-0 p-1 transition-opacity opacity-0 w-7 h-7 group-hover:opacity-100" />
-          </div>
+          <IconComponent />
         </IconButton>
       </Tooltip>
 
@@ -203,6 +200,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({ label, tech, handleO
                       <div key={module.id} className="flex items-center gap-2 AccordionContentText">
                         <Checkbox
                           className="CheckboxRoot"
+                          variant="soft"
                           id={module.id}
                           checked={currentCheckedModules.includes(module.id)}
                           onClick={() => handleCheckboxChange(module.id)}
