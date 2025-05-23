@@ -103,8 +103,9 @@ body::before {
 }
 
 .header__title strong {
-  font-weight: 800;
+  font-weight: 700;
   color: var(--accent-11);
+  filter: drop-shadow(0 0 12px var(--accent-11));
 }
 
 .fade-horizontal {

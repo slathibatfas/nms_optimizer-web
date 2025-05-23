@@ -21,6 +21,12 @@ const ChangeLogContent: React.FC = () => {
         for up to date model information.
       </p>
 
+      <h2 className="pt-2 appDialog__subheading">Version 2.80 (2025-05-22)</h2>
+      <ul className="appDialog__list">
+        <li className="appDialog__listItem">Some final UI refinements and optimizations.</li>
+        <li className="appDialog__listItem">Renamed app to <strong>No Man's Sky Technology Layout Optimizer AI</strong>.</li>
+      </ul>
+
       <h2 className="pt-2 appDialog__subheading">Version 2.75 (2025-05-16)</h2>
       <ul className="appDialog__list">
         <li className="appDialog__listItem">Fixed issue where the canonical URL setting was interfering with "Share" functionality. </li>
