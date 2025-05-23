@@ -112,8 +112,8 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({ label, tech, handleO
 
   if (techColor === "white" && !solving) {
     dynamicIconButtonStyles = {
-      border: "2px solid var(--gray-a10)",
-      backgroundColor: "var(--gray-a6)", // Radix white often needs explicit background
+      border: "2px solid var(--gray-a11)",
+      backgroundColor: "var(--gray-6)", // Radix white often needs explicit background
       color: "var(--gray-12)", // Ensure icon/text is visible
     };
     // dataAccentColorProps = { "data-accent-color": "white" };
@@ -136,7 +136,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({ label, tech, handleO
           {...dataAccentColorProps}
           aria-label={`${tooltipLabel} ${label}`}
         >
-          <IconComponent />
+          <IconComponent/>
         </IconButton>
       </Tooltip>
 
