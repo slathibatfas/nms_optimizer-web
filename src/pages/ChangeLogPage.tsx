@@ -4,11 +4,7 @@ import ChangeLogContent from '../components/AppDialog/ChangeLogContent';
 import InfoDialog from '../components/AppDialog/AppDialog';
 import { APP_NAME } from "../constants";
 
-interface ChangelogPageProps {
-  rootPathSearch: string;
-}
-
-const ChangelogPage: FC<ChangelogPageProps> = ({ rootPathSearch }) => {
+const ChangelogPage: FC = () => {
   const navigate = useNavigate();
   const changeLogDialogContent = useMemo(() => <ChangeLogContent />, []);
 

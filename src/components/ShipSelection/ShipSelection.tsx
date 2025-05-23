@@ -1,14 +1,19 @@
 // src/components/ShipSelection/ShipSelection.tsx
 import { GearIcon } from "@radix-ui/react-icons";
-import { DropdownMenu, IconButton, Text } from "@radix-ui/themes";
-import React, { Suspense, useRef, useMemo } from "react"; // Import useMemo
-import { useFetchShipTypesSuspense, useShipTypesStore, ShipTypeDetail } from "../../hooks/useShipTypes";
-import { useGridStore, createGrid, Grid } from "../../store/GridStore"; // Import createGrid and Grid type
+import { DropdownMenu, IconButton } from "@radix-ui/themes";
+import React, { useRef, useMemo } from "react";
+import { useFetchShipTypesSuspense, useShipTypesStore, ShipTypeDetail } from "../../hooks/useShipTypes"; // ShipTypeDetail is used in ShipTypesDropdownProps
+import { useGridStore, createGrid, Grid } from "../../store/GridStore";
 import ReactGA from "react-ga4";
 
 import './ShipSelection.css';
 
-// --- ShipSelection component remains the same ---
+// --- Constants for Grid Configuration ---
+const DEFAULT_GRID_HEIGHT = 10;
+const DEFAULT_GRID_WIDTH = 6;
+const FREIGHTER_KEYWORD = "freighter";
+const FREIGHTER_INACTIVE_ROW_INDICES = [4, 5]; // 0-indexed rows to deactivate for freighters
+
 interface ShipSelectionProps {
   solving: boolean;
 }
@@ -16,7 +21,6 @@ interface ShipSelectionProps {
 const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
   const setSelectedShipType = useShipTypesStore((state) => state.setSelectedShipType);
-  // Get the new action from the store
   const setGridAndResetAuxiliaryState = useGridStore((state) => state.setGridAndResetAuxiliaryState);
   const previousSelectionRef = useRef<string | null>(null);
 
@@ -29,25 +33,19 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
 
       setSelectedShipType(option);
 
-      // --- Determine the new grid state ---
-      // createGrid(10, 6) creates a 6x10 grid with all cells active and not supercharged.
-      const initialGrid = createGrid(10, 6);
-      let newCells = initialGrid.cells; // Start with the default active cells
-
-      // If the selected ship type is a freighter, deactivate rows 4 and 5
-      if (option.toLowerCase().includes("freighter")) {
+      const initialGrid = createGrid(DEFAULT_GRID_HEIGHT, DEFAULT_GRID_WIDTH);
+      let newCells = initialGrid.cells;
+      // If the selected ship type is a freighter, deactivate specific rows
+      if (option.toLowerCase().includes(FREIGHTER_KEYWORD)) {
         newCells = initialGrid.cells.map((row, rIndex) => {
-          // Target rows 4 and 5 (0-indexed)
-          if (rIndex === 4 || rIndex === 5) {
-            // For the target rows, map each cell to be inactive and not supercharged
+          if (FREIGHTER_INACTIVE_ROW_INDICES.includes(rIndex)) {
+            // For these rows, map each cell to be inactive and not supercharged
             return row.map(cell => ({ ...cell, active: false, supercharged: false }));
           }
-          // For other rows, return the original row from createGrid (it's already a new object)
           return row;
         });
       }
 
-      // Prepare the payload for the GridStore action
       const finalGridPayload: Grid = {
         cells: newCells,
         width: initialGrid.width,
@@ -66,14 +64,11 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content style={{ backgroundColor: "var(--accent-3)" }}>
-        <Suspense fallback={<Text>Loading Ship Types...</Text>}>
-          <ShipTypesDropdown selectedShipType={selectedShipType} handleOptionSelect={handleOptionSelect} />
-        </Suspense>
+        <ShipTypesDropdown selectedShipType={selectedShipType} handleOptionSelect={handleOptionSelect} />
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   );
 };
-// --- End of ShipSelection component ---
 
 interface ShipTypesDropdownProps {
   selectedShipType: string;
@@ -96,7 +91,7 @@ interface ShipTypesDropdownProps {
 const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({ selectedShipType, handleOptionSelect }) => {
   const shipTypes = useFetchShipTypesSuspense();
 
-  // Group ship types by their 'type' property using useMemo for efficiency
+  // Group ship types by their 'type' property
   const groupedShipTypes = useMemo(() => {
     return Object.entries(shipTypes).reduce(
       (acc, [key, details]) => {
@@ -105,31 +100,23 @@ const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({ selectedShipType,
           // If this type group doesn't exist yet, create it
           acc[type] = [];
         }
-        // Add the item (key and details) to the correct group
         acc[type].push({ key, details });
         return acc;
       },
-      {} as Record<string, { key: string; details: ShipTypeDetail }[]> // Initial value is an empty object typed correctly
+      {} as Record<string, { key: string; details: ShipTypeDetail }[]>
     );
-  }, [shipTypes]); // Recalculate only if shipTypes changes
+  }, [shipTypes]);
 
   return (
     <DropdownMenu.RadioGroup value={selectedShipType} onValueChange={handleOptionSelect}>
-      {/* Iterate over the groups (e.g., 'Starship', 'Multi-Tool') */}
       {Object.entries(groupedShipTypes).map(([type, items], groupIndex) => (
-        // Use React.Fragment to group elements for each type without adding extra DOM nodes
         <React.Fragment key={type}>
-          {/* Add a separator before each group except the first one */}
           {groupIndex > 0 && <DropdownMenu.Separator />}
-          {/* Display the group type as a label */}
           <DropdownMenu.Label>
-            <span className="shipSelection__header">{type}s</span>
-          </DropdownMenu.Label>{" "}
-          {/* Pluralize for display */}
-          {/* Iterate over the items within the current group */}
+            <span className="shipSelection__header">{type}s</span> {/* Pluralize for display */}
+          </DropdownMenu.Label>
           {items.map(({ key, details }) => (
             <DropdownMenu.RadioItem key={key} value={key} className="font-bold last:mb-2">
-              {/* Display the specific item's label */}
               {details.label}
             </DropdownMenu.RadioItem>
           ))}

@@ -1,7 +1,7 @@
 // src/App.tsx
 
 // --- React & External Libraries ---
-import { Suspense, useEffect, useState, useCallback, useMemo, FC } from "react";
+import React, { Suspense, useEffect, useState, useCallback, useMemo, FC, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { ScrollArea } from "@radix-ui/themes";
 import ReactGA from "react-ga4";
@@ -32,9 +32,9 @@ import { useGridStore } from "./store/GridStore";
 import { useOptimizeStore } from "./store/OptimizeStore";
 
 // --- Page Components ---
-import ChangelogPage from "./pages/ChangeLogPage";
-import InstructionsPage from "./pages/InstructionsPage";
-import AboutPage from "./pages/AboutPage";
+const ChangelogPage = lazy(() => import("./pages/ChangeLogPage"));
+const InstructionsPage = lazy(() => import("./pages/InstructionsPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
 
 // --- Page Content ---
 import InstructionsContent from "./components/AppDialog/InstructionsContent";
@@ -50,6 +50,9 @@ const AppLoadingFallback = () => (
   </main>
 );
 
+// --- Constants for UI ---
+const DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT = "528px";
+
 /**
  * Renders the main application content.
  * This component will suspend if `useFetchShipTypesSuspense` is fetching initial data.
@@ -58,11 +61,8 @@ const MainAppContent: FC<{
   isFirstVisit: boolean; // Prop to indicate if it's the user's first visit session
   onFirstVisitInstructionsDialogOpened: () => void; // Callback when instructions dialog is opened for the first time
 }> = ({ isFirstVisit, onFirstVisitInstructionsDialogOpened }) => {
-  // --- Store Hooks ---
   const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } = useGridStore();
   const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
-
-  // --- Custom Hooks & Data Fetching ---
   const shipTypes = useFetchShipTypesSuspense(); // This will suspend if data is not ready
   const { solving, handleOptimize, gridContainerRef, patternNoFitTech, clearPatternNoFitTech, handleForceCurrentPnfOptimize } = useOptimize();
   const { updateUrlForShare, updateUrlForReset } = useUrlSync();
@@ -70,8 +70,6 @@ const MainAppContent: FC<{
 
   // --- State for Modals/Dialogs ---
   const build = import.meta.env.VITE_BUILD_VERSION;
-
-  // --- Memoized Derived Values ---
   const selectedShipTypeDetails = useMemo<ShipTypeDetail | undefined>(() => {
     return shipTypes[selectedShipType];
   }, [shipTypes, selectedShipType]);
@@ -84,9 +82,8 @@ const MainAppContent: FC<{
     return grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
   }, [grid]);
 
-  // State and handler for the "Instructions" dialog
   const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
-  
+
   const handleShowInstructions = useCallback(() => {
     setShowInstructionsDialog(true);
     if (isFirstVisit) {
@@ -99,23 +96,19 @@ const MainAppContent: FC<{
     setShowAboutPage(true);
   }, []);
 
-  // State and handler for the "Changelog" dialog
   const [showChangelogDialog, setShowChangelogDialog] = useState(false);
   const handleShowChangelog = useCallback(() => {
     setShowChangelogDialog(true);
   }, []);
 
-  // Handler to close the Instructions dialog
   const handleCloseInstructionsDialog = useCallback(() => {
     setShowInstructionsDialog(false);
   }, []);
 
-  // Handler to close the About dialog
   const handleCloseAboutDialog = useCallback(() => {
     setShowAboutPage(false);
   }, []);
 
-  // Handler to close the Changelog dialog
   const handleCloseChangelogDialog = useCallback(() => {
     setShowChangelogDialog(false);
   }, []);
@@ -173,12 +166,11 @@ const MainAppContent: FC<{
                 isFirstVisit={isFirstVisit}
               />
             </div>
-            {/* TechTreeComponent rendering logic */}
             {!isSharedGrid &&
               (isLarge ? (
                 <ScrollArea
                   className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
-                  style={{ height: gridHeight ? `${gridHeight}px` : "528px" }}
+                  style={{ height: gridHeight ? `${gridHeight}px` : DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT }}
                 >
                   <TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
                 </ScrollArea>
@@ -212,28 +204,22 @@ const MainAppContent: FC<{
       {/* Dialog for "About" information */}
       <AppDialog
         isOpen={showAboutPage}
-        onClose={handleCloseAboutDialog} // Use specific handler
+        onClose={handleCloseAboutDialog}
         title="About"
         content={<AboutContent />}
       />
       {/* Dialog for "Instructions" information */}
       <AppDialog
         isOpen={showInstructionsDialog}
-        onClose={handleCloseInstructionsDialog} // Use specific handler
+        onClose={handleCloseInstructionsDialog}
         title="Instructions"
         content={<InstructionsContent />}
       />
       {/* Dialog for "Changelog" information */}
-      <AppDialog
-        isOpen={showChangelogDialog}
-        onClose={handleCloseChangelogDialog}
-        title="Changelog"
-        content={<ChangelogContent />} // Or use <ChangelogPage rootPathSearch="" /> if it's suitable for dialog
-      />
+      <AppDialog isOpen={showChangelogDialog} onClose={handleCloseChangelogDialog} title="Changelog" content={<ChangelogContent />} />
     </>
   );
 };
-
 /**
  * Root application component.
  * Sets up routing, Suspense for data loading, and global dialogs.
@@ -241,7 +227,7 @@ const MainAppContent: FC<{
 const App: FC = () => {
   const location = useLocation();
   const [isFirstVisit, setIsFirstVisit] = useState(() => !localStorage.getItem("hasVisitedNMSOptimizer"));
-  const { showError, setShowError } = useOptimizeStore(); // For the global ErrorDialog
+  const { showError, setShowError } = useOptimizeStore();
 
   useEffect(() => {
     ReactGA.initialize(TRACKING_ID);
@@ -268,7 +254,6 @@ const App: FC = () => {
     }
   }, [location.pathname]);
 
-  // This callback now handles setting both React state and localStorage
   const handleFirstVisitInstructionsOpened = useCallback(() => {
     if (isFirstVisit) {
       setIsFirstVisit(false);
@@ -286,10 +271,10 @@ const App: FC = () => {
 
       {/* Routed Dialogs/Pages */}
       <Routes>
-        <Route path="/" element={null} /> {/* Main content is handled by MainAppContent */}
-        <Route path="/changelog" element={<ChangelogPage rootPathSearch="" />} />
-        <Route path="/instructions" element={<InstructionsPage onOpen={handleFirstVisitInstructionsOpened} rootPathSearch="" />} />
-        <Route path="/about" element={<AboutPage rootPathSearch="" />} /> {/* Keep route for SEO / direct access */}
+        <Route path="/" element={null} /> {/* Main content is rendered by MainAppContent above */}
+        <Route path="/changelog" element={<ChangelogPage />} />
+        <Route path="/instructions" element={<InstructionsPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
 
       {/* Non-routed Dialogs managed by App */}
