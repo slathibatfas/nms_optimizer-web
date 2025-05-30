@@ -21,6 +21,12 @@ const ChangeLogContent: React.FC = () => {
         for up to date model information.
       </p>
 
+      <h2 className="pt-2 appDialog__subheading">Version 2.81 (2025-05-30)</h2>
+      <ul className="appDialog__list">
+        <li className="appDialog__listItem">Corrected Neutron Cannon model.</li>
+        <li className="appDialog__listItem">Expanded window size for Pulse Engines to 3x3 / 4x3. Needs further testing.</li>
+      </ul>
+
       <h2 className="pt-2 appDialog__subheading">Version 2.80 (2025-05-22)</h2>
       <ul className="appDialog__list">
         <li className="appDialog__listItem">Some final UI refinements and optimizations.</li>
