@@ -1,17 +1,21 @@
 // src/components/InfoDialog/InfoDialog.tsx
-import React, { useEffect, ReactNode, useCallback } from "react";
-import * as Dialog from "@radix-ui/react-dialog"; // Assuming GearIcon is used elsewhere or you want to keep it consistent
-import { Cross2Icon } from "@radix-ui/react-icons";
-import { Button, Theme } from "@radix-ui/themes";
-import { QuestionMarkCircledIcon, CounterClockwiseClockIcon, InfoCircledIcon } from "@radix-ui/react-icons";
+import React, { useEffect, ReactNode, useCallback } from 'react';
+import * as Dialog from '@radix-ui/react-dialog'; // Assuming GearIcon is used elsewhere or you want to keep it consistent
+import { Cross2Icon } from '@radix-ui/react-icons';
+import { Button, Theme } from '@radix-ui/themes';
+import {
+	QuestionMarkCircledIcon,
+	CounterClockwiseClockIcon,
+	InfoCircledIcon,
+} from '@radix-ui/react-icons';
 
-import "./AppDialog.css";
+import './AppDialog.css';
 
 interface AppDialogProps {
-  onClose: () => void;
-  title?: string;
-  isOpen: boolean;
-  content: ReactNode;
+	onClose: () => void;
+	title?: string;
+	isOpen: boolean;
+	content: ReactNode;
 }
 
 /**
@@ -24,53 +28,83 @@ interface AppDialogProps {
  *
  * @returns {ReactElement}
  */
-const AppDialog: React.FC<AppDialogProps> = ({ onClose, content, isOpen, title = "Information" }) => {
-  /**
-   * Handle the Escape key, closing the dialog if it is pressed.
-   *
-   * @param {KeyboardEvent} event
-   */
-  const handleEscapeKey = useCallback((event: KeyboardEvent) => event.key === "Escape" && onClose(), [onClose]);
+const AppDialog: React.FC<AppDialogProps> = ({
+	onClose,
+	content,
+	isOpen,
+	title = 'Information',
+}) => {
+	/**
+	 * Handle the Escape key, closing the dialog if it is pressed.
+	 *
+	 * @param {KeyboardEvent} event
+	 */
+	const handleEscapeKey = useCallback(
+		(event: KeyboardEvent) => event.key === 'Escape' && onClose(),
+		[onClose]
+	);
 
-  /**
-   * Add a keydown event listener to the window for the Escape key.
-   *
-   * This is done to allow the dialog to be closed with the Escape key, in
-   * addition to the close button.
-   */
-  useEffect(() => {
-    window.addEventListener("keydown", handleEscapeKey);
-    return () => window.removeEventListener("keydown", handleEscapeKey);
-  }, [handleEscapeKey]);
+	/**
+	 * Add a keydown event listener to the window for the Escape key.
+	 *
+	 * This is done to allow the dialog to be closed with the Escape key, in
+	 * addition to the close button.
+	 */
+	useEffect(() => {
+		window.addEventListener('keydown', handleEscapeKey);
+		return () => window.removeEventListener('keydown', handleEscapeKey);
+	}, [handleEscapeKey]);
 
-  return (
-    <Dialog.Root
-      open={isOpen} // Control open state
-      onOpenChange={(open) => !open && onClose()}
-      modal={true} // Keep it modal
-    >
-      <Dialog.Portal>
-        <Theme appearance="dark">
-          <Dialog.Overlay className="appDialog__overlay" />
-          <Dialog.Content className="appDialog__content">
-            <Dialog.Title className="flex items-center gap-2 appDialog__title">
-              {title === "Instructions" && <QuestionMarkCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />}
-              {title === "Changelog" && <CounterClockwiseClockIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />}
-              {title === "About" && <InfoCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />}
-              {title}
-            </Dialog.Title>
-            <Dialog.Description className="hidden appDialog__description">This dialog contains information.</Dialog.Description>
-            <div className="text-sm appDialog__container">{content}</div>
-            <Dialog.Close asChild>
-              <Button variant="soft" color="cyan" className="appDialog__close" aria-label="Close dialog">
-                <Cross2Icon />
-              </Button>
-            </Dialog.Close>
-          </Dialog.Content>
-        </Theme>
-      </Dialog.Portal>
-    </Dialog.Root>
-  );
+	return (
+		<Dialog.Root
+			open={isOpen} // Control open state
+			onOpenChange={(open) => !open && onClose()}
+			modal={true} // Keep it modal
+		>
+			<Dialog.Portal>
+				<Theme appearance="dark">
+					<Dialog.Overlay className="appDialog__overlay" />
+					<Dialog.Content className="appDialog__content">
+						<Dialog.Title className="flex items-center gap-2 appDialog__title">
+							{title === 'Instructions' && (
+								<QuestionMarkCircledIcon
+									className="w-6 h-6"
+									style={{ color: 'var(--accent-11)' }}
+								/>
+							)}
+							{title === 'Changelog' && (
+								<CounterClockwiseClockIcon
+									className="w-6 h-6"
+									style={{ color: 'var(--accent-11)' }}
+								/>
+							)}
+							{title === 'About' && (
+								<InfoCircledIcon
+									className="w-6 h-6"
+									style={{ color: 'var(--accent-11)' }}
+								/>
+							)}
+							{title}
+						</Dialog.Title>
+						<Dialog.Description className="hidden appDialog__description">
+							This dialog contains information.
+						</Dialog.Description>
+						<div className="text-sm appDialog__container">{content}</div>
+						<Dialog.Close asChild>
+							<Button
+								variant="soft"
+								color="cyan"
+								className="appDialog__close"
+								aria-label="Close dialog"
+							>
+								<Cross2Icon />
+							</Button>
+						</Dialog.Close>
+					</Dialog.Content>
+				</Theme>
+			</Dialog.Portal>
+		</Dialog.Root>
+	);
 };
 
 export default AppDialog;

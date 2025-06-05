@@ -21,6 +21,11 @@ const ChangeLogContent: React.FC = () => {
         for up to date model information.
       </p>
 
+      <h2 className="pt-2 appDialog__subheading">Version 2.85 (2025-06-05)</h2>
+      <ul className="appDialog__list">
+        <li className="appDialog__listItem">Added experimental support and models for 4x3 Pulse Engine solves—for those looking to push maneuverability—per request from u/Jupiter67 on Reddit.</li>
+      </ul>
+
       <h2 className="pt-2 appDialog__subheading">Version 2.81 (2025-05-30)</h2>
       <ul className="appDialog__list">
         <li className="appDialog__listItem">Corrected Neutron Cannon model.</li>
