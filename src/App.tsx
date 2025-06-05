@@ -262,7 +262,7 @@ const MainAppContent: FC<{
 						and let us know!
 					</div>
 					<div className="flex flex-wrap items-center justify-center gap-1 font-normal">
-						Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) •
+						Built by jbelew (void23 | QQ9Y-EJRS-P8KGW) •
 						<a
 							href="https://github.com/jbelew/nms_optimizer-web"
 							className="underline"
@@ -270,8 +270,10 @@ const MainAppContent: FC<{
 							rel="noopener noreferrer"
 						>
 							GitHub
-						</a>
-						• {build} • <Buymeacoffee />
+						</a>•{build}
+					</div>
+					<div className="flex flex-wrap items-center justify-center mt-2 font-normal">
+						<Buymeacoffee />
 					</div>
 				</footer>
 			</main>
