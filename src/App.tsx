@@ -270,7 +270,7 @@ const MainAppContent: FC<{
 							rel="noopener noreferrer"
 						>
 							GitHub
-						</a>•{build}
+						</a>• {build}
 					</div>
 					<div className="flex flex-wrap items-center justify-center mt-2 font-normal">
 						<Buymeacoffee />
