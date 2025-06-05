@@ -5,7 +5,7 @@ const puppeteer = require('puppeteer');
   const page = await browser.newPage();
 
   // GitHub Actions may run on localhost:4173 by default for vite preview
-  await page.setViewport({ width: 1280, height: 824 });
+  await page.setViewport({ width: 1280, height: 880 });
 
   // Set localStorage for the target origin before any of its scripts run
   await page.evaluateOnNewDocument(() => {
