@@ -61,6 +61,14 @@ h3 {
 	transform: rotate(180deg);
 }
 
+/* .techRow__optimizeButton::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+} */
+
 @keyframes slideDown {
 	from {
 		height: 0;

@@ -16,7 +16,7 @@ const AppHeaderInternal: React.FC<AppHeaderInternalProps> = ({ onShowChangelog }
       <div className="flex items-center w-full">
         <img src={NMSIcon} className="mr-2 h-[56] w-[32] sm:mr-4 header__icon sm:h-[88] sm:w-[50]" alt="No Man's Sky Icon" />
         <div>
-          <img src="/assets/svg/nms_logo.svg" className="h-[20] w-[234] mb-1 sm:mb-2 sm:h-[32] sm:w-[374] header__logo" alt="No Man's Sky Logo" />
+          <img loading="eager" src="/assets/svg/nms_logo.svg" className="h-[20] w-[234] mb-1 sm:mb-2 sm:h-[32] sm:w-[374] header__logo" alt="No Man's Sky Logo" />
           <h2 className="text-base sm:text-2xl header__title">
             Technology Layout Optimizer <strong>AI</strong> <span className="font-thin">{APP_VERSION}</span>
             {/* Reverted to a span for a less button-like appearance, while maintaining click functionality */}

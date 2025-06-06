@@ -1,7 +1,7 @@
-@import "@radix-ui/themes/styles.css";
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
+@import "@radix-ui/themes/styles.css";
 
 @font-face {
   font-family: "GeosansLight";

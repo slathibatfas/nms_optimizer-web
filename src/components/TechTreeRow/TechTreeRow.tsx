@@ -132,10 +132,14 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 
 	// Prepare base styles for the IconButton
 	const iconButtonBaseStyles: React.CSSProperties = {
-		backgroundImage: `url('${imagePath}')`,
-		backgroundSize: 'fit', // Or "contain" depending on desired effect
+		backgroundImage: `
+    radial-gradient(circle, rgba(0, 0, 0, 0.25) 5%, rgba(0, 0, 0, 0.0) 100%),
+    url('${imagePath}')
+  `,
+		backgroundSize: 'fit',
 		backgroundPosition: 'center',
 		backgroundRepeat: 'no-repeat',
+		// backgroundColor: 'var(--accent-a8)',
 	};
 
 	// Determine dynamic styles based on techColor and solving state
@@ -144,12 +148,17 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 
 	if (techColor === 'white' && !solving) {
 		dynamicIconButtonStyles = {
-			border: '2px solid var(--gray-a11)',
+			border: '2px solid var(--gray-a10)',
 			backgroundColor: 'var(--gray-6)',
-			color: 'var(--gray-12)',
+			color: 'var(--accent-a6)',
 		};
-		// dataAccentColorProps = { "data-accent-color": "white" };
-	} else if (techColor === 'gray') {
+		dataAccentColorProps = { 'data-accent-color': 'gray' };
+	} else if (techColor === 'white' && solving) {
+		dataAccentColorProps = { 'data-accent-color': 'gray' };
+	} else if (techColor === 'gray' && !solving) {
+		dynamicIconButtonStyles = {
+			color: 'var(--accent-a6)',
+		};
 		dataAccentColorProps = { 'data-accent-color': 'gray' };
 	} else {
 		dataAccentColorProps = { 'data-accent-color': techColor || 'gray' }; // Provide "gray" as a fallback
@@ -171,7 +180,11 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 					{...dataAccentColorProps}
 					aria-label={`${tooltipLabel} ${label}`}
 				>
-					<IconComponent className="stroke-(--accent-a12) stroke-1 [&>path]:stroke-inherit" />
+					<IconComponent
+						className={`${
+							!solving ? 'stroke-(--accent-a11) stroke-1 [&>path]:stroke-inherit' : ''
+						}`}
+					/>
 				</IconButton>
 			</Tooltip>
 
