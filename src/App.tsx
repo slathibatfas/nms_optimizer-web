@@ -259,7 +259,7 @@ const MainAppContent: FC<{
 						>
 							Open an issue on GitHub
 						</a>{' '}
-						and let us know!<br />Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) • {build}
+						and let us know!<br />Built by jbelew (void23 | QQ9Y-EJRS-P8KGW) • {build}
 					</div>
 					<Separator decorative/>
 					<div className="flex flex-wrap items-center justify-center gap-1 font-light">
