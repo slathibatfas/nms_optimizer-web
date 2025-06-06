@@ -1,7 +1,7 @@
 // src/components/AppHeader/AppHeader.tsx
 import React from "react";
 import NMSIcon from "../../assets/img/nms_icon.webp";
-import NMSShip from "../../assets/img/ship.webp";
+import NMSShip from "../../assets/img/resized_ship.webp";
 import { CounterClockwiseClockIcon } from "@radix-ui/react-icons";
 import { APP_VERSION } from "../../constants";
 import ReactGA from "react-ga4";
