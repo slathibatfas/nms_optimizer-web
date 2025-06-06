@@ -1,3 +1,8 @@
+@import "@radix-ui/themes/styles.css";
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
 @font-face {
   font-family: "GeosansLight";
   src: url("/assets/fonts/geonms-webfont.woff") format("woff"),
@@ -22,11 +27,6 @@
   font-style: normal;
   font-display: swap;
 }
-
-@import "@radix-ui/themes/styles.css";
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/preflight.css" layer(base);
-@import "tailwindcss/utilities.css" layer(utilities);
 
 /* Apply custom font styles using Tailwind's @layer directive */
 
