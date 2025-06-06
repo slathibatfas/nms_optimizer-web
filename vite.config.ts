@@ -34,10 +34,7 @@ const config: UserConfigExport = defineConfig({
           return "assets/[name]-[hash].[ext]";
         },
         manualChunks(id) {
-          // Chunk vendor libraries
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
+          if (id.includes("node_modules")) return "vendor";
         },
       },
     },

@@ -3,6 +3,6 @@
   letter-spacing: var(--letter-spacing-wide);
   filter: drop-shadow(0 0 4px var(--accent-a2));
   font-weight: var(--font-weight-bold);
-  font-size: var(--text-base); /* Consider using a variable if --text-base is 1rem */
+  font-size: var(--text-base);
   text-transform: uppercase;
 }

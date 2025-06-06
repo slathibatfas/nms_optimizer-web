@@ -2,7 +2,7 @@
 import { GearIcon } from "@radix-ui/react-icons";
 import { DropdownMenu, IconButton } from "@radix-ui/themes";
 import React, { useRef, useMemo } from "react";
-import { useFetchShipTypesSuspense, useShipTypesStore, ShipTypeDetail } from "../../hooks/useShipTypes"; // ShipTypeDetail is used in ShipTypesDropdownProps
+import { useFetchShipTypesSuspense, useShipTypesStore, ShipTypeDetail } from "../../hooks/useShipTypes"; 
 import { useGridStore, createGrid, Grid } from "../../store/GridStore";
 import ReactGA from "react-ga4";
 
@@ -63,7 +63,7 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
           <GearIcon className="w-6 h-6" />
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content style={{ backgroundColor: "var(--accent-4)" }}>
+      <DropdownMenu.Content variant="soft" className="shipSelection__dropdownMenu" style={{ backgroundColor: "var(--accent-3)"}}>
         <ShipTypesDropdown selectedShipType={selectedShipType} handleOptionSelect={handleOptionSelect} />
       </DropdownMenu.Content>
     </DropdownMenu.Root>
