@@ -26,9 +26,9 @@ export default function BuyMeACoffee() {
 	};
 
 	return (
-		<Button size={isLargeScreen ? "2" : "1"} variant='soft' asChild className="pb-4 lg:pb-0">
+		<Button size={isLargeScreen ? "2" : "1"} variant='soft' asChild>
 			<a href="https://www.buymeacoffee.com/jbelew" onClick={handleButtonClick}>
-				☕ Buy me a Coffee!
+			☕ Buy me a Coffee!
 			</a>
 		</Button>
 	);

@@ -149,6 +149,7 @@ body::before {
   text-transform: uppercase;
 }
 
+
 footer a {
   color: var(--accent-11);
 }
