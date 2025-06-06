@@ -11,7 +11,7 @@ import React, {
 	lazy,
 } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { ScrollArea } from '@radix-ui/themes';
+import { ScrollArea, Separator } from '@radix-ui/themes';
 import ReactGA from 'react-ga4';
 
 // --- Components ---
@@ -249,8 +249,8 @@ const MainAppContent: FC<{
 							))}
 					</section>
 				</section>
-				<footer className="flex flex-col items-center justify-center gap-1 pt-4 pb-4 text-xs text-center lg:pb-0 sm:text-sm lg:text-base">
-					<div className="font-semibold">
+				<footer className="flex flex-col items-center justify-center gap-1 p-4 text-xs text-center lg:pb-0 sm:text-sm lg:text-base">
+					<div className="gap-1 font-light">
 						Something off with your solve or found a bug?{' '}
 						<a
 							href="https://github.com/jbelew/nms_optimizer-web/issues/new/choose"
@@ -259,21 +259,11 @@ const MainAppContent: FC<{
 						>
 							Open an issue on GitHub
 						</a>{' '}
-						and let us know!
+						and let us know!<br />Built by jbelew (NMS: void23 / QQ9Y-EJRS-P8KGW) • {build}
 					</div>
-					<div className="flex flex-wrap items-center justify-center gap-1 font-normal">
-						Built by jbelew (void23 | QQ9Y-EJRS-P8KGW) •
-						<a
-							href="https://github.com/jbelew/nms_optimizer-web"
-							className="underline"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							GitHub
-						</a>• {build}
-					</div>
-					<div className="flex flex-wrap items-center justify-center mt-2 font-normal">
-						<Buymeacoffee />
+					<Separator decorative/>
+					<div className="flex flex-wrap items-center justify-center gap-1 font-light">
+						If you found this application useful, consider supporting its development with<Buymeacoffee />
 					</div>
 				</footer>
 			</main>

@@ -1,5 +1,6 @@
 import ReactGA from 'react-ga4';
 import { Button } from '@radix-ui/themes';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 /**
  * A Radix UI Button component that links to the BuyMeACoffee page when clicked.
@@ -7,6 +8,7 @@ import { Button } from '@radix-ui/themes';
  * @returns A Radix UI Button component.
  */
 export default function BuyMeACoffee() {
+	const isLargeScreen = useBreakpoint('1024px'); // Tailwind's 'lg' breakpoint
 	const handleButtonClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
 		event.preventDefault();
 
@@ -24,7 +26,7 @@ export default function BuyMeACoffee() {
 	};
 
 	return (
-		<Button size="2" variant='solid' asChild className="pb-4 lg:pb-0">
+		<Button size={isLargeScreen ? "2" : "1"} variant='soft' asChild className="pb-4 lg:pb-0">
 			<a href="https://www.buymeacoffee.com/jbelew" onClick={handleButtonClick}>
 				☕ Buy me a Coffee!
 			</a>

@@ -148,3 +148,7 @@ body::before {
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
 }
+
+footer a {
+  color: var(--accent-11);
+}
