@@ -17,7 +17,7 @@ const AppHeaderInternal: React.FC<AppHeaderInternalProps> = ({ onShowChangelog }
 	const isSmallAndUp = useBreakpoint("640px");
 
 	return (
-		<header className="flex flex-col pt-3 pb-1 pl-6 sm:pr-8 header sm:pb-4 sm:pt-6">
+		<header className="flex flex-col pt-3 pb-1 pl-6 lg:rounded-t-xl sm:pr-8 header sm:pb-4 sm:pt-6 backdrop-blur-xl">
 			<div className="flex items-center w-full">
 				<img
 					src={NMSIcon}
