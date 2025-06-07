@@ -66,7 +66,7 @@ const AppHeaderInternal: React.FC<AppHeaderInternalProps> = ({ onShowChangelog }
 					{" "}
 					<img
 						src={NMSShip}
-						className="hidden opacity-25 md:h-[56] md:w-[198] lg:w-[254] lg:h-[72] md:inline fade-horizontal"
+						className="hidden opacity-25 md:h-[56] md:w-[180] lg:w-[254] lg:h-[72] md:inline fade-horizontal"
 						alt="Starship Image"
 					/>
 				</div>

@@ -24,8 +24,8 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, "dist")));
 
 // Handle React/Vite history mode (SPA routing)
-app.get("/*", (req, res) => {
-	res.sendFile(path.join(__dirname, "dist", "index.html"));
+app.get("/*splat", async (req, res) => {
+	res.send("ok");
 });
 
 // Use the PORT environment variable provided by Heroku or fallback to 3000 locally
