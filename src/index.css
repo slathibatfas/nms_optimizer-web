@@ -4,152 +4,157 @@
 @import "@radix-ui/themes/styles.css";
 
 @font-face {
-  font-family: "GeosansLight";
-  src: url("/assets/fonts/geonms-webfont.woff") format("woff"),
-       url("/assets/fonts/geonms-webfont.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+	font-family: "GeosansLight";
+	src:
+		url("/assets/fonts/geonms-webfont.woff") format("woff"),
+		url("/assets/fonts/geonms-webfont.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
-  font-family: "Raleway";
-  src: url("/assets/fonts/Raleway-VariableFont_wght.ttf") format("truetype");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
+	font-family: "Raleway";
+	src: url("/assets/fonts/Raleway-VariableFont_wght.ttf") format("truetype");
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
-  font-family: "Acumin";
-  src: url("/assets/fonts/AcuminProCond-Semibold.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
+	font-family: "Acumin";
+	src: url("/assets/fonts/AcuminProCond-Semibold.ttf") format("truetype");
+	font-weight: 600;
+	font-style: normal;
+	font-display: swap;
 }
 
 /* Apply custom font styles using Tailwind's @layer directive */
 
 .radix-themes {
-  --default-font-family: Raleway, Helvetica, Arial, sans-serif;
-  --font-family-geosans: "GeosansLight", sans-serif; /* Added for GeosansLight */
-  --letter-spacing-wide: 0.2rem;                   /* Added for common letter-spacing */
-  --font-weight-bold: 700;                         /* Added for common bold weight */
+	--default-font-family: Raleway, Helvetica, Arial, sans-serif;
+	--font-family-geosans: "GeosansLight", sans-serif; /* Added for GeosansLight */
+	--letter-spacing-wide: 0.2rem; /* Added for common letter-spacing */
+	--font-weight-bold: 700; /* Added for common bold weight */
 }
 
 /* Variables for our grid CLAMP calculations */
 :root {
-  --grid-min-size: 26px;
-  --grid-max-size: 64px;
-  --grid-gap-min-size: 2px;
-  --grid-gap-max-size: 8px;
-  --grid-cell-size: clamp(var(--grid-min-size), 7vw, var(--grid-max-size));
-  --grid-gap: clamp(var(--grid-gap-min-size), 1vw, var(--grid-gap-max-size));
+	--grid-min-size: 26px;
+	--grid-max-size: 64px;
+	--grid-gap-min-size: 2px;
+	--grid-gap-max-size: 8px;
+	--grid-cell-size: clamp(var(--grid-min-size), 7vw, var(--grid-max-size));
+	--grid-gap: clamp(var(--grid-gap-min-size), 1vw, var(--grid-gap-max-size));
 }
-
 
 /* Background styles */
 body {
-  background:
-    image-set(
-      url("/src/assets/img/background.webp") 1x,
-      url("/src/assets/img/background@2x.webp") 2x
-    ) center/cover fixed;
-  font-family: var(--default-font-family);
-  min-height: 100vh;
-  width: 100vw;
-  overflow-x: hidden;
+	background: image-set(
+			url("/src/assets/img/background.webp") 1x,
+			url("/src/assets/img/background@2x.webp") 2x
+		)
+		center/cover fixed;
+	font-family: var(--default-font-family);
+	min-height: 100vh;
+	width: 100vw;
+	overflow-x: hidden;
 }
 
 /* Background overlay */
 body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: -1;
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: -1;
 }
 
 .sidebar__title {
-  letter-spacing: var(--letter-spacing-wide);
+	letter-spacing: var(--letter-spacing-wide);
 }
 
 .app {
-  border: 1px solid var(--accent-a2);
+	border: 1px solid var(--accent-a2);
 }
 
 .header {
-  border-bottom: 1px solid var(--accent-a2);
-  background-color: color-mix(in oklab, var(--color-black) 25%, transparent);
+	border-bottom: 1px solid var(--accent-a2);
+	background-color: color-mix(in oklab, var(--color-black) 25%, transparent);
 }
 
 .header__icon {
-  filter: drop-shadow(0 0 12px var(--accent-a7));
+	filter: drop-shadow(0 0 12px var(--accent-a7));
 }
 
 .header__logo {
-  filter: invert(90%) drop-shadow(0 0 4px var(--accent-11));
+	filter: invert(90%) drop-shadow(0 0 4px var(--accent-11));
 }
 
 .header h1 {
-  font-family: var(--font-family-geosans);
-  letter-spacing: var(--letter-spacing-wide);
-  font-weight: var(--font-weight-bold);
-  filter: drop-shadow(0 0 8px var(--accent-11));
-  text-transform: uppercase;
+	font-family: var(--font-family-geosans);
+	letter-spacing: var(--letter-spacing-wide);
+	font-weight: var(--font-weight-bold);
+	filter: drop-shadow(0 0 8px var(--accent-11));
+	text-transform: uppercase;
 }
 
 .header__title strong {
-  font-weight: 700;
-  color: var(--accent-11);
-  filter: drop-shadow(0 0 12px var(--accent-11));
+	font-weight: 700;
+	color: var(--accent-11);
+	filter: drop-shadow(0 0 12px var(--accent-11));
 }
 
 .fade-horizontal {
-  -webkit-mask-image: linear-gradient(to right, transparent, black 40%, black 60%, transparent);
-  mask-image: linear-gradient(to right, transparent, black 40%, black 60%, transparent); /* Corrected gradient */
-  filter: saturate(50%);
+	-webkit-mask-image: linear-gradient(to right, transparent, black 40%, black 60%, transparent);
+	mask-image: linear-gradient(
+		to right,
+		transparent,
+		black 40%,
+		black 60%,
+		transparent
+	); /* Corrected gradient */
+	filter: saturate(50%);
 }
 
 .container {
-  border-top: 1px solid var(--accent-a2);
+	border-top: 1px solid var(--accent-a2);
 }
 
 .gridContainer__sidebar {
-  width: 368px;
-  background-color: var(--accent-a1);
-  border-color: var(--accent-a2);
+	width: 368px;
+	background-color: var(--accent-a1);
+	border-color: var(--accent-a2);
 }
 
 .gridContainer__platform {
-  font-family: var(--font-family-geosans); /* Use variable */
-  filter: drop-shadow(0 0 4px var(--accent-6));
+	font-family: var(--font-family-geosans); /* Use variable */
+	filter: drop-shadow(0 0 4px var(--accent-6));
 }
 
 .button--glow {
-  animation: buttonGlow 1s infinite alternate ease-in-out;
+	animation: buttonGlow 1s infinite alternate ease-in-out;
 }
 
 @keyframes buttonGlow {
-  from {
-    box-shadow: 0 0 4px 0px var(--accent-a4);
-  }
-  to {
-    box-shadow: 0 0 4px 4px var(--accent-a8);
-  }
+	from {
+		box-shadow: 0 0 4px 0px var(--accent-a4);
+	}
+	to {
+		box-shadow: 0 0 4px 4px var(--accent-a8);
+	}
 }
 
 .warningDialog__title {
-  font-family: var(--font-family-geosans); /* Use variable */
-  filter: drop-shadow(0 0 4px var(--accent-6));
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
+	font-family: var(--font-family-geosans); /* Use variable */
+	filter: drop-shadow(0 0 4px var(--accent-6));
+	letter-spacing: var(--letter-spacing-wide);
+	text-transform: uppercase;
 }
 
-
 footer a {
-  color: var(--accent-11);
+	color: var(--accent-11);
 }
