@@ -48,6 +48,12 @@
 	--grid-gap: clamp(var(--grid-gap-min-size), 1vw, var(--grid-gap-max-size));
 }
 
+html {
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
 /* Background styles */
 body {
 	background: image-set(
@@ -94,6 +100,7 @@ body::before {
 
 .header__icon {
 	filter: drop-shadow(0 0 12px var(--accent-a7));
+	animation: pulse-glow 2s ease-in-out infinite;
 }
 
 .header__logo {
@@ -169,4 +176,14 @@ body::before {
 
 footer a {
 	color: var(--accent-11);
+}
+
+@keyframes pulse-glow {
+	0%,
+	100% {
+		filter: drop-shadow(0 0 6px var(--accent-a7));
+	}
+	50% {
+		filter: drop-shadow(0 0 12px var(--accent-a7));
+	}
 }
