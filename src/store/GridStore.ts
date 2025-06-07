@@ -5,7 +5,10 @@ import { immer } from "zustand/middleware/immer";
 import { useTechStore } from "./TechStore";
 
 // --- Define the specific function type we are debouncing ---
-type SetItemFunction = (name: string, value: StorageValue<Partial<GridStore>>) => Promise<void>;
+type SetItemFunction = (
+  name: string,
+  value: StorageValue<Partial<GridStore>>
+) => Promise<void>;
 
 /**
  * Creates a debounced version of the specific setItem function that delays
@@ -23,7 +26,10 @@ function debounceSetItem(func: SetItemFunction, wait: number): SetItemFunction {
   let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
 
   // Return a function that matches the SetItemFunction signature
-  return (name: string, value: StorageValue<Partial<GridStore>>): Promise<void> => {
+  return (
+    name: string,
+    value: StorageValue<Partial<GridStore>>
+  ): Promise<void> => {
     // We return a Promise because the debounced function might need to be awaitable,
     // even though the actual execution is delayed.
     return new Promise((resolve) => {
@@ -93,7 +99,9 @@ export const createEmptyCell = (supercharged = false, active = true): Cell => ({
 });
 
 export const createGrid = (width: number, height: number): Grid => ({
-  cells: Array.from({ length: height }, () => Array.from({ length: width }, () => createEmptyCell(false, true))),
+  cells: Array.from({ length: height }, () =>
+    Array.from({ length: width }, () => createEmptyCell(false, true))
+  ),
   width,
   height,
 });
@@ -114,31 +122,42 @@ export type GridStore = {
   resetGridTech: (tech: string) => void;
   toggleCellActive: (rowIndex: number, columnIndex: number) => void;
   toggleCellSupercharged: (rowIndex: number, columnIndex: number) => void;
-  setCellActive: (rowIndex: number, columnIndex: number, active: boolean) => void;
-  setCellSupercharged: (rowIndex: number, columnIndex: number, supercharged: boolean) => void;
+  setCellActive: (
+    rowIndex: number,
+    columnIndex: number,
+    active: boolean
+  ) => void;
+  setCellSupercharged: (
+    rowIndex: number,
+    columnIndex: number,
+    supercharged: boolean
+  ) => void;
   setIsSharedGrid: (isShared: boolean) => void;
 };
 
 // --- Create Debounced Storage ---
 const debouncedStorage = {
   // Use the specific debounceSetItem function
-  setItem: debounceSetItem(async (name: string, value: StorageValue<Partial<GridStore>>) => {
-    try {
-      const storageValue = JSON.stringify(value);
-      localStorage.setItem(name, storageValue);
-    } catch (e) {
-      console.error("Failed to save to localStorage:", e);
-    }
-  }, 500),
+  setItem: debounceSetItem(
+    async (name: string, value: StorageValue<Partial<GridStore>>) => {
+      try {
+        const storageValue = JSON.stringify(value);
+        localStorage.setItem(name, storageValue);
+      } catch (e) {
+        console.error("Failed to save to localStorage:", e);
+      }
+    },
+    500
+  ),
 
   getItem: (name: string): StorageValue<Partial<GridStore>> | null => {
     try {
       // Check if the current URL indicates a shared grid.
       // We look for the presence of 'grid' and 'platform' parameters.
       const currentUrlParams = new URLSearchParams(window.location.search);
-      const isUrlLikelyShared = currentUrlParams.has('grid');
+      const isUrlLikelyShared = currentUrlParams.has("grid");
 
-      if (isUrlLikelyShared && name === 'grid-storage') {
+      if (isUrlLikelyShared && name === "grid-storage") {
         // If it's a shared grid URL, ignore localStorage for initial hydration
         // by returning null. This forces the store to use its default initial state.
         // The useUrlSync hook will then populate the grid from the URL.
@@ -163,7 +182,7 @@ const debouncedStorage = {
 
 // Helper to safely access window.location.search, returns "" if window is undefined (e.g., during SSR if applicable)
 const getWindowSearch = (): string => {
-  if (typeof window !== 'undefined' && window.location) {
+  if (typeof window !== "undefined" && window.location) {
     return window.location.search;
   }
   return "";
@@ -176,7 +195,7 @@ export const useGridStore = create<GridStore>()(
       // --- State properties ---
       grid: createGrid(10, 6),
       result: null,
-      isSharedGrid: new URLSearchParams(getWindowSearch()).has('grid'), // Initialize based on current URL
+      isSharedGrid: new URLSearchParams(getWindowSearch()).has("grid"), // Initialize based on current URL
 
       setIsSharedGrid: (isShared) => set({ isSharedGrid: isShared }),
 
@@ -201,7 +220,8 @@ export const useGridStore = create<GridStore>()(
       },
 
       setResult: (result, tech) => {
-        const { setTechMaxBonus, setTechSolvedBonus, setTechSolveMethod } = useTechStore.getState();
+        const { setTechMaxBonus, setTechSolvedBonus, setTechSolveMethod } =
+          useTechStore.getState();
         set((state) => {
           state.result = result;
         });
@@ -219,7 +239,9 @@ export const useGridStore = create<GridStore>()(
             // Check if we are trying to deactivate a cell that has a module
             if (cell.active && cell.module !== null) {
               // If the cell is active AND has a module, do nothing (prevent deactivation)
-              console.warn(`Cannot deactivate cell [${rowIndex}, ${columnIndex}] because it contains a module.`);
+              console.warn(
+                `Cannot deactivate cell [${rowIndex}, ${columnIndex}] because it contains a module.`
+              );
               return; // Exit the function early
             }
 
@@ -321,7 +343,10 @@ export const useGridStore = create<GridStore>()(
               if (cell.tech === tech) {
                 // Preserve active and supercharged status from the original cell
                 // createEmptyCell will handle resetting other fields, including setting tech to null.
-                Object.assign(cell, createEmptyCell(cell.supercharged, cell.active));
+                Object.assign(
+                  cell,
+                  createEmptyCell(cell.supercharged, cell.active)
+                );
               }
             });
           });
@@ -344,9 +369,11 @@ export const useGridStore = create<GridStore>()(
        */
       merge: (persistedState, currentState) => {
         const stateFromStorage = persistedState as Partial<GridStore>; // Cast persistedState
-        const currentUrlHasGrid = new URLSearchParams(getWindowSearch()).has('grid');
+        const currentUrlHasGrid = new URLSearchParams(getWindowSearch()).has(
+          "grid"
+        );
         return {
-          ...currentState,    // Default state from create()
+          ...currentState, // Default state from create()
           ...stateFromStorage, // State from localStorage (if getItem didn't return null)
           isSharedGrid: currentUrlHasGrid, // Always prioritize URL for this flag
         };

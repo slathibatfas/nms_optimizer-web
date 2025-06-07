@@ -12,14 +12,14 @@
 }
 
 .gridCell__label {
-text-shadow:
-  -1px -1px 2px rgba(0, 0, 0, 0.5),  /* crisp outline */
-   1px -1px 2px rgba(0, 0, 0, 0.5),
-  -1px  1px 2px rgba(0, 0, 0, 0.5),
-   1px  1px 2px rgba(0, 0, 0, 0.5),
-   0px  0px 4px rgba(0, 0, 0, 0.75); /* soft blurred shadow */
+  text-shadow:
+    -1px -1px 2px rgba(0, 0, 0, 0.5),
+    1px -1px 2px rgba(0, 0, 0, 0.5),
+    -1px 1px 2px rgba(0, 0, 0, 0.5),
+    1px 1px 2px rgba(0, 0, 0, 0.5),
+    0px 0px 4px rgba(0, 0, 0, 0.75);
   color: var(--gray-a12);
-  font-family: "Acumin"; 
+  font-family: "Acumin";
 }
 
 .gridCell--interactive {
@@ -52,7 +52,8 @@ text-shadow:
   border-width: 1px;
 }
 
-@media (min-width: 640px) { /* Tailwind's sm breakpoint */
+@media (min-width: 640px) {
+  /* Tailwind's sm breakpoint */
   .gridCell--active[data-accent-color="white"] {
     border-width: 2px;
   }
@@ -84,7 +85,7 @@ text-shadow:
 }
 
 .gridCell--glow {
-  animation: pulseGlow 1.0s infinite alternate ease-in-out;
+  animation: pulseGlow 1s infinite alternate ease-in-out;
 }
 
 @keyframes pulseGlow {

@@ -1,6 +1,11 @@
 import React from "react";
 import { Button } from "@radix-ui/themes";
-import { QuestionMarkCircledIcon, InfoCircledIcon, ResetIcon, Share2Icon } from "@radix-ui/react-icons";
+import {
+  QuestionMarkCircledIcon,
+  InfoCircledIcon,
+  ResetIcon,
+  Share2Icon,
+} from "@radix-ui/react-icons";
 import ReactGA from "react-ga4";
 
 interface GridTableButtonsProps {
@@ -24,16 +29,18 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
   hasModulesInGrid,
   solving,
   columnWidth,
-  isFirstVisit, 
+  isFirstVisit,
 }) => {
   return (
     // Add 'relative' to establish a positioning context for the absolutely positioned reset button.
     <footer className="relative flex items-start gap-4 pt-4 sm:pt-6 gridTable__footer">
-      <div className="flex-1 flex-nowrap"> {/* This div will contain the left-aligned buttons */}
+      <div className="flex-1 flex-nowrap">
+        {" "}
+        {/* This div will contain the left-aligned buttons */}
         <Button
           variant={isFirstVisit ? "solid" : "soft"}
           className={`gridTable__button gridTable__button--instructions shadow-md !mr-2 p-0 sm:!px-2 ${
-            isFirstVisit ? 'button--glow' : ''
+            isFirstVisit ? "button--glow" : ""
           }`}
           onClick={() => {
             ReactGA.event({
@@ -50,18 +57,23 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
           variant="soft"
           className={`gridTable__button gridTable__button--about shadow-md !mr-2 sm:!px-2`} // Renamed class for clarity
           onClick={() => {
-              ReactGA.event({
-                category: "User Interactions",
-                action: "showAbout",
-              });
+            ReactGA.event({
+              category: "User Interactions",
+              action: "showAbout",
+            });
             onShowAbout();
           }}
         >
-            <InfoCircledIcon />
-            <span className="hidden sm:inline">About</span>
+          <InfoCircledIcon />
+          <span className="hidden sm:inline">About</span>
         </Button>
         {!isSharedGrid && (
-          <Button variant="soft" className={`gridTable__button gridTable__button--changelog shadow-md sm:!px-2`} onClick={onShare} disabled={isSharedGrid || !hasModulesInGrid}>
+          <Button
+            variant="soft"
+            className={`gridTable__button gridTable__button--changelog shadow-md sm:!px-2`}
+            onClick={onShare}
+            disabled={isSharedGrid || !hasModulesInGrid}
+          >
             <Share2Icon />
             <span className="hidden sm:inline">Share</span>
           </Button>
@@ -71,12 +83,17 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
       {/* Conditionally render the reset button container to avoid layout shift.
           Render if it's a shared grid (columnWidth will be "0px" correctly)
           OR if columnWidth is no longer its initial "0px" (meaning it's measured or a fallback for non-shared). */}
-      {( columnWidth !== "0px") && (
+      {columnWidth !== "0px" && (
         <div
           className="absolute z-10" // Use 'absolute' positioning and a z-index if needed.
           style={{ right: columnWidth }}
         >
-          <Button className={`gridTable__button gridTable__button--reset shadow-md`} variant="solid" onClick={onReset} disabled={solving}>
+          <Button
+            className={`gridTable__button gridTable__button--reset shadow-md`}
+            variant="solid"
+            onClick={onReset}
+            disabled={solving}
+          >
             <ResetIcon />
             <span className="font-bold">Reset Grid</span>
           </Button>

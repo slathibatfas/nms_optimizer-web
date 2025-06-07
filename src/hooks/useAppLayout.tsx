@@ -45,7 +45,10 @@ export const useAppLayout = (): AppLayout => {
     }
 
     // Perform initial update with a slight delay to allow for rendering and styling.
-    const initialUpdateTimerId = setTimeout(updateHeight, INITIAL_HEIGHT_UPDATE_DELAY);
+    const initialUpdateTimerId = setTimeout(
+      updateHeight,
+      INITIAL_HEIGHT_UPDATE_DELAY
+    );
 
     const observer = new ResizeObserver(updateHeight);
     observer.observe(elementToObserve);
@@ -63,16 +66,22 @@ export const useAppLayout = (): AppLayout => {
   useEffect(() => {
     const tableElementToObserve = gridTableRef.current; // Capture the element for this effect run
 
-    const getDefaultColumnWidth = () => 
-      isSharedGrid ? SHARED_GRID_CONTROL_COLUMN_WIDTH : DEFAULT_CONTROL_COLUMN_WIDTH;
+    const getDefaultColumnWidth = () =>
+      isSharedGrid
+        ? SHARED_GRID_CONTROL_COLUMN_WIDTH
+        : DEFAULT_CONTROL_COLUMN_WIDTH;
 
-    const updateColumnWidth = () => { //NOSONAR
+    const updateColumnWidth = () => {
+      //NOSONAR
       if (!tableElementToObserve) {
         setColumnWidth(getDefaultColumnWidth());
         return;
       }
 
-      const controlButtonElement = tableElementToObserve.querySelector<HTMLDivElement>('[data-is-grid-control-column="true"]');
+      const controlButtonElement =
+        tableElementToObserve.querySelector<HTMLDivElement>(
+          '[data-is-grid-control-column="true"]'
+        );
       if (!controlButtonElement) {
         setColumnWidth(getDefaultColumnWidth());
         return;
@@ -80,13 +89,19 @@ export const useAppLayout = (): AppLayout => {
 
       const controlCellActualWidth = controlButtonElement.offsetWidth;
       const gridContainerStyle = window.getComputedStyle(tableElementToObserve);
-      let gapString = gridContainerStyle.getPropertyValue("grid-column-gap").trim();
+      let gapString = gridContainerStyle
+        .getPropertyValue("grid-column-gap")
+        .trim();
       if (gapString === "normal" || !gapString) {
-        gapString = gridContainerStyle.getPropertyValue("gap").trim().split(" ")[0]; // Take the first value if 'gap' is shorthand (row-gap column-gap)
+        gapString = gridContainerStyle
+          .getPropertyValue("gap")
+          .trim()
+          .split(" ")[0]; // Take the first value if 'gap' is shorthand (row-gap column-gap)
       }
       const gapActualWidth = parseFloat(gapString);
 
-      if (isNaN(gapActualWidth) || gapActualWidth < 0) { // Ensure gap is a valid positive number
+      if (isNaN(gapActualWidth) || gapActualWidth < 0) {
+        // Ensure gap is a valid positive number
         setColumnWidth(`${controlCellActualWidth}px`);
         return;
       }
@@ -101,7 +116,10 @@ export const useAppLayout = (): AppLayout => {
     }
 
     // Perform initial update with a delay.
-    const initialUpdateTimerId = setTimeout(updateColumnWidth, INITIAL_WIDTH_UPDATE_DELAY);
+    const initialUpdateTimerId = setTimeout(
+      updateColumnWidth,
+      INITIAL_WIDTH_UPDATE_DELAY
+    );
 
     const observer = new ResizeObserver(updateColumnWidth);
     observer.observe(tableElementToObserve);

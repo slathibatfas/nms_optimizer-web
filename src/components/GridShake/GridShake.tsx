@@ -1,7 +1,7 @@
 // ShakingWrapper.tsx
 import React, { useEffect } from "react";
 
-import './GridShake.css';
+import "./GridShake.css";
 
 interface ShakingWrapperProps {
   shaking: boolean;
@@ -9,7 +9,11 @@ interface ShakingWrapperProps {
   duration: number;
 }
 
-const ShakingWrapper: React.FC<ShakingWrapperProps> = ({ shaking, children, duration }) => {
+const ShakingWrapper: React.FC<ShakingWrapperProps> = ({
+  shaking,
+  children,
+  duration,
+}) => {
   const [isShaking, setIsShaking] = React.useState(false);
 
   useEffect(() => {
@@ -24,7 +28,13 @@ const ShakingWrapper: React.FC<ShakingWrapperProps> = ({ shaking, children, dura
     }
   }, [shaking, duration]);
 
-  return <div className={`relative gridTable__shakeWrapper ${isShaking ? "shake" : ""}`}>{children}</div>;
+  return (
+    <div
+      className={`relative gridTable__shakeWrapper ${isShaking ? "shake" : ""}`}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default ShakingWrapper;

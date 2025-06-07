@@ -67,7 +67,9 @@ export function fetchShipTypes(): Resource<ShipTypes> {
       .then((res) => {
         // Check for HTTP errors
         if (!res.ok) {
-          console.error(`HTTP error fetching ship types: ${res.status} ${res.statusText}`);
+          console.error(
+            `HTTP error fetching ship types: ${res.status} ${res.statusText}`
+          );
           throw new Error(`HTTP error! status: ${res.status}`);
         }
         // Return the JSON response
@@ -111,7 +113,7 @@ export interface ShipTypesState {
   setSelectedShipType: (shipType: string, updateUrl?: boolean) => void; // Add optional flag
 }
 
-const LOCAL_STORAGE_KEY = 'selectedPlatform';
+const LOCAL_STORAGE_KEY = "selectedPlatform";
 
 export const useShipTypesStore = create<ShipTypesState>((set) => {
   // --- Logic to read initial state and update URL/localStorage if needed ---
@@ -128,16 +130,22 @@ export const useShipTypesStore = create<ShipTypesState>((set) => {
     initialShipType = platformFromUrl;
     // Ensure localStorage matches the URL param
     if (platformFromStorage !== initialShipType) {
-        localStorage.setItem(LOCAL_STORAGE_KEY, initialShipType);
-        console.log(`useShipTypesStore: Initialized from URL param '${initialShipType}', updated localStorage.`);
+      localStorage.setItem(LOCAL_STORAGE_KEY, initialShipType);
+      console.log(
+        `useShipTypesStore: Initialized from URL param '${initialShipType}', updated localStorage.`
+      );
     } else {
-        console.log(`useShipTypesStore: Initialized from URL param '${initialShipType}'.`);
+      console.log(
+        `useShipTypesStore: Initialized from URL param '${initialShipType}'.`
+      );
     }
   } else if (platformFromStorage) {
     // 2. Priority: LocalStorage (user's last selection)
     initialShipType = platformFromStorage;
     updateUrlNeeded = true; // Update URL to reflect the stored value
-    console.log(`useShipTypesStore: Initialized from localStorage '${initialShipType}', will update URL.`);
+    console.log(
+      `useShipTypesStore: Initialized from localStorage '${initialShipType}', will update URL.`
+    );
   } else {
     // 3. Fallback: Default to "standard"
     initialShipType = "standard";
@@ -151,7 +159,7 @@ export const useShipTypesStore = create<ShipTypesState>((set) => {
     const url = new URL(window.location.href);
     url.searchParams.set("platform", initialShipType);
     // Use replaceState so navigating back doesn't go to the URL without the param
-    window.history.replaceState({}, '', url.toString());
+    window.history.replaceState({}, "", url.toString());
     // console.log("useShipTypesStore: Updated URL.");
   }
 
@@ -165,12 +173,15 @@ export const useShipTypesStore = create<ShipTypesState>((set) => {
   return {
     shipTypes: null, // Initialize as null
     selectedShipType: initialShipType, // Use the determined initial type
-    setSelectedShipType: (shipType, updateUrl = true) => { // Default updateUrl to true
+    setSelectedShipType: (shipType, updateUrl = true) => {
+      // Default updateUrl to true
       set({ selectedShipType: shipType });
 
       // Update localStorage
       localStorage.setItem(LOCAL_STORAGE_KEY, shipType);
-      console.log(`useShipTypesStore: Set selectedShipType to '${shipType}' and updated localStorage.`);
+      console.log(
+        `useShipTypesStore: Set selectedShipType to '${shipType}' and updated localStorage.`
+      );
 
       if (updateUrl) {
         const url = new URL(window.location.href);

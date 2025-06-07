@@ -30,7 +30,6 @@ interface TechTree {
   [key: string]: TechTreeItem[];
 }
 
-
 // --- Utility Functions (RLE Compress/Decompress) ---
 export const compressRLE = (input: string): string => {
   if (!input) return "";
@@ -68,7 +67,6 @@ const decompressRLE = (input: string): string => {
   return decompressed;
 };
 
-
 // --- Grid Serialization/Deserialization Logic ---
 export const serialize = (grid: Grid): string => {
   let gridString = ""; // Raw grid string (0, 1, 2)
@@ -86,10 +84,16 @@ export const serialize = (grid: Grid): string => {
       gridString += cell.active ? (cell.supercharged ? "2" : "1") : "0";
 
       // Tech mapping
-      techString += cell.tech ? (techMap[cell.tech] || (techMap[cell.tech] = String.fromCharCode(nextTechCode++))) : " ";
+      techString += cell.tech
+        ? techMap[cell.tech] ||
+          (techMap[cell.tech] = String.fromCharCode(nextTechCode++))
+        : " ";
 
       // Module mapping
-      moduleString += cell.module ? (moduleMap[cell.module] || (moduleMap[cell.module] = String.fromCharCode(nextModuleCode++ + 65))) : " ";
+      moduleString += cell.module
+        ? moduleMap[cell.module] ||
+          (moduleMap[cell.module] = String.fromCharCode(nextModuleCode++ + 65))
+        : " ";
 
       // Adjacency Bonus status
       adjBonusString += (cell.adjacency_bonus ?? 0) > 0 ? "T" : "F";
@@ -101,18 +105,24 @@ export const serialize = (grid: Grid): string => {
   const compressedModule = compressRLE(moduleString);
   const compressedAdjBonus = compressRLE(adjBonusString);
 
-  const techMapString = Object.entries(techMap).map(([key, value]) => `${key}:${value}`).join(",");
-  const moduleMapString = Object.entries(moduleMap).map(([key, value]) => `${key}:${value}`).join(",");
+  const techMapString = Object.entries(techMap)
+    .map(([key, value]) => `${key}:${value}`)
+    .join(",");
+  const moduleMapString = Object.entries(moduleMap)
+    .map(([key, value]) => `${key}:${value}`)
+    .join(",");
 
   // Format: gridString|compressedTech|compressedModule|compressedAdjBonus|techMap|moduleMap
-  return encodeURIComponent(`${gridString}|${compressedTech}|${compressedModule}|${compressedAdjBonus}|${techMapString}|${moduleMapString}`);
+  return encodeURIComponent(
+    `${gridString}|${compressedTech}|${compressedModule}|${compressedAdjBonus}|${techMapString}|${moduleMapString}`
+  );
 };
 
 // --- CHANGE: Add setTechColors as an argument ---
 const deserialize = async (
-    serializedGrid: string,
-    shipType: string,
-    setTechColors: (colors: { [key: string]: string }) => void // <-- Add parameter
+  serializedGrid: string,
+  shipType: string,
+  setTechColors: (colors: { [key: string]: string }) => void // <-- Add parameter
 ): Promise<Grid | null> => {
   try {
     if (!serializedGrid) {
@@ -129,14 +139,36 @@ const deserialize = async (
     // Format: gridString|compressedTech|compressedModule|compressedAdjBonus|techMap|moduleMap
     const parts = decoded.split("|");
     if (parts.length !== 6) {
-        console.error("Invalid serialized grid format. Incorrect number of parts. Expected 6, got", parts.length, "Skipping deserialization.");
-        return null;
+      console.error(
+        "Invalid serialized grid format. Incorrect number of parts. Expected 6, got",
+        parts.length,
+        "Skipping deserialization."
+      );
+      return null;
     }
 
-    const [gridString, compressedTech, compressedModule, compressedAdjBonus, techMapString, moduleMapString] = parts;
+    const [
+      gridString,
+      compressedTech,
+      compressedModule,
+      compressedAdjBonus,
+      techMapString,
+      moduleMapString,
+    ] = parts;
 
-    if ([gridString, compressedTech, compressedModule, compressedAdjBonus, techMapString, moduleMapString].some((part) => part === undefined)) {
-      console.error("Invalid serialized grid format. Missing parts. Skipping deserialization.");
+    if (
+      [
+        gridString,
+        compressedTech,
+        compressedModule,
+        compressedAdjBonus,
+        techMapString,
+        moduleMapString,
+      ].some((part) => part === undefined)
+    ) {
+      console.error(
+        "Invalid serialized grid format. Missing parts. Skipping deserialization."
+      );
       return null;
     }
 
@@ -146,35 +178,49 @@ const deserialize = async (
     const decompressedAdjBonus = decompressRLE(compressedAdjBonus);
 
     const expectedLength = 6 * 10; // height * width
-    if (gridString.length !== expectedLength || decompressedTech.length !== expectedLength || decompressedModule.length !== expectedLength || decompressedAdjBonus.length !== expectedLength) {
-        console.error(`Invalid serialized grid format: String length mismatch. Expected ${expectedLength}. Got Grid: ${gridString.length}, Tech: ${decompressedTech.length}, Module: ${decompressedModule.length}, AdjBonus: ${decompressedAdjBonus.length}. Skipping deserialization.`);
-        return null;
+    if (
+      gridString.length !== expectedLength ||
+      decompressedTech.length !== expectedLength ||
+      decompressedModule.length !== expectedLength ||
+      decompressedAdjBonus.length !== expectedLength
+    ) {
+      console.error(
+        `Invalid serialized grid format: String length mismatch. Expected ${expectedLength}. Got Grid: ${gridString.length}, Tech: ${decompressedTech.length}, Module: ${decompressedModule.length}, AdjBonus: ${decompressedAdjBonus.length}. Skipping deserialization.`
+      );
+      return null;
     }
 
     // --- Maps ---
-    const techMap = (techMapString || "").split(",").reduce((acc: { [key: string]: string }, entry) => {
-      if (!entry) return acc;
-      const [key, value] = entry.split(":");
-      if (key && value) acc[value] = key;
-      return acc;
-    }, {});
-    const moduleMap = (moduleMapString || "").split(",").reduce((acc: { [key: string]: string }, entry) => {
-      if (!entry) return acc;
-      const [key, value] = entry.split(":");
-      if (key && value) acc[value] = key;
-      return acc;
-    }, {});
+    const techMap = (techMapString || "")
+      .split(",")
+      .reduce((acc: { [key: string]: string }, entry) => {
+        if (!entry) return acc;
+        const [key, value] = entry.split(":");
+        if (key && value) acc[value] = key;
+        return acc;
+      }, {});
+    const moduleMap = (moduleMapString || "")
+      .split(",")
+      .reduce((acc: { [key: string]: string }, entry) => {
+        if (!entry) return acc;
+        const [key, value] = entry.split(":");
+        if (key && value) acc[value] = key;
+        return acc;
+      }, {});
 
     // --- Fetch Tech Tree Data ---
     const modulesResponse = await fetch(`${API_URL}/tech_tree/${shipType}`);
     if (!modulesResponse.ok) {
-      throw new Error(`Failed to fetch modules: ${modulesResponse.status} ${modulesResponse.statusText}`);
+      throw new Error(
+        `Failed to fetch modules: ${modulesResponse.status} ${modulesResponse.statusText}`
+      );
     }
     const techTreeData: TechTree = await modulesResponse.json();
 
     // --- CHANGE: Extract and set tech colors ---
     const colors: { [key: string]: string } = {};
-    const modulesMap: { [techKey: string]: { [moduleId: string]: Module } } = {};
+    const modulesMap: { [techKey: string]: { [moduleId: string]: Module } } =
+      {};
     for (const techCategory in techTreeData) {
       const techTreeItems = techTreeData[techCategory];
       for (const techTreeItem of techTreeItems) {
@@ -226,7 +272,9 @@ const deserialize = async (
             newGrid.cells[r][c].adjacency = moduleData.adjacency;
             newGrid.cells[r][c].sc_eligible = moduleData.sc_eligible;
           } else {
-            console.warn(`Module data not found for tech: ${techName}, module ID: ${moduleId}. Cell state might be incomplete.`);
+            console.warn(
+              `Module data not found for tech: ${techName}, module ID: ${moduleId}. Cell state might be incomplete.`
+            );
           }
         }
         index++;
@@ -238,7 +286,10 @@ const deserialize = async (
     if (error instanceof Error) {
       console.error("Error deserializing grid:", error.message, error.stack);
     } else {
-      console.error("An unknown error occurred during grid deserialization:", error);
+      console.error(
+        "An unknown error occurred during grid deserialization:",
+        error
+      );
     }
     return null;
   }
@@ -254,19 +305,26 @@ export const useGridDeserializer = () => {
     return serialize(grid);
   }, [grid]);
 
-  const deserializeGrid = useCallback(async (serializedGrid: string) => {
-    console.log("Attempting to deserialize:", serializedGrid);
-    // --- CHANGE: Pass setTechColors to deserialize ---
-    const newGrid = await deserialize(serializedGrid, selectedShipType, setTechColors);
-    if (newGrid) {
-      console.log("Deserialization successful, setting grid and colors.");
-      setGrid(newGrid); // Update grid state
-      setIsSharedGrid(true);
-    } else {
-      console.error("Deserialization failed, grid not set.");
-    }
-    // --- End Change ---
-  }, [setGrid, selectedShipType, setIsSharedGrid, setTechColors]); // <-- Add setTechColors dependency
+  const deserializeGrid = useCallback(
+    async (serializedGrid: string) => {
+      console.log("Attempting to deserialize:", serializedGrid);
+      // --- CHANGE: Pass setTechColors to deserialize ---
+      const newGrid = await deserialize(
+        serializedGrid,
+        selectedShipType,
+        setTechColors
+      );
+      if (newGrid) {
+        console.log("Deserialization successful, setting grid and colors.");
+        setGrid(newGrid); // Update grid state
+        setIsSharedGrid(true);
+      } else {
+        console.error("Deserialization failed, grid not set.");
+      }
+      // --- End Change ---
+    },
+    [setGrid, selectedShipType, setIsSharedGrid, setTechColors]
+  ); // <-- Add setTechColors dependency
 
   return { serializeGrid, deserializeGrid };
 };

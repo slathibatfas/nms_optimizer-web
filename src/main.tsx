@@ -1,15 +1,15 @@
 import { Theme } from "@radix-ui/themes";
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 
 // Main App CSS
-import './index.css';
+import "./index.css";
 
-import ErrorBoundary from './components/ErrorBoundry/ErrorBoundry';
-import App from './App';
+import ErrorBoundary from "./components/ErrorBoundry/ErrorBoundry";
+import App from "./App";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <ErrorBoundary>
@@ -18,5 +18,5 @@ createRoot(document.getElementById('root')!).render(
         </Theme>
       </ErrorBoundary>
     </BrowserRouter>
-  </StrictMode>,
-)
+  </StrictMode>
+);

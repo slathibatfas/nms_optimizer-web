@@ -35,26 +35,49 @@ const OptimizationAlertDialog: FC<OptimizationAlertDialogProps> = ({
         }
       }}
     >
-      <Dialog.Content maxWidth="500px" style={{ backgroundColor: "var(--accent-4)" }}>
-        <Dialog.Title className="warningDialog__title">
-          <ExclamationTriangleIcon className="inline w-6 h-6" style={{ color: "var(--amber-9)" }} /> Optimization Alert!
+      <Dialog.Content
+        maxWidth="500px"
+        style={{ backgroundColor: "var(--accent-3)" }}
+      >
+        <Dialog.Title className="!text-2xl heading-styled">
+          <ExclamationTriangleIcon
+            className="inline w-6 h-6"
+            style={{ color: "var(--amber-9)" }}
+          />{" "}
+          Optimization Alert!
         </Dialog.Title>
         <Dialog.Description size="2" mb="4">
-          <span className="block pb-2 text-xl font-semibold tracking-widest text-center errorContent__title">-kzzkt- Warning! -kzzkt-</span>
+          <span className="block pb-2 text-xl font-semibold tracking-widest text-center errorContent__title">
+            -kzzkt- Warning! -kzzkt-
+          </span>
           <span className="block mb-2">
-            There isn't enough space to effectively place all modules for the technology{" "}
-            <span className="font-bold uppercase" style={{ color: "var(--accent-11)" }}>
+            There isn't enough space to effectively place all modules for the
+            technology{" "}
+            <span
+              className="font-bold uppercase"
+              style={{ color: "var(--accent-11)" }}
+            >
               {technologyName}
             </span>
-            . This usually happens when too many technologies are selected for your platform.
+            . This usually happens when too many technologies are selected for
+            your platform.
           </span>
           <span className="block">
-            You can try <strong>"Force Optimize"</strong> for a more intensive solve, but it will probably fail to find an optimal layout. Consider reordering your technologies or selecting fewer to improve the result.
+            You can try <strong>"Force Optimize"</strong> for a more intensive
+            solve, but it will probably fail to find an optimal layout. Consider
+            reordering your technologies or selecting fewer to improve the
+            result.
           </span>
         </Dialog.Description>
         <Flex gap="3" mt="4" justify="end">
-          <Dialog.Close><Button variant="soft" color="gray" onClick={onClose}>Cancel</Button></Dialog.Close>
-          <Dialog.Close><Button onClick={handleForceOptimizeClick}>Force Optimize</Button></Dialog.Close>
+          <Dialog.Close>
+            <Button variant="soft" color="gray" onClick={onClose}>
+              Cancel
+            </Button>
+          </Dialog.Close>
+          <Dialog.Close>
+            <Button onClick={handleForceOptimizeClick}>Force Optimize</Button>
+          </Dialog.Close>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
