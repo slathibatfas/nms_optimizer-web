@@ -9,27 +9,27 @@ const app = express();
 
 // Redirect traffic from Heroku to your custom domain
 app.use((req, res, next) => {
-  const host = req.headers.host;
-  const targetHost = "nms-optimizer.app";
+	const host = req.headers.host;
+	const targetHost = "nms-optimizer.app";
 
-  // Only redirect if on the Heroku domain
-  if (host && host !== targetHost) {
-    return res.redirect(301, `https://${targetHost}${req.originalUrl}`);
-  }
+	// Only redirect if on the Heroku domain
+	if (host && host !== targetHost) {
+		return res.redirect(301, `https://${targetHost}${req.originalUrl}`);
+	}
 
-  next();
+	next();
 });
 
 // Serve static files from the dist directory
 app.use(express.static(path.join(__dirname, "dist")));
 
 // Handle React/Vite history mode (SPA routing)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+app.get("/*", (req, res) => {
+	res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 // Use the PORT environment variable provided by Heroku or fallback to 3000 locally
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+	console.log(`Server running on port ${PORT}`);
 });
