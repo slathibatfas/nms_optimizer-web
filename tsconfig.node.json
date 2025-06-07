@@ -1,12 +1,13 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "./dist/node",
-    "module": "commonjs",
-    "moduleResolution": "node", // safer if bundler is unsupported
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "allowJs": true // if including JS config files
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "types": ["node"]
   },
-  "include": ["vite.config.ts", "jest.config.cjs"]
+  "include": ["vite.config.ts"]
 }
