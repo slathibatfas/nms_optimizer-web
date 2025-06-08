@@ -159,7 +159,7 @@ const MainAppContent: FC<{
 						className="flex-grow w-auto gridContainer__container lg:flex-shrink-0"
 						ref={appLayoutContainerRef}
 					>
-						<header className="flex flex-wrap items-center gap-2 mb-4 text-xl sm:text-2xl heading-styled">
+						<header className="flex flex-wrap items-center gap-2 mb-2 text-xl sm:mb-4 sm:text-2xl heading-styled">
 							{!isSharedGrid && (
 								<Tooltip content="Select Technology Platform">
 									<span className="self-start flex-shrink-0 shadow-sm">
