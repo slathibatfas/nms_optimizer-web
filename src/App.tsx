@@ -162,12 +162,12 @@ const MainAppContent: FC<{
 						<header className="flex flex-wrap items-center gap-2 mb-4 text-xl sm:text-2xl heading-styled">
 							{!isSharedGrid && (
 								<Tooltip content="Select Technology Platform">
-									<span className="flex-shrink-0 shadow-sm sm:self-start">
+									<span className="self-start flex-shrink-0 shadow-sm">
 										<ShipSelection solving={solving} />
 									</span>
 								</Tooltip>
 							)}
-							<span className="hidden sm:inline" style={{ color: "var(--accent-11)" }}>
+							<span className="self-start hidden sm:inline" style={{ color: "var(--accent-11)" }}>
 								PLATFORM:
 							</span>
 							<span className="flex-1 min-w-0">{selectedShipTypeLabel}</span>

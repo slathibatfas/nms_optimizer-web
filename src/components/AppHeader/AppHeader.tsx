@@ -34,32 +34,34 @@ const AppHeaderInternal: React.FC<AppHeaderInternalProps> = ({ onShowChangelog }
 					<h2 className="text-base sm:text-2xl header__title">
 						Technology Layout Optimizer <strong>AI</strong>{" "}
 						<span className="mr-2 font-thin">{APP_VERSION}</span>
-						<Tooltip content="Changelog">
-							<IconButton
-								className="shadow-sm"
-								variant="soft"
-								size={isSmallAndUp ? "2" : "1"} // Use the hook for dynamic sizing
-								aria-label="Changelog"
-								onClick={() => {
-									ReactGA.event({
-										category: "User Interactions",
-										action: "showChangelog",
-									});
-									onShowChangelog();
-								}}
-								onKeyDown={(e) => {
-									if (e.key === "Enter" || e.key === " ") {
+						<div className="hidden sm:inline">
+							<Tooltip content="Changelog">
+								<IconButton
+									className="shadow-sm"
+									variant="soft"
+									size={isSmallAndUp ? "2" : "1"} // Use the hook for dynamic sizing
+									aria-label="Changelog"
+									onClick={() => {
 										ReactGA.event({
 											category: "User Interactions",
 											action: "showChangelog",
 										});
 										onShowChangelog();
-									}
-								}}
-							>
-								<CounterClockwiseClockIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-							</IconButton>
-						</Tooltip>
+									}}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											ReactGA.event({
+												category: "User Interactions",
+												action: "showChangelog",
+											});
+											onShowChangelog();
+										}
+									}}
+								>
+									<CounterClockwiseClockIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+								</IconButton>
+							</Tooltip>
+						</div>
 					</h2>
 				</div>
 				<div className="flex items-end ml-auto">

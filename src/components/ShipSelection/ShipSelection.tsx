@@ -70,16 +70,27 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
 	return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger disabled={solving}>
-				<Button
-					size={isSmallAndUp ? "2" : "1"}
-					variant="soft"
-					aria-label="Select ship type"
-					className="!cursor-pointer !p-2"
-				>
-					<GearIcon className="w-4 h-4 sm:w-6 sm:h-6" />
-					<Separator orientation="vertical" color="cyan" decorative />
-					<DropdownMenu.TriggerIcon />
-				</Button>
+				{isSmallAndUp ? (
+					<Button
+						size="2"
+						variant="soft"
+						aria-label="Select ship type"
+						className="!cursor-pointer !p-2"
+					>
+						<GearIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+						<Separator orientation="vertical" color="cyan" decorative />
+						<DropdownMenu.TriggerIcon />
+					</Button>
+				) : (
+					<Button
+						size="1"
+						variant="soft"
+						aria-label="Select ship type"
+						className="!cursor-pointer !p-2"
+					>
+						<GearIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+					</Button>
+				)}
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content
 				className="shipSelection__dropdownMenu"
