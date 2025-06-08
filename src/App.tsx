@@ -57,7 +57,7 @@ const AppLoadingFallback = () => (
 );
 
 // --- Constants for UI ---
-const DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT = "528px";
+const DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT = "520px";
 
 /**
  * Renders the main application content.
