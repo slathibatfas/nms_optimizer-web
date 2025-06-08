@@ -152,7 +152,7 @@ const MainAppContent: FC<{
 			<section className="relative mx-auto border rounded-none shadow-lg app lg:rounded-xl backdrop-blur-xl bg-white/5">
 				<AppHeader onShowChangelog={handleShowChangelog} />
 				<section
-					className="flex flex-col items-start p-4 gridContainer lg:p-8 md:pt-4 lg:flex-row"
+					className="flex flex-col items-start p-4 gridContainer lg:p-8 md:pt-4 sm:p-8 lg:flex-row"
 					ref={gridContainerRef}
 				>
 					<div
