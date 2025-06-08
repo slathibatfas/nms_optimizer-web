@@ -149,7 +149,7 @@ const MainAppContent: FC<{
 
 	return (
 		<main className="flex flex-col items-center justify-center lg:min-h-screen">
-			<section className="relative mx-auto border rounded-none shadow-lg app lg:rounded-xl lg:shadow-xl backdrop-blur-xl bg-white/5">
+			<section className="relative mx-auto border rounded-none shadow-lg app lg:rounded-xl backdrop-blur-xl bg-white/5">
 				<AppHeader onShowChangelog={handleShowChangelog} />
 				<section
 					className="flex flex-col items-start p-6 pt-4 gridContainer lg:p-8 md:p-8 md:pt-4 lg:flex-row"
@@ -196,7 +196,7 @@ const MainAppContent: FC<{
 					{!isSharedGrid &&
 						(isLarge ? (
 							<ScrollArea
-								className={`gridContainer__sidebar p-4 ml-6 border shadow-md rounded-xl backdrop-blur-xl`}
+								className={`gridContainer__sidebar p-4 ml-6 shadow-md rounded-xl backdrop-blur-xl`}
 								style={{
 									height: gridHeight ? `${gridHeight}px` : DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT,
 								}}
