@@ -5,12 +5,12 @@ import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 interface RowControlButtonProps {
-  rowIndex: number;
-  activateRow: (rowIndex: number) => void;
-  deActivateRow: (rowIndex: number) => void;
-  hasModulesInGrid: boolean;
-  isFirstInactiveRow: boolean;
-  isLastActiveRow: boolean;
+	rowIndex: number;
+	activateRow: (rowIndex: number) => void;
+	deActivateRow: (rowIndex: number) => void;
+	hasModulesInGrid: boolean;
+	isFirstInactiveRow: boolean;
+	isLastActiveRow: boolean;
 }
 
 /**
@@ -27,52 +27,52 @@ interface RowControlButtonProps {
  * @param {boolean} isLastActiveRow - Whether the row is the last active row.
  */
 const GridControlButtons: React.FC<RowControlButtonProps> = ({
-  rowIndex,
-  activateRow,
-  deActivateRow,
-  hasModulesInGrid,
-  isFirstInactiveRow,
-  isLastActiveRow,
+	rowIndex,
+	activateRow,
+	deActivateRow,
+	hasModulesInGrid,
+	isFirstInactiveRow,
+	isLastActiveRow,
 }) => {
-  const isMediumOrLarger = useBreakpoint("640px"); // true if screen width >= 640px
-  const iconButtonSize = isMediumOrLarger ? "2" : "1";
+	const isMediumOrLarger = useBreakpoint("640px"); // true if screen width >= 640px
+	const iconButtonSize = isMediumOrLarger ? "2" : "1";
 
-  return (
-    <div
-      className="flex items-center justify-center h-full" // Ensure full height and center content
-      data-is-grid-control-column="true" // Added data attribute for selection
-    >
-      {isFirstInactiveRow && (
-        <Tooltip content="Activate Row">
-          <IconButton
-            size={iconButtonSize}
-            variant="soft"
-            className="shadow-md" // Centering handled by parent
-            onClick={() => activateRow(rowIndex)}
-            disabled={hasModulesInGrid}
-            aria-label="Activate row"
-          >
-            <PlusIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+	return (
+		<div
+			className="flex items-center justify-center h-full" // Ensure full height and center content
+			data-is-grid-control-column="true" // Added data attribute for selection
+		>
+			{isFirstInactiveRow && (
+				<Tooltip content="Activate Row">
+					<IconButton
+						size={iconButtonSize}
+						variant="soft"
+						className="shadow-md" // Centering handled by parent
+						onClick={() => activateRow(rowIndex)}
+						disabled={hasModulesInGrid}
+						aria-label="Activate row"
+					>
+						<PlusIcon />
+					</IconButton>
+				</Tooltip>
+			)}
 
-      {isLastActiveRow && (
-        <Tooltip content="Deactivate Row">
-          <IconButton
-            variant="soft"
-            size={iconButtonSize}
-            className="shadow-md" // Centering handled by parent
-            onClick={() => deActivateRow(rowIndex)}
-            disabled={hasModulesInGrid}
-            aria-label="Deactivate row"
-          >
-            <MinusIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </div>
-  );
+			{isLastActiveRow && (
+				<Tooltip content="Deactivate Row">
+					<IconButton
+						variant="soft"
+						size={iconButtonSize}
+						className="shadow-md" // Centering handled by parent
+						onClick={() => deActivateRow(rowIndex)}
+						disabled={hasModulesInGrid}
+						aria-label="Deactivate row"
+					>
+						<MinusIcon />
+					</IconButton>
+				</Tooltip>
+			)}
+		</div>
+	);
 };
 
 export default GridControlButtons;
