@@ -162,7 +162,7 @@ const MainAppContent: FC<{
 						<header className="flex flex-wrap items-center gap-2 mb-4 text-xl sm:text-2xl heading-styled">
 							{!isSharedGrid && (
 								<Tooltip content="Select Technology Platform">
-									<span className="flex-shrink-0 shadow-sm">
+									<span className="flex-shrink-0 shadow-sm sm:self-start">
 										<ShipSelection solving={solving} />
 									</span>
 								</Tooltip>
