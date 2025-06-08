@@ -35,7 +35,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 	const isSmallAndUp = useBreakpoint("640px"); // sm breakpoint
 	return (
 		// Add 'relative' to establish a positioning context for the absolutely positioned reset button.
-		<footer className="relative flex items-start pt-3 sm:pt-5 gridTable__footer">
+		<footer className="relative flex items-start pt-3 sm:pt-4 gridTable__footer">
 			<div className="flex-1 flex-nowrap">
 				{" "}
 				{/* This div will contain the left-aligned buttons */}
