@@ -210,10 +210,9 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 		<div className="flex gap-2 pl-1 mt-2 mb-2 items-top optimizationButton">
 			<Tooltip delayDuration={1000} content={tooltipLabel}>
 				<IconButton
-					className={`techRow__optimizeButton shadow-md group ${!solving ? "!cursor-pointer" : "!cursor-not-allowed"}`.trim()}
+					className={`techRow__optimizeButton !shadow-sm group ${!solving ? "!cursor-pointer" : "!cursor-not-allowed"}`.trim()}
 					onClick={handleOptimizeClick}
 					disabled={solving}
-					radius="small"
 					variant="solid"
 					style={{
 						...iconButtonBaseStyles,
@@ -233,12 +232,11 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 
 			<Tooltip delayDuration={1000} content="Reset">
 				<IconButton
-					radius="small"
 					variant="solid"
 					onClick={handleReset}
 					disabled={!hasTechInGrid || solving}
 					aria-label={`Reset ${label}`}
-					className={`techRow__resetButton shadow-md ${hasTechInGrid && !solving ? "!cursor-pointer" : ""}`.trim()}
+					className={`techRow__resetButton !shadow-sm ${hasTechInGrid && !solving ? "!cursor-pointer" : ""}`.trim()}
 				>
 					<ResetIcon />
 				</IconButton>

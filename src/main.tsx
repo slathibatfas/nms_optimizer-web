@@ -10,13 +10,13 @@ import ErrorBoundary from "./components/ErrorBoundry/ErrorBoundry";
 import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <BrowserRouter>
-      <ErrorBoundary>
-        <Theme appearance="dark" accentColor="cyan" className="!bg-transparent">
-          <App />
-        </Theme>
-      </ErrorBoundary>
-    </BrowserRouter>
-  </StrictMode>
+	<StrictMode>
+		<BrowserRouter>
+			<ErrorBoundary>
+				<Theme appearance="dark" accentColor="cyan" className="!bg-transparent">
+					<App />
+				</Theme>
+			</ErrorBoundary>
+		</BrowserRouter>
+	</StrictMode>
 );
