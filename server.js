@@ -1,4 +1,5 @@
 import express from "express";
+import expressStaticGzip from "express-static-gzip";
 import { fileURLToPath } from "url";
 import path from "path";
 
@@ -20,8 +21,17 @@ app.use((req, res, next) => {
 	next();
 });
 
-// Serve static files from the dist directory
-app.use(express.static(path.join(__dirname, "dist")));
+// Serve static files from the dist directory with compression support
+app.use(
+	"/",
+	expressStaticGzip(path.join(__dirname, "dist"), {
+		enableBrotli: true,
+		orderPreference: ["br", "gz"],
+		setHeaders: (res, filePath) => {
+			// Optional: you can add caching headers or content-type overrides here if desired
+		},
+	})
+);
 
 // Handle React/Vite history mode (SPA routing)
 app.get("/*splat", async (req, res) => {
