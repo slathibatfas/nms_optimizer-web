@@ -2,7 +2,7 @@
 import React from "react";
 import NMSIcon from "../../assets/img/nms_icon.webp";
 import NMSShip from "../../assets/img/resized_ship.webp";
-import { IconButton } from "@radix-ui/themes";
+import { IconButton, Tooltip } from "@radix-ui/themes";
 import { CounterClockwiseClockIcon } from "@radix-ui/react-icons";
 import { APP_VERSION } from "../../constants";
 import { useBreakpoint } from "../../hooks/useBreakpoint"; // Import the hook
@@ -35,30 +35,32 @@ const AppHeaderInternal: React.FC<AppHeaderInternalProps> = ({ onShowChangelog }
 						Technology Layout Optimizer <strong>AI</strong>{" "}
 						<span className="mr-2 font-thin">{APP_VERSION}</span>
 						<div className="hidden sm:inline">
-							<IconButton
-								className="shadow-sm"
-								variant="soft"
-								size={isSmallAndUp ? "2" : "1"} // Use the hook for dynamic sizing
-								aria-label="Changelog"
-								onClick={() => {
-									ReactGA.event({
-										category: "User Interactions",
-										action: "showChangelog",
-									});
-									onShowChangelog();
-								}}
-								onKeyDown={(e) => {
-									if (e.key === "Enter" || e.key === " ") {
+							<Tooltip content="Changelog">
+								<IconButton
+									className="shadow-sm !cursor-pointer"
+									variant="soft"
+									size={isSmallAndUp ? "2" : "1"} // Use the hook for dynamic sizing
+									aria-label="Changelog"
+									onClick={() => {
 										ReactGA.event({
 											category: "User Interactions",
 											action: "showChangelog",
 										});
 										onShowChangelog();
-									}
-								}}
-							>
-								<CounterClockwiseClockIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-							</IconButton>
+									}}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											ReactGA.event({
+												category: "User Interactions",
+												action: "showChangelog",
+											});
+											onShowChangelog();
+										}
+									}}
+								>
+									<CounterClockwiseClockIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+								</IconButton>
+							</Tooltip>
 						</div>
 					</h2>
 				</div>

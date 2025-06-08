@@ -42,7 +42,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 				<Button
 					size={isSmallAndUp ? "2" : "1"}
 					variant={isFirstVisit ? "solid" : "soft"}
-					className={`gridTable__button gridTable__button--instructions shadow-md !mr-2 p-0 sm:!px-2 ${
+					className={`gridTable__button gridTable__button--instructions !cursor-pointer shadow-md !mr-2 p-0  ${
 						isFirstVisit ? "button--glow" : ""
 					}`}
 					onClick={() => {
@@ -59,7 +59,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 				<Button
 					size={isSmallAndUp ? "2" : "1"}
 					variant="soft"
-					className={`gridTable__button gridTable__button--about shadow-md !mr-2 sm:!px-2`} // Renamed class for clarity
+					className={`gridTable__button gridTable__button--about !cursor-pointer shadow-md !mr-2`} // Renamed class for clarity
 					onClick={() => {
 						ReactGA.event({
 							category: "User Interactions",
@@ -75,7 +75,9 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					<Button
 						size={isSmallAndUp ? "2" : "1"}
 						variant="soft"
-						className={`gridTable__button gridTable__button--changelog shadow-md sm:!px-2`}
+						className={`gridTable__button gridTable__button--changelog shadow-md ${
+							!isSharedGrid && hasModulesInGrid ? "!cursor-pointer" : ""
+						}`}
 						onClick={onShare}
 						disabled={isSharedGrid || !hasModulesInGrid}
 					>
@@ -95,7 +97,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 				>
 					<Button
 						size={isSmallAndUp ? "2" : "1"}
-						className={`gridTable__button gridTable__button--reset shadow-md`}
+						className={`gridTable__button gridTable__button--reset !cursor-pointer shadow-md`}
 						variant="solid"
 						onClick={onReset}
 						disabled={solving}
