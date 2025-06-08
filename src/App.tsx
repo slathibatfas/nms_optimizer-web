@@ -4,7 +4,6 @@
 import { Suspense, useEffect, useState, useCallback, useMemo, FC, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { ScrollArea, Separator } from "@radix-ui/themes";
-import { Tooltip } from "@radix-ui/themes";
 import ReactGA from "react-ga4";
 
 // --- Components ---
@@ -133,6 +132,11 @@ const MainAppContent: FC<{
 		setShowChangelogDialog(false);
 	}, []);
 
+	// Memoize content elements for dialogs to prevent unnecessary re-renders of AppDialog
+	const aboutDialogContent = useMemo(() => <AboutContent />, []);
+	const instructionsDialogContent = useMemo(() => <InstructionsContent />, []);
+	const changelogDialogContent = useMemo(() => <ChangelogContent />, []);
+
 	const handleShareClick = useCallback(() => {
 		const shareUrl = updateUrlForShare();
 		const newWindow = window.open(shareUrl, "_blank", "noopener,noreferrer");
@@ -161,11 +165,9 @@ const MainAppContent: FC<{
 					>
 						<header className="flex flex-wrap items-center gap-2 mb-2 text-xl sm:mb-4 sm:text-2xl heading-styled">
 							{!isSharedGrid && (
-								<Tooltip content="Select Technology Platform">
-									<span className="self-start flex-shrink-0 shadow-sm">
-										<ShipSelection solving={solving} />
-									</span>
-								</Tooltip>
+								<span className="self-start flex-shrink-0 shadow-sm">
+									<ShipSelection solving={solving} />
+								</span>
 							)}
 							<span className="self-start hidden sm:inline" style={{ color: "var(--accent-11)" }}>
 								PLATFORM:
@@ -244,21 +246,21 @@ const MainAppContent: FC<{
 				isOpen={showAboutPage}
 				onClose={handleCloseAboutDialog}
 				title="About"
-				content={<AboutContent />}
+				content={aboutDialogContent}
 			/>
 			{/* Dialog for "Instructions" information */}
 			<AppDialog
 				isOpen={showInstructionsDialog}
 				onClose={handleCloseInstructionsDialog}
 				title="Instructions"
-				content={<InstructionsContent />}
+				content={instructionsDialogContent}
 			/>
 			{/* Dialog for "Changelog" information */}
 			<AppDialog
 				isOpen={showChangelogDialog}
 				onClose={handleCloseChangelogDialog}
 				title="Changelog"
-				content={<ChangelogContent />}
+				content={changelogDialogContent}
 			/>
 		</main>
 	);
