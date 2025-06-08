@@ -52,6 +52,7 @@ html {
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	scrollbar-gutter: stable;
 }
 
 /* Background styles */
@@ -128,7 +129,7 @@ body::before {
 .header__title strong {
 	font-weight: 800;
 	color: var(--accent-11);
-	filter: drop-shadow(0 0 4px var(--accent-a7));
+	filter: drop-shadow(0 2px 4px var(--accent-a7));
 }
 
 .fade-horizontal {
