@@ -33,7 +33,7 @@ const AppHeaderInternal: React.FC<AppHeaderInternalProps> = ({ onShowChangelog }
 					/>
 					<h2 className="text-base sm:text-2xl header__title">
 						Technology Layout Optimizer <strong>AI</strong>{" "}
-						<span className="mr-1 font-thin">{APP_VERSION}</span>
+						<span className="mr-2 font-thin">{APP_VERSION}</span>
 						<Tooltip content="Changelog">
 							<IconButton
 								className="shadow-sm"
