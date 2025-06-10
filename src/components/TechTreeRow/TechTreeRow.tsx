@@ -10,6 +10,7 @@ import {
 	ExclamationTriangleIcon,
 	Crosshair2Icon,
 	LightningBoltIcon,
+	DoubleArrowLeftIcon,
 } from "@radix-ui/react-icons";
 // import { GoLightBulb } from "react-icons/go";
 
@@ -141,7 +142,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 	const techMaxBonus = max_bonus?.[tech] ?? 0;
 	const techSolvedBonus = solved_bonus?.[tech] ?? 0;
 	const tooltipLabel = hasTechInGrid ? "Update" : "Solve";
-	const OptimizeIconComponent = hasTechInGrid ? UpdateIcon : SlPuzzle;
+	const OptimizeIconComponent = hasTechInGrid ? UpdateIcon : DoubleArrowLeftIcon;
 	const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
 	const { setShaking } = useShakeStore();
 
