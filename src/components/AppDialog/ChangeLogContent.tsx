@@ -18,7 +18,7 @@ const ChangeLogContent: React.FC = () => {
 				>
 					GitHub page
 				</a>{" "}
-				for up to date model information.
+				for up to date model build information.
 			</p>
 
 			<h2 className="pt-2 appDialog__subheading">Version 2.86 (2025-06-10)</h2>
