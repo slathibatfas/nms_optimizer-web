@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useGridStore } from "../../store/GridStore";
 import { useTechStore } from "../../store/TechStore";
-import { IconButton, Text, Tooltip, Checkbox } from "@radix-ui/themes";
+import { IconButton, Text, Tooltip, Checkbox, Avatar } from "@radix-ui/themes";
 import {
 	UpdateIcon,
 	ResetIcon,
@@ -184,65 +184,24 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 	const fallbackImage = `${baseImagePath}infra.webp`;
 	const imagePath = techImage ? `${baseImagePath}${techImage}` : fallbackImage;
 
-	// Prepare base styles for the IconButton
-	const iconButtonBaseStyles: React.CSSProperties = {
-		backgroundImage: `
-      radial-gradient(circle, rgba(0, 0, 0, 0.3) 15%, rgba(0, 0, 0, 0.0) 100%),
-      url('${imagePath}')
-    `,
-		backgroundSize: "fit",
-		backgroundPosition: "center",
-		backgroundRepeat: "no-repeat",
-	};
-
-	let dynamicIconButtonStyles: React.CSSProperties = {};
-	const finalAccentColor = techColor === "white" || !techColor ? "gray" : techColor;
-	const dataAccentColorProps: Record<string, string> = {
-		"data-accent-color": finalAccentColor,
-	};
-
-	// Apply specific style overrides if not solving and techColor is white or gray
-	if (!solving) {
-		if (techColor === "white") {
-			dynamicIconButtonStyles = {
-				border: "2px solid var(--gray-a11)",
-				backgroundColor: "var(--gray-a9)", // Uses global accent for icon color by default
-			};
-		} else if (techColor === "gray") {
-			dynamicIconButtonStyles = {
-				border: "2px solid var(--gray-7)",
-				// Uses global accent for icon color by default
-			};
-		}
-	}
-
 	return (
-		<div className="flex gap-2 pl-1 mt-2 mb-2 items-top optimizationButton">
+		<div className="flex gap-2 mt-2 mb-2 ml-1 items-top optimizationButton">
 			<Tooltip delayDuration={1000} content={tooltipLabel}>
 				<IconButton
-					className={`techRow__optimizeButton !shadow-sm group ${!solving ? "!cursor-pointer" : "!cursor-not-allowed"}`.trim()}
 					onClick={handleOptimizeClick}
 					disabled={solving}
-					variant="solid"
-					style={{
-						...iconButtonBaseStyles,
-						...dynamicIconButtonStyles,
-					}}
-					{...dataAccentColorProps}
 					aria-label={`${tooltipLabel} ${label}`}
 					id={tech}
+					className={`techRow__resetButton !shadow-sm ${hasTechInGrid && !solving ? "!cursor-pointer" : ""}`.trim()}
 				>
 					<OptimizeIconComponent
-						className={`${
-							!solving ? "stroke-[var(--accent-a10)] stroke-1 [&>path]:stroke-inherit" : ""
-						}`}
+						className={`${!solving ? "stroke-[var(--accent-color)] stroke-2 [&>path]:stroke-inherit" : ""}`}
 					/>
 				</IconButton>
 			</Tooltip>
 
 			<Tooltip delayDuration={1000} content="Reset">
 				<IconButton
-					variant="solid"
 					onClick={handleReset}
 					disabled={!hasTechInGrid || solving}
 					aria-label={`Reset ${label}`}
@@ -252,6 +211,8 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 				</IconButton>
 			</Tooltip>
 
+			<Avatar size="2" radius="full" fallback="IK" src={imagePath} />
+
 			<div className="w-full pt-1 font-semibold techRow__label">
 				{modules.some((module) => module.type === "reward") ? (
 					<Accordion.Root
@@ -259,7 +220,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 						style={{ borderColor: "var(--gray-a6)" }}
 						type="single"
 						collapsible
-						defaultValue="item-1"
+						// defaultValue="item-1"
 					>
 						<Accordion.Item className="AccordionItem" value="item-1">
 							<AccordionTrigger>
