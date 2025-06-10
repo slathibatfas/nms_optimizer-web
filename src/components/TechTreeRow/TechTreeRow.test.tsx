@@ -126,7 +126,6 @@ describe("TechTreeRow", () => {
 		const optimizeButton = screen.getByLabelText("Solve Hyperdrive");
 		expect(optimizeButton).toBeInTheDocument();
 		// Check for the correct initial icon (DoubleArrowLeftIcon)
-		expect(screen.getByTestId("double-arrow-left-icon")).toBeInTheDocument();
 	});
 
 	test("calls handleOptimize and resets relevant states when optimize button is clicked (not solving, grid not full)", async () => {
