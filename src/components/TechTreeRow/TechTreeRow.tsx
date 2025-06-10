@@ -7,11 +7,13 @@ import {
 	UpdateIcon,
 	ResetIcon,
 	ChevronDownIcon,
-	DoubleArrowLeftIcon,
 	ExclamationTriangleIcon,
 	Crosshair2Icon,
 	LightningBoltIcon,
 } from "@radix-ui/react-icons";
+import { GoLightBulb } from "react-icons/go";
+
+import { SlPuzzle } from "react-icons/sl";
 import { Accordion } from "radix-ui";
 import { useShakeStore } from "../../store/ShakeStore";
 
@@ -139,7 +141,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 	const techMaxBonus = max_bonus?.[tech] ?? 0;
 	const techSolvedBonus = solved_bonus?.[tech] ?? 0;
 	const tooltipLabel = hasTechInGrid ? "Update" : "Solve";
-	const OptimizeIconComponent = hasTechInGrid ? UpdateIcon : DoubleArrowLeftIcon;
+	const OptimizeIconComponent = hasTechInGrid ? UpdateIcon : SlPuzzle;
 	const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
 	const { setShaking } = useShakeStore();
 
@@ -194,9 +196,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 					id={tech}
 					className={`techRow__resetButton !shadow-sm ${hasTechInGrid && !solving ? "!cursor-pointer" : ""}`.trim()}
 				>
-					<OptimizeIconComponent
-						className={`${!solving ? "stroke-[var(--accent-color)] stroke-2 [&>path]:stroke-inherit" : ""}`}
-					/>
+					<OptimizeIconComponent />
 				</IconButton>
 			</Tooltip>
 
