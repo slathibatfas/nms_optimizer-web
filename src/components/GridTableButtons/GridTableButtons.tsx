@@ -54,7 +54,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					}}
 				>
 					<QuestionMarkCircledIcon />
-					<span>Instructions</span>
+					<span className="hidden sm:inline">Instructions</span>
 				</Button>
 				<Button
 					size={isSmallAndUp ? "2" : "2"}
