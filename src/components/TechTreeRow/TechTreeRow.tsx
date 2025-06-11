@@ -214,51 +214,46 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 
 			<Avatar size="2" radius="full" alt={label} fallback="IK" src={imagePath} />
 
-			<div className="w-full pt-1 font-semibold techRow__label">
-				{modules.some((module) => module.type === "reward") ? (
-					<Accordion.Root
-						className="w-full pb-1 border-b-1 AccordionRoot"
-						style={{ borderColor: "var(--gray-a6)" }}
-						type="single"
-						collapsible
-						// defaultValue="item-1"
-					>
-						<Accordion.Item className="AccordionItem" value="item-1">
-							<AccordionTrigger>
-								<Text>
-									{label}
-									<BonusStatusIcon techMaxBonus={techMaxBonus} techSolvedBonus={techSolvedBonus} />
-								</Text>
-							</AccordionTrigger>
-							<Accordion.Content className="pl-1 AccordionContent">
-								{modules
-									.filter((module) => module.type === "reward")
-									.map((module) => (
-										<div key={module.id} className="flex items-center gap-2 AccordionContentText">
-											<Checkbox
-												className="ml-1 CheckboxRoot"
-												variant="soft"
-												id={module.id}
-												checked={currentCheckedModules.includes(module.id)}
-												onClick={() => handleCheckboxChange(module.id)}
-											/>
-											<label className="Label" htmlFor={module.id}>
-												{module.label}
-											</label>
-										</div>
-									))}
-							</Accordion.Content>
-						</Accordion.Item>
-					</Accordion.Root>
-				) : (
-					<>
-						<Text as="label" htmlFor={tech}>
-							{label}
-						</Text>
-						<BonusStatusIcon techMaxBonus={techMaxBonus} techSolvedBonus={techSolvedBonus} />
-					</>
-				)}
-			</div>
+			{modules.some((module) => module.type === "reward") ? (
+				<Accordion.Root
+					className="flex-1 pt-1 pb-1 font-semibold border-b-1 AccordionRoot"
+					style={{ borderColor: "var(--accent-track)" }}
+					type="single"
+					collapsible
+				>
+					<Accordion.Item className="AccordionItem" value="item-1">
+						<AccordionTrigger>
+							<Text>
+								{label}
+								<BonusStatusIcon techMaxBonus={techMaxBonus} techSolvedBonus={techSolvedBonus} />
+							</Text>
+						</AccordionTrigger>
+						<Accordion.Content className="pl-1 AccordionContent">
+							{modules
+								.filter((module) => module.type === "reward")
+								.map((module) => (
+									<div key={module.id} className="flex items-center gap-2 AccordionContentText">
+										<Checkbox
+											className="ml-1 CheckboxRoot"
+											variant="soft"
+											id={module.id}
+											checked={currentCheckedModules.includes(module.id)}
+											onClick={() => handleCheckboxChange(module.id)}
+										/>
+										<label className="Label" htmlFor={module.id}>
+											{module.label}
+										</label>
+									</div>
+								))}
+						</Accordion.Content>
+					</Accordion.Item>
+				</Accordion.Root>
+			) : (
+				<Text as="label" htmlFor={tech} className="flex-1 block pt-1 font-semibold">
+					{label}
+					<BonusStatusIcon techMaxBonus={techMaxBonus} techSolvedBonus={techSolvedBonus} />
+				</Text>
+			)}
 		</div>
 	);
 };
