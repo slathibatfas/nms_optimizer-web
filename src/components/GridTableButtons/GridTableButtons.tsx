@@ -40,7 +40,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 				{" "}
 				{/* This div will contain the left-aligned buttons */}
 				<Button
-					size={isSmallAndUp ? "2" : "1"}
+					size={isSmallAndUp ? "2" : "2"}
 					variant={isFirstVisit ? "solid" : "soft"}
 					className={`gridTable__button gridTable__button--instructions !cursor-pointer shadow-md !mr-2 p-0  ${
 						isFirstVisit ? "button--glow" : ""
@@ -54,10 +54,10 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					}}
 				>
 					<QuestionMarkCircledIcon />
-					<span className="hidden sm:inline">Instructions</span>
+					<span>Instructions</span>
 				</Button>
 				<Button
-					size={isSmallAndUp ? "2" : "1"}
+					size={isSmallAndUp ? "2" : "2"}
 					variant="soft"
 					className={`gridTable__button gridTable__button--about !cursor-pointer shadow-md !mr-2`} // Renamed class for clarity
 					onClick={() => {
@@ -73,7 +73,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 				</Button>
 				{!isSharedGrid && (
 					<Button
-						size={isSmallAndUp ? "2" : "1"}
+						size={isSmallAndUp ? "2" : "2"}
 						variant="soft"
 						className={`gridTable__button gridTable__button--changelog shadow-md ${
 							!isSharedGrid && hasModulesInGrid ? "!cursor-pointer" : ""
@@ -96,7 +96,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					style={{ right: columnWidth }}
 				>
 					<Button
-						size={isSmallAndUp ? "2" : "1"}
+						size={isSmallAndUp ? "2" : "2"}
 						className={`gridTable__button gridTable__button--reset !cursor-pointer shadow-md`}
 						variant="solid"
 						onClick={onReset}

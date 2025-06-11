@@ -172,7 +172,9 @@ const MainAppContent: FC<{
 							<span className="self-start hidden sm:inline" style={{ color: "var(--accent-11)" }}>
 								PLATFORM:
 							</span>
-							<span className="self-start flex-1 min-w-0">{selectedShipTypeLabel}</span>
+							<span className="self-start flex-1 min-w-0 mt-[3] sm:mt-0">
+								{selectedShipTypeLabel}
+							</span>
 						</header>
 						<GridTable
 							grid={grid}
