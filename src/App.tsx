@@ -172,7 +172,7 @@ const MainAppContent: FC<{
 							<span className="self-start hidden sm:inline" style={{ color: "var(--accent-11)" }}>
 								PLATFORM:
 							</span>
-							<span className="self-start flex-1 min-w-0 mt-[2] sm:mt-0">
+							<span className="self-start flex-1 min-w-0 mt-[3] sm:mt-0">
 								{selectedShipTypeLabel}
 							</span>
 						</header>
@@ -208,7 +208,7 @@ const MainAppContent: FC<{
 								<TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
 							</ScrollArea>
 						) : (
-							<aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
+							<aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8 pr-1">
 								<TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
 							</aside>
 						))}
