@@ -186,9 +186,14 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 	const baseImagePath = "/assets/img/buttons/";
 	const fallbackImage = `${baseImagePath}infra.webp`;
 	const imagePath = techImage ? `${baseImagePath}${techImage}` : fallbackImage;
+	// If techImage is "hyperdrive.webp", imagePath2x will be "/assets/img/buttons/hyperdrive@x2.webp"
+	const imagePath2x = techImage
+		? `${baseImagePath}${techImage.replace(/\.(webp|png|jpg|jpeg)$/, "@x2.$1")}`
+		: fallbackImage.replace(/\.(webp|png|jpg|jpeg)$/, "@x2.$1"); // Also handle fallback
 
 	return (
 		<div className="flex gap-2 mt-2 mb-2 ml-1 items-top optimizationButton">
+			{/* Optimize Button */}
 			<Tooltip delayDuration={1000} content={tooltipLabel}>
 				<IconButton
 					onClick={handleOptimizeClick}
@@ -201,6 +206,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 				</IconButton>
 			</Tooltip>
 
+			{/* Reset Button */}
 			<Tooltip delayDuration={1000} content="Reset">
 				<IconButton
 					onClick={handleReset}
@@ -212,8 +218,15 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 				</IconButton>
 			</Tooltip>
 
-			<Avatar size="2" radius="full" alt={label} fallback="IK" src={imagePath} />
-
+			{/* Avatar with srcSet */}
+			<Avatar
+				size="2"
+				radius="full"
+				alt={label}
+				fallback="IK"
+				src={imagePath}
+				srcSet={`${imagePath} 1x, ${imagePath2x} 2x`}
+			/>
 			{modules.some((module) => module.type === "reward") ? (
 				<Accordion.Root
 					className="flex-1 pt-1 pb-1 font-semibold border-b-1 AccordionRoot"
