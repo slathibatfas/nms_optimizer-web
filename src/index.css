@@ -77,6 +77,15 @@ body {
 	-webkit-text-stroke: 0.75px;
 }
 
+.header__logo--text {
+	letter-spacing: 0.35em;
+	font-family: var(--font-family-geosans);
+	font-weight: 400;
+	text-transform: uppercase;
+	filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.25));
+	-webkit-text-stroke: 1px;
+}
+
 .app {
 	border: 1px solid var(--accent-a2);
 	box-shadow:
@@ -112,12 +121,12 @@ body {
 
 .header__title {
 	font-weight: 600;
+	color: var(--gray-a12);
 	filter: drop-shadow(0 0 4px var(--accent-3));
-	color: var(--gray-12);
 }
 
 .header__title strong {
-	font-weight: 800;
+	font-weight: 900;
 	color: var(--accent-11);
 	filter: drop-shadow(0 2px 4px var(--accent-a7));
 }
@@ -132,10 +141,6 @@ body {
 		transparent
 	); /* Corrected gradient */
 	filter: saturate(50%);
-}
-
-.container {
-	border-top: 1px solid var(--gray-a2);
 }
 
 .gridContainer__sidebar {

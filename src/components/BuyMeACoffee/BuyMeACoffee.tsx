@@ -26,7 +26,7 @@ export default function BuyMeACoffee() {
 	};
 
 	return (
-		<Button size={isLargeScreen ? "2" : "1"} variant="solid" asChild>
+		<Button size={isLargeScreen ? "1" : "1"} variant="solid" asChild>
 			<a href="https://www.buymeacoffee.com/jbelew" onClick={handleButtonClick}>
 				☕ Buy me a Coffee!
 			</a>

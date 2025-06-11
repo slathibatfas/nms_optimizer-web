@@ -24,6 +24,10 @@ const ChangeLogContent: React.FC = () => {
 			<h2 className="pt-2 appDialog__subheading">Version 2.86 (2025-06-10)</h2>
 			<ul className="appDialog__list">
 				<li className="appDialog__listItem">Simplified "TechRow" button presentation.</li>
+				<li className="appDialog__listItem">
+					Refactored the header presentation into something more "elegant", matching the game title
+					screen.
+				</li>
 				<li className="appDialog__listItem">Additional UI and performance enhancements.</li>
 			</ul>
 
