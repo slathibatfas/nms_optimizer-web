@@ -212,7 +212,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 				</IconButton>
 			</Tooltip>
 
-			<Avatar size="2" radius="full" fallback="IK" src={imagePath} />
+			<Avatar size="2" radius="full" alt={label} fallback="IK" src={imagePath} />
 
 			<div className="w-full pt-1 font-semibold techRow__label">
 				{modules.some((module) => module.type === "reward") ? (
