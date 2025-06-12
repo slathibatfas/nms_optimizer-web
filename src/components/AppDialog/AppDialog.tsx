@@ -7,6 +7,7 @@ import {
 	QuestionMarkCircledIcon,
 	CounterClockwiseClockIcon,
 	InfoCircledIcon,
+	ExclamationTriangleIcon,
 } from "@radix-ui/react-icons";
 
 import "./AppDialog.css";
@@ -65,7 +66,7 @@ const AppDialog: React.FC<AppDialogProps> = ({
 				<Theme appearance="dark">
 					<Dialog.Overlay className="appDialog__overlay" />
 					<Dialog.Content className="appDialog__content">
-						<Dialog.Title className="flex items-center gap-2 text-2xl heading-styled">
+						<Dialog.Title className="flex items-center gap-2 text-xl sm:text-2xl heading-styled">
 							{title === "Instructions" && (
 								<QuestionMarkCircledIcon
 									className="w-6 h-6"
@@ -81,6 +82,13 @@ const AppDialog: React.FC<AppDialogProps> = ({
 							{title === "About" && (
 								<InfoCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />
 							)}
+							{title === "Server Error!" && (
+								<ExclamationTriangleIcon
+									className="inline w-6 h-6"
+									style={{ color: "var(--red-9)" }}
+								/>
+							)}
+
 							{title}
 						</Dialog.Title>
 						<Dialog.Description className="hidden appDialog__description">
