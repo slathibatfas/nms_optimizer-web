@@ -155,7 +155,7 @@ const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({
 						<span className="shipSelection__header">{type}s</span> {/* Pluralize for display */}
 					</DropdownMenu.Label>
 					{items.map(({ key, details }) => (
-						<DropdownMenu.RadioItem key={key} value={key} className="font-bold last:mb-2">
+						<DropdownMenu.RadioItem key={key} value={key} className="font-medium last:mb-2">
 							{details.label}
 						</DropdownMenu.RadioItem>
 					))}
