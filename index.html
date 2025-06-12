@@ -1,242 +1,201 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-    <title>No Man's Sky Technology Layout Optimizer AI</title>
+		<title>No Man's Sky Technology Layout Optimizer AI</title>
 
-    <!-- Preferred favicon format -->
-    <link rel="icon" href="/assets/svg/favicon.svg" type="image/svg+xml" />
+		<!-- Preferred favicon format -->
+		<link rel="icon" href="/assets/svg/favicon.svg" type="image/svg+xml" />
 
-    <!-- Fallback PNG favicons -->
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/assets/img/favicons/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/assets/img/favicons/favicon-16x16.png"
-    />
+		<!-- Fallback PNG favicons -->
+		<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png" />
 
-    <!-- Apple touch icon (iOS home screen icon) -->
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/assets/img/favicons/apple-touch-icon.png"
-    />
+		<!-- Apple touch icon (iOS home screen icon) -->
+		<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png" />
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json" />
+		<!-- PWA Manifest -->
+		<link rel="manifest" href="/manifest.json" />
 
-    <!-- Fonts -->
-    <link
-      rel="preload"
-      href="/assets/fonts/geonms-webfont.woff"
-      as="font"
-      type="font/woff"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/assets/fonts/geonms-webfont.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/assets/fonts/Raleway-VariableFont_wght.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/assets/fonts/AcuminProCond-Semibold.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin="anonymous"
-    />
+		<!-- Fonts -->
+		<link
+			rel="preload"
+			href="/assets/fonts/geonms-webfont.woff"
+			as="font"
+			type="font/woff"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="preload"
+			href="/assets/fonts/geonms-webfont.ttf"
+			as="font"
+			type="font/ttf"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="preload"
+			href="/assets/fonts/Raleway-VariableFont_wght.ttf"
+			as="font"
+			type="font/ttf"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="preload"
+			href="/assets/fonts/AcuminProCond-Semibold.ttf"
+			as="font"
+			type="font/ttf"
+			crossorigin="anonymous"
+		/>
 
-    <!-- Preconnect -->
-    <link
-      rel="preconnect"
-      href="https://nms-optimizer-service-afebcfd47e2a.herokuapp.com"
-      crossorigin
-    />
+		<!-- Preconnect -->
+		<link
+			rel="preconnect"
+			href="https://nms-optimizer-service-afebcfd47e2a.herokuapp.com"
+			crossorigin
+		/>
 
-    <!-- Images -->
-    <link
-      rel="preload"
-      href="/assets/svg/nms_logo.svg"
-      as="image"
-      type="image/svg+xml"
-    />
+		<!-- SEO Meta Tags -->
+		<meta
+			name="description"
+			content="Design the perfect starship layout or multitool build in No Man's Sky. Use smart optimization tools to maximize adjacency bonuses, supercharged slots, and overall performance."
+		/>
+		<meta
+			name="keywords"
+			content="No Man's Sky, NMS, starship layout, starship build, multitool layout, multitool build, starship optimizer, NMS optimizer, tech optimizer, adjacency bonuses, supercharged slots, layout tool"
+		/>
+		<!-- <link rel="canonical" href="https://nms-optimizer.app/" /> -->
 
-    <!-- SEO Meta Tags -->
-    <meta
-      name="description"
-      content="Design the perfect starship layout or multitool build in No Man's Sky. Use smart optimization tools to maximize adjacency bonuses, supercharged slots, and overall performance."
-    />
-    <meta
-      name="keywords"
-      content="No Man's Sky, NMS, starship layout, starship build, multitool layout, multitool build, starship optimizer, NMS optimizer, tech optimizer, adjacency bonuses, supercharged slots, layout tool"
-    />
-    <!-- <link rel="canonical" href="https://nms-optimizer.app/" /> -->
+		<!-- Open Graph Meta Tags -->
+		<meta property="og:title" content="No Man's Sky Technology Layout Optimizer AI" />
+		<meta
+			property="og:description"
+			content="Build optimal starship and multitool layouts in No Man's Sky. Improve adjacency bonuses, maximize supercharged slots, and share your best builds."
+		/>
+		<meta
+			property="og:image"
+			content="https://nms-optimizer.app/assets/img/screenshots/screenshot.png"
+		/>
+		<meta property="og:url" content="https://nms-optimizer.app/" />
+		<meta property="og:type" content="website" />
 
-    <!-- Open Graph Meta Tags -->
-    <meta
-      property="og:title"
-      content="No Man's Sky Technology Layout Optimizer AI"
-    />
-    <meta
-      property="og:description"
-      content="Build optimal starship and multitool layouts in No Man's Sky. Improve adjacency bonuses, maximize supercharged slots, and share your best builds."
-    />
-    <meta
-      property="og:image"
-      content="https://nms-optimizer.app/assets/img/screenshots/screenshot.png"
-    />
-    <meta property="og:url" content="https://nms-optimizer.app/" />
-    <meta property="og:type" content="website" />
+		<!-- Twitter Card Meta Tags -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="No Man's Sky Technology Layout Optimizer AI" />
+		<meta
+			name="twitter:description"
+			content="Create the best starship builds and multitool layouts in No Man’s Sky with this powerful optimizer. Maximize performance with adjacency and supercharged slots."
+		/>
+		<meta
+			name="twitter:image"
+			content="https://nms-optimizer.app/assets/img/screenshots/screenshot.png"
+		/>
 
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="No Man's Sky Technology Layout Optimizer AI"
-    />
-    <meta
-      name="twitter:description"
-      content="Create the best starship builds and multitool layouts in No Man’s Sky with this powerful optimizer. Maximize performance with adjacency and supercharged slots."
-    />
-    <meta
-      name="twitter:image"
-      content="https://nms-optimizer.app/assets/img/screenshots/screenshot.png"
-    />
+		<!-- Structured Data (JSON-LD) -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "WebApplication",
+				"name": "No Man's Sky Technology Layout Optimizer AI",
+				"url": "https://nms-optimizer.app/",
+				"image": "https://nms-optimizer.app/assets/img/screenshots/screenshot.png",
+				"description": "Optimize your No Man's Sky experience with the best starship layouts and multitool builds. Improve adjacency bonuses, maximize supercharged slots, and design efficient, powerful configurations.",
+				"applicationCategory": "GameApplication",
+				"operatingSystem": "All",
+				"browserRequirements": "Requires JavaScript",
+				"creator": {
+					"@type": "Person",
+					"name": "John Belew"
+				}
+			}
+		</script>
 
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "No Man's Sky Technology Layout Optimizer AI",
-        "url": "https://nms-optimizer.app/",
-        "image": "https://nms-optimizer.app/assets/img/screenshots/screenshot.png",
-        "description": "Optimize your No Man's Sky experience with the best starship layouts and multitool builds. Improve adjacency bonuses, maximize supercharged slots, and design efficient, powerful configurations.",
-        "applicationCategory": "GameApplication",
-        "operatingSystem": "All",
-        "browserRequirements": "Requires JavaScript",
-        "creator": {
-          "@type": "Person",
-          "name": "John Belew"
-        }
-      }
-    </script>
+		<!-- Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-P5VBZQ69Q9"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag("js", new Date());
+			gtag("config", "G-P5VBZQ69Q9");
+		</script>
+	</head>
 
-    <!-- Google Analytics -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-P5VBZQ69Q9"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-P5VBZQ69Q9");
-    </script>
-  </head>
+	<body>
+		<main style="display: none">
+			<section>
+				<h1>No Man's Sky Technology Layout Optimizer AI</h1>
+				<p>
+					This web application helps players of No Man's Sky design optimal
+					<strong>starship layouts</strong> and <strong>multitool builds</strong> by automatically
+					calculating the best module placement. It maximizes adjacency bonuses and supercharged
+					slot usage to improve performance.
+				</p>
+			</section>
 
-  <body>
-    <main style="display: none">
-      <section>
-        <h1>No Man's Sky Technology Layout Optimizer AI</h1>
-        <p>
-          This web application helps players of No Man's Sky design optimal
-          <strong>starship layouts</strong> and
-          <strong>multitool builds</strong> by automatically calculating the
-          best module placement. It maximizes adjacency bonuses and supercharged
-          slot usage to improve performance.
-        </p>
-      </section>
+			<section>
+				<h2>How the Optimizer Works</h2>
+				<p>
+					Optimizing a grid with over 479 million layout permutations is no small feat. The tool
+					blends deterministic patterns, machine learning, and simulated annealing to deliver
+					top-tier
+					<strong>starship build</strong> and <strong>multitool layout</strong> suggestions in under
+					five seconds.
+				</p>
+				<ul>
+					<li>
+						<strong>Pattern-Based Pre-Solve:</strong> Uses curated, hand-tested layouts for known
+						configurations to improve adjacency bonuses.
+					</li>
+					<li>
+						<strong>AI-Guided Placement:</strong> A TensorFlow model predicts optimal
+						<strong>module placement</strong> when supercharged slots are present.
+					</li>
+					<li>
+						<strong>Simulated Annealing:</strong> Final refinement phase to escape local optima and
+						ensure the highest score possible.
+					</li>
+				</ul>
+			</section>
 
-      <section>
-        <h2>How the Optimizer Works</h2>
-        <p>
-          Optimizing a grid with over 479 million layout permutations is no
-          small feat. The tool blends deterministic patterns, machine learning,
-          and simulated annealing to deliver top-tier
-          <strong>starship build</strong> and
-          <strong>multitool layout</strong> suggestions in under five seconds.
-        </p>
-        <ul>
-          <li>
-            <strong>Pattern-Based Pre-Solve:</strong> Uses curated, hand-tested
-            layouts for known configurations to improve adjacency bonuses.
-          </li>
-          <li>
-            <strong>AI-Guided Placement:</strong> A TensorFlow model predicts
-            optimal <strong>module placement</strong> when supercharged slots
-            are present.
-          </li>
-          <li>
-            <strong>Simulated Annealing:</strong> Final refinement phase to
-            escape local optima and ensure the highest score possible.
-          </li>
-        </ul>
-      </section>
+			<section>
+				<h2>Key Features</h2>
+				<ul>
+					<li>
+						<strong>Grid-aware optimization</strong> with support for supercharged and inactive
+						slots
+					</li>
+					<li>
+						<strong>Machine learning inference</strong> trained on 16,000+ historical grid layouts
+					</li>
+					<li><strong>Advanced simulated annealing</strong> for layout refinement</li>
+				</ul>
+			</section>
 
-      <section>
-        <h2>Key Features</h2>
-        <ul>
-          <li>
-            <strong>Grid-aware optimization</strong> with support for
-            supercharged and inactive slots
-          </li>
-          <li>
-            <strong>Machine learning inference</strong> trained on 16,000+
-            historical grid layouts
-          </li>
-          <li>
-            <strong>Advanced simulated annealing</strong> for layout refinement
-          </li>
-        </ul>
-      </section>
+			<section>
+				<h2>Technology Stack</h2>
+				<p>
+					<strong>Frontend:</strong> TypeScript, React, Zustand, Vite, Tailwind CSS, Radix UI<br />
+					<strong>Backend:</strong> Python, Flask, TensorFlow, NumPy, heuristic solvers<br />
+					<strong>Deployment:</strong> Heroku + Cloudflare<br />
+					<strong>Automation:</strong> GitHub Actions, Google Analytics
+				</p>
+			</section>
 
-      <section>
-        <h2>Technology Stack</h2>
-        <p>
-          <strong>Frontend:</strong> TypeScript, React, Zustand, Vite, Tailwind
-          CSS, Radix UI<br />
-          <strong>Backend:</strong> Python, Flask, TensorFlow, NumPy, heuristic
-          solvers<br />
-          <strong>Deployment:</strong> Heroku + Cloudflare<br />
-          <strong>Automation:</strong> GitHub Actions, Google Analytics
-        </p>
-      </section>
+			<section>
+				<h2>Why Use This Tool?</h2>
+				<p>
+					Whether you're building a high-damage
+					<strong>starship build</strong> or maximizing scan range with a perfect
+					<strong>multitool layout</strong>, this optimizer provides a clear, efficient way to plan
+					your upgrades with confidence.
+				</p>
+			</section>
+		</main>
 
-      <section>
-        <h2>Why Use This Tool?</h2>
-        <p>
-          Whether you're building a high-damage
-          <strong>starship build</strong> or maximizing scan range with a
-          perfect <strong>multitool layout</strong>, this optimizer provides a
-          clear, efficient way to plan your upgrades with confidence.
-        </p>
-      </section>
-    </main>
-
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+		<div id="root"></div>
+		<script type="module" src="/src/main.tsx"></script>
+	</body>
 </html>

@@ -5,6 +5,7 @@ import browserslist from "browserslist";
 import { browserslistToTargets } from "lightningcss";
 import { visualizer } from "rollup-plugin-visualizer";
 import compression from "vite-plugin-compression";
+import svgr from "vite-plugin-svgr";
 
 const modernTargets = browserslist(
 	"last 2 Chrome versions, last 2 Firefox versions, last 2 Edge versions, last 2 Safari versions, not dead"
@@ -14,6 +15,7 @@ const config: UserConfigExport = defineConfig({
 	plugins: [
 		react(),
 		tailwindcss(),
+		svgr(),
 
 		// Precompress with Brotli
 		compression({

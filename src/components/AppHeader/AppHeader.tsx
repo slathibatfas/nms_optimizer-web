@@ -2,7 +2,7 @@
 import React from "react";
 import { IconButton, Separator, Tooltip } from "@radix-ui/themes";
 import { CounterClockwiseClockIcon } from "@radix-ui/react-icons";
-import { BsSuitDiamondFill } from "react-icons/bs";
+import { CgShapeRhombus } from "react-icons/cg";
 import { APP_VERSION } from "../../constants";
 import { useBreakpoint } from "../../hooks/useBreakpoint"; // Import the hook
 import ReactGA from "react-ga4";
@@ -22,7 +22,7 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({ onShowChangelog }) => {
 			</div>
 			<div className="flex items-center w-full gap-2 m-1 mb-2">
 				<Separator size="1" orientation="horizontal" color="cyan" decorative className="flex-1" />
-				<BsSuitDiamondFill
+				<CgShapeRhombus
 					className="flex-shrink-0 w-4 h-4 sm:w-6 sm:h-6"
 					style={{ color: "var(--accent-track)" }}
 				/>
