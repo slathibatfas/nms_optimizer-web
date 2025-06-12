@@ -156,7 +156,7 @@ const MainAppContent: FC<{
 			<section className="relative mx-auto border rounded-none app lg:rounded-xl backdrop-blur-xl bg-white/5">
 				<AppHeader onShowChangelog={handleShowChangelog} />
 				<section
-					className="flex flex-col items-start p-4 gridContainer lg:p-8 sm:pt-6 sm:p-8 lg:flex-row"
+					className="flex flex-col items-start p-4 pt-2 gridContainer sm:pt-4 sm:p-8 lg:flex-row"
 					ref={gridContainerRef}
 				>
 					<div
