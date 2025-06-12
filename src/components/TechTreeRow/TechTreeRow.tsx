@@ -197,7 +197,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 			<Tooltip delayDuration={1000} content={tooltipLabel}>
 				<IconButton
 					onClick={handleOptimizeClick}
-					disabled={solving}
+					disabled={(isGridFull() && !hasTechInGrid) || solving}
 					aria-label={`${tooltipLabel} ${label}`}
 					id={tech}
 					className={`techRow__resetButton !shadow-sm ${!solving ? "!cursor-pointer" : ""}`.trim()}

@@ -90,3 +90,6 @@ coverage/nms_optimizer-web/src/pages/AboutPage.tsx.html
 coverage/nms_optimizer-web/src/pages/ChangeLogPage.tsx.html
 coverage/nms_optimizer-web/src/pages/index.html
 coverage/nms_optimizer-web/src/pages/InstructionsPage.tsx.html
+tsconfig.node.tsbuildinfo
+tsconfig.tsbuildinfo
+vite.config.js
