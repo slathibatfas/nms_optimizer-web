@@ -30,7 +30,7 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({ onShowChangelog }) => {
 				/>
 				<Separator size="1" orientation="horizontal" color="cyan" decorative className="flex-1" />
 			</div>
-			<h2 className="flex items-center gap-1 text-xs sm:text-base header__title">
+			<h2 className="flex items-center gap-1 text-sm sm:text-base header__title">
 				Technology Layout Optimizer<strong>AI</strong>
 				<span className="mr-px font-thin"> {APP_VERSION}</span>
 				<Tooltip content="Changelog">
