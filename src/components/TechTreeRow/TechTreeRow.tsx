@@ -141,7 +141,15 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 	} = useTechStore();
 	const techMaxBonus = max_bonus?.[tech] ?? 0;
 	const techSolvedBonus = solved_bonus?.[tech] ?? 0;
-	const tooltipLabel = hasTechInGrid ? "Update" : "Solve";
+
+	let tooltipLabel: string;
+
+	if (isGridFull() && !hasTechInGrid) {
+		tooltipLabel = "Grid full!";
+	} else {
+		tooltipLabel = hasTechInGrid ? "Update" : "Solve";
+	}
+
 	const OptimizeIconComponent = hasTechInGrid ? UpdateIcon : DoubleArrowLeftIcon;
 	const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
 	const { setShaking } = useShakeStore();
@@ -151,6 +159,8 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 			clearCheckedModules(tech);
 		};
 	}, [tech, clearCheckedModules]);
+
+	const isOptimizeButtonDisabled = (isGridFull() && !hasTechInGrid) || solving;
 
 	const handleReset = () => {
 		handleResetGridTech(tech);
@@ -197,10 +207,10 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 			<Tooltip delayDuration={1000} content={tooltipLabel}>
 				<IconButton
 					onClick={handleOptimizeClick}
-					disabled={(isGridFull() && !hasTechInGrid) || solving}
+					disabled={isOptimizeButtonDisabled}
 					aria-label={`${tooltipLabel} ${label}`}
 					id={tech}
-					className={`techRow__resetButton !shadow-sm ${!solving ? "!cursor-pointer" : ""}`.trim()}
+					className={`techRow__resetButton !shadow-sm ${!isOptimizeButtonDisabled ? "!cursor-pointer" : ""}`.trim()}
 				>
 					<OptimizeIconComponent />
 				</IconButton>
