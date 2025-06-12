@@ -12,9 +12,6 @@ import {
 	LightningBoltIcon,
 	DoubleArrowLeftIcon,
 } from "@radix-ui/react-icons";
-// import { GoLightBulb } from "react-icons/go";
-
-import { SlPuzzle } from "react-icons/sl";
 import { Accordion } from "radix-ui";
 import { useShakeStore } from "../../store/ShakeStore";
 

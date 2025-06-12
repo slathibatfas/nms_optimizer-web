@@ -75,7 +75,7 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
 						size="2"
 						variant="soft"
 						aria-label="Select ship type"
-						className="!cursor-pointer !p-2"
+						className="cursor-pointer !p-2"
 					>
 						<GearIcon className="w-4 h-4 sm:w-5 sm:h-5" />
 						<Separator orientation="vertical" color="cyan" decorative />
