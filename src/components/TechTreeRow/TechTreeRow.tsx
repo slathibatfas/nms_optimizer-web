@@ -200,7 +200,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 					disabled={solving}
 					aria-label={`${tooltipLabel} ${label}`}
 					id={tech}
-					className={`techRow__resetButton !shadow-sm ${hasTechInGrid && !solving ? "!cursor-pointer" : ""}`.trim()}
+					className={`techRow__resetButton !shadow-sm ${!solving ? "!cursor-pointer" : ""}`.trim()}
 				>
 					<OptimizeIconComponent />
 				</IconButton>
