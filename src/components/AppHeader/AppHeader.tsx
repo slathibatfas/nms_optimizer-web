@@ -17,7 +17,7 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({ onShowChangelog }) => {
 
 	return (
 		<header className="flex flex-col items-center p-4 sm:px-8 sm:pt-6 sm:pb-4 header">
-			<div className="text-3xl sm:text-5xl header__logo--text">
+			<div className="text-3xl sm:text-4xl header__logo--text">
 				NO MAN'S SK<span style={{ letterSpacing: "0.0em" }}>Y</span>
 			</div>
 			<div className="flex items-center w-full gap-2 m-1 mb-2">
