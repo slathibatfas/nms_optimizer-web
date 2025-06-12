@@ -7,6 +7,8 @@ import { APP_VERSION } from "../../constants";
 import { useBreakpoint } from "../../hooks/useBreakpoint"; // Import the hook
 import ReactGA from "react-ga4";
 
+import "./AppHeader.css";
+
 interface AppHeaderProps {
 	onShowChangelog: () => void;
 }
@@ -16,14 +18,14 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({ onShowChangelog }) => {
 	const isSmallAndUp = useBreakpoint("640px");
 
 	return (
-		<header className="flex flex-col items-center p-4 sm:px-8 sm:pt-6 sm:pb-4 header">
-			<div className="text-3xl sm:text-4xl header__logo--text">
+		<header className="flex flex-col items-center p-4 sm:px-8 sm:pt-6 sm:pb-4 header lg:rounded-t-xl">
+			<h1 className="text-3xl sm:text-4xl header__logo--text">
 				NO MAN'S SK<span style={{ letterSpacing: "0.0em" }}>Y</span>
-			</div>
+			</h1>
 			<div className="flex items-center w-full gap-2 m-1 mb-2">
 				<Separator size="1" orientation="horizontal" color="cyan" decorative className="flex-1" />
 				<CgShapeRhombus
-					className="flex-shrink-0 w-4 h-4 sm:w-6 sm:h-6"
+					className="flex-shrink-0 w-4 h-4 sm:w-4 sm:h-4"
 					style={{ color: "var(--accent-track)" }}
 				/>
 				<Separator size="1" orientation="horizontal" color="cyan" decorative className="flex-1" />

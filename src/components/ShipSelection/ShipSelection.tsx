@@ -95,7 +95,7 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
 			<DropdownMenu.Content
 				color="cyan"
 				className="shipSelection__dropdownMenu"
-				style={{ backgroundColor: "var(--accent-3)" }}
+				style={{ backgroundColor: "var(--accent-2)" }}
 			>
 				<ShipTypesDropdown
 					selectedShipType={selectedShipType}

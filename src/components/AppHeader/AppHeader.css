@@ -1,0 +1,27 @@
+.header {
+	/* border-bottom: 1px solid var(--gray-a5); */
+	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+	overflow: hidden;
+	/* box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.05); */
+}
+
+.header__logo--text {
+	letter-spacing: 0.35em;
+	font-family: var(--font-family-geosans);
+	font-weight: 400;
+	text-transform: uppercase;
+	filter: drop-shadow(0 0 8px var(--accent-track));
+	-webkit-text-stroke: 1px;
+}
+
+.header__title {
+	font-weight: 600;
+	color: var(--gray-a12);
+	filter: drop-shadow(0 0 4px var(--accent-3));
+}
+
+.header__title strong {
+	font-weight: 900;
+	color: var(--accent-11);
+	filter: drop-shadow(0 0px 4px var(--accent-track));
+}
