@@ -15,7 +15,7 @@
 }
 
 .header__title {
-	font-weight: 600;
+	font-weight: 700;
 	color: var(--gray-a12);
 	filter: drop-shadow(0 0 4px var(--accent-3));
 }
