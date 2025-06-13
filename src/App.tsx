@@ -3,7 +3,7 @@
 // --- React & External Libraries ---
 import { Suspense, useEffect, useState, useCallback, useMemo, FC, lazy } from "react";
 import { Routes, Route, useLocation, Link } from "react-router-dom"; // Added Link
-import { ScrollArea, Separator } from "@radix-ui/themes";
+import { ScrollArea, Separator, Text } from "@radix-ui/themes";
 import ReactGA from "react-ga4";
 
 // --- Components ---
@@ -43,6 +43,7 @@ const AboutPage = lazy(() => import("./pages/AboutPage"));
 import InstructionsContent from "./components/AppDialog/InstructionsContent";
 import AboutContent from "./components/AppDialog/AboutContent";
 import ChangelogContent from "./components/AppDialog/ChangeLogContent"; // Assuming you'll create/use this for dialog
+import TranslationRequestContent from "./components/AppDialog/TranslationRequestContent";
 
 /**
  * Fallback UI shown during initial application load or when main content suspends.
@@ -129,6 +130,11 @@ const MainAppContent: FC<{
 		setShowChangelogDialog(true);
 	}, []);
 
+	const [showTranslationRequestDialog, setShowTranslationRequestDialog] = useState(false);
+	const handleShowTranslationRequestDialog = useCallback(() => {
+		setShowTranslationRequestDialog(true);
+	}, []);
+
 	const handleCloseInstructionsDialog = useCallback(() => {
 		setShowInstructionsDialog(false);
 	}, []);
@@ -141,10 +147,15 @@ const MainAppContent: FC<{
 		setShowChangelogDialog(false);
 	}, []);
 
+	const handleCloseTranslationRequestDialog = useCallback(() => {
+		setShowTranslationRequestDialog(false);
+	}, []);
+
 	// Memoize content elements for dialogs to prevent unnecessary re-renders of AppDialog
 	const aboutDialogContent = useMemo(() => <AboutContent />, []);
 	const instructionsDialogContent = useMemo(() => <InstructionsContent />, []);
 	const changelogDialogContent = useMemo(() => <ChangelogContent />, []);
+	const translationRequestDialogContent = useMemo(() => <TranslationRequestContent />, []);
 
 	const handleShareClick = useCallback(() => {
 		const shareUrl = updateUrlForShare();
@@ -208,6 +219,19 @@ const MainAppContent: FC<{
 							columnWidth={columnWidth}
 							isFirstVisit={isFirstVisit}
 						/>
+						<p className="mt-4 text-sm text-center sm:text-base">
+							Looking for volunteer translators! Click{" "}
+							<a
+								href="#"
+								role="button"
+								onClick={handleShowTranslationRequestDialog}
+								className="underline"
+								style={{ color: "var(--accent-11)" }}
+							>
+								here
+							</a>{" "}
+							for more information.
+						</p>
 					</div>
 					{!isSharedGrid &&
 						(isLarge ? (
@@ -293,6 +317,14 @@ const MainAppContent: FC<{
 				titleKey="dialogs.titles.changelog"
 				title={t("dialogs.titles.changelog")}
 				content={changelogDialogContent}
+			/>
+			{/* Dialog for "Translation Request" information */}
+			<AppDialog
+				isOpen={showTranslationRequestDialog}
+				onClose={handleCloseTranslationRequestDialog}
+				titleKey="dialogs.titles.translationRequest" // You'll need to add this key to your i18n files
+				title={t("dialogs.titles.translationRequest")}
+				content={translationRequestDialogContent}
 			/>
 		</main>
 	);

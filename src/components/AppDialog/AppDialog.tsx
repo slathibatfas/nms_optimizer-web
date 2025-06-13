@@ -8,6 +8,7 @@ import {
 	CounterClockwiseClockIcon,
 	InfoCircledIcon,
 	ExclamationTriangleIcon,
+	GlobeIcon,
 } from "@radix-ui/react-icons";
 
 import "./AppDialog.css";
@@ -89,6 +90,9 @@ const AppDialog: React.FC<AppDialogProps> = ({
 									className="inline w-6 h-6"
 									style={{ color: "var(--red-9)" }}
 								/>
+							)}
+							{titleKey === "dialogs.titles.translationRequest" && (
+								<GlobeIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />
 							)}
 							{title}
 						</Dialog.Title>
