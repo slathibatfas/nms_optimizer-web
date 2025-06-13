@@ -219,7 +219,7 @@ const MainAppContent: FC<{
 							columnWidth={columnWidth}
 							isFirstVisit={isFirstVisit}
 						/>
-						<p className="mt-4 text-sm text-center sm:text-base">
+						<p className="pb-0 mt-4 text-sm text-center sm:text-base text-balance">
 							Looking for volunteer translators! Click{" "}
 							<a
 								href="#"
@@ -244,7 +244,7 @@ const MainAppContent: FC<{
 								<TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
 							</ScrollArea>
 						) : (
-							<aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8 pr-1">
+							<aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-4 pr-1">
 								<TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
 							</aside>
 						))}
