@@ -4,6 +4,7 @@ import { Grid } from "../../store/GridStore";
 import { useGridStore } from "../../store/GridStore";
 import { useTechStore } from "../../store/TechStore";
 import { useShakeStore } from "../../store/ShakeStore";
+import { useTranslation } from "react-i18next";
 
 import "./GridCell.css";
 
@@ -54,6 +55,7 @@ const GridCell: React.FC<GridCellProps> = memo(
 		const [longPressTriggered, setLongPressTriggered] = useState(false);
 		const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 		const { setShaking } = useShakeStore(); // Get setShaking from the store
+		const { t } = useTranslation();
 
 		// Memoize the calculation for totalSupercharged cells
 		const totalSupercharged = useMemo(() => {
@@ -213,8 +215,13 @@ const GridCell: React.FC<GridCellProps> = memo(
 			</div>
 		);
 
-		return cell.label ? (
-			<Tooltip content={cell.label} delayDuration={500}>
+		// Determine tooltip content: use translated string if image exists, otherwise original label.
+		// Fallback to cell.label if translation is not found or if cell.image is not present.
+		const tooltipContent = cell.image
+			? t(`modules.${cell.image}`, { defaultValue: cell.label })
+			: cell.label;
+		return tooltipContent ? (
+			<Tooltip content={tooltipContent} delayDuration={500}>
 				{cellElement}
 			</Tooltip>
 		) : (

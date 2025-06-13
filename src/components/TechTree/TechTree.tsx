@@ -7,6 +7,7 @@ import MessageSpinner from "../MessageSpinner/MessageSpinner";
 import { TechTreeRow } from "../TechTreeRow/TechTreeRow";
 import { useShipTypesStore } from "../../hooks/useShipTypes";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { useTranslation } from "react-i18next";
 
 import "./TechTree.css";
 
@@ -40,7 +41,7 @@ const typeImageMap: TypeImageMap = {
 	Mining: "mining.webp",
 	"Secondary Weapons": "secondary.webp",
 	"Fleet Upgrades": "upgrade.webp",
-	Scanner: "scanners.webp",
+	Scanners: "scanners.webp",
 	Utilities: "utilities.webp",
 };
 
@@ -68,19 +69,23 @@ const TechTreeSection: React.FC<{
 	index: number; // Accept index
 	handleOptimize: (tech: string) => Promise<void>;
 	solving: boolean;
-	selectedShipType: string; // Add this prop
+	// selectedShipType is no longer passed to TechTreeRow, but TechTreeSection might still receive it if needed elsewhere.
 }> = ({ type, technologies, handleOptimize, solving }) => {
+	// selectedShipType is kept here if TechTreeSection needs it for other things
+	const { t } = useTranslation();
 	// Determine the image path from the typeImageMap
 	const imagePath = typeImageMap[type] ? `/assets/img/sidebar/${typeImageMap[type]}` : null;
-
 	return (
 		<div className="mb-6 lg:mb-6 last:mb-0 sidebar__section">
 			<div className="flex items-center">
 				{/* Conditionally render the image if imagePath is available */}
-				{imagePath && (
-					<img src={imagePath} alt={type} className="ml-1 h-[24] w-[32] mr-2 opacity-25" />
-				)}
-				<h2 className="text-xl sm:text-2xl heading-styled">{type.toUpperCase()}</h2>
+				{imagePath &&
+					typeImageMap[type] && ( // Ensure type exists in map before rendering image
+						<img src={imagePath} alt={type} className="ml-1 h-[24] w-[32] mr-2 opacity-25" />
+					)}
+				<h2 className="text-xl sm:text-2xl heading-styled">
+					{t(`techTree.categories.${type}`).toUpperCase()}
+				</h2>
 			</div>
 
 			<Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />
@@ -91,7 +96,6 @@ const TechTreeSection: React.FC<{
 				.map((tech) => (
 					<TechTreeRow
 						key={tech.key}
-						label={tech.label}
 						tech={tech.key}
 						handleOptimize={handleOptimize}
 						solving={solving}
@@ -142,7 +146,6 @@ const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(
 						handleOptimize={handleOptimize}
 						solving={solving}
 						index={index}
-						selectedShipType={selectedShipType}
 					/>
 				)),
 			[processedTechTree, handleOptimize, solving, selectedShipType]
@@ -155,6 +158,7 @@ const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(
 const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
 	const [error, setError] = useState<Error | null>(null);
 	const isLarge = useBreakpoint("1024px");
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		setError(null);
@@ -163,19 +167,17 @@ const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
 	return (
 		<Suspense
 			fallback={
-				<MessageSpinner isInset={isLarge} isVisible={true} initialMessage="LOADING TECH!" />
+				<MessageSpinner isInset={isLarge} isVisible={true} initialMessage={t("techTree.loading")} />
 			}
 		>
 			{error ? (
 				<div className="flex flex-col items-center justify-center h-full">
-					<ExclamationTriangleIcon className="w-16 h-16 shadow-md errorContent__icon" />
+					<ExclamationTriangleIcon className="shadow-md w-14 h-14 errorContent__icon" />
 					<h2 className="pb-2 text-2xl font-semibold tracking-widest text-center errorContent__title">
-						-kzzkt- Error! -kzzkt-
+						{t("techTree.error.title")}
 					</h2>
-					<p className="font-semibold text-center sidebar__error">
-						Problem fetching the Tech Tree!
-					</p>
-					<p>{error.message}</p>
+					<p className="font-bold text-center sidebar__error">{t("techTree.error.message")}</p>
+					<p>{t("techTree.error.details", { details: error.message })}</p>
 				</div>
 			) : (
 				<ErrorBoundary onError={setError}>

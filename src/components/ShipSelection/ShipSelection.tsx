@@ -10,6 +10,7 @@ import {
 import { useGridStore, createGrid, Grid } from "../../store/GridStore";
 import ReactGA from "react-ga4";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { useTranslation } from "react-i18next";
 
 import "./ShipSelection.css";
 
@@ -129,6 +130,7 @@ const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({
 	handleOptionSelect,
 }) => {
 	const shipTypes = useFetchShipTypesSuspense();
+	const { t } = useTranslation();
 
 	// Group ship types by their 'type' property
 	const groupedShipTypes = useMemo(() => {
@@ -152,11 +154,11 @@ const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({
 				<React.Fragment key={type}>
 					{groupIndex > 0 && <DropdownMenu.Separator />}
 					<DropdownMenu.Label>
-						<span className="shipSelection__header">{type}s</span> {/* Pluralize for display */}
+						<span className="shipSelection__header">{t(`platformTypes.${type}`)}</span>
 					</DropdownMenu.Label>
 					{items.map(({ key, details }) => (
 						<DropdownMenu.RadioItem key={key} value={key} className="font-medium last:mb-2">
-							{details.label}
+							{t(`platforms.${key}`)}
 						</DropdownMenu.RadioItem>
 					))}
 				</React.Fragment>

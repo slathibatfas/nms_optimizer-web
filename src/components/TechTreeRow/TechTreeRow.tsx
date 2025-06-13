@@ -14,6 +14,7 @@ import {
 } from "@radix-ui/react-icons";
 import { Accordion } from "radix-ui";
 import { useShakeStore } from "../../store/ShakeStore";
+import { useTranslation } from "react-i18next";
 
 import "./TechTreeRow.css";
 
@@ -21,8 +22,6 @@ import "./TechTreeRow.css";
  * Props for the TechTreeRow component.
  */
 export interface TechTreeRowProps {
-	/** The display label for the technology. */
-	label: string;
 	/** The unique identifier for the technology. */
 	tech: string;
 	/** Async function to handle the optimization process for a given technology. */
@@ -76,6 +75,7 @@ interface BonusStatusIconProps {
  * Displays an icon indicating the status of the technology's bonus based on solved and max values.
  */
 const BonusStatusIcon: React.FC<BonusStatusIconProps> = ({ techMaxBonus, techSolvedBonus }) => {
+	const { t } = useTranslation();
 	if (techSolvedBonus <= 0) {
 		return null;
 	}
@@ -84,7 +84,7 @@ const BonusStatusIcon: React.FC<BonusStatusIconProps> = ({ techMaxBonus, techSol
 
 	if (roundedMaxBonus < 100) {
 		return (
-			<Tooltip content="Insufficient space!">
+			<Tooltip content={t("techTree.tooltips.insufficientSpace")}>
 				<ExclamationTriangleIcon
 					className="inline-block w-5 h-5 ml-1 align-text-bottom"
 					style={{ color: "var(--red-a8)" }}
@@ -94,7 +94,7 @@ const BonusStatusIcon: React.FC<BonusStatusIconProps> = ({ techMaxBonus, techSol
 	}
 	if (roundedMaxBonus === 100) {
 		return (
-			<Tooltip content="Valid solve!">
+			<Tooltip content={t("techTree.tooltips.validSolve")}>
 				<Crosshair2Icon
 					className="inline-block w-5 h-5 ml-1 align-text-bottom"
 					style={{ color: "var(--gray-a10)" }}
@@ -104,7 +104,7 @@ const BonusStatusIcon: React.FC<BonusStatusIconProps> = ({ techMaxBonus, techSol
 	}
 	// roundedMaxBonus > 100
 	return (
-		<Tooltip content="Boosted solve!">
+		<Tooltip content={t("techTree.tooltips.boostedSolve")}>
 			<LightningBoltIcon
 				className="inline-block w-5 h-5 ml-1 align-text-bottom"
 				style={{ color: "var(--amber-a8)" }}
@@ -117,13 +117,13 @@ const BonusStatusIcon: React.FC<BonusStatusIconProps> = ({ techMaxBonus, techSol
  * Renders a single row in the technology tree, allowing users to optimize, reset, and view module details.
  */
 const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
-	label,
 	tech,
 	handleOptimize,
 	solving,
 	modules,
 	techImage,
 }) => {
+	const { t } = useTranslation();
 	const hasTechInGrid = useGridStore((state) => state.hasTechInGrid(tech));
 	const isGridFull = useGridStore((state) => state.isGridFull);
 	const handleResetGridTech = useGridStore((state) => state.resetGridTech);
@@ -139,14 +139,16 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 	const techMaxBonus = max_bonus?.[tech] ?? 0;
 	const techSolvedBonus = solved_bonus?.[tech] ?? 0;
 
+	// Use techImage for translation key, fallback to tech id if techImage is null
+	const translatedTechName = techImage ? t(`technologies.${techImage}`) : t(`technologies.${tech}`);
+
 	let tooltipLabel: string;
 
 	if (isGridFull() && !hasTechInGrid) {
-		tooltipLabel = "Grid full!";
+		tooltipLabel = t("techTree.tooltips.gridFull");
 	} else {
-		tooltipLabel = hasTechInGrid ? "Update" : "Solve";
+		tooltipLabel = hasTechInGrid ? t("techTree.tooltips.update") : t("techTree.tooltips.solve");
 	}
-
 	const OptimizeIconComponent = hasTechInGrid ? UpdateIcon : DoubleArrowLeftIcon;
 	const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
 	const { setShaking } = useShakeStore();
@@ -205,7 +207,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 				<IconButton
 					onClick={handleOptimizeClick}
 					disabled={isOptimizeButtonDisabled}
-					aria-label={`${tooltipLabel} ${label}`}
+					aria-label={`${tooltipLabel} ${translatedTechName}`}
 					id={tech}
 					className={`techRow__resetButton !shadow-sm ${!isOptimizeButtonDisabled ? "!cursor-pointer" : ""}`.trim()}
 				>
@@ -214,11 +216,11 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 			</Tooltip>
 
 			{/* Reset Button */}
-			<Tooltip delayDuration={1000} content="Reset">
+			<Tooltip delayDuration={1000} content={t("techTree.tooltips.reset")}>
 				<IconButton
 					onClick={handleReset}
 					disabled={!hasTechInGrid || solving}
-					aria-label={`Reset ${label}`}
+					aria-label={`${t("techTree.tooltips.reset")} ${translatedTechName}`}
 					className={`techRow__resetButton !shadow-sm ${hasTechInGrid && !solving ? "!cursor-pointer" : ""}`.trim()}
 				>
 					<ResetIcon />
@@ -229,7 +231,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 			<Avatar
 				size="2"
 				radius="full"
-				alt={label}
+				alt={translatedTechName}
 				fallback="IK"
 				src={imagePath}
 				srcSet={`${imagePath} 1x, ${imagePath2x} 2x`}
@@ -244,7 +246,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 					<Accordion.Item className="AccordionItem" value="item-1">
 						<AccordionTrigger>
 							<Text className="techRow__label">
-								{label}
+								{translatedTechName}
 								<BonusStatusIcon techMaxBonus={techMaxBonus} techSolvedBonus={techSolvedBonus} />
 							</Text>
 						</AccordionTrigger>
@@ -261,7 +263,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 											onClick={() => handleCheckboxChange(module.id)}
 										/>
 										<label className="Label" htmlFor={module.id}>
-											{module.label}
+											{t(`modules.${module.image}`, { defaultValue: module.label })}
 										</label>
 									</div>
 								))}
@@ -270,7 +272,7 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 				</Accordion.Root>
 			) : (
 				<Text as="label" htmlFor={tech} className="flex-1 block pt-1 font-medium techRow__label">
-					{label}
+					{translatedTechName}
 					<BonusStatusIcon techMaxBonus={techMaxBonus} techSolvedBonus={techSolvedBonus} />
 				</Text>
 			)}

@@ -2,6 +2,7 @@
 import React from "react";
 import { IconButton, Tooltip } from "@radix-ui/themes";
 import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
+import { useTranslation } from "react-i18next";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 interface RowControlButtonProps {
@@ -34,6 +35,7 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
 	isFirstInactiveRow,
 	isLastActiveRow,
 }) => {
+	const { t } = useTranslation();
 	const isMediumOrLarger = useBreakpoint("640px"); // true if screen width >= 640px
 	const iconButtonSize = isMediumOrLarger ? "2" : "1";
 
@@ -43,14 +45,14 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
 			data-is-grid-control-column="true" // Added data attribute for selection
 		>
 			{isFirstInactiveRow && (
-				<Tooltip content="Activate Row">
+				<Tooltip content={t("gridControls.activateRow")}>
 					<IconButton
 						size={iconButtonSize}
 						variant="soft"
 						className={`shadow-md ${!hasModulesInGrid ? "!cursor-pointer" : ""}`} // Centering handled by parent
 						onClick={() => activateRow(rowIndex)}
 						disabled={hasModulesInGrid}
-						aria-label="Activate row"
+						aria-label={t("gridControls.activateRow")}
 					>
 						<PlusIcon />
 					</IconButton>
@@ -58,14 +60,14 @@ const GridControlButtons: React.FC<RowControlButtonProps> = ({
 			)}
 
 			{isLastActiveRow && (
-				<Tooltip content="Deactivate Row">
+				<Tooltip content={t("gridControls.deactivateRow")}>
 					<IconButton
 						variant="soft"
 						size={iconButtonSize}
 						className={`shadow-md ${!hasModulesInGrid ? "!cursor-pointer" : ""}`} // Centering handled by parent
 						onClick={() => deActivateRow(rowIndex)}
 						disabled={hasModulesInGrid}
-						aria-label="Deactivate row"
+						aria-label={t("gridControls.deactivateRow")}
 					>
 						<MinusIcon />
 					</IconButton>

@@ -12,6 +12,23 @@ vi.mock("../../store/GridStore");
 vi.mock("../../store/TechStore");
 vi.mock("../../store/ShakeStore");
 
+// Mock react-i18next
+vi.mock("react-i18next", () => ({
+	useTranslation: () => ({
+		t: (key: string) => {
+			if (key.startsWith("technologies.")) {
+				// e.g., technologies.hyperdrive.webp -> hyperdrive.webp
+				// or technologies.hyperdrive -> hyperdrive
+				return key.substring("technologies.".length);
+			}
+			if (key.startsWith("modules.")) {
+				return key.substring("modules.".length); // Returns image name, e.g., "module_image.webp"
+			}
+			return key; // Return the key itself for other translations
+		},
+	}),
+}));
+
 // Mock Radix UI components and icons to simplify testing
 vi.mock("@radix-ui/react-icons", () => ({
 	UpdateIcon: () => <svg data-testid="update-icon" />,
@@ -106,7 +123,6 @@ describe("TechTreeRow", () => {
 	});
 
 	const defaultProps: TechTreeRowProps = {
-		label: "Hyperdrive",
 		tech: "hyperdrive",
 		handleOptimize: mockHandleOptimize,
 		solving: false,
@@ -121,9 +137,13 @@ describe("TechTreeRow", () => {
 			</RadixTooltip.Provider>
 		);
 
-		expect(screen.getByText("Hyperdrive")).toBeInTheDocument();
-		// The optimize button's aria-label is "Solve Hyperdrive" in the initial state
-		const optimizeButton = screen.getByLabelText("Solve Hyperdrive");
+		// The label is now constructed from selectedShipType and tech by the mock
+		// It will use techImage if available, otherwise tech id, based on the mock's transformation
+		const expectedLabel = defaultProps.techImage ? defaultProps.techImage : defaultProps.tech;
+		expect(screen.getByText(expectedLabel)).toBeInTheDocument();
+
+		// The optimize button's aria-label is now based on mocked t() output
+		const optimizeButton = screen.getByLabelText(`techTree.tooltips.solve ${expectedLabel}`);
 		expect(optimizeButton).toBeInTheDocument();
 		// Check for the correct initial icon (DoubleArrowLeftIcon)
 		expect(screen.getByTestId("double-arrow-left-icon")).toBeInTheDocument();
@@ -139,7 +159,8 @@ describe("TechTreeRow", () => {
 			</RadixTooltip.Provider>
 		);
 
-		const optimizeButton = screen.getByLabelText("Solve Hyperdrive");
+		const expectedLabel = defaultProps.techImage ? defaultProps.techImage : defaultProps.tech;
+		const optimizeButton = screen.getByLabelText(`techTree.tooltips.solve ${expectedLabel}`);
 		fireEvent.click(optimizeButton);
 
 		// Check that store reset functions are called before handleOptimize

@@ -1,5 +1,6 @@
 // src/components/MessageSpinner/MessageSpinner.tsx
 import { Text, Spinner } from "@radix-ui/themes";
+import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 
 import "./MessageSpinner.css";
@@ -11,27 +12,6 @@ interface MessageSpinnerProps {
 	showRandomMessages?: boolean;
 	color?: string;
 }
-
-// --- Define your random messages here (remains the same) ---
-const randomMessages = [
-	"-{{ Asking the Atlas for guidance! }}-",
-	"-{{ Recalibrating supercharge node alignments! }}-",
-	"-{{ Harmonizing upgrade stack interactions! }}-",
-	"-{{ Polishing the chrome! }}-",
-	"-{{ Just a few more calculations... honest! }}-",
-	"-{{ Attempting to refine the solution! }}-",
-	"-{{ Debugging plasma injector routines! }}-",
-	"-{{ Checking for Geknip residue! }}-",
-	"-{{ Don't worry, I know a guy! }}-",
-	"-{{ Interfacing with anomaly schematics! }}-",
-	"-{{ Compiling multi-threaded tech stack! }}-",
-	"-{{ Decrypting legacy tech artifacts! }}-",
-	"-{{ Optimizing the optimization! }}-",
-	"-{{ Harmonizing upgrade stack interactions! }}-",
-	"-{{ If you think you can fit more than two weapons in here, you're high on NipNip! }}-",
-	"-{{ I'm a highly trained Convolutional Neural Network, not a miracle worker! }}-",
-];
-// --- End of random messages ---
 
 /**
  * MessageSpinner component that displays a loading spinner overlay.
@@ -45,19 +25,24 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({
 }) => {
 	const [showAdditionalMessage, setShowAdditionalMessage] = useState(false);
 	const [currentRandomMessage, setCurrentRandomMessage] = useState<string>("");
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		let timer: NodeJS.Timeout | null = null;
 		// Only run the random message logic if showRandomMessages is true and the spinner is visible
 		if (showRandomMessages && isVisible) {
+			// Fetch random messages from i18n. Ensure it's an array.
+			const i18nRandomMessages = t("messageSpinner.randomMessages", {
+				returnObjects: true,
+			}) as string[];
 			setShowAdditionalMessage(false); // Reset visibility when conditions change
 			setCurrentRandomMessage(""); // Clear previous message
 
 			timer = setTimeout(() => {
-				const randomIndex = Math.floor(Math.random() * randomMessages.length);
-				setCurrentRandomMessage(randomMessages[randomIndex]);
+				const randomIndex = Math.floor(Math.random() * i18nRandomMessages.length);
+				setCurrentRandomMessage(i18nRandomMessages[randomIndex]);
 				setShowAdditionalMessage(true); // Set to show after delay
-			}, 2500); // Delay before showing random message
+			}, 2500);
 
 			// Cleanup function
 			return () => {
@@ -69,7 +54,7 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({
 			setCurrentRandomMessage("");
 		}
 		// Depend on both isVisible and showRandomMessages
-	}, [isVisible, showRandomMessages]);
+	}, [isVisible, showRandomMessages, t]);
 
 	// Use the isVisible prop to control rendering of the entire component
 	if (!isVisible) return null;

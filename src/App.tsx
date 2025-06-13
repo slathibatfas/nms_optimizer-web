@@ -2,7 +2,7 @@
 
 // --- React & External Libraries ---
 import { Suspense, useEffect, useState, useCallback, useMemo, FC, lazy } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Link } from "react-router-dom"; // Added Link
 import { ScrollArea, Separator } from "@radix-ui/themes";
 import ReactGA from "react-ga4";
 
@@ -19,7 +19,7 @@ import OptimizationAlertDialog from "./components/AppDialog/OptimizationAlertDia
 import ShipSelection from "./components/ShipSelection/ShipSelection";
 
 // --- Constants ---
-import { TRACKING_ID, APP_NAME } from "./constants";
+import { TRACKING_ID } from "./constants"; // APP_NAME will come from i18n
 
 // --- Hooks ---
 import { useAppLayout } from "./hooks/useAppLayout";
@@ -30,6 +30,9 @@ import { ShipTypeDetail, useFetchShipTypesSuspense, useShipTypesStore } from "./
 // --- Stores ---
 import { useGridStore } from "./store/GridStore";
 import { useOptimizeStore } from "./store/OptimizeStore";
+
+// --- i18n ---
+import { useTranslation, Trans } from "react-i18next";
 
 // --- Page Components ---
 const ChangelogPage = lazy(() => import("./pages/ChangeLogPage"));
@@ -44,16 +47,19 @@ import ChangelogContent from "./components/AppDialog/ChangeLogContent"; // Assum
 /**
  * Fallback UI shown during initial application load or when main content suspends.
  */
-const AppLoadingFallback = () => (
-	<main className="flex flex-col items-center justify-center lg:min-h-screen">
-		<MessageSpinner
-			isVisible={true}
-			isInset={true}
-			initialMessage="Activating Uplink!"
-			showRandomMessages={false}
-		/>
-	</main>
-);
+const AppLoadingFallback = () => {
+	const { t } = useTranslation();
+	return (
+		<main className="flex flex-col items-center justify-center lg:min-h-screen">
+			<MessageSpinner
+				isVisible={true}
+				isInset={true}
+				initialMessage={t("loadingMessage")}
+				showRandomMessages={false}
+			/>
+		</main>
+	);
+};
 
 // --- Constants for UI ---
 const DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT = "520px";
@@ -66,6 +72,7 @@ const MainAppContent: FC<{
 	isFirstVisit: boolean; // Prop to indicate if it's the user's first visit session
 	onFirstVisitInstructionsDialogOpened: () => void; // Callback when instructions dialog is opened for the first time
 }> = ({ isFirstVisit, onFirstVisitInstructionsDialogOpened }) => {
+	const { t } = useTranslation();
 	const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } =
 		useGridStore();
 	const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
@@ -94,7 +101,9 @@ const MainAppContent: FC<{
 	}, [shipTypes, selectedShipType]);
 
 	const selectedShipTypeLabel = useMemo<string>(() => {
-		return selectedShipTypeDetails?.label || `Unknown (${selectedShipType})`;
+		return (
+			selectedShipTypeDetails?.label || t("unknownPlatform", { platformKey: selectedShipType })
+		);
 	}, [selectedShipTypeDetails, selectedShipType]);
 
 	const hasModulesInGrid = useMemo(() => {
@@ -170,13 +179,13 @@ const MainAppContent: FC<{
 								</span>
 							)}
 							<span className="self-start hidden sm:inline" style={{ color: "var(--accent-11)" }}>
-								PLATFORM:
+								{t("platformLabel")}
 							</span>
 							<span
 								className="self-start flex-1 min-w-0 mt-[3] sm:mt-0"
 								style={{ textWrap: "balance" }}
 							>
-								{selectedShipTypeLabel}
+								{t(`platforms.${selectedShipType}`)}
 							</span>
 						</header>
 						<GridTable
@@ -220,21 +229,36 @@ const MainAppContent: FC<{
 
 			<footer className="flex flex-col items-center justify-center gap-1 p-4 text-xs text-center lg:pb-0 sm:text-sm">
 				<div className="gap-1 font-light">
-					Something off with your solve or found a bug?{" "}
-					<a
-						href="https://github.com/jbelew/nms_optimizer-web/issues/new/choose"
-						className="underline"
-						target="_blank"
+					<Trans
+						i18nKey="footer.issuePrompt"
+						components={{
+							1: (
+								<Link
+									className="underline"
+									to="https://github.com/jbelew/nms_optimizer-web/issues/new/choose"
+									target="_blank"
+									rel="noopener noreferrer"
+								/>
+							),
+						}}
 					>
-						Open an issue on GitHub
-					</a>{" "}
-					and let us know!
+						Something off with your solve or found a bug?{" "}
+						<Link
+							className="underline"
+							to="https://github.com/jbelew/nms_optimizer-web/issues/new/choose"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Open an issue on GitHub
+						</Link>{" "}
+						and let us know!
+					</Trans>
 					<br />
-					Built by jbelew (void23 | QQ9Y-EJRS-P8KGW) • {build}
+					{t("footer.builtBy", { buildVersion: build })}
 				</div>
 				<Separator decorative />
 				<div className="flex flex-wrap items-center justify-center gap-1 font-light">
-					If you found this application useful, consider supporting its development with
+					<Trans i18nKey="footer.supportPrompt" />
 					<Buymeacoffee />
 				</div>
 			</footer>
@@ -250,21 +274,24 @@ const MainAppContent: FC<{
 			<AppDialog
 				isOpen={showAboutPage}
 				onClose={handleCloseAboutDialog}
-				title="About"
+				titleKey="dialogs.titles.about"
+				title={t("dialogs.titles.about")}
 				content={aboutDialogContent}
 			/>
 			{/* Dialog for "Instructions" information */}
 			<AppDialog
 				isOpen={showInstructionsDialog}
 				onClose={handleCloseInstructionsDialog}
-				title="Instructions"
+				titleKey="dialogs.titles.instructions"
+				title={t("dialogs.titles.instructions")}
 				content={instructionsDialogContent}
 			/>
 			{/* Dialog for "Changelog" information */}
 			<AppDialog
 				isOpen={showChangelogDialog}
 				onClose={handleCloseChangelogDialog}
-				title="Changelog"
+				titleKey="dialogs.titles.changelog"
+				title={t("dialogs.titles.changelog")}
 				content={changelogDialogContent}
 			/>
 		</main>
@@ -275,6 +302,7 @@ const MainAppContent: FC<{
  * Sets up routing, Suspense for data loading, and global dialogs.
  */
 const App: FC = () => {
+	const { t } = useTranslation();
 	const location = useLocation();
 	const [isFirstVisit, setIsFirstVisit] = useState(
 		() => !localStorage.getItem("hasVisitedNMSOptimizer")
@@ -288,23 +316,24 @@ const App: FC = () => {
 
 	useEffect(() => {
 		// Set document title based on the current path
+		const appName = t("appName");
 		switch (location.pathname) {
 			case "/":
-				document.title = APP_NAME;
+				document.title = appName;
 				break;
 			case "/instructions":
-				document.title = `Instructions - ${APP_NAME}`;
+				document.title = `${t("dialogs.titles.instructions")} - ${appName}`;
 				break;
 			case "/about":
-				document.title = `About - ${APP_NAME}`;
+				document.title = `${t("dialogs.titles.about")} - ${appName}`;
 				break;
 			case "/changelog":
-				document.title = `Changelog - ${APP_NAME}`;
+				document.title = `${t("dialogs.titles.changelog")} - ${appName}`;
 				break;
 			default:
-				document.title = APP_NAME; // Default title
+				document.title = appName; // Default title
 		}
-	}, [location.pathname]);
+	}, [location.pathname, t]);
 
 	const handleFirstVisitInstructionsOpened = useCallback(() => {
 		if (isFirstVisit) {
@@ -337,7 +366,8 @@ const App: FC = () => {
 				isOpen={showError}
 				onClose={() => setShowError(false)}
 				content={errorDialogContent}
-				title="Server Error!"
+				titleKey="dialogs.titles.serverError"
+				title={t("dialogs.titles.serverError")}
 			/>
 		</>
 	);

@@ -8,6 +8,7 @@ import {
 } from "@radix-ui/react-icons";
 import ReactGA from "react-ga4";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { useTranslation } from "react-i18next";
 
 interface GridTableButtonsProps {
 	onShowInstructions: () => void;
@@ -33,6 +34,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 	isFirstVisit,
 }) => {
 	const isSmallAndUp = useBreakpoint("640px"); // sm breakpoint
+	const { t } = useTranslation();
 	return (
 		// Add 'relative' to establish a positioning context for the absolutely positioned reset button.
 		<footer className="relative flex items-start pt-3 sm:pt-4 gridTable__footer">
@@ -54,7 +56,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					}}
 				>
 					<QuestionMarkCircledIcon />
-					<span className="hidden sm:inline">Instructions</span>
+					<span className="hidden sm:inline">{t("buttons.instructions")}</span>
 				</Button>
 				<Button
 					size={isSmallAndUp ? "2" : "2"}
@@ -69,7 +71,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					}}
 				>
 					<InfoCircledIcon />
-					<span className="hidden sm:inline">About</span>
+					<span className="hidden sm:inline">{t("buttons.about")}</span>
 				</Button>
 				{!isSharedGrid && (
 					<Button
@@ -80,7 +82,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 						disabled={solving || !hasModulesInGrid}
 					>
 						<Share2Icon />
-						<span className="hidden sm:inline">Share</span>
+						<span className="hidden sm:inline">{t("buttons.share")}</span>
 					</Button>
 				)}
 			</div>
@@ -101,7 +103,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 						disabled={solving}
 					>
 						<ResetIcon />
-						<span className="font-bold">Reset Grid</span>
+						<span className="font-bold">{t("buttons.resetGrid")}</span>
 					</Button>
 				</div>
 			)}

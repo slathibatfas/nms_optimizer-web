@@ -6,6 +6,7 @@ import GridControlButtons from "../GridControlButtons/GridControlButtons";
 import ShakingWrapper from "../GridShake/GridShake";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
 import { useShakeStore } from "../../store/ShakeStore";
+import { useTranslation } from "react-i18next";
 
 import "./GridTable.css";
 
@@ -33,6 +34,7 @@ interface GridTableProps {
 const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
 	({ grid, activateRow, deActivateRow, solving, shared }, ref) => {
 		const { shaking } = useShakeStore();
+		const { t } = useTranslation();
 
 		// Calculate derived values from the grid.
 		// This hook is now called unconditionally before any early returns.
@@ -70,7 +72,7 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
 				<MessageSpinner
 					isVisible={solving}
 					showRandomMessages={true}
-					initialMessage={"OPTIMIZING!"}
+					initialMessage={t("gridTable.optimizing")}
 				/>
 				<div
 					ref={ref}

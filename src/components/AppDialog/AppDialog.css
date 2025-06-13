@@ -28,7 +28,6 @@
 	display: flex;
 	flex-direction: column;
 	gap: calc(var(--spacing) * 4);
-	/* opacity and transform are handled by animations */
 }
 
 /* Element: Title */
@@ -56,13 +55,13 @@
 }
 
 /* Element: Body (was appDialog__article) - Main content area within the dialog */
-.appDialog__body {
+.appDialog__container article {
 	font-size: var(--text-base);
 	padding-right: calc(var(--spacing) * 4);
 }
 
 /* Element: Subheading (replaces styling for h2 within appDialog__body) */
-.appDialog__subheading {
+.appDialog__container h2 {
 	filter: drop-shadow(0 0 4px var(--accent-a2));
 	margin-bottom: calc(var(--spacing) * 0.5);
 	color: var(--accent-11);
@@ -72,26 +71,50 @@
 }
 
 /* Modifier or specific rule for non-first subheading */
-.appDialog__subheading:not(:first-of-type) {
+.appDialog__container h2:not(:first-of-type) {
 	margin-top: calc(var(--spacing) * 2);
 }
 
 /* Element: Text/Paragraph (replaces styling for p within appDialog__body) */
-.appDialog__text {
+.appDialog__container p {
 	margin-top: 0rem;
 	margin-bottom: calc(var(--spacing) * 2);
 }
 
+.appDialog__container blockquote {
+	margin-top: calc(var(--spacing) * 2);
+	margin-bottom: calc(var(--spacing) * 4);
+	padding-left: 1rem;
+	border-left: 4px solid var(--accent-track);
+}
+
 /* Element: List (replaces styling for ul within appDialog__body) */
-.appDialog__list {
+.appDialog__container ul,
+ol {
 	list-style-type: disc;
 	padding-left: 2rem;
 	margin-bottom: calc(var(--spacing) * 2);
 }
 
 /* Element: List Item (replaces styling for li within appDialog__list) */
-.appDialog__listItem {
+.appDialog__container li {
 	margin-bottom: calc(var(--spacing) * 1);
+}
+
+.appDialog__container a {
+	text-decoration-line: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 4px;
+	text-decoration-color: currentColor;
+	transition:
+		text-decoration-thickness 0.2s ease,
+		color 0.2s ease;
+}
+
+.appDialog__container a:hover {
+	color: var(--accent-11);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 4px;
 }
 
 /* --- Animations --- */

@@ -57,6 +57,14 @@ const config: UserConfigExport = defineConfig({
 			output: {
 				manualChunks(id) {
 					if (id.includes("node_modules")) {
+						if (
+							id.includes("i18next") ||
+							id.includes("react-i18next") ||
+							id.includes("@formatjs") ||
+							id.includes("intl-messageformat")
+						) {
+							return "i18n";
+						}
 						return "vendor";
 					}
 				},

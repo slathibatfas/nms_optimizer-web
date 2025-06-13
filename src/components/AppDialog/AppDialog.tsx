@@ -15,6 +15,7 @@ import "./AppDialog.css";
 interface AppDialogProps {
 	onClose: () => void;
 	title?: string;
+	titleKey?: string; // Add a prop for the translation key
 	isOpen: boolean;
 	content: ReactNode;
 }
@@ -33,6 +34,7 @@ const AppDialog: React.FC<AppDialogProps> = ({
 	onClose,
 	content,
 	isOpen,
+	titleKey, // Use the new prop
 	title = "Information",
 }) => {
 	/**
@@ -67,28 +69,27 @@ const AppDialog: React.FC<AppDialogProps> = ({
 					<Dialog.Overlay className="appDialog__overlay" />
 					<Dialog.Content className="appDialog__content">
 						<Dialog.Title className="flex items-center gap-2 text-xl sm:text-2xl heading-styled">
-							{title === "Instructions" && (
+							{titleKey === "dialogs.titles.instructions" && (
 								<QuestionMarkCircledIcon
 									className="w-6 h-6"
 									style={{ color: "var(--accent-11)" }}
 								/>
 							)}
-							{title === "Changelog" && (
+							{titleKey === "dialogs.titles.changelog" && (
 								<CounterClockwiseClockIcon
 									className="w-6 h-6"
 									style={{ color: "var(--accent-11)" }}
 								/>
 							)}
-							{title === "About" && (
+							{titleKey === "dialogs.titles.about" && (
 								<InfoCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />
 							)}
-							{title === "Server Error!" && (
+							{titleKey === "dialogs.titles.serverError" && (
 								<ExclamationTriangleIcon
 									className="inline w-6 h-6"
 									style={{ color: "var(--red-9)" }}
 								/>
 							)}
-
 							{title}
 						</Dialog.Title>
 						<Dialog.Description className="hidden appDialog__description">

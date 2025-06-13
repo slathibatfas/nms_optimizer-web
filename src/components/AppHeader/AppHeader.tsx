@@ -6,6 +6,7 @@ import { CgShapeRhombus } from "react-icons/cg";
 import { APP_VERSION } from "../../constants";
 import { useBreakpoint } from "../../hooks/useBreakpoint"; // Import the hook
 import ReactGA from "react-ga4";
+import { useTranslation } from "react-i18next";
 
 import "./AppHeader.css";
 
@@ -15,6 +16,7 @@ interface AppHeaderProps {
 
 const AppHeaderInternal: React.FC<AppHeaderProps> = ({ onShowChangelog }) => {
 	// Use breakpoint for 'sm' (640px) as per Tailwind's default
+	const { t } = useTranslation();
 	const isSmallAndUp = useBreakpoint("640px");
 
 	return (
@@ -31,15 +33,16 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({ onShowChangelog }) => {
 				<Separator size="1" orientation="horizontal" color="cyan" decorative className="flex-1" />
 			</div>
 			<h2 className="flex items-center gap-1 text-sm sm:text-base header__title">
-				Technology Layout Optimizer<strong>AI</strong>
+				{t("appHeader.subTitle")}
+				<strong>AI</strong>
 				<span className="mr-px font-thin"> {APP_VERSION}</span>
-				<Tooltip content="Changelog">
+				<Tooltip content={t("buttons.changelog")}>
 					<IconButton
 						className="shadow-sm !cursor-pointer"
 						variant="ghost"
 						radius="full"
 						size="1"
-						aria-label="Changelog"
+						aria-label={t("buttons.changelog")}
 						onClick={() => {
 							ReactGA.event({
 								category: "User Interactions",

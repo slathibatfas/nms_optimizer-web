@@ -1,6 +1,7 @@
 // src/components/AppDialog/OptimizationAlertDialog.tsx
 import { FC } from "react";
 import { Dialog, Button, Flex } from "@radix-ui/themes";
+import { useTranslation, Trans } from "react-i18next";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 interface OptimizationAlertDialogProps {
@@ -16,6 +17,7 @@ const OptimizationAlertDialog: FC<OptimizationAlertDialogProps> = ({
 	onClose,
 	onForceOptimize,
 }) => {
+	const { t } = useTranslation();
 	if (!technologyName) return null; // Don't render if there's no technology name (though isOpen should also handle this)
 
 	const handleForceOptimizeClick = async () => {
@@ -31,40 +33,55 @@ const OptimizationAlertDialog: FC<OptimizationAlertDialogProps> = ({
 			open={isOpen}
 			onOpenChange={(openStatus) => {
 				if (!openStatus) {
-					onClose(); // Call onClose when the dialog is closed by Escape key or overlay click
+					onClose();
 				}
 			}}
 		>
 			<Dialog.Content maxWidth="500px" style={{ backgroundColor: "var(--accent-2)" }}>
 				<Dialog.Title className="text-xl sm:text-2xl heading-styled">
 					<ExclamationTriangleIcon className="inline w-6 h-6" style={{ color: "var(--amber-9)" }} />{" "}
-					Optimization Alert!
+					{t("dialogs.titles.optimizationAlert")} {/* Use existing title key */}
 				</Dialog.Title>
 				<Dialog.Description size="2" mb="4">
 					<span className="block pb-2 text-xl font-semibold tracking-widest text-center errorContent__title">
-						-kzzkt- Warning! -kzzkt-
+						{t("dialogs.optimizationAlert.warning")}
 					</span>
 					<span className="block mb-2">
-						There isn't enough space to effectively place all modules for the technology{" "}
-						<span className="font-bold uppercase" style={{ color: "var(--accent-11)" }}>
-							{technologyName}
-						</span>
-						. This usually happens when too many technologies are selected for your platform.
+						<Trans
+							i18nKey="dialogs.optimizationAlert.insufficientSpace"
+							values={{ technologyName }}
+							components={{
+								1: <span className="font-bold uppercase" style={{ color: "var(--accent-11)" }} />,
+							}}
+						/>
 					</span>
 					<span className="block">
-						You can try <strong>"Force Optimize"</strong> for a more intensive solve, but it will
-						probably fail to find an optimal layout. Consider reordering your technologies or
-						selecting fewer to improve the result.
+						<Trans
+							i18nKey="dialogs.optimizationAlert.forceOptimizeSuggestion"
+							components={{
+								1: <strong />,
+							}}
+						/>
 					</span>
 				</Dialog.Description>
 				<Flex gap="3" mt="4" justify="end">
 					<Dialog.Close>
-						<Button variant="soft" color="gray" onClick={onClose}>
-							Cancel
+						<Button
+							variant="soft"
+							color="gray"
+							onClick={onClose}
+							aria-label={t("optimizationAlert.cancelButton")}
+						>
+							{t("dialogs.optimizationAlert.cancelButton")}
 						</Button>
 					</Dialog.Close>
 					<Dialog.Close>
-						<Button onClick={handleForceOptimizeClick}>Force Optimize</Button>
+						<Button
+							onClick={handleForceOptimizeClick}
+							aria-label={t("optimizationAlert.forceOptimizeButton")}
+						>
+							{t("dialogs.optimizationAlert.forceOptimizeButton")}
+						</Button>
 					</Dialog.Close>
 				</Flex>
 			</Dialog.Content>
