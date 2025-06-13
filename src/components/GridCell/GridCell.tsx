@@ -47,7 +47,6 @@ interface GridCellProps {
  * @param grid - The grid object, containing all cells and grid properties
  */
 
-// Use React.memo for performance optimization
 const GridCell: React.FC<GridCellProps> = memo(
 	({ rowIndex, columnIndex, cell, grid, isSharedGrid }) => {
 		const toggleCellActive = useGridStore((state) => state.toggleCellActive);
@@ -67,7 +66,6 @@ const GridCell: React.FC<GridCellProps> = memo(
 		 *
 		 * @param event - The event object
 		 */
-		// Memoize handleClick
 		const handleClick = useCallback(
 			(event: React.MouseEvent) => {
 				if (isSharedGrid) {
@@ -79,15 +77,11 @@ const GridCell: React.FC<GridCellProps> = memo(
 					return;
 				}
 
-				if (event.ctrlKey) {
+				if (event.ctrlKey || event.metaKey) {
 					toggleCellActive(rowIndex, columnIndex);
 				} else {
-					// Use the 'supercharged' status directly from the 'cell' prop
 					if (totalSupercharged >= 4 && !cell.supercharged) {
-						// Use memoized totalSupercharged
 						setShaking(true);
-						// For a short-lived visual effect like this, explicit cleanup on unmount
-						// is often omitted for simplicity. The main issue was the incorrect return.
 						setTimeout(() => {
 							setShaking(false);
 						}, 500);
@@ -95,7 +89,6 @@ const GridCell: React.FC<GridCellProps> = memo(
 					}
 					toggleCellSupercharged(rowIndex, columnIndex);
 				}
-				// Dependencies for useCallback: Include all external variables/functions used inside
 			},
 			[
 				isSharedGrid,
@@ -113,7 +106,6 @@ const GridCell: React.FC<GridCellProps> = memo(
 		/**
 		 * Handles a touch start on the cell.
 		 */
-		// Memoize handleTouchStart
 		const handleTouchStart = useCallback(() => {
 			longPressTimer.current = setTimeout(() => {
 				setLongPressTriggered(true);
@@ -124,20 +116,16 @@ const GridCell: React.FC<GridCellProps> = memo(
 					return;
 				}
 				toggleCellActive(rowIndex, columnIndex);
-			}, 500); // Standard long press duration
-		}, [isSharedGrid, toggleCellActive, rowIndex, columnIndex]); // Added dependencies
+			}, 1000); // Standard long press duration is 1000ms (1 second)
+		}, [isSharedGrid, toggleCellActive, rowIndex, columnIndex]);
 
 		/**
 		 * Handles a touch end on the cell.
 		 */
-		// Memoize handleTouchEnd
 		const handleTouchEnd = useCallback(() => {
 			if (longPressTimer.current) {
 				clearTimeout(longPressTimer.current);
 			}
-			// Reset state slightly later to avoid race conditions.
-			// Similar to the shake timer, explicit cleanup for this short delay is often omitted.
-			// The incorrect return from useCallback is the primary fix here.
 			setTimeout(() => setLongPressTriggered(false), 50);
 		}, []); // No dependencies, so empty array
 
@@ -146,23 +134,19 @@ const GridCell: React.FC<GridCellProps> = memo(
 		 *
 		 * @param event - The event object
 		 */
-		// Memoize handleContextMenu
 		const handleContextMenu = useCallback((event: React.MouseEvent) => {
 			event.preventDefault();
-		}, []); // No dependencies, so empty array
+		}, []);
 
 		// Directly select the color for the current cell's tech from the store.
 		// This makes the component reactive to changes in the tech color mapping for this specific tech.
 		const currentTechColorFromStore = useTechStore((state) => state.getTechColor(cell.tech ?? ""));
-
-		// Memoize techColor calculation
 		const techColor = useMemo(() => {
 			// If there's no specific tech color from the store (it's falsy) AND the cell is supercharged,
 			// override to "purple". Otherwise, use the color from the store.
 			return !currentTechColorFromStore && cell.supercharged ? "purple" : currentTechColorFromStore;
 		}, [currentTechColorFromStore, cell.supercharged]);
 
-		// Memoize cellClassName construction
 		const cellClassName = useMemo(() => {
 			return `gridCell gridCell--interactive shadow-md sm:border-2 border-1 rounded-sm sm:rounded-md
     ${cell.supercharged ? "gridCell--supercharged" : ""}
@@ -185,15 +169,12 @@ const GridCell: React.FC<GridCellProps> = memo(
 		// Flex properties are added only if a label is present, for centering.
 		const labelSpecificClasses = cell.label ? "flex items-center justify-center w-full h-full" : "";
 		const finalCellClassName = `${cellClassName} ${labelSpecificClasses}`.trim();
-
-		// Combine backgroundImageStyle with grid positioning styles
 		const cellElementStyle = useMemo(
 			() => ({
 				backgroundImage: backgroundImageStyle,
 			}),
 			[backgroundImageStyle]
 		);
-
 		const cellElement = (
 			<div
 				role="gridCell"
@@ -205,7 +186,7 @@ const GridCell: React.FC<GridCellProps> = memo(
 				onTouchEnd={handleTouchEnd}
 				onTouchCancel={handleTouchEnd}
 				className={finalCellClassName}
-				style={cellElementStyle} // Apply combined styles here
+				style={cellElementStyle}
 			>
 				{cell.label && ( // Conditionally render the label span
 					<span className="mt-1 text-1xl md:text-3xl lg:text-4xl gridCell__label">
@@ -225,10 +206,10 @@ const GridCell: React.FC<GridCellProps> = memo(
 				{cellElement}
 			</Tooltip>
 		) : (
-			cellElement // Render cellElement directly, now with grid positioning styles
+			cellElement
 		);
 	}
-); // Close React.memo HOC
+);
 
 // Set display name for better debugging in React DevTools
 GridCell.displayName = "GridCell";

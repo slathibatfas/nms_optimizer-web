@@ -50,7 +50,7 @@ const config: UserConfigExport = defineConfig({
 		target: "es2020",
 		minify: "esbuild",
 		cssCodeSplit: true,
-		sourcemap: false,
+		sourcemap: true,
 		cssMinify: "lightningcss",
 
 		rollupOptions: {
