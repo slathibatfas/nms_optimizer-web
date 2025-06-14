@@ -43,7 +43,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 				{" "}
 				{/* This div will contain the left-aligned buttons */}
 				<Button
-					size={isSmallAndUp ? "2" : "2"}
+					size={isSmallAndUp ? "2" : "1"}
 					variant={isFirstVisit ? "solid" : "soft"}
 					className={`gridTable__button gridTable__button--instructions shadow-md !mr-2 p-0  ${
 						isFirstVisit ? "button--glow" : ""
@@ -60,7 +60,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					<span className="hidden sm:inline">{t("buttons.instructions")}</span>
 				</Button>
 				<Button
-					size={isSmallAndUp ? "2" : "2"}
+					size={isSmallAndUp ? "2" : "1"}
 					variant="soft"
 					className={`gridTable__button gridTable__button--about shadow-md !mr-2`}
 					onClick={() => {
@@ -76,7 +76,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 				</Button>
 				{!isSharedGrid && (
 					<Button
-						size={isSmallAndUp ? "2" : "2"}
+						size={isSmallAndUp ? "2" : "1"}
 						variant="soft"
 						className="shadow-md gridTable__button gridTable__button--changelog"
 						onClick={onShare}
@@ -97,7 +97,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					style={{ right: columnWidth }}
 				>
 					<Button
-						size={isSmallAndUp ? "2" : "2"}
+						size={isSmallAndUp ? "2" : "1"}
 						className={`gridTable__button gridTable__button--reset shadow-md`}
 						variant="solid"
 						onClick={onReset}

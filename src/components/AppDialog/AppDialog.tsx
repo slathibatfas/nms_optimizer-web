@@ -10,7 +10,7 @@ import {
 	InfoCircledIcon,
 	QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
-import { Button, Theme } from "@radix-ui/themes";
+import { IconButton, Theme } from "@radix-ui/themes";
 import React, { ReactNode, useCallback, useEffect } from "react";
 
 interface AppDialogProps {
@@ -68,8 +68,8 @@ const AppDialog: React.FC<AppDialogProps> = ({
 			<Dialog.Portal>
 				<Theme appearance="dark">
 					<Dialog.Overlay className="appDialog__overlay" />
-					<Dialog.Content className="appDialog__content">
-						<Dialog.Title className="flex items-center gap-2 text-xl sm:text-2xl heading-styled">
+					<Dialog.Content className="appDialog__content" style={{ paddingTop: "var(--space-3)" }}>
+						<Dialog.Title className="flex items-start gap-2 text-xl sm:text-2xl heading-styled">
 							{titleKey === "dialogs.titles.instructions" && (
 								<QuestionMarkCircledIcon
 									className="w-6 h-6"
@@ -101,14 +101,14 @@ const AppDialog: React.FC<AppDialogProps> = ({
 						</Dialog.Description>
 						<div className="text-sm appDialog__container">{content}</div>
 						<Dialog.Close asChild>
-							<Button
+							<IconButton
 								variant="soft"
 								color="cyan"
 								className="appDialog__close"
 								aria-label="Close dialog"
 							>
 								<Cross2Icon />
-							</Button>
+							</IconButton>
 						</Dialog.Close>
 					</Dialog.Content>
 				</Theme>

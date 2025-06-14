@@ -1,22 +1,23 @@
 // src/components/TechTreeRow/TechTreeRow.tsx
-import React, { useEffect } from "react";
-import { useGridStore } from "../../store/GridStore";
-import { useTechStore } from "../../store/TechStore";
-import { IconButton, Text, Tooltip, Checkbox, Avatar } from "@radix-ui/themes";
+import "./TechTreeRow.css";
+
 import {
-	UpdateIcon,
-	ResetIcon,
 	ChevronDownIcon,
-	ExclamationTriangleIcon,
 	Crosshair2Icon,
-	LightningBoltIcon,
 	DoubleArrowLeftIcon,
+	ExclamationTriangleIcon,
+	LightningBoltIcon,
+	ResetIcon,
+	UpdateIcon,
 } from "@radix-ui/react-icons";
+import { Avatar, Checkbox, IconButton, Text, Tooltip } from "@radix-ui/themes";
 import { Accordion } from "radix-ui";
-import { useShakeStore } from "../../store/ShakeStore";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import "./TechTreeRow.css";
+import { useGridStore } from "../../store/GridStore";
+import { useShakeStore } from "../../store/ShakeStore";
+import { useTechStore } from "../../store/TechStore";
 
 /**
  * Props for the TechTreeRow component.
@@ -150,7 +151,6 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 		tooltipLabel = hasTechInGrid ? t("techTree.tooltips.update") : t("techTree.tooltips.solve");
 	}
 	const OptimizeIconComponent = hasTechInGrid ? UpdateIcon : DoubleArrowLeftIcon;
-	const getTechColor = useTechStore((state) => state.getTechColor); // Get getTechColor function
 	const { setShaking } = useShakeStore();
 
 	useEffect(() => {
@@ -190,7 +190,6 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 	};
 
 	const currentCheckedModules = checkedModules[tech] || [];
-	const techColor = getTechColor(tech ?? "white");
 
 	const baseImagePath = "/assets/img/buttons/";
 	const fallbackImage = `${baseImagePath}infra.webp`;
@@ -254,9 +253,9 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 							{modules
 								.filter((module) => module.type === "reward")
 								.map((module) => (
-									<div key={module.id} className="flex items-center gap-2 AccordionContentText">
+									<div key={module.id} className="flex items-start gap-2 AccordionContentText">
 										<Checkbox
-											className="ml-1 CheckboxRoot"
+											className="!pt-1 ml-1 CheckboxRoot"
 											variant="soft"
 											id={module.id}
 											checked={currentCheckedModules.includes(module.id)}

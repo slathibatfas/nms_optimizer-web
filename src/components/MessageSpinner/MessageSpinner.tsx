@@ -74,7 +74,9 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({
 			<Spinner className="messageSpinner__spinner" />
 
 			{initialMessage && (
-				<Text className="pt-4 text-xl sm:text-2xl messageSpinner__header">{initialMessage}</Text>
+				<Text className="pt-4 text-xl text-center sm:text-2xl messageSpinner__header">
+					{initialMessage}
+				</Text>
 			)}
 			<Text
 				className={`text-sm font-semibold text-center shadow-sm sm:text-normal messageSpinner__random ${
