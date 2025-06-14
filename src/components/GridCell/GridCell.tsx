@@ -1,27 +1,23 @@
-import React, { useState, useRef, useCallback, memo, useMemo } from "react"; // Import useCallback, memo, and useMemo
+import "./GridCell.css";
+
 import { Tooltip } from "@radix-ui/themes";
-import { Grid } from "../../store/GridStore";
-import { useGridStore } from "../../store/GridStore";
-import { useTechStore } from "../../store/TechStore";
-import { useShakeStore } from "../../store/ShakeStore";
+import PropTypes from "prop-types"; // Import PropTypes
+import React, { memo, useCallback, useMemo, useRef, useState } from "react"; // Import useCallback, memo, and useMemo
 import { useTranslation } from "react-i18next";
 
-import "./GridCell.css";
+import { Grid, useGridStore } from "../../store/GridStore";
+import { useShakeStore } from "../../store/ShakeStore";
+import { useTechStore } from "../../store/TechStore";
 
 // Moved outside the component to prevent re-creation on each render
 // This function is pure and only depends on its input.
 const getUpgradePriority = (label: string | undefined): number => {
 	if (!label) return 0;
-	switch (true) {
-		case label.toLowerCase().includes("theta"):
-			return 1;
-		case label.toLowerCase().includes("tau"):
-			return 2;
-		case label.toLowerCase().includes("sigma"):
-			return 3;
-		default:
-			return 0;
-	}
+	const lowerLabel = label.toLowerCase();
+	if (lowerLabel.includes("theta")) return 1;
+	if (lowerLabel.includes("tau")) return 2;
+	if (lowerLabel.includes("sigma")) return 3;
+	return 0;
 };
 interface GridCellProps {
 	rowIndex: number;
@@ -138,6 +134,19 @@ const GridCell: React.FC<GridCellProps> = memo(
 			event.preventDefault();
 		}, []);
 
+		const handleKeyDown = useCallback(
+			(event: React.KeyboardEvent) => {
+				if (event.key === " " || event.key === "Enter") {
+					// Prevent default spacebar scroll and enter key form submission
+					event.preventDefault();
+					// Cast to React.MouseEvent; not strictly necessary for handleClick's current signature
+					// but good practice if handleClick expected more specific event properties.
+					handleClick(event as unknown as React.MouseEvent);
+				}
+			},
+			[handleClick]
+		);
+
 		// Directly select the color for the current cell's tech from the store.
 		// This makes the component reactive to changes in the tech color mapping for this specific tech.
 		const currentTechColorFromStore = useTechStore((state) => state.getTechColor(cell.tech ?? ""));
@@ -148,12 +157,22 @@ const GridCell: React.FC<GridCellProps> = memo(
 		}, [currentTechColorFromStore, cell.supercharged]);
 
 		const cellClassName = useMemo(() => {
-			return `gridCell gridCell--interactive shadow-md sm:border-2 border-1 rounded-sm sm:rounded-md
-    ${cell.supercharged ? "gridCell--supercharged" : ""}
-    ${cell.active ? "gridCell--active" : "gridCell--inactive"}
-    ${cell.adjacency_bonus === 0 && cell.image ? "gridCell--black" : ""}
-    ${cell.supercharged && cell.image ? "gridCell--glow" : ""}`.trim();
-		}, [cell.supercharged, cell.active, cell.adjacency_bonus, cell.image]);
+			const classes = [
+				"gridCell",
+				"gridCell--interactive",
+				"shadow-md",
+				"sm:border-2",
+				"border-1",
+				"rounded-sm",
+				"sm:rounded-md",
+			];
+			if (cell.supercharged) classes.push("gridCell--supercharged");
+			classes.push(cell.active ? "gridCell--active" : "gridCell--inactive");
+			if (cell.adjacency_bonus === 0 && cell.image) classes.push("gridCell--black");
+			if (cell.supercharged && cell.image) classes.push("gridCell--glow");
+			if (cell.label) classes.push("flex", "items-center", "justify-center", "w-full", "h-full");
+			return classes.join(" ");
+		}, [cell.supercharged, cell.active, cell.adjacency_bonus, cell.image, cell.label]);
 
 		// Get the upgrade priority for the current cell
 		const upGradePriority = getUpgradePriority(cell.label);
@@ -165,10 +184,6 @@ const GridCell: React.FC<GridCellProps> = memo(
 			[cell.image]
 		);
 
-		// Dynamically construct the className for the cell div
-		// Flex properties are added only if a label is present, for centering.
-		const labelSpecificClasses = cell.label ? "flex items-center justify-center w-full h-full" : "";
-		const finalCellClassName = `${cellClassName} ${labelSpecificClasses}`.trim();
 		const cellElementStyle = useMemo(
 			() => ({
 				backgroundImage: backgroundImageStyle,
@@ -177,15 +192,17 @@ const GridCell: React.FC<GridCellProps> = memo(
 		);
 		const cellElement = (
 			<div
-				role="gridCell"
+				role="gridcell"
 				aria-colindex={columnIndex + 1}
+				tabIndex={isSharedGrid ? -1 : 0} // Make cell focusable if not shared
 				data-accent-color={techColor}
 				onContextMenu={handleContextMenu}
 				onClick={handleClick}
 				onTouchStart={handleTouchStart}
 				onTouchEnd={handleTouchEnd}
 				onTouchCancel={handleTouchEnd}
-				className={finalCellClassName}
+				onKeyDown={handleKeyDown}
+				className={cellClassName}
 				style={cellElementStyle}
 			>
 				{cell.label && ( // Conditionally render the label span
@@ -213,5 +230,21 @@ const GridCell: React.FC<GridCellProps> = memo(
 
 // Set display name for better debugging in React DevTools
 GridCell.displayName = "GridCell";
+
+// Add PropTypes for runtime validation
+GridCell.propTypes = {
+	rowIndex: PropTypes.number.isRequired,
+	columnIndex: PropTypes.number.isRequired,
+	cell: PropTypes.shape({
+		label: PropTypes.string,
+		supercharged: PropTypes.bool,
+		active: PropTypes.bool,
+		tech: PropTypes.string,
+		adjacency_bonus: PropTypes.number,
+		image: PropTypes.string,
+	}).isRequired,
+	grid: PropTypes.object.isRequired, // Consider a more specific shape if needed
+	isSharedGrid: PropTypes.bool.isRequired,
+};
 
 export default GridCell;
