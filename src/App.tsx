@@ -1,7 +1,6 @@
 // src/App.tsx
 
-import { GlobeIcon } from "@radix-ui/react-icons";
-import { Callout, ScrollArea, Separator } from "@radix-ui/themes";
+import { ScrollArea, Separator } from "@radix-ui/themes";
 import { FC, lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { Trans, useTranslation } from "react-i18next";
@@ -204,27 +203,21 @@ const MainAppContent: FC<{
 							columnWidth={columnWidth}
 							isFirstVisit={isFirstVisit}
 						/>
-						<Callout.Root size="1" color="cyan" variant="outline" className="mt-4">
-							<Callout.Icon>
-								<GlobeIcon />
-							</Callout.Icon>
-							<Callout.Text
-								className="!text-sm text-pretty sm:text-base"
-								style={{ color: "var(--gray-12)" }}
+
+						<p className="pb-0 mt-4 text-sm text-center sm:text-base text-balance">
+							Looking for volunteer translators! Click{" "}
+							<button
+								type="button"
+								onClick={handleShowTranslationRequestDialog}
+								className="!underline !cursor-pointer"
+								style={{ color: "var(--accent-11)" }}
+								aria-label={t("translation.openDialogLabel") || "Open translation request dialog"} // Add an accessible label
 							>
-								Looking for volunteer language translators! Click{" "}
-								<button
-									type="button"
-									onClick={handleShowTranslationRequestDialog}
-									className="!underline !cursor-pointer"
-									style={{ color: "var(--accent-11)" }}
-									aria-label={t("translation.openDialogLabel") || "Open translation request dialog"} // Add an accessible label
-								>
-									here
-								</button>{" "}
-								for more information.
-							</Callout.Text>
-						</Callout.Root>
+								here
+							</button>{" "}
+							for more information.
+						</p>
+						{/* TODO: Add "translation.openDialogLabel" to your i18n files, e.g., "Open translation request dialog" */}
 					</div>
 					{!isSharedGrid &&
 						(isLarge ? (
