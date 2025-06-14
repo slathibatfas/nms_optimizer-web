@@ -1,8 +1,8 @@
 // src/components/AppDialog/OptimizationAlertDialog.tsx
-import { FC } from "react";
-import { Dialog, Button, Flex } from "@radix-ui/themes";
-import { useTranslation, Trans } from "react-i18next";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Button, Dialog, Flex } from "@radix-ui/themes";
+import { FC } from "react";
+import { Trans, useTranslation } from "react-i18next";
 
 interface OptimizationAlertDialogProps {
 	isOpen: boolean;
@@ -77,7 +77,11 @@ const OptimizationAlertDialog: FC<OptimizationAlertDialogProps> = ({
 					</Dialog.Close>
 					<Dialog.Close>
 						<Button
-							onClick={handleForceOptimizeClick}
+							// Wrap the async call and use 'void' to explicitly ignore the promise
+							// for the onClick handler, which expects a void return.
+							onClick={() => {
+								void handleForceOptimizeClick();
+							}}
 							aria-label={t("optimizationAlert.forceOptimizeButton")}
 						>
 							{t("dialogs.optimizationAlert.forceOptimizeButton")}

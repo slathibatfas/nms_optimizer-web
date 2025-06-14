@@ -1,18 +1,19 @@
 // src/components/ShipSelection/ShipSelection.tsx
+import "./ShipSelection.css";
+
 import { GearIcon } from "@radix-ui/react-icons";
-import { DropdownMenu, Button, Separator } from "@radix-ui/themes";
-import React, { useRef, useMemo } from "react";
-import {
-	useFetchShipTypesSuspense,
-	useShipTypesStore,
-	ShipTypeDetail,
-} from "../../hooks/useShipTypes";
-import { useGridStore, createGrid, Grid } from "../../store/GridStore";
+import { Button, DropdownMenu, Separator } from "@radix-ui/themes";
+import React, { useMemo, useRef } from "react";
 import ReactGA from "react-ga4";
-import { useBreakpoint } from "../../hooks/useBreakpoint";
 import { useTranslation } from "react-i18next";
 
-import "./ShipSelection.css";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
+import {
+	ShipTypeDetail,
+	useFetchShipTypesSuspense,
+	useShipTypesStore,
+} from "../../hooks/useShipTypes";
+import { createGrid, Grid, useGridStore } from "../../store/GridStore";
 
 // --- Constants for Grid Configuration ---
 const DEFAULT_GRID_HEIGHT = 10;
@@ -156,7 +157,7 @@ const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = ({
 					<DropdownMenu.Label>
 						<span className="shipSelection__header">{t(`platformTypes.${type}`)}</span>
 					</DropdownMenu.Label>
-					{items.map(({ key, details }) => (
+					{items.map(({ key }) => (
 						<DropdownMenu.RadioItem key={key} value={key} className="font-medium last:mb-2">
 							{t(`platforms.${key}`)}
 						</DropdownMenu.RadioItem>

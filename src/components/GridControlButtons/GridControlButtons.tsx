@@ -1,8 +1,9 @@
 // RowControlButton.tsx
-import React from "react";
+import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { IconButton, Tooltip } from "@radix-ui/themes";
-import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
+import React from "react";
 import { useTranslation } from "react-i18next";
+
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 interface RowControlButtonProps {

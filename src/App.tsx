@@ -1,38 +1,29 @@
 // src/App.tsx
 
-// --- React & External Libraries ---
-import { Suspense, useEffect, useState, useCallback, useMemo, FC, lazy } from "react";
-import { Routes, Route, useLocation, Link } from "react-router-dom"; // Added Link
-import { ScrollArea, Separator, Text } from "@radix-ui/themes";
+import { GlobeIcon } from "@radix-ui/react-icons";
+import { Callout, ScrollArea, Separator } from "@radix-ui/themes";
+import { FC, lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
+import { Trans, useTranslation } from "react-i18next";
+import { Link, Route, Routes, useLocation } from "react-router-dom"; // Added Link
 
-// --- Components ---
+import AppDialog from "./components/AppDialog/AppDialog";
+import ErrorContent from "./components/AppDialog/ErrorContent";
+import OptimizationAlertDialog from "./components/AppDialog/OptimizationAlertDialog";
+import AppHeader from "./components/AppHeader/AppHeader";
 import Buymeacoffee from "./components/BuyMeACoffee/BuyMeACoffee";
 import { GridTable } from "./components/GridTable/GridTable";
 import GridTableButtons from "./components/GridTableButtons/GridTableButtons";
-import TechTreeComponent from "./components/TechTree/TechTree";
-import ErrorContent from "./components/AppDialog/ErrorContent";
-import AppDialog from "./components/AppDialog/AppDialog";
-import AppHeader from "./components/AppHeader/AppHeader";
 import MessageSpinner from "./components/MessageSpinner/MessageSpinner";
-import OptimizationAlertDialog from "./components/AppDialog/OptimizationAlertDialog";
 import ShipSelection from "./components/ShipSelection/ShipSelection";
-
-// --- Constants ---
+import TechTreeComponent from "./components/TechTree/TechTree";
 import { TRACKING_ID } from "./constants"; // APP_NAME will come from i18n
-
-// --- Hooks ---
 import { useAppLayout } from "./hooks/useAppLayout";
-import { useUrlSync } from "./hooks/useUrlSync";
 import { useOptimize } from "./hooks/useOptimize";
-import { ShipTypeDetail, useFetchShipTypesSuspense, useShipTypesStore } from "./hooks/useShipTypes";
-
-// --- Stores ---
+import { useFetchShipTypesSuspense, useShipTypesStore } from "./hooks/useShipTypes";
+import { useUrlSync } from "./hooks/useUrlSync";
 import { useGridStore } from "./store/GridStore";
 import { useOptimizeStore } from "./store/OptimizeStore";
-
-// --- i18n ---
-import { useTranslation, Trans } from "react-i18next";
 
 // --- Page Components ---
 const ChangelogPage = lazy(() => import("./pages/ChangeLogPage"));
@@ -40,9 +31,9 @@ const InstructionsPage = lazy(() => import("./pages/InstructionsPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 
 // --- Page Content ---
-import InstructionsContent from "./components/AppDialog/InstructionsContent";
 import AboutContent from "./components/AppDialog/AboutContent";
 import ChangelogContent from "./components/AppDialog/ChangeLogContent"; // Assuming you'll create/use this for dialog
+import InstructionsContent from "./components/AppDialog/InstructionsContent";
 import TranslationRequestContent from "./components/AppDialog/TranslationRequestContent";
 
 /**
@@ -77,7 +68,10 @@ const MainAppContent: FC<{
 	const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } =
 		useGridStore();
 	const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
-	const shipTypes = useFetchShipTypesSuspense(); // This will suspend if data is not ready
+	// Call useFetchShipTypesSuspense to ensure data is fetched/cached and to trigger Suspense.
+	// The actual shipTypes data is typically consumed by child components (e.g., ShipSelection)
+	// which also call this hook and benefit from the cache, or potentially via a store if it were populated there.
+	useFetchShipTypesSuspense();
 	const {
 		solving,
 		handleOptimize,
@@ -96,16 +90,7 @@ const MainAppContent: FC<{
 	} = useAppLayout();
 
 	// --- State for Modals/Dialogs ---
-	const build = import.meta.env.VITE_BUILD_VERSION;
-	const selectedShipTypeDetails = useMemo<ShipTypeDetail | undefined>(() => {
-		return shipTypes[selectedShipType];
-	}, [shipTypes, selectedShipType]);
-
-	const selectedShipTypeLabel = useMemo<string>(() => {
-		return (
-			selectedShipTypeDetails?.label || t("unknownPlatform", { platformKey: selectedShipType })
-		);
-	}, [selectedShipTypeDetails, selectedShipType]);
+	const build: string = (import.meta.env.VITE_BUILD_VERSION as string) ?? "devmode";
 
 	const hasModulesInGrid = useMemo(() => {
 		return grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
@@ -219,19 +204,27 @@ const MainAppContent: FC<{
 							columnWidth={columnWidth}
 							isFirstVisit={isFirstVisit}
 						/>
-						<p className="pb-0 mt-4 text-sm text-center sm:text-base text-balance">
-							Looking for volunteer translators! Click{" "}
-							<a
-								href="#"
-								role="button"
-								onClick={handleShowTranslationRequestDialog}
-								className="underline"
-								style={{ color: "var(--accent-11)" }}
+						<Callout.Root size="1" color="cyan" variant="outline" className="mt-4">
+							<Callout.Icon>
+								<GlobeIcon />
+							</Callout.Icon>
+							<Callout.Text
+								className="!text-sm text-pretty sm:text-base"
+								style={{ color: "var(--gray-12)" }}
 							>
-								here
-							</a>{" "}
-							for more information.
-						</p>
+								Looking for volunteer language translators! Click{" "}
+								<button
+									type="button"
+									onClick={handleShowTranslationRequestDialog}
+									className="!underline !cursor-pointer"
+									style={{ color: "var(--accent-11)" }}
+									aria-label={t("translation.openDialogLabel") || "Open translation request dialog"} // Add an accessible label
+								>
+									here
+								</button>{" "}
+								for more information.
+							</Callout.Text>
+						</Callout.Root>
 					</div>
 					{!isSharedGrid &&
 						(isLarge ? (

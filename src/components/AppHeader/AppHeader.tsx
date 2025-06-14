@@ -1,14 +1,14 @@
 // src/components/AppHeader/AppHeader.tsx
-import React from "react";
-import { IconButton, Separator, Tooltip } from "@radix-ui/themes";
+import "./AppHeader.css";
+
 import { CounterClockwiseClockIcon } from "@radix-ui/react-icons";
-import { CgShapeRhombus } from "react-icons/cg";
-import { APP_VERSION } from "../../constants";
-import { useBreakpoint } from "../../hooks/useBreakpoint"; // Import the hook
+import { IconButton, Separator, Tooltip } from "@radix-ui/themes";
+import React from "react";
 import ReactGA from "react-ga4";
 import { useTranslation } from "react-i18next";
+import { CgShapeRhombus } from "react-icons/cg";
 
-import "./AppHeader.css";
+import { APP_VERSION } from "../../constants";
 
 interface AppHeaderProps {
 	onShowChangelog: () => void;
@@ -17,12 +17,11 @@ interface AppHeaderProps {
 const AppHeaderInternal: React.FC<AppHeaderProps> = ({ onShowChangelog }) => {
 	// Use breakpoint for 'sm' (640px) as per Tailwind's default
 	const { t } = useTranslation();
-	const isSmallAndUp = useBreakpoint("640px");
 
 	return (
 		<header className="flex flex-col items-center p-4 sm:px-8 sm:pt-6 sm:pb-4 header lg:rounded-t-xl">
 			<h1 className="text-3xl sm:text-4xl header__logo--text">
-				NO MAN'S SK<span style={{ letterSpacing: "0.0em" }}>Y</span>
+				NO MAN&apos;S SK<span style={{ letterSpacing: "0.0em" }}>Y</span>
 			</h1>
 			<div className="flex items-center w-full gap-2 m-1 mb-2">
 				<Separator size="1" orientation="horizontal" color="cyan" decorative className="flex-1" />

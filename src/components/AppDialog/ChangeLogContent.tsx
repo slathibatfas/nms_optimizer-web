@@ -28,10 +28,10 @@ const ChangeLogContent: React.FC = () => {
 
 			<h2 className="pt-2 appDialog__subheading">Version 2.86 (2025-06-10)</h2>
 			<ul className="appDialog__list">
-				<li className="appDialog__listItem">Simplified "TechRow" button presentation.</li>
+				<li className="appDialog__listItem">Simplified &quot;TechRow&quot; button presentation.</li>
 				<li className="appDialog__listItem">
-					Refactored the header presentation into something more "elegant", matching the game title
-					screen.
+					Refactored the header presentation into something more &quot;elegant&quot;, matching the
+					game title screen.
 				</li>
 				<li className="appDialog__listItem">Additional UI and performance enhancements.</li>
 			</ul>
@@ -56,14 +56,14 @@ const ChangeLogContent: React.FC = () => {
 			<ul className="appDialog__list">
 				<li className="appDialog__listItem">Some final UI refinements and optimizations.</li>
 				<li className="appDialog__listItem">
-					Renamed app to <strong>No Man's Sky Technology Layout Optimizer AI</strong>.
+					Renamed app to <strong>No Man&apos;s Sky Technology Layout Optimizer AI</strong>.
 				</li>
 			</ul>
 
 			<h2 className="pt-2 appDialog__subheading">Version 2.75 (2025-05-16)</h2>
 			<ul className="appDialog__list">
 				<li className="appDialog__listItem">
-					Fixed issue where the canonical URL setting was interfering with "Share"
+					Fixed issue where the canonical URL setting was interfering with &quot;Share&quot;
 					functionality.{" "}
 				</li>
 				<li className="appDialog__listItem">
@@ -161,15 +161,15 @@ const ChangeLogContent: React.FC = () => {
 					force things and getting sub-optimal results.
 				</li>
 				<li className="appDialog__listItem">
-					I give in. No one knows what a Convolutional Neural Network is. Marketing wins and we're
-					calling it <strong>AI Technology Optimizer</strong>.
+					I give in. No one knows what a Convolutional Neural Network is. Marketing wins and
+					we&apos;re calling it <strong>AI Technology Optimizer</strong>.
 				</li>
 			</ul>
 
 			<h2 className="appDialog__subheading">Version 2.51 (2025-05-06)</h2>
 			<ul className="appDialog__list">
 				<li className="appDialog__listItem">
-					Increased "window" size to support better solves for Living Starships.
+					Increased &quot;window&quot; size to support better solves for Living Starships.
 				</li>
 				<li className="appDialog__listItem">Additional mobile UI refinements.</li>
 			</ul>
@@ -200,8 +200,8 @@ const ChangeLogContent: React.FC = () => {
 			<ul className="appDialog__list">
 				<li className="appDialog__listItem">Improved interaction performance on slower devices.</li>
 				<li className="appDialog__listItem">
-					Fixed issue where "ghost" modules would sometimes persist after SA/Refine fallback solves
-					were applied.
+					Fixed issue where &quot;ghost&quot; modules would sometimes persist after SA/Refine
+					fallback solves were applied.
 				</li>
 				<li className="appDialog__listItem">Additional UI improvements and enhancements.</li>
 			</ul>
@@ -287,7 +287,7 @@ const ChangeLogContent: React.FC = () => {
 			<ul className="appDialog__list">
 				<li className="appDialog__listItem">Added additional tech color coding.</li>
 				<li className="appDialog__listItem">Introduced upgrade priority labels.</li>
-				<li className="appDialog__listItem">Refactored the "Shared" link UI.</li>
+				<li className="appDialog__listItem">Refactored the &quot;Shared&quot; link UI.</li>
 				<li className="appDialog__listItem">Further solver refinements (should be finished!).</li>
 				<li className="appDialog__listItem">Improved usage of available space in the grid.</li>
 			</ul>

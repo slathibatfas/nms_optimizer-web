@@ -1,15 +1,16 @@
 // src/components/TechTree/TechTree.tsx
+import "./TechTree.css";
+
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Separator } from "@radix-ui/themes";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { useShipTypesStore } from "../../hooks/useShipTypes";
 import { useFetchTechTreeSuspense } from "../../hooks/useTechTree";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
 import { TechTreeRow } from "../TechTreeRow/TechTreeRow";
-import { useShipTypesStore } from "../../hooks/useShipTypes";
-import { useBreakpoint } from "../../hooks/useBreakpoint";
-import { useTranslation } from "react-i18next";
-
-import "./TechTree.css";
 
 // Define interfaces to ensure type safety
 interface TechTreeModule {
@@ -63,14 +64,21 @@ interface TechTreeComponentProps {
  *
  * @returns {JSX.Element} - The rendered component.
  */
-const TechTreeSection: React.FC<{
+interface TechTreeSectionProps {
 	type: string;
-	technologies: TechTreeItem[]; // Corrected type
-	index: number; // Accept index
+	technologies: TechTreeItem[];
+	index: number;
 	handleOptimize: (tech: string) => Promise<void>;
 	solving: boolean;
 	// selectedShipType is no longer passed to TechTreeRow, but TechTreeSection might still receive it if needed elsewhere.
-}> = ({ type, technologies, handleOptimize, solving }) => {
+}
+
+const TechTreeSection: React.FC<TechTreeSectionProps> = ({
+	type,
+	technologies,
+	handleOptimize,
+	solving,
+}) => {
 	// selectedShipType is kept here if TechTreeSection needs it for other things
 	const { t } = useTranslation();
 	// Determine the image path from the typeImageMap
@@ -148,12 +156,13 @@ const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(
 						index={index}
 					/>
 				)),
-			[processedTechTree, handleOptimize, solving, selectedShipType]
+			[processedTechTree, handleOptimize, solving]
 		);
 
 		return <>{renderedTechTree}</>;
 	}
 );
+TechTreeContent.displayName = "TechTreeContent";
 
 const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
 	const [error, setError] = useState<Error | null>(null);

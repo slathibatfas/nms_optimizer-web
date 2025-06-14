@@ -1,17 +1,17 @@
 // src/components/InfoDialog/InfoDialog.tsx
-import React, { useEffect, ReactNode, useCallback } from "react";
+import "./AppDialog.css";
+
 import * as Dialog from "@radix-ui/react-dialog";
-import { Cross2Icon } from "@radix-ui/react-icons";
-import { Button, Theme } from "@radix-ui/themes";
 import {
-	QuestionMarkCircledIcon,
 	CounterClockwiseClockIcon,
-	InfoCircledIcon,
+	Cross2Icon,
 	ExclamationTriangleIcon,
 	GlobeIcon,
+	InfoCircledIcon,
+	QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
-
-import "./AppDialog.css";
+import { Button, Theme } from "@radix-ui/themes";
+import React, { ReactNode, useCallback, useEffect } from "react";
 
 interface AppDialogProps {
 	onClose: () => void;

@@ -1,14 +1,15 @@
-import React from "react";
-import { Button } from "@radix-ui/themes";
 import {
-	QuestionMarkCircledIcon,
 	InfoCircledIcon,
+	QuestionMarkCircledIcon,
 	ResetIcon,
 	Share2Icon,
 } from "@radix-ui/react-icons";
+import { Button } from "@radix-ui/themes";
+import React from "react";
 import ReactGA from "react-ga4";
-import { useBreakpoint } from "../../hooks/useBreakpoint";
 import { useTranslation } from "react-i18next";
+
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 interface GridTableButtonsProps {
 	onShowInstructions: () => void;

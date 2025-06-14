@@ -1,9 +1,9 @@
 // src/components/MessageSpinner/MessageSpinner.tsx
-import { Text, Spinner } from "@radix-ui/themes";
-import { useTranslation } from "react-i18next";
-import React, { useState, useEffect } from "react";
-
 import "./MessageSpinner.css";
+
+import { Spinner, Text } from "@radix-ui/themes";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface MessageSpinnerProps {
 	isVisible: boolean;

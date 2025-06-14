@@ -1,5 +1,6 @@
-import ReactGA from "react-ga4";
 import { Button } from "@radix-ui/themes";
+import ReactGA from "react-ga4";
+
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 /**

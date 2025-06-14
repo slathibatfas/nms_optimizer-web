@@ -12,9 +12,14 @@ const TranslationRequestContent: React.FC = () => {
 		<article className="text-base">
 			<ReactMarkdown
 				components={{
-					a: ({ node, ...props }) => (
+					// Use React's standard HTML attributes for an anchor tag.
+					// The 'node' prop is also passed by ReactMarkdown but often unused if you only care about attributes.
+					a: ({
+						children,
+						...props
+					}: React.AnchorHTMLAttributes<HTMLAnchorElement> & { node?: unknown }) => (
 						<a {...props} target="_blank" rel="noopener noreferrer">
-							{props.children}
+							{children}
 						</a>
 					),
 				}}

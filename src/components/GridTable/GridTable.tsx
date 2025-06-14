@@ -1,14 +1,15 @@
 // src/components/GridTable/GridTable.tsx
+import "./GridTable.css";
+
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+
 import { Grid } from "../../store/GridStore";
+import { useShakeStore } from "../../store/ShakeStore";
 import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
 import ShakingWrapper from "../GridShake/GridShake";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
-import { useShakeStore } from "../../store/ShakeStore";
-import { useTranslation } from "react-i18next";
-
-import "./GridTable.css";
 
 interface GridTableProps {
 	grid: Grid | null | undefined; // Allow grid to be null or undefined
@@ -119,5 +120,6 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
 		);
 	}
 );
+GridTableInternal.displayName = "GridTable";
 
 export const GridTable = React.memo(GridTableInternal);
