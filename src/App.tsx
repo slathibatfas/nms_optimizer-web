@@ -85,6 +85,8 @@ const MainAppContent: FC<{
 		gridTableRef: appLayoutGridTableRef,
 		gridHeight,
 		columnWidth,
+		gridTableTotalWidth, // Destructure the new total width
+		resetButtonPositionStyle, // Destructure the new style
 		isLarge,
 	} = useAppLayout();
 
@@ -170,7 +172,10 @@ const MainAppContent: FC<{
 						className="flex-grow w-auto gridContainer__container lg:flex-shrink-0"
 						ref={appLayoutContainerRef}
 					>
-						<header className="flex flex-wrap items-center sm:max-w-[610] md:max-w-[710] lg:max-w-[752] gap-2 mb-2 text-xl sm:mb-4 sm:text-2xl heading-styled">
+						<header
+							className="flex flex-wrap items-center gap-2 mb-2 text-xl sm:mb-4 sm:text-2xl heading-styled"
+							style={{ maxWidth: gridTableTotalWidth ? `${gridTableTotalWidth}px` : undefined }}
+						>
 							{!isSharedGrid && (
 								<span className="self-start flex-shrink-0 shadow-sm">
 									<ShipSelection solving={solving} />
@@ -204,6 +209,7 @@ const MainAppContent: FC<{
 							hasModulesInGrid={hasModulesInGrid}
 							solving={solving}
 							columnWidth={columnWidth}
+							resetButtonPositionStyle={resetButtonPositionStyle} // Pass the style as a prop
 							isFirstVisit={isFirstVisit}
 						/>
 					</div>

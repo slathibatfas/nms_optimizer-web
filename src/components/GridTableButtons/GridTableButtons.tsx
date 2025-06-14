@@ -20,6 +20,7 @@ interface GridTableButtonsProps {
 	hasModulesInGrid: boolean;
 	solving: boolean;
 	columnWidth: string;
+	resetButtonPositionStyle: React.CSSProperties; // Add new prop for the style
 	isFirstVisit: boolean; // Add prop for first visit
 }
 
@@ -32,6 +33,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 	hasModulesInGrid,
 	solving,
 	columnWidth,
+	resetButtonPositionStyle, // Receive the style prop
 	isFirstVisit,
 }) => {
 	const isSmallAndUp = useBreakpoint("640px"); // sm breakpoint
@@ -94,7 +96,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 			{columnWidth !== "0px" && (
 				<div
 					className="absolute z-10" // Use 'absolute' positioning and a z-index if needed.
-					style={{ right: columnWidth }}
+					style={resetButtonPositionStyle} // Apply the passed-in style object
 				>
 					<Button
 						size={isSmallAndUp ? "2" : "1"}
