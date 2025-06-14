@@ -3,11 +3,11 @@
 		"subTitle": "Optimiseur d'agencement de technologie"
 	},
 	"languageInfo": {
-		"nativeName": "Français",
+		"nativeName": "Français (Généré par IA)",
 		"changeLanguage": "Changer la langue",
 		"selectLanguage": "Sélectionner la langue"
 	},
-	"appName": "AI d'optimisation d'agencement de technologie de No Man's Sky",
+	"appName": "IA d'optimisation d'agencement de technologie de No Man's Sky",
 	"loadingMessage": "Activation de la liaison montante !",
 	"buttons": {
 		"instructions": "Instructions",
