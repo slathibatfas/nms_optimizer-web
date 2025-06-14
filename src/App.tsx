@@ -204,7 +204,7 @@ const MainAppContent: FC<{
 							isFirstVisit={isFirstVisit}
 						/>
 
-						<p className="pb-0 mt-4 text-sm text-center sm:text-base text-balance">
+						<p className="pb-0 mt-4 text-sm text-center sm:text-base text-pretty">
 							Looking for volunteer translators! Click{" "}
 							<button
 								type="button"
@@ -217,7 +217,6 @@ const MainAppContent: FC<{
 							</button>{" "}
 							for more information.
 						</p>
-						{/* TODO: Add "translation.openDialogLabel" to your i18n files, e.g., "Open translation request dialog" */}
 					</div>
 					{!isSharedGrid &&
 						(isLarge ? (
