@@ -1,6 +1,8 @@
 {
 	"appHeader": {
-		"subTitle": "[dev] Technology Layout Optimizer"
+		"subTitle": "[dev] Technology Layout Optimizer",
+		"changeLanguage": "[dev] Change language",
+		"selectLanguageLabel": "[dev] Select Language"
 	},
 	"appName": "[dev] No Man's Sky Technology Layout Optimizer AI",
 	"loadingMessage": "[dev] Activating Uplink!",

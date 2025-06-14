@@ -3,13 +3,16 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 
+const languages = ["en", "dev", "es", "fr"];
+
 // eslint-disable-next-line import/no-named-as-default-member
 void i18n
 	.use(HttpApi) // Loads translations from /public/locales
 	.use(LanguageDetector) // Detects user language
 	.use(initReactI18next) // Passes i18n instance to react-i18next
 	.init({
-		supportedLngs: ["en", "dev", "es", "fr"], // 'dev' can be used to easily spot untranslated strings
+		supportedLngs: languages, // 'dev' can be used to easily spot untranslated strings
+		preload: languages,
 		fallbackLng: "en",
 		debug: process.env.NODE_ENV === "development",
 		detection: {

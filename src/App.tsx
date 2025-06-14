@@ -158,7 +158,10 @@ const MainAppContent: FC<{
 	return (
 		<main className="flex flex-col items-center justify-center lg:min-h-screen">
 			<section className="relative mx-auto border rounded-none app lg:rounded-xl backdrop-blur-xl bg-white/5">
-				<AppHeader onShowChangelog={handleShowChangelog} />
+				<AppHeader
+					onShowChangelog={handleShowChangelog}
+					onShowTranslationRequestDialog={handleShowTranslationRequestDialog} // Pass the handler
+				/>
 				<section
 					className="flex flex-col items-start p-4 pt-2 gridContainer sm:pt-4 sm:p-8 lg:flex-row"
 					ref={gridContainerRef}
@@ -203,23 +206,6 @@ const MainAppContent: FC<{
 							columnWidth={columnWidth}
 							isFirstVisit={isFirstVisit}
 						/>
-
-						<div className="pb-0 mt-4 text-sm text-center sm:text-base text-pretty">
-							<Trans
-								i18nKey="translationRequest.prompt"
-								components={{
-									1: (
-										<button
-											type="button"
-											onClick={handleShowTranslationRequestDialog}
-											className="!underline !cursor-pointer"
-											style={{ color: "var(--accent-11)" }}
-											aria-label={t("translation.openDialogLabel")}
-										/>
-									),
-								}}
-							/>
-						</div>
 					</div>
 					{!isSharedGrid &&
 						(isLarge ? (
@@ -232,7 +218,7 @@ const MainAppContent: FC<{
 								<TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
 							</ScrollArea>
 						) : (
-							<aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-4 pr-1">
+							<aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-4 pr-2">
 								<TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
 							</aside>
 						))}

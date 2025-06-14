@@ -2,6 +2,11 @@
 	"appHeader": {
 		"subTitle": "Optimizador de Diseño de Tecnología"
 	},
+	"languageInfo": {
+		"nativeName": "Español",
+		"changeLanguage": "Cambiar idioma",
+		"selectLanguage": "Seleccionar idioma"
+	},
 	"appName": "AI Optimizador de Diseño de Tecnología de No Man's Sky",
 	"loadingMessage": "¡Activando enlace ascendente!",
 	"buttons": {
