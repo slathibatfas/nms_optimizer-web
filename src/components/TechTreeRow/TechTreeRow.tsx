@@ -204,7 +204,9 @@ const TechTreeRowComponent: React.FC<TechTreeRowProps> = ({
 			{/* Optimize Button */}
 			<Tooltip delayDuration={1000} content={tooltipLabel}>
 				<IconButton
-					onClick={handleOptimizeClick}
+					onClick={() => {
+						void handleOptimizeClick();
+					}}
 					disabled={isOptimizeButtonDisabled}
 					aria-label={`${tooltipLabel} ${translatedTechName}`}
 					id={tech}

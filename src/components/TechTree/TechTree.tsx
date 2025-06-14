@@ -3,6 +3,7 @@ import "./TechTree.css";
 
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Separator } from "@radix-ui/themes";
+import PropTypes from "prop-types";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -115,6 +116,14 @@ const TechTreeSection: React.FC<TechTreeSectionProps> = ({
 	);
 };
 
+TechTreeSection.propTypes = {
+	type: PropTypes.string.isRequired,
+	technologies: PropTypes.array.isRequired,
+	index: PropTypes.number.isRequired,
+	handleOptimize: PropTypes.func.isRequired,
+	solving: PropTypes.bool.isRequired,
+};
+
 const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(
 	({ handleOptimize, solving }) => {
 		const selectedShipType = useShipTypesStore((state) => state.selectedShipType); // Get selectedShipType from the store
@@ -163,6 +172,10 @@ const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(
 	}
 );
 TechTreeContent.displayName = "TechTreeContent";
+TechTreeContent.propTypes = {
+	handleOptimize: PropTypes.func.isRequired,
+	solving: PropTypes.bool.isRequired,
+};
 
 const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
 	const [error, setError] = useState<Error | null>(null);
@@ -195,6 +208,11 @@ const TechTreeComponent: React.FC<TechTreeComponentProps> = (props) => {
 			)}
 		</Suspense>
 	);
+};
+
+TechTreeComponent.propTypes = {
+	handleOptimize: PropTypes.func.isRequired,
+	solving: PropTypes.bool.isRequired,
 };
 
 interface ErrorBoundaryProps {

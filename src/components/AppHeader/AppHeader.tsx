@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { CgShapeRhombus } from "react-icons/cg";
 
 import { APP_VERSION } from "../../constants";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 interface AppHeaderProps {
 	onShowChangelog: () => void;
@@ -28,9 +29,11 @@ const languageFlagClasses: Record<string, string> = {
 
 const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 	onShowChangelog,
+
 	onShowTranslationRequestDialog, // Destructure new prop
 }) => {
 	// Use breakpoint for 'sm' (640px) as per Tailwind's default
+	const isSmallAndUp = useBreakpoint("640px");
 	const { t, i18n } = useTranslation();
 	const currentLanguage = i18n.language.split("-")[0]; // Get base language code
 
@@ -72,6 +75,8 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 					<DropdownMenu.Trigger>
 						<IconButton
 							variant="soft"
+							radius="full"
+							size={isSmallAndUp ? "2" : "1"}
 							aria-label={t("languageInfo.changeLanguage") || "Change language"}
 						>
 							<span className={`${currentFlagClass} text-sm sm:text-base`} />
@@ -97,8 +102,9 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 				<IconButton
-					className="!ml-1 !hidden  sm:!inline"
+					className="!ml-[1] !hidden sm:!inline"
 					color="amber"
+					radius="full"
 					variant="ghost"
 					aria-label={t("translationRequest.openDialogLabel") || "Open translation request dialog"}
 					onClick={() => {
@@ -124,7 +130,6 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 
 			<h2 className="items-center gap-1 text-xs sm:text-base header__title">
 				{t("appHeader.subTitle")}&nbsp;
-				<strong>AI</strong>
 				<span className="font-thin"> {APP_VERSION}</span>
 				<Tooltip content={t("buttons.changelog")}>
 					<IconButton
