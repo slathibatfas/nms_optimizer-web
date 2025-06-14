@@ -16,14 +16,14 @@
 
 .header__title {
 	font-weight: 700;
-	color: var(--gray-a12);
+	color: var(--gray-12);
 	filter: drop-shadow(0 0 4px var(--accent-3));
 }
 
 .header__title strong {
-	font-weight: 900;
-	color: var(--accent-11);
-	filter: drop-shadow(0 0px 4px var(--accent-track));
+	font-weight: 700;
+	color: var(--gray-12);
+	filter: drop-shadow(0 0 8px var(--accent-a6));
 }
 
 .selectLanguage__header {

@@ -3,7 +3,8 @@ import "./AppHeader.css";
 import "flag-icons/css/flag-icons.min.css";
 
 import { CounterClockwiseClockIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { DropdownMenu, IconButton, Separator, Tooltip } from "@radix-ui/themes";
+import { DropdownMenu, IconButton, Separator, Tooltip } from "@radix-ui/themes"; // Import PropTypes
+import PropTypes from "prop-types";
 import React, { useMemo } from "react";
 import ReactGA from "react-ga4";
 import { useTranslation } from "react-i18next";
@@ -115,9 +116,7 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 					<InfoCircledIcon />
 				</IconButton>
 			</div>
-			<h1 className="text-2xl sm:text-4xl header__logo--text">
-				NO MAN&apos;S SK<span style={{ letterSpacing: "0.0em" }}>Y</span>
-			</h1>
+			<h1 className="text-2xl sm:text-4xl header__logo--text">NO MAN&apos;S SKY</h1>
 
 			<div className="flex items-center w-full gap-2 m-1 mb-2">
 				<Separator size="1" orientation="horizontal" color="cyan" decorative className="flex-1" />
@@ -128,12 +127,12 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 				<Separator size="1" orientation="horizontal" color="cyan" decorative className="flex-1" />
 			</div>
 
-			<h2 className="items-center gap-1 text-xs sm:text-base header__title">
-				{t("appHeader.subTitle")}&nbsp;
-				<span className="font-thin"> {APP_VERSION}</span>
+			<h2 className="items-center text-xs sm:text-base header__title">
+				<strong>{t("appHeader.subTitle")}</strong>
+				<span className="font-thin"> {APP_VERSION}</span>&nbsp;&nbsp;
 				<Tooltip content={t("buttons.changelog")}>
 					<IconButton
-						className="shadow-sm !cursor-pointer"
+						className="shadow-sm"
 						variant="ghost"
 						radius="full"
 						size="1"
@@ -146,7 +145,6 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 							onShowChangelog();
 						}}
 					>
-						&nbsp;
 						<CounterClockwiseClockIcon className="w-4 h-4 sm:w-5 sm:h-5" />
 					</IconButton>
 				</Tooltip>
@@ -155,7 +153,12 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 	);
 };
 
-// Memoize the component as it has no props and its content is static.
-const AppHeader = React.memo(AppHeaderInternal);
+// Add propTypes for AppHeaderInternal
+AppHeaderInternal.propTypes = {
+	onShowChangelog: PropTypes.func.isRequired,
+	onShowTranslationRequestDialog: PropTypes.func.isRequired,
+};
 
+// Memoize the component
+const AppHeader = React.memo(AppHeaderInternal);
 export default AppHeader;
