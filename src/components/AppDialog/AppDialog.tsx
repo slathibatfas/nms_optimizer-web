@@ -72,27 +72,30 @@ const AppDialog: React.FC<AppDialogProps> = ({
 						<Dialog.Title className="flex items-start gap-2 text-xl sm:text-2xl heading-styled">
 							{titleKey === "dialogs.titles.instructions" && (
 								<QuestionMarkCircledIcon
-									className="w-6 h-6"
+									className="w-6 h-6 mt-0 sm:mt-1"
 									style={{ color: "var(--accent-11)" }}
 								/>
 							)}
 							{titleKey === "dialogs.titles.changelog" && (
 								<CounterClockwiseClockIcon
-									className="w-6 h-6"
+									className="w-6 h-6 mt-0 sm:mt-1"
 									style={{ color: "var(--accent-11)" }}
 								/>
 							)}
 							{titleKey === "dialogs.titles.about" && (
-								<InfoCircledIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />
+								<InfoCircledIcon
+									className="w-6 h-6 mt-0 sm:mt-1"
+									style={{ color: "var(--accent-11)" }}
+								/>
 							)}
 							{titleKey === "dialogs.titles.serverError" && (
 								<ExclamationTriangleIcon
-									className="inline w-6 h-6"
+									className="w-6 h-6 mt-0 sm:mt-1"
 									style={{ color: "var(--red-9)" }}
 								/>
 							)}
 							{titleKey === "dialogs.titles.translationRequest" && (
-								<GlobeIcon className="w-6 h-6" style={{ color: "var(--accent-11)" }} />
+								<GlobeIcon className="w-6 h-6 mt-0 sm:mt-1" style={{ color: "var(--accent-11)" }} />
 							)}
 							{title}
 						</Dialog.Title>

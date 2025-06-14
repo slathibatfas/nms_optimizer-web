@@ -34,7 +34,7 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({ onShowChangelog }) => {
 			<h2 className="items-center gap-1 text-xs sm:text-base header__title">
 				{t("appHeader.subTitle")}&nbsp;
 				<strong>AI</strong>
-				<span className="mr-px font-thin"> {APP_VERSION}</span>
+				<span className="font-thin"> {APP_VERSION}</span>
 				<Tooltip content={t("buttons.changelog")}>
 					<IconButton
 						className="shadow-sm !cursor-pointer"
@@ -50,6 +50,7 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({ onShowChangelog }) => {
 							onShowChangelog();
 						}}
 					>
+						&nbsp;
 						<CounterClockwiseClockIcon className="w-4 h-4 sm:w-5 sm:h-5" />
 					</IconButton>
 				</Tooltip>

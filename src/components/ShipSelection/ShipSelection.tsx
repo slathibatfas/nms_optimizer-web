@@ -85,10 +85,10 @@ const ShipSelection: React.FC<ShipSelectionProps> = ({ solving }) => {
 					</Button>
 				) : (
 					<Button
-						size="2"
+						size="1"
 						variant="soft"
 						aria-label="Select ship type"
-						className="!cursor-pointer !mb-1"
+						className="!cursor-pointer !mt-1"
 					>
 						<GearIcon className="w-4 h-4 sm:w-5 sm:h-5" />
 					</Button>
