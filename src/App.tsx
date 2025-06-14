@@ -216,7 +216,7 @@ const MainAppContent: FC<{
 					{!isSharedGrid &&
 						(isLarge ? (
 							<ScrollArea
-								className={`gridContainer__sidebar p-4 ml-6 shadow-md rounded-xl backdrop-blur-xl`}
+								className={`gridContainer__sidebar p-4 ml-4 shadow-md rounded-xl backdrop-blur-xl`}
 								style={{
 									height: gridHeight ? `${gridHeight}px` : DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT,
 								}}
@@ -224,7 +224,7 @@ const MainAppContent: FC<{
 								<TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
 							</ScrollArea>
 						) : (
-							<aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-4 pr-2">
+							<aside className="items-start flex-grow-0 flex-shrink-0 w-full pt-8">
 								<TechTreeComponent handleOptimize={handleOptimize} solving={solving} />
 							</aside>
 						))}
