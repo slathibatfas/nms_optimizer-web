@@ -26,7 +26,7 @@ const ChangeLogContent: React.FC = () => {
 				<li className="appDialog__listItem">Added internationalization (i18n) support.</li>
 				<li className="appDialog__listItem">Added a language selection UI element.</li>
 				<li className="appDialog__listItem">
-					Added Spanish and French translations (initial machine-generated draft).
+					Added Spanish, French, and German translations (initial machine-generated draft).
 				</li>
 			</ul>
 

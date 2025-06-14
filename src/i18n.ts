@@ -3,7 +3,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 
-const languages = ["en", "dev", "es", "fr"];
+const languages = ["en", "dev", "es", "fr", "de"];
 
 // eslint-disable-next-line import/no-named-as-default-member
 void i18n
