@@ -69,6 +69,10 @@
 		"builtBy": "[dev] Built by jbelew (void23 | QQ9Y-EJRS-P8KGW) • {{buildVersion}}",
 		"supportPrompt": "[dev] If you found this application useful, consider supporting its development with: "
 	},
+	"translationRequest": {
+		"prompt": "[dev] Looking for volunteer translators! Click <1>here</1> for more information.",
+		"openDialogLabel": "[dev] Open translation request information"
+	},
 	"platformLabel": "[dev] PLATFORM:",
 	"unknownPlatform": "[dev] Unknown ({{platformKey}})",
 	"platformTypes": {

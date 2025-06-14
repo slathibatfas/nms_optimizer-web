@@ -204,19 +204,22 @@ const MainAppContent: FC<{
 							isFirstVisit={isFirstVisit}
 						/>
 
-						<p className="pb-0 mt-4 text-sm text-center sm:text-base text-pretty">
-							Looking for volunteer translators! Click{" "}
-							<button
-								type="button"
-								onClick={handleShowTranslationRequestDialog}
-								className="!underline !cursor-pointer"
-								style={{ color: "var(--accent-11)" }}
-								aria-label={t("translation.openDialogLabel") || "Open translation request dialog"} // Add an accessible label
-							>
-								here
-							</button>{" "}
-							for more information.
-						</p>
+						<div className="pb-0 mt-4 text-sm text-center sm:text-base text-pretty">
+							<Trans
+								i18nKey="translationRequest.prompt"
+								components={{
+									1: (
+										<button
+											type="button"
+											onClick={handleShowTranslationRequestDialog}
+											className="!underline !cursor-pointer"
+											style={{ color: "var(--accent-11)" }}
+											aria-label={t("translation.openDialogLabel")}
+										/>
+									),
+								}}
+							/>
+						</div>
 					</div>
 					{!isSharedGrid &&
 						(isLarge ? (

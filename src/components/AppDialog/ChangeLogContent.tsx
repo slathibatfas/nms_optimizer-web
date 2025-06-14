@@ -24,6 +24,7 @@ const ChangeLogContent: React.FC = () => {
 			<h2 className="pt-2 appDialog__subheading">Version 2.87 (2025-06-10)</h2>
 			<ul className="appDialog__list">
 				<li className="appDialog__listItem">Added i18n support.</li>
+				<li className="appDialog__listItem">Added (really bad LLM-based) ES and FR translation.</li>
 			</ul>
 
 			<h2 className="pt-2 appDialog__subheading">Version 2.86 (2025-06-10)</h2>
