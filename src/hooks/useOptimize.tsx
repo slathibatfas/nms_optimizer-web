@@ -1,12 +1,13 @@
 // src/hooks/useOptimize.tsx
-import { useState, useCallback, useEffect, useRef } from "react";
-import { useGridStore, Grid, ApiResponse } from "../store/GridStore";
-import { useOptimizeStore } from "../store/OptimizeStore";
-import { API_URL } from "../constants";
-import { useTechStore } from "../store/TechStore";
-import { useShipTypesStore } from "./useShipTypes";
-import { useBreakpoint } from "./useBreakpoint";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ReactGA from "react-ga4";
+
+import { API_URL } from "../constants";
+import { ApiResponse, Grid, useGridStore } from "../store/GridStore";
+import { useOptimizeStore } from "../store/OptimizeStore";
+import { useTechStore } from "../store/TechStore";
+import { useBreakpoint } from "./useBreakpoint";
+import { useShipTypesStore } from "./useShipTypes";
 
 interface UseOptimizeReturn {
 	solving: boolean;
@@ -18,6 +19,58 @@ interface UseOptimizeReturn {
 	clearPatternNoFitTech: () => void; // To allow UI to clear the PNF state (e.g., on dialog cancel)
 	// New handler for the dialog's "Force Optimize" action
 	handleForceCurrentPnfOptimize: () => Promise<void>;
+}
+
+interface ApiErrorData {
+	message?: string;
+	// Add other potential error fields if known
+}
+
+// Type guard for ApiErrorData
+function isApiErrorData(value: unknown): value is ApiErrorData {
+	if (typeof value === "object" && value !== null) {
+		// Check if 'message' is either a string or not present (which is fine for an optional property)
+		// or if it's explicitly undefined.
+		const potential = value as { message?: unknown };
+		return typeof potential.message === "string" || typeof potential.message === "undefined";
+	}
+	return false;
+}
+
+// Type guard for ApiResponse
+// Note: This assumes the structure of ApiResponse based on its usage.
+// For a more robust solution, ensure this guard accurately reflects the ApiResponse interface from GridStore.ts.
+function isApiResponse(value: unknown): value is ApiResponse {
+	if (typeof value !== "object" || value === null) {
+		return false;
+	}
+	const obj = value as Record<string, unknown>; // Cast to a general object for property access
+
+	// Check for mandatory properties and their types
+	if (typeof obj.solve_method !== "string") {
+		return false;
+	}
+
+	// Check for 'grid' property: can be null or an object.
+	// A more detailed 'isGrid' type guard would be better if Grid structure is complex.
+	if (obj.grid !== null) {
+		if (typeof obj.grid !== "object" || !obj.grid) return false; // Ensure grid is an object if not null
+		const gridCandidate = obj.grid as Record<string, unknown>;
+		// Basic check for Grid structure
+		if (
+			!Array.isArray(gridCandidate.cells) ||
+			typeof gridCandidate.width !== "number" ||
+			typeof gridCandidate.height !== "number"
+		) {
+			return false;
+		}
+	}
+
+	// Check for optional properties (if they exist, they must be numbers)
+	if (Object.hasOwn(obj, "max_bonus") && typeof obj.max_bonus !== "number") return false;
+	if (Object.hasOwn(obj, "solved_bonus") && typeof obj.solved_bonus !== "number") return false;
+
+	return true;
 }
 
 export const useOptimize = (): UseOptimizeReturn => {
@@ -37,7 +90,7 @@ export const useOptimize = (): UseOptimizeReturn => {
 	useEffect(() => {
 		if (solving && gridContainerRef.current && !isLarge) {
 			const element = gridContainerRef.current;
-			const offset = 16;
+			const offset = 8;
 
 			const elementRect = element.getBoundingClientRect();
 			const absoluteElementTop = elementRect.top + window.pageYOffset;
@@ -99,46 +152,59 @@ export const useOptimize = (): UseOptimizeReturn => {
 				});
 
 				if (!response.ok) {
-					const errorData = await response.json();
-					throw new Error(
-						errorData.message || `Failed to fetch data: ${response.status} ${response.statusText}`
-					);
+					const errorJson: unknown = await response.json();
+					let finalErrorMessage = `Failed to fetch data: ${response.status} ${response.statusText}`;
+
+					if (isApiErrorData(errorJson)) {
+						// If errorJson.message is a non-empty string, use it.
+						// Otherwise, the default finalErrorMessage is used.
+						if (errorJson.message) {
+							finalErrorMessage = errorJson.message;
+						}
+					}
+					throw new Error(finalErrorMessage);
 				}
 
-				const data: ApiResponse = await response.json();
+				const responseDataUnknown: unknown = await response.json();
 
-				if (data.solve_method === "Pattern No Fit" && data.grid === null && !forced) {
-					setPatternNoFitTech(tech);
-					ReactGA.event("no_fit_warning", {
-						platform: selectedShipType,
-						tech: tech,
-					});
-					// Do not set grid or result yet, wait for user to force
-				} else {
-					// This block handles:
-					// 1. Successful solve (not "Pattern No Fit")
-					// 2. Successful FORCED solve
-					// 3. API returning "Pattern No Fit" but with a grid (unexpected, but handled)
-					if (patternNoFitTech === tech) {
-						// Clear PNF if it was for the current tech
-						setPatternNoFitTech(null);
-					}
-					setResult(data, tech);
-					if (data.grid) {
-						setGrid(data.grid);
+				if (isApiResponse(responseDataUnknown)) {
+					const data: ApiResponse = responseDataUnknown; // Now data is safely typed
+
+					if (data.solve_method === "Pattern No Fit" && data.grid === null && !forced) {
+						setPatternNoFitTech(tech);
+						ReactGA.event("no_fit_warning", {
+							platform: selectedShipType,
+							tech: tech,
+						});
+						// Do not set grid or result yet, wait for user to force
 					} else {
-						console.warn(
-							"API response did not contain a grid for a successful or forced solve. Grid not updated.",
-							data
-						);
-					}
+						// This block handles:
+						// 1. Successful solve (not "Pattern No Fit")
+						// 2. Successful FORCED solve
+						// 3. API returning "Pattern No Fit" but with a grid (unexpected, but handled)
+						if (patternNoFitTech === tech) {
+							// Clear PNF if it was for the current tech
+							setPatternNoFitTech(null);
+						}
+						setResult(data, tech);
+						if (data.grid) {
+							setGrid(data.grid);
+						} else {
+							console.warn(
+								"API response did not contain a grid for a successful or forced solve. Grid not updated.",
+								data
+							);
+						}
 
-					console.log("Response from API:", data);
-					ReactGA.event("optimize_tech", {
-						platform: selectedShipType,
-						tech: tech,
-						solve_method: data.solve_method,
-					});
+						console.log("Response from API:", data);
+						ReactGA.event("optimize_tech", {
+							platform: selectedShipType,
+							tech: tech,
+							solve_method: data.solve_method,
+						});
+					}
+				} else {
+					throw new Error("Invalid API response structure for successful optimization.");
 				}
 			} catch (error) {
 				console.error("Error during optimization:", error);
