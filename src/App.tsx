@@ -186,7 +186,10 @@ const MainAppContent: FC<{
 							</span>
 							<span
 								className="self-start flex-1 min-w-0 mt-[3] sm:mt-0"
-								style={{ textWrap: "balance" }}
+								style={{
+									textWrap: "balance",
+									visibility: gridTableTotalWidth ? "visible" : "hidden",
+								}}
 							>
 								{t(`platforms.${selectedShipType}`)}
 							</span>
