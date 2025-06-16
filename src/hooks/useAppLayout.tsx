@@ -136,8 +136,6 @@ export const useAppLayout = (): AppLayout => {
 		};
 	}, [columnWidth]);
 
-	console.log(gridTableTotalWidth);
-
 	return {
 		containerRef,
 		gridTableRef,
