@@ -227,46 +227,23 @@ export const useGridStore = create<GridStore>()(
 			},
 
 			toggleCellSupercharged: (rowIndex, columnIndex) =>
-				set((state) =>
-					state.grid.cells[rowIndex]?.[columnIndex]?.active
-						? {
-								...state,
-								grid: {
-									...state.grid,
-									cells: {
-										...state.grid.cells,
-										[rowIndex]: {
-											...state.grid.cells[rowIndex],
-											[columnIndex]: {
-												...state.grid.cells[rowIndex][columnIndex],
-												supercharged: !state.grid.cells[rowIndex][columnIndex].supercharged,
-											},
-										},
-									},
-								},
-							}
-						: state
-				),
+				set((state) => {
+					const cell = state.grid.cells[rowIndex]?.[columnIndex];
+					if (cell?.active) {
+						cell.supercharged = !cell.supercharged;
+					}
+				}),
 
 			setCellActive: (rowIndex, columnIndex, active) => {
-				set((state) => ({
-					grid: {
-						...state.grid,
-						cells: {
-							...state.grid.cells,
-							[rowIndex]: {
-								...state.grid.cells[rowIndex],
-								[columnIndex]: {
-									...state.grid.cells[rowIndex][columnIndex],
-									active,
-									supercharged: active
-										? state.grid.cells[rowIndex][columnIndex].supercharged
-										: false,
-								},
-							},
-						},
-					},
-				}));
+				set((state) => {
+					const cell = state.grid.cells[rowIndex]?.[columnIndex];
+					if (cell) {
+						cell.active = active;
+						if (!active) {
+							cell.supercharged = false;
+						}
+					}
+				});
 			},
 
 			setCellSupercharged: (rowIndex, columnIndex, supercharged) => {
