@@ -5,7 +5,7 @@ import PropTypes from "prop-types"; // Import PropTypes
 import React, { memo, useCallback, useMemo, useRef, useState } from "react"; // Import useCallback, memo, and useMemo
 import { useTranslation } from "react-i18next";
 
-import { Grid, useGridStore } from "../../store/GridStore";
+import { useGridStore, selectTotalSuperchargedCells } from "../../store/GridStore";
 import { useShakeStore } from "../../store/ShakeStore";
 import { useTechStore } from "../../store/TechStore";
 
@@ -30,7 +30,6 @@ interface GridCellProps {
 		adjacency_bonus?: number; // Make adjacency_bonus optional
 		image?: string | null | undefined; // Make image optional
 	};
-	grid: Grid;
 	isSharedGrid: boolean;
 }
 
@@ -40,22 +39,17 @@ interface GridCellProps {
  * @param rowIndex - The row index of the cell
  * @param columnIndex - The column index of the cell
  * @param cell - The cell object, containing properties like label, supercharged, active, and image
- * @param grid - The grid object, containing all cells and grid properties
  */
 
 const GridCell: React.FC<GridCellProps> = memo(
-	({ rowIndex, columnIndex, cell, grid, isSharedGrid }) => {
+	({ rowIndex, columnIndex, cell, isSharedGrid }) => {
 		const toggleCellActive = useGridStore((state) => state.toggleCellActive);
 		const toggleCellSupercharged = useGridStore((state) => state.toggleCellSupercharged);
+		const totalSupercharged = useGridStore(selectTotalSuperchargedCells);
 		const [longPressTriggered, setLongPressTriggered] = useState(false);
 		const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 		const { setShaking } = useShakeStore(); // Get setShaking from the store
 		const { t } = useTranslation();
-
-		// Memoize the calculation for totalSupercharged cells
-		const totalSupercharged = useMemo(() => {
-			return grid.cells.flat().filter((c) => c.supercharged).length;
-		}, [grid.cells]);
 
 		/**
 		 * Handles a click on the cell.
@@ -243,7 +237,6 @@ GridCell.propTypes = {
 		adjacency_bonus: PropTypes.number,
 		image: PropTypes.string,
 	}).isRequired,
-	grid: PropTypes.object.isRequired, // Consider a more specific shape if needed
 	isSharedGrid: PropTypes.bool.isRequired,
 };
 
