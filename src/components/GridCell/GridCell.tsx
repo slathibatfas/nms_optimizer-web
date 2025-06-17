@@ -5,7 +5,7 @@ import PropTypes from "prop-types"; // Import PropTypes
 import React, { memo, useCallback, useMemo, useRef, useState } from "react"; // Import useCallback, memo, and useMemo
 import { useTranslation } from "react-i18next";
 
-import { Grid, useGridStore } from "../../store/GridStore";
+import { useGridStore, selectTotalSuperchargedCells } from "../../store/GridStore";
 import { useShakeStore } from "../../store/ShakeStore";
 import { useTechStore } from "../../store/TechStore";
 
@@ -39,20 +39,17 @@ interface GridCellProps {
  * @param rowIndex - The row index of the cell
  * @param columnIndex - The column index of the cell
  * @param cell - The cell object, containing properties like label, supercharged, active, and image
- * @param grid - The grid object, containing all cells and grid properties
  */
 
 const GridCell: React.FC<GridCellProps> = memo(
 	({ rowIndex, columnIndex, cell, isSharedGrid }) => {
 		const toggleCellActive = useGridStore((state) => state.toggleCellActive);
 		const toggleCellSupercharged = useGridStore((state) => state.toggleCellSupercharged);
+		const totalSupercharged = useGridStore(selectTotalSuperchargedCells);
 		const [longPressTriggered, setLongPressTriggered] = useState(false);
 		const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 		const { setShaking } = useShakeStore(); // Get setShaking from the store
 		const { t } = useTranslation();
-
-		// Get the totalSupercharged value from the useGridStore using the new selector
-		const totalSupercharged = useGridStore((state) => state.selectTotalSuperchargedCells());
 
 		/**
 		 * Handles a click on the cell.

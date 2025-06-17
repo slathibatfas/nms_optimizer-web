@@ -4,7 +4,7 @@ import "./GridTable.css";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Grid, useGridStore } from "../../store/GridStore"; // Import useGridStore
+import { Grid, selectHasModulesInGrid, useGridStore } from "../../store/GridStore";
 import { useShakeStore } from "../../store/ShakeStore";
 import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
@@ -36,9 +36,7 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
 	({ grid, activateRow, deActivateRow, solving, shared }, ref) => {
 		const { shaking } = useShakeStore();
 		const { t } = useTranslation();
-
-		// Get hasModulesInGrid from the store
-		const hasModulesInGrid = useGridStore((state) => state.selectHasModulesInGrid());
+		const hasModulesInGrid = useGridStore(selectHasModulesInGrid);
 
 		// Calculate derived values from the grid.
 		// This hook is now called unconditionally before any early returns.
@@ -92,7 +90,7 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
 									key={`${rowIndex}-${columnIndex}`} // More robust key
 									rowIndex={rowIndex}
 									columnIndex={columnIndex}
-									cell={cellData}
+									cell={cellData} // Pass the cell data directly
 									isSharedGrid={shared}
 								/>
 							))}

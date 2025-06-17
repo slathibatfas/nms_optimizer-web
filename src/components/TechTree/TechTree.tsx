@@ -74,35 +74,29 @@ interface TechTreeSectionProps {
 	// selectedShipType is no longer passed to TechTreeRow, but TechTreeSection might still receive it if needed elsewhere.
 }
 
-const TechTreeSection: React.FC<TechTreeSectionProps> = ({
-	type,
-	technologies,
-	handleOptimize,
-	solving,
-}) => {
-	// selectedShipType is kept here if TechTreeSection needs it for other things
-	const { t } = useTranslation();
-	// Determine the image path from the typeImageMap
-	const imagePath = typeImageMap[type] ? `/assets/img/sidebar/${typeImageMap[type]}` : null;
-	return (
-		<div className="mb-6 lg:mb-6 last:mb-0 sidebar__section">
-			<div className="flex items-center">
-				{/* Conditionally render the image if imagePath is available */}
-				{imagePath &&
-					typeImageMap[type] && ( // Ensure type exists in map before rendering image
-						<img src={imagePath} alt={type} className="ml-1 h-[24] w-[32] mr-2 opacity-25" />
-					)}
-				<h2 className="text-xl sm:text-2xl heading-styled">
-					{t(`techTree.categories.${type}`).toUpperCase()}
-				</h2>
-			</div>
+const TechTreeSection: React.FC<TechTreeSectionProps> = React.memo(
+	({ type, technologies, handleOptimize, solving }) => {
+		// selectedShipType is kept here if TechTreeSection needs it for other things
+		const { t } = useTranslation();
+		// Determine the image path from the typeImageMap
+		const imagePath = typeImageMap[type] ? `/assets/img/sidebar/${typeImageMap[type]}` : null;
+		return (
+			<div className="mb-6 lg:mb-6 last:mb-0 sidebar__section">
+				<div className="flex items-center">
+					{/* Conditionally render the image if imagePath is available */}
+					{imagePath &&
+						typeImageMap[type] && ( // Ensure type exists in map before rendering image
+							<img src={imagePath} alt={type} className="ml-1 h-[24] w-[32] mr-2 opacity-25" />
+						)}
+					<h2 className="text-xl sm:text-2xl heading-styled">
+						{t(`techTree.categories.${type}`).toUpperCase()}
+					</h2>
+				</div>
 
-			<Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />
+				<Separator orientation="horizontal" size="4" className="mt-2 mb-4 sidebar__separator" />
 
-			{/* Render each technology as a TechTreeRow, sorted by label */}
-			{technologies
-				.sort((a, b) => a.label.localeCompare(b.label))
-				.map((tech) => (
+				{/* Render each technology as a TechTreeRow */}
+				{technologies.map((tech) => (
 					<TechTreeRow
 						key={tech.key}
 						tech={tech.key}
@@ -112,10 +106,12 @@ const TechTreeSection: React.FC<TechTreeSectionProps> = ({
 						techImage={tech.image} // Pass the tech.image here
 					/>
 				))}
-		</div>
-	);
-};
+			</div>
+		);
+	}
+);
 
+TechTreeSection.displayName = "TechTreeSection";
 TechTreeSection.propTypes = {
 	type: PropTypes.string.isRequired,
 	technologies: PropTypes.array.isRequired,
@@ -144,11 +140,16 @@ const TechTreeContent: React.FC<TechTreeComponentProps> = React.memo(
 					);
 				}
 
-				result[category] = safeTechnologies.map((tech: TechTreeItem) => ({
-					...tech,
-					modules: tech.modules || [], // Handle cases where modules might be missing
-					image: tech.image || null, // Handle cases where image might be missing
-				}));
+				// Map and ensure properties, then sort by label
+				const mappedAndSortedTechnologies = safeTechnologies
+					.map((tech: TechTreeItem) => ({
+						...tech,
+						modules: tech.modules || [], // Handle cases where modules might be missing
+						image: tech.image || null, // Handle cases where image might be missing
+					}))
+					.sort((a, b) => a.label.localeCompare(b.label));
+
+				result[category] = mappedAndSortedTechnologies;
 			});
 			return result;
 		}, [techTree]);

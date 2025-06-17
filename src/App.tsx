@@ -15,7 +15,6 @@ import { GridTable } from "./components/GridTable/GridTable";
 import GridTableButtons from "./components/GridTableButtons/GridTableButtons";
 import MessageSpinner from "./components/MessageSpinner/MessageSpinner";
 import ShipSelection from "./components/ShipSelection/ShipSelection";
-import TechTreeComponent from "./components/TechTree/TechTree";
 import { TRACKING_ID } from "./constants"; // APP_NAME will come from i18n
 import { useAppLayout } from "./hooks/useAppLayout";
 import { useOptimize } from "./hooks/useOptimize";
@@ -28,6 +27,8 @@ import { useOptimizeStore } from "./store/OptimizeStore";
 const ChangelogPage = lazy(() => import("./pages/ChangeLogPage"));
 const InstructionsPage = lazy(() => import("./pages/InstructionsPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
+
+const TechTreeComponent = lazy(() => import("./components/TechTree/TechTree"));
 
 // --- Page Content ---
 import AboutContent from "./components/AppDialog/AboutContent";
