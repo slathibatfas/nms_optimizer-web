@@ -129,6 +129,8 @@ export type GridStore = {
 	setCellActive: (rowIndex: number, columnIndex: number, active: boolean) => void;
 	setCellSupercharged: (rowIndex: number, columnIndex: number, supercharged: boolean) => void;
 	setIsSharedGrid: (isShared: boolean) => void;
+	selectTotalSuperchargedCells: () => number;
+	selectHasModulesInGrid: () => boolean;
 };
 
 // --- Create Debounced Storage ---
@@ -333,6 +335,18 @@ export const useGridStore = create<GridStore>()(
 						});
 					});
 				});
+			},
+
+			selectTotalSuperchargedCells: () => {
+				const grid = get().grid;
+				if (!grid || !grid.cells) return 0;
+				return grid.cells.flat().filter((c) => c.supercharged).length;
+			},
+
+			selectHasModulesInGrid: () => {
+				const grid = get().grid;
+				if (!grid || !grid.cells) return false;
+				return grid.cells.flat().some((cell) => cell.module !== null);
 			},
 		})),
 		// --- Persist Configuration ---

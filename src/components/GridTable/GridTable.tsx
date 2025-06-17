@@ -4,7 +4,7 @@ import "./GridTable.css";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Grid } from "../../store/GridStore";
+import { Grid, useGridStore } from "../../store/GridStore"; // Import useGridStore
 import { useShakeStore } from "../../store/ShakeStore";
 import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
@@ -37,16 +37,18 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
 		const { shaking } = useShakeStore();
 		const { t } = useTranslation();
 
+		// Get hasModulesInGrid from the store
+		const hasModulesInGrid = useGridStore((state) => state.selectHasModulesInGrid());
+
 		// Calculate derived values from the grid.
 		// This hook is now called unconditionally before any early returns.
-		const { hasModulesInGrid, firstInactiveRowIndex, lastActiveRowIndex } = useMemo(
+		const { firstInactiveRowIndex, lastActiveRowIndex } = useMemo(
 			() => {
 				if (!grid || !grid.cells) {
 					// Return default values if grid is not available
-					return { hasModulesInGrid: false, firstInactiveRowIndex: -1, lastActiveRowIndex: -1 };
+					return { firstInactiveRowIndex: -1, lastActiveRowIndex: -1 };
 				}
 				return {
-					hasModulesInGrid: grid.cells.flat().some((cell) => cell.module !== null),
 					firstInactiveRowIndex: grid.cells.findIndex((r) => r.every((cell) => !cell.active)),
 					lastActiveRowIndex: grid.cells
 						.map((r) => r.some((cell) => cell.active))
@@ -91,7 +93,6 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
 									rowIndex={rowIndex}
 									columnIndex={columnIndex}
 									cell={cellData}
-									grid={grid} // GridCell might need the full grid object for context
 									isSharedGrid={shared}
 								/>
 							))}

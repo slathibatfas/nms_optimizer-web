@@ -30,7 +30,6 @@ interface GridCellProps {
 		adjacency_bonus?: number; // Make adjacency_bonus optional
 		image?: string | null | undefined; // Make image optional
 	};
-	grid: Grid;
 	isSharedGrid: boolean;
 }
 
@@ -44,7 +43,7 @@ interface GridCellProps {
  */
 
 const GridCell: React.FC<GridCellProps> = memo(
-	({ rowIndex, columnIndex, cell, grid, isSharedGrid }) => {
+	({ rowIndex, columnIndex, cell, isSharedGrid }) => {
 		const toggleCellActive = useGridStore((state) => state.toggleCellActive);
 		const toggleCellSupercharged = useGridStore((state) => state.toggleCellSupercharged);
 		const [longPressTriggered, setLongPressTriggered] = useState(false);
@@ -52,10 +51,8 @@ const GridCell: React.FC<GridCellProps> = memo(
 		const { setShaking } = useShakeStore(); // Get setShaking from the store
 		const { t } = useTranslation();
 
-		// Memoize the calculation for totalSupercharged cells
-		const totalSupercharged = useMemo(() => {
-			return grid.cells.flat().filter((c) => c.supercharged).length;
-		}, [grid.cells]);
+		// Get the totalSupercharged value from the useGridStore using the new selector
+		const totalSupercharged = useGridStore((state) => state.selectTotalSuperchargedCells());
 
 		/**
 		 * Handles a click on the cell.
@@ -243,7 +240,6 @@ GridCell.propTypes = {
 		adjacency_bonus: PropTypes.number,
 		image: PropTypes.string,
 	}).isRequired,
-	grid: PropTypes.object.isRequired, // Consider a more specific shape if needed
 	isSharedGrid: PropTypes.bool.isRequired,
 };
 
