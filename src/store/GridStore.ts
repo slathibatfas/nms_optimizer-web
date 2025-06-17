@@ -26,21 +26,32 @@ function debounceSetItem(
 ): (name: string, value: StorageValue<Partial<GridStore>>) => Promise<void> {
 	let timeoutId: number | null = null;
 
-	// Return a function that matches the SetItemFunction signature
-	return async (name: string, value: StorageValue<Partial<GridStore>>): Promise<void> => {
-		try {
+	return (name: string, value: StorageValue<Partial<GridStore>>): Promise<void> => {
+		return new Promise<void>((resolve, reject) => {
 			// Cancel the existing timeout if it exists
-			if (timeoutId !== null) clearTimeout(timeoutId);
+			if (timeoutId !== null) {
+				clearTimeout(timeoutId);
+			}
 
 			// Set a new timeout for the wait period
-			timeoutId = window.setTimeout(async () => {
-				// Call the original async function
-				await setItemFn(name, value);
+			timeoutId = window.setTimeout(() => {
+				// Use an async IIFE and apply `void` to its result to ensure
+				// the function passed to setTimeout effectively returns void.
+				void (async () => {
+					try {
+						await setItemFn(name, value);
+						resolve(); // Resolve the outer promise when the debounced function completes
+					} catch (e) {
+						// Ensure that an Error object is rejected
+						if (e instanceof Error) {
+							reject(e);
+						} else {
+							reject(new Error(String(e)));
+						}
+					}
+				})();
 			}, msToWait);
-		} catch (error) {
-			// Handle any exceptions that may occur
-			console.error("Error in debounceSetItem:", error);
-		}
+		});
 	};
 }
 
@@ -123,14 +134,23 @@ export type GridStore = {
 // --- Create Debounced Storage ---
 const debouncedStorage = {
 	// Use the specific debounceSetItem function
-	setItem: debounceSetItem(async (name: string, value: StorageValue<Partial<GridStore>>) => {
-		try {
-			const storageValue = JSON.stringify(value);
-			localStorage.setItem(name, storageValue);
-		} catch (e) {
-			console.error("Failed to save to localStorage:", e);
-		}
-	}, 500),
+	setItem: debounceSetItem(
+		(name: string, value: StorageValue<Partial<GridStore>>): Promise<void> => {
+			try {
+				const storageValue = JSON.stringify(value);
+				localStorage.setItem(name, storageValue);
+				return Promise.resolve();
+			} catch (e) {
+				console.error("Failed to save to localStorage:", e);
+				// Ensure that an Error object is rejected
+				if (e instanceof Error) {
+					return Promise.reject(e);
+				}
+				return Promise.reject(new Error(String(e)));
+			}
+		},
+		500
+	),
 
 	getItem: (name: string): StorageValue<Partial<GridStore>> | null => {
 		try {
@@ -150,7 +170,7 @@ const debouncedStorage = {
 			if (!str) {
 				return null;
 			}
-			return JSON.parse(str);
+			return JSON.parse(str) as StorageValue<Partial<GridStore>>;
 		} catch (e) {
 			console.error("Failed to load from localStorage:", e);
 			return null;

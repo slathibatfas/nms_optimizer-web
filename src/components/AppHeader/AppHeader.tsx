@@ -2,8 +2,7 @@
 import "./AppHeader.css";
 
 import { CounterClockwiseClockIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { IconButton, Separator, Tooltip } from "@radix-ui/themes"; // Import PropTypes
-import PropTypes from "prop-types";
+import { IconButton, Separator, Tooltip } from "@radix-ui/themes";
 import React from "react";
 import ReactGA from "react-ga4";
 import { useTranslation } from "react-i18next";
@@ -29,13 +28,16 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 			<div className="!absolute !top-2 !right-4 sm:!top-4 sm:!right-8 z-10 !cursor-pointer flex items-center">
 				<LanguageSelector />
 				<IconButton
-					className="!ml-[1] !hidden sm:!inline"
+					className="!ml-px !hidden sm:!inline"
 					color="amber"
 					radius="full"
 					variant="ghost"
 					aria-label={t("translationRequest.openDialogLabel") || "Open translation request dialog"}
 					onClick={() => {
-						ReactGA.event("show_translation_request_dialog");
+						ReactGA.event({
+							category: "User Interactions",
+							action: "show_translation_request_dialog",
+						});
 						onShowTranslationRequestDialog();
 					}}
 				>
@@ -77,12 +79,6 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 			</h2>
 		</header>
 	);
-};
-
-// Add propTypes for AppHeaderInternal
-AppHeaderInternal.propTypes = {
-	onShowChangelog: PropTypes.func.isRequired,
-	onShowTranslationRequestDialog: PropTypes.func.isRequired,
 };
 
 // Memoize the component

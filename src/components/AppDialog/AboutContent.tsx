@@ -1,17 +1,9 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
-import ReactMarkdown from "react-markdown";
 
-const InstructionsContent: React.FC = () => {
-	const { t } = useTranslation();
+import MarkdownContentRenderer from "./MarkdownContentRenderer";
 
-	const content = t("dialogs.content.about");
-
-	return (
-		<article className="text-base">
-			<ReactMarkdown>{content}</ReactMarkdown>
-		</article>
-	);
+const AboutContent: React.FC = () => {
+	return <MarkdownContentRenderer markdownFileName="about" />;
 };
 
-export default React.memo(InstructionsContent);
+export default React.memo(AboutContent);

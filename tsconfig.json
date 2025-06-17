@@ -1,30 +1,30 @@
 {
-	"compilerOptions": {
-		"target": "esnext",
-		"lib": ["dom", "dom.iterable", "esnext"],
-		"allowJs": false,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"strict": true,
-		"forceConsistentCasingInFileNames": true,
-		"noFallthroughCasesInSwitch": true,
-		"module": "esnext",
-		"moduleResolution": "bundler",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"noEmit": true,
-		"jsx": "react-jsx",
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["./src/*"]
-		},
-		"useDefineForClassFields": true,
-		"noUncheckedSideEffectImports": true,
-		"moduleDetection": "force",
-		"types": ["vite/client", "vitest", "vitest/globals"]
-	},
-	"include": ["src"],
-	"exclude": ["node_modules"],
-	"references": [{ "path": "./tsconfig.node.json" }]
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": false, // <-- Important: Ensures TS doesn't look at .js files.
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx", // <-- This implies JSX files
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "useDefineForClassFields": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "types": ["vite/client", "vitest", "vitest/globals"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"], // <-- This explicitly includes both!
+  "exclude": ["node_modules"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
