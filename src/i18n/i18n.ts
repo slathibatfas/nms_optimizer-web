@@ -18,6 +18,7 @@ const resources = {
 	de: { translation: de },
 };
 
+// eslint-disable-next-line import/no-named-as-default-member
 void i18n
 	.use(LanguageDetector)
 	.use(initReactI18next)

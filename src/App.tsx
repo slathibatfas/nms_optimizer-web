@@ -15,7 +15,6 @@ import { GridTable } from "./components/GridTable/GridTable";
 import GridTableButtons from "./components/GridTableButtons/GridTableButtons";
 import MessageSpinner from "./components/MessageSpinner/MessageSpinner";
 import ShipSelection from "./components/ShipSelection/ShipSelection";
-// import TechTreeComponent from "./components/TechTree/TechTree"; // Changed for lazy loading
 import { TRACKING_ID } from "./constants"; // APP_NAME will come from i18n
 import { useAppLayout } from "./hooks/useAppLayout";
 import { useOptimize } from "./hooks/useOptimize";

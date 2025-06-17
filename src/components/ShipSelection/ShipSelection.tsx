@@ -3,7 +3,8 @@ import "./ShipSelection.css";
 
 import { GearIcon } from "@radix-ui/react-icons";
 import { Button, DropdownMenu, Separator } from "@radix-ui/themes";
-import React, { useCallback, useMemo, useRef } from "react"; // Added useCallback
+import PropTypes from "prop-types";
+import React, { useCallback, useMemo, useRef } from "react";
 import ReactGA from "react-ga4";
 import { useTranslation } from "react-i18next";
 
@@ -32,7 +33,7 @@ const ShipSelection: React.FC<ShipSelectionProps> = React.memo(({ solving }) => 
 		(state) => state.setGridAndResetAuxiliaryState
 	);
 	const previousSelectionRef = useRef<string | null>(null);
-	const isSmallAndUp = useBreakpoint("640px"); // sm breakpoint
+	const isSmallAndUp = useBreakpoint("640px");
 
 	const handleOptionSelect = useCallback(
 		(option: string) => {
@@ -45,11 +46,11 @@ const ShipSelection: React.FC<ShipSelectionProps> = React.memo(({ solving }) => 
 
 				const initialGrid = createGrid(DEFAULT_GRID_HEIGHT, DEFAULT_GRID_WIDTH);
 				let newCells = initialGrid.cells;
-				// If the selected ship type is a freighter, deactivate specific rows
+
+				// Deactivate middle rows if freighter is selected
 				if (option.toLowerCase().includes(FREIGHTER_KEYWORD)) {
 					newCells = initialGrid.cells.map((row, rIndex) => {
 						if (FREIGHTER_INACTIVE_ROW_INDICES.includes(rIndex)) {
-							// For these rows, map each cell to be inactive and not supercharged
 							return row.map((cell) => ({
 								...cell,
 								active: false,
@@ -65,11 +66,12 @@ const ShipSelection: React.FC<ShipSelectionProps> = React.memo(({ solving }) => 
 					width: initialGrid.width,
 					height: initialGrid.height,
 				};
+
 				setGridAndResetAuxiliaryState(finalGridPayload);
 			}
 			previousSelectionRef.current = option;
 		},
-		[setSelectedShipType, setGridAndResetAuxiliaryState, previousSelectionRef]
+		[setSelectedShipType, setGridAndResetAuxiliaryState]
 	);
 
 	return (
@@ -97,50 +99,44 @@ const ShipSelection: React.FC<ShipSelectionProps> = React.memo(({ solving }) => 
 					</Button>
 				)}
 			</DropdownMenu.Trigger>
-			<DropdownMenu.Content
-				color="cyan"
-				className="shipSelection__dropdownMenu"
-				// style={{ backgroundColor: "var(--accent-2)" }}
-			>
+			<DropdownMenu.Content color="cyan" className="shipSelection__dropdownMenu">
 				<ShipTypesDropdown
 					selectedShipType={selectedShipType}
 					handleOptionSelect={handleOptionSelect}
+					solving={solving}
 				/>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	);
+});
+ShipSelection.displayName = "ShipSelection";
+ShipSelection.propTypes = {
+	solving: PropTypes.bool.isRequired,
 };
 
 interface ShipTypesDropdownProps {
 	selectedShipType: string;
 	handleOptionSelect: (option: string) => void;
+	solving: boolean;
 }
 
 /**
- * A dropdown menu for selecting a ship type, grouped by type.
+ * Dropdown menu for selecting a ship type, grouped by category.
  *
- * This component renders a dropdown menu for selecting a ship type. The
- * component expects a `selectedShipType` prop, which indicates the currently
- * selected ship type, and a `handleOptionSelect` prop, which will be called
- * when the user selects a different ship type. Items are grouped by their 'type'
- * property.
- *
- * @param {string} selectedShipType - The currently selected ship type key.
- * @param {function} handleOptionSelect - A function to be called when the user
- *   selects a different ship type key.
+ * @param selectedShipType - The currently selected ship type key.
+ * @param handleOptionSelect - Callback when a different ship type is selected.
+ * @param solving - Boolean indicating if the solving process is active, to disable items.
  */
 const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = React.memo(
-	({ selectedShipType, handleOptionSelect }) => {
+	({ selectedShipType, handleOptionSelect, solving }) => {
 		const shipTypes = useFetchShipTypesSuspense();
 		const { t } = useTranslation();
 
-		// Group ship types by their 'type' property
 		const groupedShipTypes = useMemo(() => {
 			return Object.entries(shipTypes).reduce(
 				(acc, [key, details]) => {
-					const type = details.type; // e.g., 'Starship' or 'Multi-Tool'
+					const type = details.type;
 					if (!acc[type]) {
-						// If this type group doesn't exist yet, create it
 						acc[type] = [];
 					}
 					acc[type].push({ key, details });
@@ -159,7 +155,12 @@ const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = React.memo(
 							<span className="shipSelection__header">{t(`platformTypes.${type}`)}</span>
 						</DropdownMenu.Label>
 						{items.map(({ key }) => (
-							<DropdownMenu.RadioItem key={key} value={key} className="font-medium last:mb-2">
+							<DropdownMenu.RadioItem
+								key={key}
+								value={key}
+								className="font-medium last:mb-2"
+								disabled={solving}
+							>
 								{t(`platforms.${key}`)}
 							</DropdownMenu.RadioItem>
 						))}
@@ -169,9 +170,11 @@ const ShipTypesDropdown: React.FC<ShipTypesDropdownProps> = React.memo(
 		);
 	}
 );
-ShipTypesDropdown.displayName = "ShipTypesDropdown"; // For better debugging
+ShipTypesDropdown.displayName = "ShipTypesDropdown";
+ShipTypesDropdown.propTypes = {
+	selectedShipType: PropTypes.string.isRequired,
+	handleOptionSelect: PropTypes.func.isRequired,
+	solving: PropTypes.bool.isRequired,
+};
 
 export default ShipSelection;
-// No changes needed below this line for this specific task,
-// but ensuring the full content is here for context if the tool needs it.
-// The previous block correctly memoized ShipTypesDropdown and added a display name.
