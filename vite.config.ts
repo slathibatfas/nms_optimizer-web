@@ -32,18 +32,22 @@ const config: UserConfigExport = defineConfig({
 		}),
 
 		// Bundle visualizer
-		critical({
-			criticalUrl: '/',
-			criticalBase: './dist/',
-			criticalPages: [
-				{
-					uri: 'index.html',
-					template: 'index.html'
-				}
-			],
-			// Adjust Puppeteer arguments if necessary, e.g., for running in a CI environment without a sandbox
-			puppeteerArgs: ['--no-sandbox', '--disable-setuid-sandbox']
-		}) as never,
+{
+			// name property removed to avoid conflict
+			...critical({
+				criticalUrl: '/',
+				criticalBase: './dist/',
+				criticalPages: [
+					{
+						uri: 'index.html',
+						template: 'index.html'
+					}
+				],
+				// Adjust Puppeteer arguments if necessary, e.g., for running in a CI environment without a sandbox
+				puppeteerArgs: ['--no-sandbox', '--disable-setuid-sandbox']
+			}),
+			enforce: 'post',
+		} as never,
 		visualizer({ open: false, gzipSize: true, brotliSize: true }) as never,
 	],
 
@@ -63,7 +67,7 @@ const config: UserConfigExport = defineConfig({
 		target: "es2020",
 		minify: "esbuild",
 		cssCodeSplit: true,
-		sourcemap: "hidden",
+		sourcemap: true,
 		cssMinify: "lightningcss",
 
 		rollupOptions: {
