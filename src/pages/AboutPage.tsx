@@ -2,10 +2,12 @@ import { FC, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AboutContent from "../components/AppDialog/AboutContent";
 import InfoDialog from "../components/AppDialog/AppDialog";
+import { useMarkdownContent } from "../hooks/useMarkdownContent";
 import { APP_NAME } from "../constants";
 
 const AboutPage: FC = () => {
   const navigate = useNavigate();
+  const { isLoading, error } = useMarkdownContent("about");
   const AboutDialogContent = useMemo(() => <AboutContent />, []);
 
   useEffect(() => {
@@ -14,7 +16,7 @@ const AboutPage: FC = () => {
 
   return (
     <InfoDialog
-      isOpen={true}
+      isOpen={!isLoading && !error}
       onClose={() => navigate("/")} // Navigate back
       content={AboutDialogContent}
       title="About"

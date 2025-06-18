@@ -14,11 +14,7 @@ const MarkdownContentRenderer: React.FC<MarkdownContentRendererProps> = ({ markd
 	const { markdown, isLoading, error } = useMarkdownContent(markdownFileName);
 
 	if (isLoading) {
-		return (
-			<div className="flex items-center justify-center w-full h-32">
-				<Spinner className="dialogSpinner__spinner" />
-			</div>
-		);
+		return null;
 	}
 
 	if (error) {

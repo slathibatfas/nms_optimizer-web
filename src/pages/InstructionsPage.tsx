@@ -2,6 +2,7 @@ import { FC, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InstructionsContent from '../components/AppDialog/InstructionsContent';
 import InfoDialog from '../components/AppDialog/AppDialog';
+import { useMarkdownContent } from "../hooks/useMarkdownContent";
 import { APP_NAME } from "../constants";
 
 interface InstructionsPageProps {
@@ -10,6 +11,7 @@ interface InstructionsPageProps {
 
 const InstructionsPage: FC<InstructionsPageProps> = ({ onOpen }) => {
   const navigate = useNavigate();
+  const { isLoading, error } = useMarkdownContent("instructions");
   const instructionsDialogContent = useMemo(() => <InstructionsContent />, []);
 
   useEffect(() => {
@@ -22,7 +24,7 @@ const InstructionsPage: FC<InstructionsPageProps> = ({ onOpen }) => {
 
   return (
     <InfoDialog
-      isOpen={true}
+      isOpen={!isLoading && !error}
       onClose={() => navigate("/")} // Navigate back
       content={instructionsDialogContent}
       title="Instructions"
