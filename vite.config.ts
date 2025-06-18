@@ -2,8 +2,8 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import browserslist from "browserslist";
 import { browserslistToTargets } from "lightningcss";
-import { visualizer } from "rollup-plugin-visualizer";
 import critical from "rollup-plugin-critical";
+import { visualizer } from "rollup-plugin-visualizer";
 import compression from "vite-plugin-compression";
 import { defineConfig, type UserConfigExport } from "vitest/config";
 
@@ -32,21 +32,21 @@ const config: UserConfigExport = defineConfig({
 		}),
 
 		// Bundle visualizer
-{
+		{
 			// name property removed to avoid conflict
 			...critical({
-				criticalUrl: '/',
-				criticalBase: './dist/',
+				criticalUrl: "/",
+				criticalBase: "./dist/",
 				criticalPages: [
 					{
-						uri: 'index.html',
-						template: 'index.html'
-					}
+						uri: "index.html",
+						template: "index.html",
+					},
 				],
 				// Adjust Puppeteer arguments if necessary, e.g., for running in a CI environment without a sandbox
-				puppeteerArgs: ['--no-sandbox', '--disable-setuid-sandbox']
+				puppeteerArgs: ["--no-sandbox", "--disable-setuid-sandbox"],
 			}),
-			enforce: 'post',
+			enforce: "post",
 		} as never,
 		visualizer({ open: false, gzipSize: true, brotliSize: true }) as never,
 	],
