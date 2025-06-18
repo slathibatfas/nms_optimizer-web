@@ -7,19 +7,18 @@ import critical from "rollup-plugin-critical";
 import { visualizer } from "rollup-plugin-visualizer";
 import { loadEnv } from "vite";
 import compression from "vite-plugin-compression";
-import { defineConfig, type UserConfigExport } from "vitest/config";
+import { type ConfigEnv, defineConfig } from "vitest/config";
 
 const modernTargets = browserslist(
 	"last 2 Chrome versions, last 2 Firefox versions, last 2 Edge versions, last 2 Safari versions, not dead"
 );
 
-export default ({ mode }): UserConfigExport => {
+export default defineConfig(({ mode }: ConfigEnv) => {
 	const env = loadEnv(mode, process.cwd());
 	const isDocker = env.DOCKER === "true";
 
 	const criticalPlugin = !isDocker
 		? {
-			// name removed to avoid conflict
 			...critical({
 				criticalUrl: "/",
 				criticalBase: "./dist/",
@@ -37,7 +36,7 @@ export default ({ mode }): UserConfigExport => {
 		}
 		: null;
 
-	return defineConfig({
+	return {
 		plugins: [
 			react(),
 			tailwindcss(),
@@ -131,5 +130,5 @@ export default ({ mode }): UserConfigExport => {
 			environment: "jsdom",
 			setupFiles: "./src/test/setup.ts",
 		},
-	});
-};
+	};
+});
