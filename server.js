@@ -28,7 +28,6 @@ app.use(
 		enableBrotli: true,
 		orderPreference: ["br", "gz"],
 		setHeaders: (res, filePath) => {
-			const path = require("path"); // Ensure path module is available
 			const fileName = path.basename(filePath);
 
 			// Regex to check for typical Vite hash pattern (e.g., index-a1b2c3d4.js)
