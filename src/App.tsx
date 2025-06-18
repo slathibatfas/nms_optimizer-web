@@ -4,7 +4,7 @@ import { ScrollArea, Separator } from "@radix-ui/themes";
 import { FC, lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { Trans, useTranslation } from "react-i18next";
-import { Link, Route, Routes, useLocation } from "react-router-dom"; // Added Link
+import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom"; // Added Link & useNavigate
 
 import AppDialog from "./components/AppDialog/AppDialog";
 import ErrorContent from "./components/AppDialog/ErrorContent";
@@ -63,8 +63,27 @@ const DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT = "520px";
 const MainAppContent: FC<{
 	isFirstVisit: boolean; // Prop to indicate if it's the user's first visit session
 	onFirstVisitInstructionsDialogOpened: () => void; // Callback when instructions dialog is opened for the first time
-}> = ({ isFirstVisit, onFirstVisitInstructionsDialogOpened }) => {
+	// Dialog state and setters passed from App
+	showAboutPage: boolean;
+	setShowAboutPage: (show: boolean) => void;
+	showInstructionsDialog: boolean;
+	setShowInstructionsDialog: (show: boolean) => void;
+	showChangelogDialog: boolean;
+	setShowChangelogDialog: (show: boolean) => void;
+}> = ({
+	isFirstVisit,
+	onFirstVisitInstructionsDialogOpened,
+	// Dialog state and setters
+	showAboutPage,
+	setShowAboutPage,
+	showInstructionsDialog,
+	setShowInstructionsDialog,
+	showChangelogDialog,
+	setShowChangelogDialog,
+}) => {
 	const { t } = useTranslation();
+	const location = useLocation(); // Added for closing dialogs
+	const navigate = useNavigate(); // Added for closing dialogs
 	const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } =
 		useGridStore();
 	const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
@@ -91,54 +110,62 @@ const MainAppContent: FC<{
 		isLarge,
 	} = useAppLayout();
 
-	// --- State for Modals/Dialogs ---
+	// Build version, moved up from where it was, but still part of MainAppContent
 	const build: string = (import.meta.env.VITE_BUILD_VERSION as string) ?? "devmode";
 
 	const hasModulesInGrid = useMemo(() => {
 		return grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
 	}, [grid]);
 
-	const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
+	// --- Dialog Handlers ---
+	// Note: showTranslationRequestDialog remains local to MainAppContent as it's not route-driven
+	const [showTranslationRequestDialog, setShowTranslationRequestDialog] = useState(false);
 
 	const handleShowInstructions = useCallback(() => {
 		setShowInstructionsDialog(true);
 		if (isFirstVisit) {
-			onFirstVisitInstructionsDialogOpened(); // Notify parent (App) that instructions were shown
+			onFirstVisitInstructionsDialogOpened();
 		}
-	}, [isFirstVisit, onFirstVisitInstructionsDialogOpened]);
+	}, [isFirstVisit, onFirstVisitInstructionsDialogOpened, setShowInstructionsDialog]);
 
-	const [showAboutPage, setShowAboutPage] = useState(false);
 	const handleShowAboutPage = useCallback(() => {
 		setShowAboutPage(true);
-	}, []);
+	}, [setShowAboutPage]);
 
-	const [showChangelogDialog, setShowChangelogDialog] = useState(false);
 	const handleShowChangelog = useCallback(() => {
 		setShowChangelogDialog(true);
-	}, []);
+	}, [setShowChangelogDialog]);
 
-	const [showTranslationRequestDialog, setShowTranslationRequestDialog] = useState(false);
 	const handleShowTranslationRequestDialog = useCallback(() => {
 		setShowTranslationRequestDialog(true);
 	}, []);
 
 	const handleCloseInstructionsDialog = useCallback(() => {
 		setShowInstructionsDialog(false);
-	}, []);
+		if (location.pathname === "/instructions") {
+			navigate("/");
+		}
+	}, [setShowInstructionsDialog, location.pathname, navigate]);
 
 	const handleCloseAboutDialog = useCallback(() => {
 		setShowAboutPage(false);
-	}, []);
+		if (location.pathname === "/about") {
+			navigate("/");
+		}
+	}, [setShowAboutPage, location.pathname, navigate]);
 
 	const handleCloseChangelogDialog = useCallback(() => {
 		setShowChangelogDialog(false);
-	}, []);
+		if (location.pathname === "/changelog") {
+			navigate("/");
+		}
+	}, [setShowChangelogDialog, location.pathname, navigate]);
 
 	const handleCloseTranslationRequestDialog = useCallback(() => {
 		setShowTranslationRequestDialog(false);
 	}, []);
 
-	// Memoize content elements for dialogs to prevent unnecessary re-renders of AppDialog
+	// Memoize content elements for dialogs
 	const aboutDialogContent = useMemo(() => <AboutContent />, []);
 	const instructionsDialogContent = useMemo(() => <InstructionsContent />, []);
 	const changelogDialogContent = useMemo(() => <ChangelogContent />, []);
@@ -320,6 +347,13 @@ const MainAppContent: FC<{
 const App: FC = () => {
 	const { t } = useTranslation();
 	const location = useLocation();
+	const navigate = useNavigate(); // Added for route-driven dialogs closing effect
+
+	// Dialog states are now managed by App
+	const [showAboutPage, setShowAboutPage] = useState(false);
+	const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
+	const [showChangelogDialog, setShowChangelogDialog] = useState(false);
+
 	const [isFirstVisit, setIsFirstVisit] = useState(
 		() => !localStorage.getItem("hasVisitedNMSOptimizer")
 	);
@@ -329,6 +363,20 @@ const App: FC = () => {
 		ReactGA.initialize(TRACKING_ID);
 		// This effect runs once on App mount for GA initialization.
 	}, []);
+
+	// Effect to handle route changes and open dialogs
+	useEffect(() => {
+		const path = location.pathname;
+		if (path === "/about") {
+			setShowAboutPage(true);
+		} else if (path === "/instructions") {
+			setShowInstructionsDialog(true);
+		} else if (path === "/changelog") {
+			setShowChangelogDialog(true);
+		}
+		// No explicit else to close dialogs, they close via their own handlers
+		// or if the user navigates away via other means.
+	}, [location.pathname, navigate]); // navigate added as per eslint exhaustive-deps suggestion, though not directly used in logic
 
 	useEffect(() => {
 		// Set document title based on the current path
@@ -356,7 +404,7 @@ const App: FC = () => {
 			setIsFirstVisit(false);
 			localStorage.setItem("hasVisitedNMSOptimizer", "true");
 		}
-	}, [isFirstVisit]); // setIsFirstVisit is stable, so not strictly needed if only isFirstVisit changes
+	}, [isFirstVisit]);
 
 	const errorDialogContent = useMemo(() => <ErrorContent />, []);
 
@@ -366,18 +414,25 @@ const App: FC = () => {
 				<MainAppContent
 					isFirstVisit={isFirstVisit}
 					onFirstVisitInstructionsDialogOpened={handleFirstVisitInstructionsOpened}
+					// Pass dialog state and setters to MainAppContent
+					showAboutPage={showAboutPage}
+					setShowAboutPage={setShowAboutPage}
+					showInstructionsDialog={showInstructionsDialog}
+					setShowInstructionsDialog={setShowInstructionsDialog}
+					showChangelogDialog={showChangelogDialog}
+					setShowChangelogDialog={setShowChangelogDialog}
 				/>
 			</Suspense>
 
-			{/* Routed Dialogs/Pages */}
+			{/* Routes now render null for dialog-controlled pages */}
 			<Routes>
-				<Route path="/" element={null} /> {/* Main content is rendered by MainAppContent above */}
-				<Route path="/changelog" element={<ChangelogPage />} />
-				<Route path="/instructions" element={<InstructionsPage />} />
-				<Route path="/about" element={<AboutPage />} />
+				<Route path="/" element={null} />
+				<Route path="/changelog" element={null} />
+				<Route path="/instructions" element={null} />
+				<Route path="/about" element={null} />
 			</Routes>
 
-			{/* Non-routed Dialogs managed by App */}
+			{/* Non-routed Dialogs managed by App (e.g., ErrorDialog) */}
 			<AppDialog
 				isOpen={showError}
 				onClose={() => setShowError(false)}
