@@ -27,26 +27,26 @@ app.use(
 	expressStaticGzip(path.join(__dirname, "dist"), {
 		enableBrotli: true,
 		orderPreference: ["br", "gz"],
-    setHeaders: (res, filePath) => {
-      const path = require("path"); // Ensure path module is available
-      const fileName = path.basename(filePath);
+		setHeaders: (res, filePath) => {
+			const path = require("path"); // Ensure path module is available
+			const fileName = path.basename(filePath);
 
-      // Regex to check for typical Vite hash pattern (e.g., index-a1b2c3d4.js)
-      const versionedAssetPattern = /-[0-9a-zA-Z]{8}\.(js|css|woff2|webp|svg|png|jpg|jpeg|gif)$/i;
+			// Regex to check for typical Vite hash pattern (e.g., index-a1b2c3d4.js)
+			const versionedAssetPattern = /-[0-9a-zA-Z]{8}\.(js|css|woff2|webp|svg|png|jpg|jpeg|gif)$/i;
 
-      if (versionedAssetPattern.test(fileName)) {
-        // For versioned assets (JS, CSS, fonts, images with hashes)
-        res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
-      } else if (fileName === "index.html") {
-        // For index.html, no-cache to ensure freshness for SPA routing fallbacks.
-        res.setHeader("Cache-Control", "no-cache");
-      } else {
-        // For other static assets in "dist" that might not be versioned
-        // (e.g., images copied directly from public, favicons, manifest.json)
-        // A shorter cache time, e.g., 1 day. Adjust as needed.
-        res.setHeader("Cache-Control", "public, max-age=86400");
-      }
-    },
+			if (versionedAssetPattern.test(fileName)) {
+				// For versioned assets (JS, CSS, fonts, images with hashes)
+				res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+			} else if (fileName === "index.html") {
+				// For index.html, no-cache to ensure freshness for SPA routing fallbacks.
+				res.setHeader("Cache-Control", "no-cache");
+			} else {
+				// For other static assets in "dist" that might not be versioned
+				// (e.g., images copied directly from public, favicons, manifest.json)
+				// A shorter cache time, e.g., 1 day. Adjust as needed.
+				res.setHeader("Cache-Control", "public, max-age=86400");
+			}
+		},
 	})
 );
 
