@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc -b && vite build --mode production",
-		"build:docker": "vite build --mode docker",
+		"build:docker": "DOCKER=true vite build --mode docker",
+		"lint:fix": "eslint . --fix",
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"screenshot": "node screenshot.cjs",
