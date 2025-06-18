@@ -1,5 +1,5 @@
 // src/components/AppDialog/MarkdownContentRenderer.tsx
-import { Spinner } from "@radix-ui/themes";
+// import { Spinner } from "@radix-ui/themes";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeExternalLinks from "rehype-external-links";
@@ -15,8 +15,11 @@ const MarkdownContentRenderer: React.FC<MarkdownContentRendererProps> = ({ markd
 
 	if (isLoading) {
 		return (
-			<div className="flex items-center justify-center w-full h-64">
-				<Spinner className="dialogSpinner__spinner" />
+			<div
+				className="flex w-full justigfy-center flex-items-center"
+				style={{ flexGrow: "1", height: "80vh" }}
+			>
+				{/* <Spinner className="dialogSpinner__spinner" /> */}
 			</div>
 		);
 	}
