@@ -2,6 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import browserslist from "browserslist";
 import { browserslistToTargets } from "lightningcss";
+import puppeteer from "puppeteer-core";
 import critical from "rollup-plugin-critical";
 import { visualizer } from "rollup-plugin-visualizer";
 import compression from "vite-plugin-compression";
@@ -44,7 +45,9 @@ const config: UserConfigExport = defineConfig({
 					},
 				],
 				// Adjust Puppeteer arguments if necessary, e.g., for running in a CI environment without a sandbox
+				puppeteer: puppeteer,
 				puppeteerArgs: ["--no-sandbox", "--disable-setuid-sandbox"],
+				puppeteerExecutablePath: "/app/.apt/usr/bin/google-chrome-stable", // this is key!
 			}),
 			enforce: "post",
 		} as never,
