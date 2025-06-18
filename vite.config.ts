@@ -7,18 +7,38 @@ import critical from "rollup-plugin-critical";
 import { visualizer } from "rollup-plugin-visualizer";
 import { loadEnv } from "vite";
 import compression from "vite-plugin-compression";
-import { type ConfigEnv, defineConfig } from "vitest/config";
+import { type ConfigEnv, defineConfig, type UserConfigExport } from "vitest/config";
 
 const modernTargets = browserslist(
 	"last 2 Chrome versions, last 2 Firefox versions, last 2 Edge versions, last 2 Safari versions, not dead"
 );
 
-export default defineConfig(({ mode }: ConfigEnv) => {
+const config: UserConfigExport = defineConfig(({ mode }: ConfigEnv) => {
 	const env = loadEnv(mode, process.cwd());
-	const isDocker = env.DOCKER === "true";
+	const isDocker = env.DOCKER === "true" || process.env.DOCKER === "true";
 
-	const criticalPlugin = !isDocker
-		? {
+	console.log("[vite config] mode:", mode, "| DOCKER:", env.DOCKER);
+
+	const plugins = [
+		react(),
+		tailwindcss(),
+
+		compression({
+			algorithm: "brotliCompress",
+			ext: ".br",
+			threshold: 10240,
+			deleteOriginFile: false,
+		}),
+
+		compression({
+			algorithm: "gzip",
+			ext: ".gz",
+			threshold: 10240,
+			deleteOriginFile: false,
+		}),
+
+		!isDocker &&
+		({
 			...critical({
 				criticalUrl: "/",
 				criticalBase: "./dist/",
@@ -33,34 +53,13 @@ export default defineConfig(({ mode }: ConfigEnv) => {
 				puppeteerExecutablePath: "/app/.apt/usr/bin/google-chrome-stable",
 			}),
 			enforce: "post",
-		}
-		: null;
+		} as never),
+
+		visualizer({ open: false, gzipSize: true, brotliSize: true }) as never,
+	].filter(Boolean); // ✅ Remove false/null/undefined plugins
 
 	return {
-		plugins: [
-			react(),
-			tailwindcss(),
-
-			// Precompress with Brotli
-			compression({
-				algorithm: "brotliCompress",
-				ext: ".br",
-				threshold: 10240,
-				deleteOriginFile: false,
-			}),
-
-			// Precompress with Gzip
-			compression({
-				algorithm: "gzip",
-				ext: ".gz",
-				threshold: 10240,
-				deleteOriginFile: false,
-			}),
-
-			...(criticalPlugin ? [criticalPlugin as never] : []),
-
-			visualizer({ open: false, gzipSize: true, brotliSize: true }) as never,
-		],
+		plugins,
 
 		server: {
 			host: "0.0.0.0",
@@ -132,3 +131,5 @@ export default defineConfig(({ mode }: ConfigEnv) => {
 		},
 	};
 });
+
+export default config;
