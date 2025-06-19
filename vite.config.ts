@@ -18,11 +18,11 @@ export default defineConfig(() => {
 	const criticalPlugin = !isDocker
 		? {
 			...critical({
-				criticalUrl: "/",
+				criticalUrl: "https://nms-optimizer.app",
 				criticalBase: "./dist/",
 				criticalPages: [
 					{
-						uri: "index.html",
+						uri: "/",
 						template: "index.html",
 					},
 				],

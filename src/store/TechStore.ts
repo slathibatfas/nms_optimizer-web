@@ -1,7 +1,7 @@
 // src/store/TechStore.ts
 import { create } from "zustand";
 
-interface TechState {
+export interface TechState {
   max_bonus: { [key: string]: number };
   solved_bonus: { [key: string]: number };
   solve_method: { [key: string]: string };

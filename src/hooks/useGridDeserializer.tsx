@@ -1,6 +1,6 @@
 // src/hooks/useGridDeserializer.tsx
 import { useCallback } from "react";
-import { useGridStore, Grid, createGrid } from "../store/GridStore"; // Import Cell type
+import { useGridStore, type Grid, createGrid } from "../store/GridStore"; // Import Cell type
 import { API_URL } from "../constants";
 import { useShipTypesStore } from "./useShipTypes";
 import { useTechStore } from "../store/TechStore"; // <--- Import useTechStore

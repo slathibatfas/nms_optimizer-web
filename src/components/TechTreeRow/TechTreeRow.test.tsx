@@ -1,11 +1,15 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, test, expect, beforeEach, vi, type Mock } from "vitest";
+import { describe, test, expect, beforeEach, vi } from "vitest";
 import { TechTreeRow, type TechTreeRowProps } from "./TechTreeRow"; // Import TechTreeRowProps from here
 import { useGridStore } from "../../store/GridStore";
 import { useTechStore } from "../../store/TechStore";
-import * as RadixTooltip from "@radix-ui/react-tooltip"; // Import for Tooltip.Provider
+import * as RadixTooltip from "@radix-ui/react-tooltip";
+import { type TechState } from "../../store/TechStore"; // Assumed correct state type name
 import { useShakeStore } from "../../store/ShakeStore";
+
+// Import the actual GridStore type
+import { type GridStore } from "../../store/GridStore";
 
 // Mock stores
 vi.mock("../../store/GridStore");
@@ -50,8 +54,8 @@ vi.mock("radix-ui", () => ({
 		),
 		Header: ({ children }: { children: React.ReactNode }) => (
 			<div data-testid="accordion-header">{children}</div>
-		),
-		Trigger: ({ children, ...props }: { children: React.ReactNode; [key: string]: any }) => (
+		), // NOSONAR
+		Trigger: ({ children, ...props }: { children: React.ReactNode; [key: string]: unknown }) => (
 			<button {...props} data-testid="accordion-trigger">
 				{children}
 			</button>
@@ -87,21 +91,20 @@ describe("TechTreeRow", () => {
 		mockIsGridFull.mockClear().mockReturnValue(false);
 		mockHasTechInGrid.mockClear().mockReturnValue(false);
 
-		vi.mocked(useGridStore).mockImplementation((selector?: (state: any) => any) => {
+		// Mock useGridStore implementation to handle selectors
+		vi.mocked(useGridStore).mockImplementation((selector?: (state: GridStore) => unknown) => {
 			const mockState = {
 				hasTechInGrid: mockHasTechInGrid,
 				isGridFull: mockIsGridFull,
 				resetGridTech: mockResetGridTech,
-			};
-			if (selector) {
-				return selector(mockState);
-			}
-			return mockState;
+				// Add other GridStore properties if they are accessed by the component under test
+			} as unknown as GridStore; // Cast to GridStore
+			return selector ? selector(mockState) : mockState;
 		});
 
 		// Mock useTechStore implementation to handle selectors
-		vi.mocked(useTechStore).mockImplementation((selector?: (state: any) => any) => {
-			const mockState = {
+		vi.mocked(useTechStore).mockImplementation((selector?: (state: TechState) => unknown) => {
+			const mockState: TechState = {
 				max_bonus: {},
 				clearTechMaxBonus: mockClearTechMaxBonus,
 				solved_bonus: {},
@@ -110,11 +113,12 @@ describe("TechTreeRow", () => {
 				setCheckedModules: vi.fn(),
 				clearCheckedModules: vi.fn(),
 				getTechColor: mockGetTechColorImplementation,
-			};
+				// Ensure all properties of TechStoreState are present, or cast if it's a partial mock:
+			} as unknown as TechState; // Cast if mockState is a partial representation
 			if (selector) {
 				return selector(mockState);
 			}
-			return mockState;
+			return mockState; // This is what TechTreeRow receives as it calls useTechStore() without a selector
 		});
 
 		vi.mocked(useShakeStore).mockReturnValue({

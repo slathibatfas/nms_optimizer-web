@@ -1,4 +1,4 @@
-import { FC, useMemo, useEffect } from 'react';
+import { type FC, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChangeLogContent from '../components/AppDialog/ChangeLogContent';
 import InfoDialog from '../components/AppDialog/AppDialog';

@@ -10,11 +10,11 @@ import { useTranslation } from "react-i18next";
 
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 import {
-	ShipTypeDetail,
+	type ShipTypeDetail,
 	useFetchShipTypesSuspense,
 	useShipTypesStore,
 } from "../../hooks/useShipTypes";
-import { createGrid, Grid, useGridStore } from "../../store/GridStore";
+import { createGrid, type Grid, useGridStore } from "../../store/GridStore";
 
 // --- Constants for Grid Configuration ---
 const DEFAULT_GRID_HEIGHT = 10;

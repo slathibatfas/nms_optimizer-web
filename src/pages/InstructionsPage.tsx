@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import { type FC, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InstructionsContent from '../components/AppDialog/InstructionsContent';
 import InfoDialog from '../components/AppDialog/AppDialog';

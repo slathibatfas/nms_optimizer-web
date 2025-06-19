@@ -1,7 +1,7 @@
 // src/components/AppDialog/OptimizationAlertDialog.tsx
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { FC } from "react";
+import type { FC } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 interface OptimizationAlertDialogProps {

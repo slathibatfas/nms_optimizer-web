@@ -1,7 +1,7 @@
 // src/App.tsx
 
 import { ScrollArea, Separator } from "@radix-ui/themes";
-import { FC, lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { type FC, lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { Trans, useTranslation } from "react-i18next";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom"; // Added Link & useNavigate
@@ -24,9 +24,6 @@ import { useGridStore } from "./store/GridStore";
 import { useOptimizeStore } from "./store/OptimizeStore";
 
 // --- Page Components ---
-const ChangelogPage = lazy(() => import("./pages/ChangeLogPage"));
-const InstructionsPage = lazy(() => import("./pages/InstructionsPage"));
-const AboutPage = lazy(() => import("./pages/AboutPage"));
 
 const TechTreeComponent = lazy(() => import("./components/TechTree/TechTree"));
 

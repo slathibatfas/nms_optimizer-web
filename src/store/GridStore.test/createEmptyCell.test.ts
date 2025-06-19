@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { createEmptyCell } from '../GridStore';
 
 describe('createEmptyCell() createEmptyCell method', () => {

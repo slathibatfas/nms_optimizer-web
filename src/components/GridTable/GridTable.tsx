@@ -4,7 +4,7 @@ import "./GridTable.css";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Grid, selectHasModulesInGrid, useGridStore } from "../../store/GridStore";
+import { type Grid, selectHasModulesInGrid, useGridStore } from "../../store/GridStore";
 import { useShakeStore } from "../../store/ShakeStore";
 import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";

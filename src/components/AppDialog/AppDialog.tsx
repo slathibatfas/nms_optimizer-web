@@ -11,7 +11,7 @@ import {
 	QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
 import { IconButton, Theme } from "@radix-ui/themes";
-import React, { ReactNode, useCallback, useEffect } from "react";
+import React, { type ReactNode, useCallback, useEffect } from "react";
 
 interface AppDialogProps {
 	onClose: () => void;

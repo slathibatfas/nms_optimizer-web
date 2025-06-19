@@ -1,6 +1,6 @@
 // src/components/ErrorBoundary/ErrorBoundary.tsx
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { Component, ErrorInfo, ReactNode } from "react";
+import { Component, type ErrorInfo, type ReactNode } from "react";
 import ReactGA from "react-ga4";
 
 interface Props {

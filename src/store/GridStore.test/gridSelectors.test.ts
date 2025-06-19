@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useGridStore, createGrid, type Cell } from '../GridStore'; // Adjust path if necessary based on file location
+import { useGridStore, createGrid } from '../GridStore'; // Adjust path if necessary based on file location
 
 describe('Grid Store Selectors', () => {
   beforeEach(() => {
@@ -62,7 +62,7 @@ describe('Grid Store Selectors', () => {
 
     it('should update the count after a cell is no longer supercharged', () => {
       const state = useGridStore.getState();
-      let newGrid = createGrid(2, 1);
+      const newGrid = createGrid(2, 1);
       newGrid.cells[0][0].supercharged = true;
       newGrid.cells[0][1].supercharged = true;
       state.setGrid(newGrid);
@@ -144,7 +144,7 @@ describe('Grid Store Selectors', () => {
 
     it('should update after a module is removed', () => {
       const state = useGridStore.getState();
-      let newGrid = createGrid(2, 1);
+      const newGrid = createGrid(2, 1);
       newGrid.cells[0][0].module = 'Existing Module';
       newGrid.cells[0][1].module = 'Another Module';
       state.setGrid(newGrid);

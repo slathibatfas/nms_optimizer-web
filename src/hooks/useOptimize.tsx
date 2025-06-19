@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ReactGA from "react-ga4";
 
 import { API_URL } from "../constants";
-import { ApiResponse, Grid, useGridStore } from "../store/GridStore";
+import { type ApiResponse, type Grid, useGridStore } from "../store/GridStore";
 import { useOptimizeStore } from "../store/OptimizeStore";
 import { useTechStore } from "../store/TechStore";
 import { useBreakpoint } from "./useBreakpoint";
@@ -67,8 +67,8 @@ function isApiResponse(value: unknown): value is ApiResponse {
 	}
 
 	// Check for optional properties (if they exist, they must be numbers)
-	if (Object.hasOwn(obj, "max_bonus") && typeof obj.max_bonus !== "number") return false;
-	if (Object.hasOwn(obj, "solved_bonus") && typeof obj.solved_bonus !== "number") return false;
+	if (Object.prototype.hasOwnProperty.call(obj, "max_bonus") && typeof obj.max_bonus !== "number") return false;
+	if (Object.prototype.hasOwnProperty.call(obj, "solved_bonus") && typeof obj.solved_bonus !== "number") return false;
 
 	return true;
 }

@@ -13,7 +13,6 @@ const ErrorContent: React.FC = () => {
 					i18nKey="errorContent.serverErrorDetails"
 					components={{
 						1: (
-							// eslint-disable-next-line jsx-a11y/anchor-has-content
 							<a
 								href="https://github.com/jbelew/nms_optimizer-web/issues"
 								target="_blank"
