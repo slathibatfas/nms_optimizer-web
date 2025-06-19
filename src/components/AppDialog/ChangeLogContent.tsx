@@ -21,13 +21,18 @@ const ChangeLogContent: React.FC = () => {
 				for up to date model build information.
 			</p>
 
-			<h2 className="pt-2 appDialog__subheading">Version 2.87 (2025-06-10)</h2>
+			<h2 className="pt-2 appDialog__subheading">Version 2.90 (2025-06-19)</h2>
 			<ul className="appDialog__list">
 				<li className="appDialog__listItem">Added internationalization (i18n) support.</li>
 				<li className="appDialog__listItem">Added a language selection UI element.</li>
 				<li className="appDialog__listItem">
 					Added Spanish, French, and German translations (initial machine-generated draft).
 				</li>
+				<li>
+					Finally found and addressed the issue impacting application "responsiveness" on mobile
+					devices.
+				</li>
+				<li>Additional UI performance enhancements.</li>
 			</ul>
 
 			<h2 className="pt-2 appDialog__subheading">Version 2.86 (2025-06-10)</h2>

@@ -70,6 +70,7 @@ const MessageSpinner: React.FC<MessageSpinnerProps> = ({
 
 	return (
 		// Restore original container class
+
 		<div className={containerClasses.trim()}>
 			<Spinner className="messageSpinner__spinner" />
 

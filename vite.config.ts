@@ -2,8 +2,8 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import browserslist from "browserslist";
 import { browserslistToTargets } from "lightningcss";
-import puppeteer from "puppeteer-core";
-import critical from "rollup-plugin-critical";
+// import { colorScheme } from "vite-plugin-color-scheme";
+import { splashScreen } from "vite-plugin-splash-screen";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import compression from "vite-plugin-compression";
@@ -13,32 +13,18 @@ const modernTargets = browserslist(
 );
 
 export default defineConfig(() => {
-	const isDocker = process.env.DOCKER === "true";
 
-	const criticalPlugin = !isDocker
-		? {
-			...critical({
-				criticalUrl: "https://nms-optimizer.app",
-				criticalBase: "./dist/",
-				criticalPages: [
-					{
-						uri: "/",
-						template: "index.html",
-					},
-				],
-				puppeteer,
-				puppeteerArgs: ["--no-sandbox", "--disable-setuid-sandbox"],
-				puppeteerExecutablePath: "/app/.apt/usr/bin/google-chrome-stable",
-			}),
-			enforce: "post",
-		}
-		: null;
 
 	return {
 		plugins: [
 			react(),
 			tailwindcss(),
-
+			splashScreen({
+				logoSrc: "assets/svg/loader.svg",
+				splashBg: "#000000",
+				loaderBg: "#00A2C7",
+				loaderType: "line",
+			}),
 			compression({
 				algorithm: "brotliCompress",
 				ext: ".br",
@@ -52,8 +38,6 @@ export default defineConfig(() => {
 				threshold: 10240,
 				deleteOriginFile: false,
 			}),
-
-			...(criticalPlugin ? [criticalPlugin] : []),
 
 			visualizer({ open: false, gzipSize: true, brotliSize: true }),
 		],
