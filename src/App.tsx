@@ -25,7 +25,6 @@ import { useGridStore } from "./store/GridStore";
 import { useOptimizeStore } from "./store/OptimizeStore";
 
 // --- Page Components ---
-
 const TechTreeComponent = lazy(() => import("./components/TechTree/TechTree"));
 
 // --- Page Content ---
@@ -208,7 +207,7 @@ const MainAppContent: FC<{
 
 	return (
 		<main className="flex flex-col items-center justify-center lg:min-h-screen">
-			<section className="relative mx-auto border rounded-none app lg:rounded-xl backdrop-blur-xl bg-white/5">
+			<section className="relative mx-auto border rounded-none app lg:rounded-xl bg-white/5">
 				<AppHeader
 					onShowChangelog={handleShowChangelog}
 					onShowTranslationRequestDialog={handleShowTranslationRequestDialog} // Pass the handler
