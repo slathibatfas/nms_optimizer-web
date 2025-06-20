@@ -20,7 +20,7 @@ export default defineConfig(() => {
 			react(),
 			tailwindcss(),
 			splashScreen({
-				logoSrc: "assets/svg/loader.svg",
+				logoSrc: "assets/svg/favicon.svg",
 				splashBg: "#000000",
 				loaderBg: "#00A2C7",
 				loaderType: "line",
