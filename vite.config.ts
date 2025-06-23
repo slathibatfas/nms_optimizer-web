@@ -2,7 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import browserslist from "browserslist";
 import { browserslistToTargets } from "lightningcss";
-import { colorScheme } from "vite-plugin-color-scheme";
+// import { colorScheme } from "vite-plugin-color-scheme";
 // import { splashScreen } from "vite-plugin-splash-screen";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
