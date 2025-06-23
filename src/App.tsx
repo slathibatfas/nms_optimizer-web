@@ -55,23 +55,23 @@ const AppLoadingFallback = () => {
 	);
 };
 
-function FadeIn({ children }: { children: React.ReactNode }) {
-	const [visible, setVisible] = useState(false);
+// function FadeIn({ children }: { children: React.ReactNode }) {
+// 	const [visible, setVisible] = useState(false);
 
-	useEffect(() => {
-		// Wait one tick to allow for CSS transition
-		const id = setTimeout(() => setVisible(true), 0);
-		return () => clearTimeout(id);
-	}, []);
+// 	useEffect(() => {
+// 		// Wait one tick to allow for CSS transition
+// 		const id = setTimeout(() => setVisible(true), 0);
+// 		return () => clearTimeout(id);
+// 	}, []);
 
-	return (
-		<div
-			className={`transition-opacity duration-200 backdrop-blur-xl ${visible ? "opacity-100" : "opacity-0"}`}
-		>
-			{children}
-		</div>
-	);
-}
+// 	return (
+// 		<div
+// 			className={`lg:transition-opacity lg:duration-200 lg:backdrop-blur-xl ${visible ? "opacity-100" : "opacity-0"}`}
+// 		>
+// 			{children}
+// 		</div>
+// 	);
+// }
 
 // --- Constants for UI ---
 const DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT = "520px";
@@ -207,7 +207,7 @@ const MainAppContent: FC<{
 
 	return (
 		<main className="flex flex-col items-center justify-center lg:min-h-screen">
-			<section className="relative mx-auto border rounded-none app lg:rounded-xl bg-white/5">
+			<section className="relative mx-auto border rounded-none app lg:rounded-xl bg-white/5 backdrop-blur-xl">
 				<AppHeader
 					onShowChangelog={handleShowChangelog}
 					onShowTranslationRequestDialog={handleShowTranslationRequestDialog} // Pass the handler
@@ -431,19 +431,19 @@ const App: FC = () => {
 	return (
 		<>
 			<Suspense fallback={<AppLoadingFallback />}>
-				<FadeIn>
-					<MainAppContent
-						isFirstVisit={isFirstVisit}
-						onFirstVisitInstructionsDialogOpened={handleFirstVisitInstructionsOpened}
-						// Pass dialog state and setters to MainAppContent
-						showAboutPage={showAboutPage}
-						setShowAboutPage={setShowAboutPage}
-						showInstructionsDialog={showInstructionsDialog}
-						setShowInstructionsDialog={setShowInstructionsDialog}
-						showChangelogDialog={showChangelogDialog}
-						setShowChangelogDialog={setShowChangelogDialog}
-					/>
-				</FadeIn>
+				{/* <FadeIn> */}
+				<MainAppContent
+					isFirstVisit={isFirstVisit}
+					onFirstVisitInstructionsDialogOpened={handleFirstVisitInstructionsOpened}
+					// Pass dialog state and setters to MainAppContent
+					showAboutPage={showAboutPage}
+					setShowAboutPage={setShowAboutPage}
+					showInstructionsDialog={showInstructionsDialog}
+					setShowInstructionsDialog={setShowInstructionsDialog}
+					showChangelogDialog={showChangelogDialog}
+					setShowChangelogDialog={setShowChangelogDialog}
+				/>
+				{/* </FadeIn> */}
 			</Suspense>
 
 			{/* Routes now render null for dialog-controlled pages */}

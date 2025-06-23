@@ -57,6 +57,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 						});
 						onShowInstructions();
 					}}
+					aria-label={t("buttons.instructions")}
 				>
 					<QuestionMarkCircledIcon />
 					<span className="hidden sm:inline">{t("buttons.instructions")}</span>
@@ -72,6 +73,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 						});
 						onShowAbout();
 					}}
+					aria-label={t("buttons.about")}
 				>
 					<InfoCircledIcon />
 					<span className="hidden sm:inline">{t("buttons.about")}</span>
@@ -83,6 +85,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 						className="shadow-md gridTable__button gridTable__button--changelog"
 						onClick={onShare}
 						disabled={solving || !hasModulesInGrid}
+						aria-label={t("buttons.share")}
 					>
 						<Share2Icon />
 						<span className="hidden sm:inline">{t("buttons.share")}</span>
@@ -104,6 +107,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 						variant="solid"
 						onClick={onReset}
 						disabled={solving}
+						aria-label={t("buttons.resetGrid")}
 					>
 						<ResetIcon />
 						<span className="font-bold">{t("buttons.resetGrid")}</span>

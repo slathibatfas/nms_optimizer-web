@@ -66,7 +66,11 @@ const LanguageSelector: React.FC = () => {
 					size={isSmallAndUp ? "2" : "1"}
 					aria-label={t("languageInfo.changeLanguage") || "Change language"}
 				>
-					<img src={currentFlagPath} alt={currentLanguage} className="w-4 h-auto sm:w-5" />
+					<img
+						src={currentFlagPath}
+						alt={currentLanguage}
+						className="w-[16] h-[12] sm:w-[20] sm:h-[14]"
+					/>
 				</IconButton>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content
