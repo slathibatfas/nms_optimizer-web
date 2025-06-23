@@ -35,6 +35,7 @@
 	--font-family-geosans: "GeosansLight", sans-serif; /* Added for GeosansLight */
 	--letter-spacing-wide: 0.2rem; /* Added for common letter-spacing */
 	--font-weight-bold: 700; /* Added for common bold weight */
+	--color-background: var(--gary-a1);
 }
 
 .flag-icons {

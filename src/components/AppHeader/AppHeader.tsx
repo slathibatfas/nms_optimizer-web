@@ -23,7 +23,6 @@ const AppHeaderInternal: React.FC<AppHeaderProps> = ({
 	const { t } = useTranslation();
 
 	return (
-		// Add 'relative' to establish a positioning context for the absolutely positioned IconButton
 		<header className="relative flex flex-col items-center p-4 sm:px-8 sm:pt-6 sm:pb-4 header lg:rounded-t-xl">
 			<div className="!absolute !top-2 !right-4 sm:!top-4 sm:!right-8 z-10 !cursor-pointer flex items-center">
 				<LanguageSelector />

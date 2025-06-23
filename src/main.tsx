@@ -30,18 +30,13 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 import ErrorBoundary from "./components/ErrorBoundry/ErrorBoundry";
-import MessageSpinner from "./components/MessageSpinner/MessageSpinner"; // For Suspense fallback
+import MessageSpinner from "./components/MessageSpinner/MessageSpinner";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<BrowserRouter>
 			<ErrorBoundary>
-				<Theme
-					appearance="dark"
-					panelBackground="translucent"
-					accentColor="cyan"
-					className="!bg-transparent"
-				>
+				<Theme appearance="dark" panelBackground="translucent" accentColor="cyan">
 					<Suspense
 						fallback={
 							<main className="flex flex-col items-center justify-center lg:min-h-screen">
