@@ -5,7 +5,7 @@ import { type FC, lazy, Suspense, useCallback, useEffect, useMemo, useState } fr
 import ReactGA from "react-ga4";
 import { Trans, useTranslation } from "react-i18next";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom"; // Added Link & useNavigate
-import { hideSplashScreen } from "vite-plugin-splash-screen/runtime";
+// import { hideSplashScreen } from "vite-plugin-splash-screen/runtime";
 
 import AppDialog from "./components/AppDialog/AppDialog";
 import ErrorContent from "./components/AppDialog/ErrorContent";
@@ -39,9 +39,9 @@ import TranslationRequestContent from "./components/AppDialog/TranslationRequest
 const AppLoadingFallback = () => {
 	const { t } = useTranslation();
 
-	useEffect(() => {
-		hideSplashScreen();
-	}, []);
+	// useEffect(() => {
+	// 	hideSplashScreen();
+	// }, []);
 
 	return (
 		<main className="flex flex-col items-center justify-center lg:min-h-screen">
