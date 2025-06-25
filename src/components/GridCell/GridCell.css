@@ -5,14 +5,14 @@
 	background-color: var(--accent-a2);
 	width: var(--grid-cell-size);
 	height: var(--grid-cell-size);
-	user-select: none; /* Prevents text selection */
-	-webkit-user-select: none; /* iOS Safari */
-	-webkit-touch-callout: none; /* Disables long-press context menu */
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
 	image-rendering: high-quality;
 }
 
 .gridCell:focus-visible {
-	outline: 2px solid var(--accent-track); /* Replace with your preferred color */
+	outline: 2px solid var(--accent-track);
 	outline-offset: 2px;
 }
 
@@ -38,7 +38,6 @@
 
 .gridCell--inactive:hover {
 	background-color: var(--gray-a4);
-	transition: background-color 0.25s ease;
 }
 
 .gridCell--active {
@@ -48,7 +47,6 @@
 
 .gridCell--active:hover {
 	background-color: var(--accent-a4);
-	transition: background-color 0.25s ease;
 }
 
 .gridCell--active[data-accent-color="white"] {
@@ -58,7 +56,18 @@
 }
 
 @media (min-width: 640px) {
-	/* Tailwind's sm breakpoint */
+	/* Transitions only on desktop */
+	.gridCell--inactive:hover,
+	.gridCell--active:hover,
+	.gridCell--supercharged:hover,
+	.gridCell--black:hover {
+		transition: background-color 0.25s ease;
+	}
+
+	.gridCell--black:hover {
+		transition: border-color 0.25s ease;
+	}
+
 	.gridCell--active[data-accent-color="white"] {
 		border-width: 2px;
 	}
@@ -69,14 +78,12 @@
 }
 
 .gridCell--supercharged {
-	/* Styles for supercharged grid cells */
 	border-color: var(--accent-track);
 	background-color: var(--purple-a3) !important;
 }
 
 .gridCell--supercharged:hover {
 	background-color: var(--purple-a4) !important;
-	transition: background-color 0.25s ease;
 }
 
 .gridCell--black {
@@ -86,7 +93,6 @@
 
 .gridCell--black:hover {
 	background-color: var(--gray-a4);
-	transition: border-color 0.25s ease;
 }
 
 .gridCell--glow {
