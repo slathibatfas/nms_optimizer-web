@@ -21,6 +21,19 @@ interface AppDialogProps {
 	content: ReactNode;
 }
 
+const iconMap: Record<string, React.ElementType> = {
+	"dialogs.titles.instructions": QuestionMarkCircledIcon,
+	"dialogs.titles.changelog": CounterClockwiseClockIcon,
+	"dialogs.titles.about": InfoCircledIcon,
+	"dialogs.titles.serverError": ExclamationTriangleIcon,
+	"dialogs.titles.translationRequest": GlobeIcon,
+};
+
+const iconStyle: Record<string, { color: string }> = {
+	"dialogs.titles.serverError": { color: "var(--red-9)" },
+	default: { color: "var(--accent-11)" },
+};
+
 /**
  * A Dialog component for displaying information to the user.
  *
@@ -59,6 +72,9 @@ const AppDialog: React.FC<AppDialogProps> = ({
 		return () => window.removeEventListener("keydown", handleEscapeKey);
 	}, [handleEscapeKey]);
 
+	const IconComponent = titleKey ? iconMap[titleKey] : null;
+	const style = titleKey ? iconStyle[titleKey] || iconStyle.default : iconStyle.default;
+
 	return (
 		<Dialog.Root
 			open={isOpen} // Control open state
@@ -70,32 +86,8 @@ const AppDialog: React.FC<AppDialogProps> = ({
 					<Dialog.Overlay className="appDialog__overlay" />
 					<Dialog.Content className="appDialog__content" style={{ paddingTop: "var(--space-3)" }}>
 						<Dialog.Title className="flex items-start gap-2 text-xl sm:text-2xl heading-styled">
-							{titleKey === "dialogs.titles.instructions" && (
-								<QuestionMarkCircledIcon
-									className="w-6 h-6 mt-0 sm:mt-1"
-									style={{ color: "var(--accent-11)" }}
-								/>
-							)}
-							{titleKey === "dialogs.titles.changelog" && (
-								<CounterClockwiseClockIcon
-									className="w-6 h-6 mt-0 sm:mt-1"
-									style={{ color: "var(--accent-11)" }}
-								/>
-							)}
-							{titleKey === "dialogs.titles.about" && (
-								<InfoCircledIcon
-									className="w-6 h-6 mt-0 sm:mt-1"
-									style={{ color: "var(--accent-11)" }}
-								/>
-							)}
-							{titleKey === "dialogs.titles.serverError" && (
-								<ExclamationTriangleIcon
-									className="w-6 h-6 mt-0 sm:mt-1"
-									style={{ color: "var(--red-9)" }}
-								/>
-							)}
-							{titleKey === "dialogs.titles.translationRequest" && (
-								<GlobeIcon className="w-6 h-6 mt-0 sm:mt-1" style={{ color: "var(--accent-11)" }} />
+							{IconComponent && (
+								<IconComponent className="w-6 h-6 mt-0 sm:mt-1" style={style} />
 							)}
 							{title}
 						</Dialog.Title>

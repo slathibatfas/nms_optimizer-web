@@ -22,14 +22,6 @@ const getUpgradePriority = (label: string | undefined): number => {
 interface GridCellProps {
 	rowIndex: number;
 	columnIndex: number;
-	cell: {
-		label?: string; // Make label optional
-		supercharged?: boolean;
-		active?: boolean;
-		tech?: string | null; // Make tech optional
-		adjacency_bonus?: number; // Make adjacency_bonus optional
-		image?: string | null | undefined; // Make image optional
-	};
 	isSharedGrid: boolean;
 }
 
@@ -41,15 +33,15 @@ interface GridCellProps {
  * @param cell - The cell object, containing properties like label, supercharged, active, and image
  */
 
-const GridCell: React.FC<GridCellProps> = memo(
-	({ rowIndex, columnIndex, cell, isSharedGrid }) => {
-		const toggleCellActive = useGridStore((state) => state.toggleCellActive);
-		const toggleCellSupercharged = useGridStore((state) => state.toggleCellSupercharged);
-		const totalSupercharged = useGridStore(selectTotalSuperchargedCells);
-		const [longPressTriggered, setLongPressTriggered] = useState(false);
-		const longPressTimer = useRef<NodeJS.Timeout | null>(null);
-		const { setShaking } = useShakeStore(); // Get setShaking from the store
-		const { t } = useTranslation();
+const GridCell: React.FC<GridCellProps> = memo(({ rowIndex, columnIndex, isSharedGrid }) => {
+	const cell = useGridStore((state) => state.grid.cells[rowIndex][columnIndex]);
+	const toggleCellActive = useGridStore((state) => state.toggleCellActive);
+	const toggleCellSupercharged = useGridStore((state) => state.toggleCellSupercharged);
+	const totalSupercharged = useGridStore(selectTotalSuperchargedCells);
+	const [longPressTriggered, setLongPressTriggered] = useState(false);
+	const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+	const { setShaking } = useShakeStore(); // Get setShaking from the store
+	const { t } = useTranslation();
 
 		/**
 		 * Handles a click on the cell.
@@ -229,14 +221,6 @@ GridCell.displayName = "GridCell";
 GridCell.propTypes = {
 	rowIndex: PropTypes.number.isRequired,
 	columnIndex: PropTypes.number.isRequired,
-	cell: PropTypes.shape({
-		label: PropTypes.string,
-		supercharged: PropTypes.bool,
-		active: PropTypes.bool,
-		tech: PropTypes.string,
-		adjacency_bonus: PropTypes.number,
-		image: PropTypes.string,
-	}).isRequired,
 	isSharedGrid: PropTypes.bool.isRequired,
 };
 

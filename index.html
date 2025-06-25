@@ -19,29 +19,9 @@
 		<!-- PWA Manifest -->
 		<link rel="manifest" href="/manifest.json" />
 
+		<link rel="stylesheet" href="/src/assets/css/fonts.css" media="print" onload="this.media='all'">
+
 		<style>
-			/* Improve font loading performance and define base styles */
-			@font-face {
-				font-family: "GeoNMS";
-				src: url("/assets/fonts/geonms-webfont.woff2") format("woff2");
-				font-weight: normal;
-				font-style: normal;
-				font-display: swap;
-			}
-			@font-face {
-				font-family: "Raleway";
-				src: url("/assets/fonts/Raleway-VariableFont_wght.woff2") format("woff2");
-				font-weight: 100 900;
-				font-style: normal;
-				font-display: swap;
-			}
-			@font-face {
-				font-family: "Acumin Pro Condensed";
-				src: url("/assets/fonts/AcuminProCond-Semibold.woff2") format("woff2");
-				font-weight: 600; /* Semibold */
-				font-style: normal;
-				font-display: swap;
-			}
 			body {
 				background-color: #000;
 			}
@@ -61,7 +41,7 @@
 			}
 		</style>
 
-		<link rel="preload" href="/src/assets/img/background.webp" as="image" type="image/webp" />
+		<link rel="preload" href="/assets/img/background.webp" as="image" type="image/webp" fetchpriority="high" />
 
 		<!-- Fonts -->
 		<link

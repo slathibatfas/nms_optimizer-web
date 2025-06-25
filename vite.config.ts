@@ -1,16 +1,15 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
-import browserslist from "browserslist";
-import { browserslistToTargets } from "lightningcss";
+// import browserslist from "browserslist";
+// import { browserslistToTargets } from "lightningcss";
 // import { colorScheme } from "vite-plugin-color-scheme";
 // import { splashScreen } from "vite-plugin-splash-screen";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import compression from "vite-plugin-compression";
 
-const modernTargets = browserslist(
-	"last 2 Chrome versions, last 2 Firefox versions, last 2 Edge versions, last 2 Safari versions, not dead"
-);
+
+
 
 export default defineConfig(() => {
 
@@ -49,13 +48,11 @@ export default defineConfig(() => {
 
 		css: {
 			transformer: "lightningcss",
-			lightningcss: {
-				targets: browserslistToTargets(modernTargets),
-			},
+
 		},
 
 		build: {
-			target: "es2020",
+			target: "esnext",
 			minify: "esbuild",
 			cssCodeSplit: true,
 			sourcemap: true,

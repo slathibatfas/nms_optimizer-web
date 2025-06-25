@@ -85,12 +85,11 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
 				>
 					{grid.cells.map((row, rowIndex) => (
 						<div role="row" key={rowIndex} aria-rowindex={rowIndex + 1}>
-							{row.map((cellData, columnIndex) => (
+							{row.map((_, columnIndex) => (
 								<GridCell
-									key={`${rowIndex}-${columnIndex}`} // More robust key
+									key={`${rowIndex}-${columnIndex}`}
 									rowIndex={rowIndex}
 									columnIndex={columnIndex}
-									cell={cellData} // Pass the cell data directly
 									isSharedGrid={shared}
 								/>
 							))}

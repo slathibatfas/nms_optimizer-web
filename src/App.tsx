@@ -1,7 +1,7 @@
 // src/App.tsx
 
 import { ScrollArea } from "@radix-ui/themes";
-import { type FC, lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { type FC, lazy, Suspense, useCallback, useEffect, useMemo } from "react";
 import ReactGA from "react-ga4";
 import { useTranslation } from "react-i18next";
 import { Route, Routes, useLocation } from "react-router-dom";
@@ -30,10 +30,8 @@ import { useOptimizeStore } from "./store/OptimizeStore";
 const TechTreeComponent = lazy(() => import("./components/TechTree/TechTree"));
 
 // --- Page Content (for dialogs) ---
-import AboutContent from "./components/AppDialog/AboutContent";
 import ChangelogContent from "./components/AppDialog/ChangeLogContent";
-import InstructionsContent from "./components/AppDialog/InstructionsContent";
-import TranslationRequestContent from "./components/AppDialog/TranslationRequestContent";
+import MarkdownContentRenderer from "./components/AppDialog/MarkdownContentRenderer";
 import React from "react";
 
 /**
@@ -44,6 +42,9 @@ const MainAppContentInternal: FC<{
 	buildVersion: string;
 }> = ({ buildVersion }) => {
 	const { t } = useTranslation();
+
+	const DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT = "520px";
+
 	const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } =
 		useGridStore();
 	const {
@@ -83,11 +84,6 @@ const MainAppContentInternal: FC<{
 	}, [grid]);
 
 	// --- Dialog Handlers ---
-	// Note: showTranslationRequestDialog remains local to MainAppContent as it's not route-driven
-	const [showTranslationRequestDialog, setShowTranslationRequestDialog] = useState(false);
-
-	const DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT = "520px";
-
 	const handleShowInstructions = useCallback(() => {
 		openDialog("instructions");
 		if (isFirstVisit) {
@@ -103,19 +99,20 @@ const MainAppContentInternal: FC<{
 		openDialog("changelog");
 	}, [openDialog]);
 
-	const handleShowTranslationRequestDialog = useCallback(() => {
-		setShowTranslationRequestDialog(true);
-	}, []);
-
-	const handleCloseTranslationRequestDialog = useCallback(() => {
-		setShowTranslationRequestDialog(false);
-	}, []);
-
 	// Memoize content elements for dialogs
-	const aboutDialogContent = useMemo(() => <AboutContent />, []);
-	const instructionsDialogContent = useMemo(() => <InstructionsContent />, []);
+	const aboutDialogContent = useMemo(
+		() => <MarkdownContentRenderer markdownFileName="about" />,
+		[]
+	);
+	const instructionsDialogContent = useMemo(
+		() => <MarkdownContentRenderer markdownFileName="instructions" />,
+		[]
+	);
 	const changelogDialogContent = useMemo(() => <ChangelogContent />, []);
-	const translationRequestDialogContent = useMemo(() => <TranslationRequestContent />, []);
+	const translationRequestDialogContent = useMemo(
+		() => <MarkdownContentRenderer markdownFileName="translation-request" />,
+		[]
+	);
 
 	const handleShareClick = useCallback(() => {
 		const shareUrl = updateUrlForShare();
@@ -134,10 +131,7 @@ const MainAppContentInternal: FC<{
 	return (
 		<main className="flex flex-col items-center justify-center lg:min-h-screen">
 			<section className="relative mx-auto border rounded-none app lg:rounded-xl bg-white/5 backdrop-blur-xl">
-				<AppHeader
-					onShowChangelog={handleShowChangelog}
-					onShowTranslationRequestDialog={handleShowTranslationRequestDialog} // Pass the handler
-				/>
+				<AppHeader onShowChangelog={handleShowChangelog} />
 				<section
 					className="flex flex-col items-start p-4 pt-2 gridContainer sm:pt-4 sm:p-8 lg:flex-row"
 					ref={gridContainerRef}
@@ -243,8 +237,8 @@ const MainAppContentInternal: FC<{
 			/>
 			{/* Dialog for "Translation Request" information */}
 			<AppDialog
-				isOpen={showTranslationRequestDialog}
-				onClose={handleCloseTranslationRequestDialog}
+				isOpen={activeDialog === "translation"}
+				onClose={closeDialog}
 				titleKey="dialogs.titles.translationRequest" // You'll need to add this key to your i18n files
 				title={t("dialogs.titles.translationRequest")}
 				content={translationRequestDialogContent}
@@ -311,6 +305,7 @@ const App: FC = () => {
 				<Route path="/changelog" element={null} />
 				<Route path="/instructions" element={null} />
 				<Route path="/about" element={null} />
+				<Route path="/translation" element={null} />
 			</Routes>
 
 			{/* Non-routed Dialogs managed by App (e.g., ErrorDialog) */}

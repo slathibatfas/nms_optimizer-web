@@ -1,10 +1,9 @@
 // src/context/dialog-utils.ts
 import { createContext, useContext } from "react";
 
-// Define the types for the dialogs
-export type DialogType = "about" | "instructions" | "changelog" | null;
+// --- Context Definition ---
+export type DialogType = "about" | "instructions" | "changelog" | "translation" | null;
 
-// Define the shape of the context
 export interface DialogContextType {
 	activeDialog: DialogType;
 	openDialog: (dialog: NonNullable<DialogType>) => void;
@@ -13,7 +12,6 @@ export interface DialogContextType {
 	onFirstVisitInstructionsDialogOpened: () => void;
 }
 
-// Create the context with a default value
 export const DialogContext = createContext<DialogContextType | undefined>(undefined);
 
 /**

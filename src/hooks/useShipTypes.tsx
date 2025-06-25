@@ -89,6 +89,13 @@ export function fetchShipTypes(): Resource<ShipTypes> {
 			.then((data: ShipTypes) => {
 				// Log the data to the console
 				console.log(`Fetched ship types:`, data);
+				const state = useShipTypesStore.getState();
+				state.setShipTypes(data);
+				if (data && Object.keys(data).length > 0) {
+					state.setSelectedShipType(Object.keys(data)[0]);
+				} else {
+					state.setSelectedShipType("");
+				}
 				return data;
 			})
 			.catch((error) => {
@@ -122,6 +129,7 @@ export interface ShipTypesState {
 	shipTypes: ShipTypes | null;
 	selectedShipType: string;
 	setSelectedShipType: (shipType: string, updateUrl?: boolean) => void; // Add optional flag
+	setShipTypes: (shipTypes: ShipTypes) => void;
 }
 
 const LOCAL_STORAGE_KEY = "selectedPlatform";
@@ -179,9 +187,10 @@ export const useShipTypesStore = create<ShipTypesState>((set) => {
 	}
 	// --- End of initial state logic ---
 
-	return {
+		return {
 		shipTypes: null, // Initialize as null
 		selectedShipType: initialShipType, // Use the determined initial type
+		setShipTypes: (shipTypes) => set({ shipTypes }), // Add this line
 		setSelectedShipType: (shipType, updateUrl = true) => {
 			// Default updateUrl to true
 			set({ selectedShipType: shipType });
