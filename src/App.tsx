@@ -323,7 +323,7 @@ const App: FC = () => {
 			default:
 				document.title = appName; // Default title
 		}
-	}, [location.pathname, t]);
+	}, [location.pathname, location.search, t]);
 
 	const errorDialogContent = useMemo(() => <ErrorContent />, []);
 
