@@ -14,7 +14,6 @@ import OptimizationAlertDialog from "./components/AppDialog/OptimizationAlertDia
 import AppFooter from "./components/AppFooter/AppFooter";
 import AppHeader from "./components/AppHeader/AppHeader";
 import { GridTable } from "./components/GridTable/GridTable";
-import GridTableButtons from "./components/GridTableButtons/GridTableButtons";
 import ShipSelection from "./components/ShipSelection/ShipSelection";
 import { TRACKING_ID } from "./constants"; // APP_NAME will come from i18n
 import { DialogProvider } from "./context/DialogContext";
@@ -46,15 +45,8 @@ const MainAppContentInternal: FC<{
 
 	const DEFAULT_TECH_TREE_SCROLL_AREA_HEIGHT = "520px";
 
-	const { grid, activateRow, deActivateRow, resetGrid, setIsSharedGrid, isSharedGrid } =
-		useGridStore();
-	const {
-		activeDialog,
-		openDialog,
-		closeDialog,
-		isFirstVisit,
-		onFirstVisitInstructionsDialogOpened,
-	} = useDialog();
+	const { grid, activateRow, deActivateRow, resetGrid, isSharedGrid } = useGridStore();
+	const { activeDialog, openDialog, closeDialog } = useDialog();
 
 	const selectedShipType = useShipTypesStore((state) => state.selectedShipType);
 	// Call useFetchShipTypesSuspense to ensure data is fetched/cached and to trigger Suspense.
@@ -69,32 +61,16 @@ const MainAppContentInternal: FC<{
 		clearPatternNoFitTech,
 		handleForceCurrentPnfOptimize,
 	} = useOptimize();
-	const { updateUrlForShare, updateUrlForReset } = useUrlSync();
+	useUrlSync();
 	const {
 		containerRef: appLayoutContainerRef,
 		gridTableRef: appLayoutGridTableRef,
 		gridHeight,
-		columnWidth,
 		gridTableTotalWidth, // Destructure the new total width
-		resetButtonPositionStyle, // Destructure the new style
 		isLarge,
 	} = useAppLayout();
 
-	const hasModulesInGrid = useMemo(() => {
-		return grid && grid.cells ? grid.cells.flat().some((cell) => cell.module !== null) : false;
-	}, [grid]);
-
 	// --- Dialog Handlers ---
-	const handleShowInstructions = useCallback(() => {
-		openDialog("instructions");
-		if (isFirstVisit) {
-			onFirstVisitInstructionsDialogOpened();
-		}
-	}, [openDialog, isFirstVisit, onFirstVisitInstructionsDialogOpened]);
-
-	const handleShowAboutPage = useCallback(() => {
-		openDialog("about");
-	}, [openDialog]);
 
 	const handleShowChangelog = useCallback(() => {
 		openDialog("changelog");
@@ -114,20 +90,6 @@ const MainAppContentInternal: FC<{
 		() => <MarkdownContentRenderer markdownFileName="translation-request" />,
 		[]
 	);
-
-	const handleShareClick = useCallback(() => {
-		const shareUrl = updateUrlForShare();
-		const newWindow = window.open(shareUrl, "_blank", "noopener,noreferrer");
-		ReactGA.event({ category: "User Interactions", action: "shareLink" });
-		if (newWindow) newWindow.focus();
-	}, [updateUrlForShare]);
-
-	const handleResetGrid = useCallback(() => {
-		ReactGA.event({ category: "User Interactions", action: "resetGrid" });
-		resetGrid();
-		updateUrlForReset();
-		setIsSharedGrid(false);
-	}, [resetGrid, setIsSharedGrid, updateUrlForReset]);
 
 	return (
 		<main className="flex flex-col items-center justify-center lg:min-h-screen">
@@ -171,18 +133,6 @@ const MainAppContentInternal: FC<{
 							deActivateRow={deActivateRow}
 							ref={appLayoutGridTableRef}
 							resetGrid={resetGrid}
-						/>
-						<GridTableButtons
-							onShowInstructions={handleShowInstructions}
-							onShowAbout={handleShowAboutPage}
-							onShare={handleShareClick}
-							onReset={handleResetGrid}
-							isSharedGrid={isSharedGrid}
-							hasModulesInGrid={hasModulesInGrid}
-							solving={solving}
-							columnWidth={columnWidth}
-							resetButtonPositionStyle={resetButtonPositionStyle} // Pass the style as a prop
-							isFirstVisit={isFirstVisit}
 						/>
 					</div>
 					{!isSharedGrid &&

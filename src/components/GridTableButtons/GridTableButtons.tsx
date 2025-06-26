@@ -19,8 +19,6 @@ interface GridTableButtonsProps {
 	isSharedGrid: boolean;
 	hasModulesInGrid: boolean;
 	solving: boolean;
-	columnWidth: string;
-	resetButtonPositionStyle: React.CSSProperties; // Add new prop for the style
 	isFirstVisit: boolean; // Add prop for first visit
 }
 
@@ -32,17 +30,13 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 	isSharedGrid,
 	hasModulesInGrid,
 	solving,
-	columnWidth,
-	resetButtonPositionStyle, // Receive the style prop
 	isFirstVisit,
 }) => {
 	const isSmallAndUp = useBreakpoint("640px"); // sm breakpoint
 	const { t } = useTranslation();
 	return (
-		// Add 'relative' to establish a positioning context for the absolutely positioned reset button.
-		<footer className="relative flex items-start pt-3 sm:pt-4 gridTable__footer">
-			<div className="flex-1 flex-nowrap">
-				{" "}
+		<>
+			<div className="col-span-7 mt-2 sm:mt-3">
 				{/* This div will contain the left-aligned buttons */}
 				<Button
 					size={isSmallAndUp ? "2" : "1"}
@@ -92,29 +86,21 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					</Button>
 				)}
 			</div>
-			{/* This div will contain the Reset Grid button and be absolutely positioned. */}
-			{/* Conditionally render the reset button container to avoid layout shift.
-          Render if it's a shared grid (columnWidth will be "0px" correctly)
-          OR if columnWidth is no longer its initial "0px" (meaning it's measured or a fallback for non-shared). */}
-			{columnWidth !== "0px" && (
-				<div
-					className="absolute z-10" // Use 'absolute' positioning and a z-index if needed.
-					style={resetButtonPositionStyle} // Apply the passed-in style object
+
+			<div className="flex justify-end col-span-3 mt-2 sm:mt-3">
+				<Button
+					size={isSmallAndUp ? "2" : "1"}
+					className={`gridTable__button gridTable__button--reset shadow-md`}
+					variant="solid"
+					onClick={onReset}
+					disabled={solving}
+					aria-label={t("buttons.resetGrid")}
 				>
-					<Button
-						size={isSmallAndUp ? "2" : "1"}
-						className={`gridTable__button gridTable__button--reset shadow-md`}
-						variant="solid"
-						onClick={onReset}
-						disabled={solving}
-						aria-label={t("buttons.resetGrid")}
-					>
-						<ResetIcon />
-						<span className="font-bold">{t("buttons.resetGrid")}</span>
-					</Button>
-				</div>
-			)}
-		</footer>
+					<ResetIcon />
+					{t("buttons.resetGrid")}
+				</Button>
+			</div>
+		</>
 	);
 };
 
