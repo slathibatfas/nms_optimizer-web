@@ -88,13 +88,22 @@ export function fetchShipTypes(): Resource<ShipTypes> {
 			})
 			.then((data: ShipTypes) => {
 				// Log the data to the console
-				console.log(`Fetched ship types:`, data);
+				console.log("Fetched ship types:", data);
 				const state = useShipTypesStore.getState();
 				state.setShipTypes(data);
-				if (data && Object.keys(data).length > 0) {
-					state.setSelectedShipType(Object.keys(data)[0]);
-				} else {
-					state.setSelectedShipType("");
+
+				// After fetching, validate that the current selection is a valid type.
+				// The initial selection is set by the store's create function from the URL or localStorage.
+				const currentSelected = state.selectedShipType;
+				const availableTypes = Object.keys(data);
+
+				// If the current selection is not in the fetched list, reset to "standard".
+				if (availableTypes.length > 0 && !availableTypes.includes(currentSelected)) {
+					console.warn(
+						`Selected ship type "${currentSelected}" is not valid. Resetting to "standard".`
+					);
+					// This will update the state, localStorage, and the URL.
+					state.setSelectedShipType("standard");
 				}
 				return data;
 			})
@@ -187,7 +196,7 @@ export const useShipTypesStore = create<ShipTypesState>((set) => {
 	}
 	// --- End of initial state logic ---
 
-		return {
+	return {
 		shipTypes: null, // Initialize as null
 		selectedShipType: initialShipType, // Use the determined initial type
 		setShipTypes: (shipTypes) => set({ shipTypes }), // Add this line
