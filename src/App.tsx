@@ -132,7 +132,7 @@ const MainAppContentInternal: FC<{
 							activateRow={activateRow}
 							deActivateRow={deActivateRow}
 							ref={appLayoutGridTableRef}
-							resetGrid={resetGrid}
+							resetGridAction={resetGrid} // Changed prop name here
 						/>
 					</div>
 					{!isSharedGrid &&
