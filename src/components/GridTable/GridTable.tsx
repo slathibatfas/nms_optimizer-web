@@ -1,9 +1,9 @@
 // src/components/GridTable/GridTable.tsx
 import "./GridTable.css";
 
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react"; // Removed useCallback
 import { useTranslation } from "react-i18next";
-import ReactGA from "react-ga4";
+// import ReactGA from "react-ga4"; // No longer used directly here
 
 import { type Grid, selectHasModulesInGrid, useGridStore } from "../../store/GridStore";
 import { useShakeStore } from "../../store/ShakeStore";
@@ -11,17 +11,17 @@ import GridCell from "../GridCell/GridCell";
 import GridControlButtons from "../GridControlButtons/GridControlButtons";
 import ShakingWrapper from "../GridShake/GridShake";
 import MessageSpinner from "../MessageSpinner/MessageSpinner";
-import { useDialog } from "../../context/dialog-utils";
-import { useUrlSync } from "../../hooks/useUrlSync";
+// import { useDialog } from "../../context/dialog-utils"; // Moved
+// import { useUrlSync } from "../../hooks/useUrlSync"; // Moved
 
 import GridTableButtons from "../GridTableButtons/GridTableButtons";
 interface GridTableProps {
 	grid: Grid | null | undefined; // Allow grid to be null or undefined
-	resetGrid: () => void;
+	resetGridAction: () => void; // Renamed from resetGrid for clarity, matches prop for GridTableButtons
 	activateRow: (rowIndex: number) => void;
 	deActivateRow: (rowIndex: number) => void;
 	solving: boolean;
-	shared: boolean;
+	shared: boolean; // This is isSharedGridProp, used for GridCell
 }
 
 /**
@@ -37,49 +37,21 @@ interface GridTableProps {
  * @param {boolean} props.shared - Indicates if the grid is in a shared/read-only state.
  */
 const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
-	({ grid, activateRow, deActivateRow, solving, shared: isSharedGridProp, resetGrid }, ref) => {
+	({ grid, activateRow, deActivateRow, solving, shared: isSharedGridProp, resetGridAction }, ref) => {
 		const { shaking } = useShakeStore();
 		const { t } = useTranslation();
-		const hasModulesInGrid = useGridStore(selectHasModulesInGrid);
-		const { setIsSharedGrid } = useGridStore();
+		const hasModulesInGrid = useGridStore(selectHasModulesInGrid); // Still needed for GridControlButtons
+		// const { setIsSharedGrid } = useGridStore(); // No longer needed here
 
-		// Hooks for button logic
-		const { openDialog, isFirstVisit, onFirstVisitInstructionsDialogOpened } = useDialog();
-		const { updateUrlForShare, updateUrlForReset } = useUrlSync();
+		// Hooks for button logic - MOVED to GridTableButtons
+		// const { openDialog, isFirstVisit, onFirstVisitInstructionsDialogOpened } = useDialog();
+		// const { updateUrlForShare, updateUrlForReset } = useUrlSync();
 
-		// Handlers for GridTableButtons
-		const handleShowInstructions = useCallback(() => {
-			openDialog("instructions");
-			if (isFirstVisit) {
-				onFirstVisitInstructionsDialogOpened();
-			}
-			ReactGA.event({
-				category: "User Interactions",
-				action: "showInstructions",
-			});
-		}, [openDialog, isFirstVisit, onFirstVisitInstructionsDialogOpened]);
-
-		const handleShowAboutPage = useCallback(() => {
-			openDialog("about");
-			ReactGA.event({
-				category: "User Interactions",
-				action: "showAbout",
-			});
-		}, [openDialog]);
-
-		const handleShareClick = useCallback(() => {
-			const shareUrl = updateUrlForShare();
-			const newWindow = window.open(shareUrl, "_blank", "noopener,noreferrer");
-			ReactGA.event({ category: "User Interactions", action: "shareLink" });
-			if (newWindow) newWindow.focus();
-		}, [updateUrlForShare]);
-
-		const handleResetGrid = useCallback(() => {
-			ReactGA.event({ category: "User Interactions", action: "resetGrid" });
-			resetGrid();
-			updateUrlForReset();
-			setIsSharedGrid(false);
-		}, [resetGrid, setIsSharedGrid, updateUrlForReset]);
+		// Handlers for GridTableButtons - MOVED to GridTableButtons
+		// const handleShowInstructions = useCallback(() => {...}, []);
+		// const handleShowAboutPage = useCallback(() => {...}, []);
+		// const handleShareClick = useCallback(() => {...}, []);
+		// const handleResetGrid = useCallback(() => {...}, []);
 
 		// Calculate derived values from the grid.
 		// This hook is now called unconditionally before any early returns.
@@ -157,14 +129,10 @@ const GridTableInternal = React.forwardRef<HTMLDivElement, GridTableProps>(
 						</div>
 					))}
 					<GridTableButtons
-						onShowInstructions={handleShowInstructions}
-						onShowAbout={handleShowAboutPage}
-						onShare={handleShareClick}
-						onReset={handleResetGrid}
-						isSharedGrid={isSharedGridProp}
-						hasModulesInGrid={hasModulesInGrid}
 						solving={solving}
-						isFirstVisit={isFirstVisit}
+						resetGridAction={resetGridAction}
+						// onShowInstructions, onShowAbout, onShare, onReset are now internal to GridTableButtons
+						// isSharedGrid, hasModulesInGrid, isFirstVisit are now accessed via store/hooks within GridTableButtons
 					/>
 				</div>
 			</ShakingWrapper>

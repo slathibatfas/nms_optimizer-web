@@ -5,35 +5,75 @@ import {
 	Share2Icon,
 } from "@radix-ui/react-icons";
 import { Button } from "@radix-ui/themes";
-import React from "react";
+import React, { useCallback } from "react";
 import ReactGA from "react-ga4";
 import { useTranslation } from "react-i18next";
 
 import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { useDialog } from "../../context/dialog-utils";
+import { useUrlSync } from "../../hooks/useUrlSync";
+import { useGridStore, selectHasModulesInGrid } from "../../store/GridStore"; // Removed selectIsSharedGrid
 
 interface GridTableButtonsProps {
-	onShowInstructions: () => void;
-	onShowAbout: () => void; // Changed from onShowChangeLog, assuming this is for the "About" section
-	onShare: () => void; // Added onShare to props interface
-	onReset: () => void;
-	isSharedGrid: boolean;
-	hasModulesInGrid: boolean;
-	solving: boolean;
-	isFirstVisit: boolean; // Add prop for first visit
+	// Callbacks are now handled internally
+	// onShowInstructions: () => void;
+	// onShowAbout: () => void;
+	// onShare: () => void;
+	// onReset: () => void;
+	// isSharedGrid: boolean; // Will get from store
+	// hasModulesInGrid: boolean; // Will get from store
+	solving: boolean; // Still passed as a prop for now
+	// isFirstVisit: boolean; // Will get from useDialog
+	resetGridAction: () => void; // Renamed from onReset, specific action from parent
 }
 
 const GridTableButtons: React.FC<GridTableButtonsProps> = ({
-	onShowInstructions,
-	onShowAbout, // Use the new prop
-	onShare, // Keep onShare
-	onReset,
-	isSharedGrid,
-	hasModulesInGrid,
 	solving,
-	isFirstVisit,
+	resetGridAction,
 }) => {
 	const isSmallAndUp = useBreakpoint("640px"); // sm breakpoint
 	const { t } = useTranslation();
+
+	// Internalize dialog and URL logic
+	const { openDialog, isFirstVisit, onFirstVisitInstructionsDialogOpened } = useDialog();
+	const { updateUrlForShare, updateUrlForReset } = useUrlSync();
+	const { setIsSharedGrid } = useGridStore(); // For resetGrid
+	const hasModulesInGrid = useGridStore(selectHasModulesInGrid);
+	const isSharedGrid = useGridStore((state) => state.isSharedGrid); // Get isSharedGrid from store directly
+
+	const handleShowInstructions = useCallback(() => {
+		openDialog("instructions");
+		if (isFirstVisit) {
+			onFirstVisitInstructionsDialogOpened();
+		}
+		ReactGA.event({
+			category: "User Interactions",
+			action: "showInstructions",
+		});
+	}, [openDialog, isFirstVisit, onFirstVisitInstructionsDialogOpened]);
+
+	const handleShowAboutPage = useCallback(() => {
+		openDialog("about");
+		ReactGA.event({
+			category: "User Interactions",
+			action: "showAbout",
+		});
+	}, [openDialog]);
+
+	const handleShareClick = useCallback(() => {
+		const shareUrl = updateUrlForShare();
+		const newWindow = window.open(shareUrl, "_blank", "noopener,noreferrer");
+		ReactGA.event({ category: "User Interactions", action: "shareLink" });
+		if (newWindow) newWindow.focus();
+	}, [updateUrlForShare]);
+
+	const handleResetGrid = useCallback(() => {
+		ReactGA.event({ category: "User Interactions", action: "resetGrid" });
+		resetGridAction(); // Call the passed-in reset action
+		updateUrlForReset();
+		setIsSharedGrid(false);
+	}, [resetGridAction, setIsSharedGrid, updateUrlForReset]);
+
 	return (
 		<>
 			<div className="col-span-7 mt-2 sm:mt-3">
@@ -44,13 +84,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					className={`gridTable__button gridTable__button--instructions shadow-md !mr-2 p-0  ${
 						isFirstVisit ? "button--glow" : ""
 					}`}
-					onClick={() => {
-						ReactGA.event({
-							category: "User Interactions",
-							action: "showInstructions",
-						});
-						onShowInstructions();
-					}}
+					onClick={handleShowInstructions}
 					aria-label={t("buttons.instructions")}
 				>
 					<QuestionMarkCircledIcon />
@@ -60,13 +94,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					size={isSmallAndUp ? "2" : "1"}
 					variant="soft"
 					className={`gridTable__button gridTable__button--about shadow-md !mr-2`}
-					onClick={() => {
-						ReactGA.event({
-							category: "User Interactions",
-							action: "showAbout",
-						});
-						onShowAbout();
-					}}
+					onClick={handleShowAboutPage}
 					aria-label={t("buttons.about")}
 				>
 					<InfoCircledIcon />
@@ -77,7 +105,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 						size={isSmallAndUp ? "2" : "1"}
 						variant="soft"
 						className="shadow-md gridTable__button gridTable__button--changelog"
-						onClick={onShare}
+						onClick={handleShareClick}
 						disabled={solving || !hasModulesInGrid}
 						aria-label={t("buttons.share")}
 					>
@@ -92,7 +120,7 @@ const GridTableButtons: React.FC<GridTableButtonsProps> = ({
 					size={isSmallAndUp ? "2" : "1"}
 					className={`gridTable__button gridTable__button--reset shadow-md`}
 					variant="solid"
-					onClick={onReset}
+					onClick={handleResetGrid}
 					disabled={solving}
 					aria-label={t("buttons.resetGrid")}
 				>
