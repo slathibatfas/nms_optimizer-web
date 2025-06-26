@@ -67,8 +67,8 @@ html {
 /* Background styles */
 body {
 	background: image-set(
-			url("/src/assets/img/background.webp") 1x,
-			url("/src/assets/img/background@2x.webp") 2x
+			url("/assets/img/background.webp") 1x,
+			url("/assets/img/background@2x.webp") 2x
 		)
 		center/cover fixed;
 	font-family: var(--default-font-family);
