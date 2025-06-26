@@ -19,6 +19,7 @@ import ShipSelection from "./components/ShipSelection/ShipSelection";
 import { TRACKING_ID } from "./constants"; // APP_NAME will come from i18n
 import { DialogProvider } from "./context/DialogContext";
 import { useDialog } from "./context/dialog-utils";
+import i18n from "./i18n/i18n"; // Import i18n instance
 import { useAppLayout } from "./hooks/useAppLayout";
 import { useOptimize } from "./hooks/useOptimize";
 import { useFetchShipTypesSuspense, useShipTypesStore } from "./hooks/useShipTypes";
@@ -267,6 +268,43 @@ const App: FC = () => {
 	}, []);
 
 	useEffect(() => {
+		// Manage hreflang tags
+		const supportedLanguages = i18n.options.supportedLngs || [];
+		const defaultLanguage = (i18n.options.fallbackLng as string[])[0] || "en"; // Get the first fallback language
+		const currentPath = location.pathname;
+		const currentSearch = location.search; // Get current query parameters
+		const baseUrl = window.location.origin;
+
+		// Remove existing hreflang tags to prevent duplicates on re-renders
+		document.querySelectorAll("link[rel='alternate'][hreflang]").forEach((tag) => tag.remove());
+
+		supportedLanguages.forEach((lang) => {
+			if (lang === "dev") return; // Skip dev language
+
+			const params = new URLSearchParams(currentSearch);
+			params.set("lng", lang);
+			const href = `${baseUrl}${currentPath}?${params.toString()}`;
+
+			const link = document.createElement("link");
+			link.rel = "alternate";
+			link.hreflang = lang;
+			link.href = href;
+			document.head.appendChild(link);
+
+			// Set x-default to the primary fallback language URL
+			if (lang === defaultLanguage) {
+				const defaultParams = new URLSearchParams(currentSearch);
+				defaultParams.set("lng", defaultLanguage); // Or omit for true default if server handles root path language detection
+				const xDefaultHref = `${baseUrl}${currentPath}?${defaultParams.toString()}`;
+
+				const defaultLink = document.createElement("link");
+				defaultLink.rel = "alternate";
+				defaultLink.hreflang = "x-default";
+				defaultLink.href = xDefaultHref;
+				document.head.appendChild(defaultLink);
+			}
+		});
+
 		// Set document title based on the current path
 		const appName = t("appName");
 		switch (location.pathname) {
